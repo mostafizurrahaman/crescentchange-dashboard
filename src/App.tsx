@@ -1,14 +1,10 @@
 
-
 import './App.css'
-import { Button } from 'antd'
-
+import MainLayout from './components/layouts/MainLayout'
 function App() {
-
-
   return (
     <>
-      <Button>hi </Button>
+      <MainLayout />
     </>
   )
 }
