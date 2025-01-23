@@ -1,7 +1,7 @@
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/signup.png";
 import { Link } from "react-router-dom";
-const SignUp1 = () => {
+const SignUp2 = () => {
     const onFinish = () => {
 
     }
@@ -10,7 +10,7 @@ const SignUp1 = () => {
             <div className="flex flex-col md:flex-row justify-between items-center">
                 <div className="bg-primary h-screen w-full md:w-[50%]  px-32 py-40">
                     <div className="h-2 w-full bg-blue-50"></div>
-                    <p className="text-white">Step 1/5</p>
+                    <p className="text-white">Step 2/5</p>
                     <div>
                         <ConfigProvider
                             theme={{
@@ -34,35 +34,62 @@ const SignUp1 = () => {
                             >
                                 <div className="mb-4">
                                     <h2 className="text-white  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                                        Let’s start with your <br />
-                                        name & email
+                                        What can we help you with?
                                     </h2>
                                     <p className="text-white  lg:text-lg font-bold">
-                                        You can always change it later
+                                        We would like to know more about your needs so that we can help you.
                                     </p>
                                 </div>
                                 <Form.Item
-                                    name="name"
-                                    label={<p className=" text-md text-white">Enter your name</p>}
+                                    name="service-type"
+                                    label={<p className=" text-md text-white">Service your services type</p>}
+                                    style={{}}
+                                >
+                                    <div className="flex justify-between items-center gap-2">
+                                        <Input
+                                            required
+                                            style={{ padding: "6px" }}
+                                            className=" text-md"
+                                            placeholder="Mosque"
+                                        />
+                                        <Input
+                                            required
+                                            style={{ padding: "6px" }}
+                                            className=" text-md"
+                                            placeholder="Non profit Organization"
+                                        />
+                                        <Input
+                                            required
+                                            style={{ padding: "6px" }}
+                                            className=" text-md"
+                                            placeholder="Charity"
+                                        />
+
+                                    </div>
+                                </Form.Item>
+
+                                <Form.Item
+                                    name="organoisation-name"
+                                    label={<p className=" text-md text-white">Your organisation name</p>}
                                     style={{}}
                                 >
                                     <Input
                                         required
                                         style={{ padding: "6px" }}
                                         className=" text-md"
-                                        placeholder="Your Name"
+                                        placeholder="Your Organisation Name"
                                     />
                                 </Form.Item>
                                 <Form.Item
-                                    name="email"
-                                    label={<p className=" text-md text-white">Enter your Email</p>}
+                                    name="organoisation-address"
+                                    label={<p className=" text-md text-white">Your organisation Address</p>}
                                     style={{}}
                                 >
                                     <Input
                                         required
                                         style={{ padding: "6px" }}
                                         className=" text-md"
-                                        placeholder="Your Email"
+                                        placeholder="Your Organisation Address"
                                     />
                                 </Form.Item>
 
@@ -76,14 +103,13 @@ const SignUp1 = () => {
                                         >
                                             Cancel
                                         </button>
-                                        <Link to="/auth/signUp2">
+                                        <Link to="/auth/signUp3">
                                             <button
                                                 className="text-center  p-2 font-bold bg-btnPrimary text-black px-8 py-2 rounded-md shadow-lg"
                                                 type="submit"
                                             >
                                                 Next
-                                            </button>
-                                        </Link>
+                                            </button></Link>
                                     </div>
 
                                 </Form.Item>
@@ -100,4 +126,4 @@ const SignUp1 = () => {
     );
 };
 
-export default SignUp1;
+export default SignUp2;

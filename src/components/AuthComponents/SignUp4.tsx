@@ -1,7 +1,7 @@
-import { ConfigProvider, Form, Input } from "antd";
+import { ConfigProvider, DatePicker, Form, Input } from "antd";
 import img from "../../assets/images/signup.png";
 import { Link } from "react-router-dom";
-const SignUp1 = () => {
+const SignUp4 = () => {
     const onFinish = () => {
 
     }
@@ -34,37 +34,67 @@ const SignUp1 = () => {
                             >
                                 <div className="mb-4">
                                     <h2 className="text-white  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                                        Let’s start with your <br />
-                                        name & email
+                                        Let's confirm your company  <br />
+                                        Card Details
                                     </h2>
                                     <p className="text-white  lg:text-lg font-bold">
-                                        You can always change it later
+                                        plaease enter your card details so we can process your payment
                                     </p>
                                 </div>
                                 <Form.Item
-                                    name="name"
-                                    label={<p className=" text-md text-white">Enter your name</p>}
+                                    name="card-name"
+                                    label={<p className=" text-md text-white">Name on Card</p>}
                                     style={{}}
                                 >
                                     <Input
                                         required
                                         style={{ padding: "6px" }}
                                         className=" text-md"
-                                        placeholder="Your Name"
+                                        placeholder="Card Name"
                                     />
                                 </Form.Item>
                                 <Form.Item
-                                    name="email"
-                                    label={<p className=" text-md text-white">Enter your Email</p>}
+                                    name="card-number"
+                                    label={<p className=" text-md text-white">Card Number</p>}
                                     style={{}}
                                 >
                                     <Input
                                         required
                                         style={{ padding: "6px" }}
                                         className=" text-md"
-                                        placeholder="Your Email"
+                                        placeholder="Card Number"
                                     />
                                 </Form.Item>
+
+
+                                <div className="">
+
+                                    <Form.Item
+                                        name="expiry-date"
+                                        label={<p className=" text-md text-white">Expiry Date</p>}
+                                        style={{}}
+                                    >
+
+                                        <DatePicker style={{ padding: "6px", width: "100%" }}
+                                            className=" text-md"
+                                            placeholder="Expiry Date"
+                                        />
+
+                                    </Form.Item>
+                                    {/* <Form.Item
+                                        name=""
+                                        label={<p className=" text-md text-white">Enter your Email</p>}
+                                        style={{}}
+                                    >
+                                        <Input
+                                            required
+                                            style={{ padding: "6px" }}
+                                            className=" text-md"
+                                            placeholder="Your Email"
+                                        />
+                                    </Form.Item> */}
+                                </div>
+
 
 
                                 <Form.Item className="">
@@ -76,7 +106,7 @@ const SignUp1 = () => {
                                         >
                                             Cancel
                                         </button>
-                                        <Link to="/auth/signUp2">
+                                        <Link to="/auth/signUp5">
                                             <button
                                                 className="text-center  p-2 font-bold bg-btnPrimary text-black px-8 py-2 rounded-md shadow-lg"
                                                 type="submit"
@@ -96,8 +126,8 @@ const SignUp1 = () => {
                 </div>
 
             </div>
-        </div>
+        </div >
     );
 };
 
-export default SignUp1;
+export default SignUp4;
