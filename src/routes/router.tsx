@@ -9,6 +9,7 @@ import SignUp2 from "../components/AuthComponents/SignUp2";
 import SignUp3 from "../components/AuthComponents/SignUp3";
 import SignUp4 from "../components/AuthComponents/SignUp4";
 import SignUp5 from "../components/AuthComponents/SignUp5";
+import Login from "../pages/Auth/Login/Login";
 
 
 
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
         element: <SignUp5 />
     },
     {
+        path: "/auth/login",
+        element: <Login />
+    },
+    {
         path: "/",
         element: <MainLayout />,
         children: [
@@ -42,6 +47,7 @@ export const router = createBrowserRouter([
             { path: "analytics", element: <Analytics /> },
             { path: "donors", element: <Donors /> },
             { path: "deposits", element: <Deposits /> },
+
         ],
     },
 ]);

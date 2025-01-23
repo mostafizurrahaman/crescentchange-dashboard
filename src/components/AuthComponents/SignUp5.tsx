@@ -1,4 +1,4 @@
-import { ConfigProvider, Form, Input } from "antd";
+import { ConfigProvider, Form } from "antd";
 import img from "../../assets/images/signup.png";
 import { Link } from "react-router-dom";
 const SignUp5 = () => {
