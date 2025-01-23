@@ -1,7 +1,7 @@
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/signup.png";
 import { Link } from "react-router-dom";
-const SignUp1 = () => {
+const SignUp3 = () => {
     const onFinish = () => {
 
     }
@@ -34,28 +34,27 @@ const SignUp1 = () => {
                             >
                                 <div className="mb-4">
                                     <h2 className="text-white  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                                        Let’s start with your <br />
-                                        name & email
+                                        Let's confirm your company info
                                     </h2>
                                     <p className="text-white  lg:text-lg font-bold">
-                                        You can always change it later
+                                        We need to confirm your company information before you can continue to the next step of the registration process.
                                     </p>
                                 </div>
                                 <Form.Item
-                                    name="name"
-                                    label={<p className=" text-md text-white">Enter your name</p>}
+                                    name="ten-digit"
+                                    label={<p className=" text-md text-white">Company TFN or ABN</p>}
                                     style={{}}
                                 >
                                     <Input
                                         required
                                         style={{ padding: "6px" }}
                                         className=" text-md"
-                                        placeholder="Your Name"
+                                        placeholder="Your TFN or ABN"
                                     />
                                 </Form.Item>
                                 <Form.Item
-                                    name="email"
-                                    label={<p className=" text-md text-white">Enter your Email</p>}
+                                    name="website"
+                                    label={<p className=" text-md text-white">Website link</p>}
                                     style={{}}
                                 >
                                     <Input
@@ -76,7 +75,7 @@ const SignUp1 = () => {
                                         >
                                             Cancel
                                         </button>
-                                        <Link to="/auth/signUp2">
+                                        <Link to="/auth/signUp4">
                                             <button
                                                 className="text-center  p-2 font-bold bg-btnPrimary text-black px-8 py-2 rounded-md shadow-lg"
                                                 type="submit"
@@ -100,4 +99,4 @@ const SignUp1 = () => {
     );
 };
 
-export default SignUp1;
+export default SignUp3;

@@ -4,13 +4,39 @@ import Analytics from "../pages/Analytics/Analytics";
 import Donors from "../pages/Donors/Donors";
 import Deposits from "../pages/Deposits/Deposits";
 import MainLayout from "../components/layouts/MainLayout";
-import SignUp from "../pages/Auth/SignUp/SignUp";
+import SignUp1 from "../components/AuthComponents/SignUp1";
+import SignUp2 from "../components/AuthComponents/SignUp2";
+import SignUp3 from "../components/AuthComponents/SignUp3";
+import SignUp4 from "../components/AuthComponents/SignUp4";
+import SignUp5 from "../components/AuthComponents/SignUp5";
+import Login from "../pages/Auth/Login/Login";
+
 
 
 export const router = createBrowserRouter([
     {
-        path: "/auth/signUp",
-        element: <SignUp />
+        path: "/auth/signUp1",
+        element: <SignUp1 />
+    },
+    {
+        path: "/auth/signUp2",
+        element: <SignUp2 />
+    },
+    {
+        path: "/auth/signUp3",
+        element: <SignUp3 />
+    },
+    {
+        path: "/auth/signUp4",
+        element: <SignUp4 />
+    },
+    {
+        path: "/auth/signUp5",
+        element: <SignUp5 />
+    },
+    {
+        path: "/auth/login",
+        element: <Login />
     },
     {
         path: "/",
@@ -21,6 +47,7 @@ export const router = createBrowserRouter([
             { path: "analytics", element: <Analytics /> },
             { path: "donors", element: <Donors /> },
             { path: "deposits", element: <Deposits /> },
+
         ],
     },
 ]);
