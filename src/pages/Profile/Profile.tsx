@@ -17,23 +17,23 @@ const Profile = () => {
         <div>
             <div className=" flex justify-between items-center">
                 <div className="flex justify-between items-center gap-5">
-                    <button onClick={() => handleTabChange("profile")} key='profile' className={`${activeTab === "profile" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-primary text-white py-2 px-4 rounded-3xl"}`}>
+                    <button onClick={() => handleTabChange("profile")} key='profile' className={`${activeTab === "profile" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-black text-white py-2 px-4 rounded-3xl"}`}>
                         Profile
                     </button>
-                    <button onClick={() => handleTabChange("access")} key="access" className={`${activeTab === "access" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-primary text-white py-2 px-4 rounded-3xl"}`}>
+                    <button onClick={() => handleTabChange("access")} key="access" className={`${activeTab === "access" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-black text-white py-2 px-4 rounded-3xl"}`}>
                         Access
                     </button>
-                    <button onClick={() => handleTabChange("envlopes")} key="envlopes" className={`${activeTab === "envlopes" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-primary text-white py-2 px-4 rounded-3xl"}`}>
+                    <button onClick={() => handleTabChange("envlopes")} key="envlopes" className={`${activeTab === "envlopes" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-black text-white py-2 px-4 rounded-3xl"}`}>
                         Envlopes
                     </button>
                 </div>
                 <div className="flex justify-between items-center gap-5">
-                    <button onClick={() => handleTabChange("preview")} key="preview" className={`${activeTab === "preview" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-primary text-white py-2 px-4 rounded-3xl"}`}>
+                    <button onClick={() => handleTabChange("preview")} key="preview" className={`${activeTab === "preview" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-black text-white py-2 px-4 rounded-3xl"}`}>
                         preview
                     </button>
-                    <button className="bg-primary text-white py-2 px-4 rounded-3xl">
+                    {/* <button className="bg-black text-white py-2 px-4 rounded-3xl">
                         Save Seetings
-                    </button>
+                    </button> */}
 
                 </div>
             </div>
