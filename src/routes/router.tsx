@@ -10,6 +10,7 @@ import SignUp3 from "../components/AuthComponents/SignUp3";
 import SignUp4 from "../components/AuthComponents/SignUp4";
 import SignUp5 from "../components/AuthComponents/SignUp5";
 import Login from "../pages/Auth/Login/Login";
+import ForgatePassword from "../pages/Auth/ForgatePassword/ForgatePassword";
 
 
 
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
     {
         path: "/auth/login",
         element: <Login />
+    },
+    {
+        path: "/auth/forgatePassword",
+        element: <ForgatePassword />
     },
     {
         path: "/",

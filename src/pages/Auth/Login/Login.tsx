@@ -1,6 +1,7 @@
-import { ConfigProvider, Form, Input } from "antd";
+import { Checkbox, ConfigProvider, Form, Input } from "antd";
 import img from "../../../assets/images/login.png";
 import { Link } from "react-router-dom";
+import { FieldNamesType } from "antd/es/cascader";
 const Login = () => {
     const onFinish = () => {
 
@@ -64,9 +65,17 @@ const Login = () => {
                                     />
                                 </Form.Item>
 
+                                <Form.Item<FieldNamesType> name="checked" valuePropName="checked" label={null}>
+                                    <div className="flex justify-between items-center ">
+                                        <Checkbox style={{ color: "white" }}>Remember me</Checkbox>
+                                        <Link to="/auth/forgatePassword" className=" text-md text-white">Forgate Password</Link>
+                                    </div>
+
+                                </Form.Item>
+
                                 <Form.Item className="">
 
-                                    <Link to="/auth/signUp2">
+                                    <Link to="/">
                                         <button
                                             className="text-center w-full p-2 font-bold bg-btnPrimary text-black px-8 py-2 rounded-md shadow-lg"
                                             type="submit"
@@ -77,6 +86,7 @@ const Login = () => {
 
 
                                 </Form.Item>
+
                             </Form>
                         </ConfigProvider>
                     </div>
@@ -86,7 +96,7 @@ const Login = () => {
                 </div>
 
             </div>
-        </div>
+        </div >
     );
 };
 
