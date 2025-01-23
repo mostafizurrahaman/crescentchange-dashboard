@@ -1,42 +1,51 @@
-import { Menu } from "antd";
-import Sider from "antd/es/layout/Sider";
-import { router } from "../../../routes/router";
-import { NavLink, useLocation } from "react-router-dom";
+import { Layout, Menu, } from 'antd';
+import { Link } from 'react-router-dom';
+import { CgProfile } from "react-icons/cg";
+import { FaUsers } from "react-icons/fa6";
+import { GrAnalytics } from "react-icons/gr";
+import { PiHandDepositDuotone } from "react-icons/pi";
+const { Sider } = Layout;
 
-const Sidebar = () => {
-    const location = useLocation();
-    const rootRoute = router.routes.find((route) => route.path === "/");
-
-    const items = rootRoute?.children?.map((child) => ({
-        key: `/${child.path}`,
-        label: <NavLink to={`/${child.path}`}>{`${child.path}`.replace("/", "").toUpperCase()}</NavLink>,
-    }));
+const Sidebar = ({ collapsed }) => {
 
     return (
-        <Sider
-            breakpoint="lg"
-            collapsedWidth="0"
-            style={{
-                overflow: "auto",
-                height: "100vh",
-                position: "fixed",
-                left: 0,
-            }}
-        >
-            <div
-                style={{
-                    color: "white",
-                    textAlign: "center",
-                    height: "4rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                Cresent
-            </div>
-            <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]} items={items} />
-        </Sider>
+        <div className='fixed top-0 left-0 bottom-0 bg-primary'>
+            <Sider className='h-[100vh] w-[300px] bg-primary' width={250} collapsedWidth={80} trigger={null} collapsible collapsed={collapsed}>
+                <p className={` ${collapsed ? 'text-lg' : 'text-3xl'} font-bold my-10 text-white text-center`}>Logo</p>
+                <Menu
+                    mode="inline"
+                    className='px-2'
+                    defaultSelectedKeys={['1']}
+                    style={{
+                        backgroundColor: '#3212eb',
+                        color: 'white'
+                    }}
+                    items={[
+                        {
+                            key: '1',
+                            icon: <CgProfile className=' w-5 h-5' />,
+                            label: <Link className='' to={`/`}>Profile</Link>,
+                        },
+                        {
+                            key: '2',
+                            icon: <GrAnalytics className=' w-5 h-5' />,
+                            label: <Link className='' to={`/analytics`}>Analytics</Link>,
+                        },
+                        {
+                            key: '3',
+                            icon: <FaUsers className=' w-5 h-5' />,
+                            label: <Link className='' to={`/donors`}>Donors</Link>,
+                        },
+                        {
+                            key: '4',
+                            icon: <PiHandDepositDuotone className=' w-5 h-5' />,
+                            label: <Link className='' to={`/deposits`}>Deposits</Link>,
+                        }
+
+                    ]}
+                />
+            </Sider>
+        </div>
     );
 };
 
