@@ -1,7 +1,34 @@
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/Placeholder Image (3).png"
 import logo from "../../assets/images/abbas.png"
-import { Link } from "react-router-dom";
+
+
+type FieldType = {
+    "organisation-name"?: string;
+    "organisation-address"?: string;
+    "suburb"?: string;
+    "state"?: string;
+    "post-code"?: string;
+    "country"?: string;
+    "website"?: string;
+    "telephone"?: string;
+    "email-address"?: string;
+    "username"?: string;
+    "password"?: string;
+    "remember"?: string;
+    "name"?: string;
+    "abn/tfn"?: string;
+    "name-on-card"?: string;
+    "card-number"?: string;
+    "expiry-date"?: string;
+    "cvv"?: string;
+    "mission-statement"?: string;
+    lines: number
+
+
+};
+
+
 const ProfileTab = () => {
     const onFinish = () => {
 
@@ -36,9 +63,9 @@ const ProfileTab = () => {
                             className="mt-20"
                         >
 
-                            <Form.Item
+                            <Form.Item<FieldType>
                                 name="organisation-name"
-                                label={<p className=" text-md text-white">Organisation Name</p>}
+                                label={<p className=" text-md ">Organisation Name</p>}
                                 style={{}}
                             >
                                 <Input
@@ -48,9 +75,9 @@ const ProfileTab = () => {
                                     placeholder="Organisation Name"
                                 />
                             </Form.Item>
-                            <Form.Item
+                            <Form.Item<FieldType>
                                 name="organisation-address"
-                                label={<p className=" text-md text-white">Organisation street address</p>}
+                                label={<p className=" text-md ">Organisation street address</p>}
                                 style={{}}
                             >
                                 <Input
@@ -61,9 +88,9 @@ const ProfileTab = () => {
                                 />
                             </Form.Item>
                             <div className="flex justify-between items-center">
-                                <Form.Item
+                                <Form.Item<FieldType>
                                     name="suburb"
-                                    label={<p className=" text-md text-white">Suburb</p>}
+                                    label={<p className=" text-md ">Suburb</p>}
                                     style={{}}
                                 >
                                     <Input
@@ -73,9 +100,9 @@ const ProfileTab = () => {
                                         placeholder="Suburb"
                                     />
                                 </Form.Item>
-                                <Form.Item
+                                <Form.Item<FieldType>
                                     name="state"
-                                    label={<p className=" text-md text-white">State </p>}
+                                    label={<p className=" text-md ">State </p>}
                                     style={{}}
                                 >
                                     <Input
@@ -85,9 +112,9 @@ const ProfileTab = () => {
                                         placeholder="State"
                                     />
                                 </Form.Item>
-                                <Form.Item
+                                <Form.Item<FieldType>
                                     name="post-code"
-                                    label={<p className=" text-md text-white">Post code</p>}
+                                    label={<p className=" text-md ">Post code</p>}
                                     style={{}}
                                 >
                                     <Input
@@ -99,9 +126,9 @@ const ProfileTab = () => {
                                 </Form.Item>
                             </div>
 
-                            <Form.Item
+                            <Form.Item<FieldType>
                                 name="email-address"
-                                label={<p className=" text-md text-white">Email address</p>}
+                                label={<p className=" text-md ">Email address</p>}
                                 style={{}}
                             >
                                 <Input
@@ -111,9 +138,9 @@ const ProfileTab = () => {
                                     placeholder="Email address"
                                 />
                             </Form.Item>
-                            <Form.Item
+                            <Form.Item<FieldType>
                                 name="mission-statement"
-                                label={<p className=" text-md text-white">Mission statement</p>}
+                                label={<p className=" text-md ">Mission statement</p>}
                                 style={{}}
                             >
                                 <Input.TextArea
@@ -126,8 +153,8 @@ const ProfileTab = () => {
                             </Form.Item>
                             <p>263 characters left</p>
 
-                            <Form.Item className=" flex justify-end items-center">
-                                <button className="bg-primary text-white py-2 px-4 rounded-xl ">
+                            <Form.Item<FieldType> className=" flex justify-end items-center">
+                                <button className="bg-primary  py-2 px-4 rounded-xl ">
                                     Save Seetings
                                 </button>
 
