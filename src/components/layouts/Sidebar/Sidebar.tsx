@@ -23,7 +23,7 @@ const Sidebar = ({ collapsed }) => {
                     items={[
                         {
                             key: '1',
-                            icon: <CgProfile className=' w-5 h-5' />,
+                            icon: <CgProfile className=' w-5 h-5 ' />,
                             label: <Link className='' to={`/`}>Profile</Link>,
                         },
                         {
