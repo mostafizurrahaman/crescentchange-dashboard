@@ -12,6 +12,7 @@ import SignUp5 from "../components/AuthComponents/SignUp5";
 import Login from "../pages/Auth/Login/Login";
 import ForgatePassword from "../pages/Auth/ForgatePassword/ForgatePassword";
 import VarificationComponent from "../pages/Auth/Varification/Varification";
+import ConfirmPassword from "../pages/Auth/ConfirmPassword/ConfirmPassword";
 
 
 
@@ -41,12 +42,16 @@ export const router = createBrowserRouter([
         element: <Login />
     },
     {
-        path: "/auth/forgatePassword",
+        path: "/auth/forgate-password",
         element: <ForgatePassword />
     },
     {
         path: "/auth/varification",
         element: <VarificationComponent />
+    },
+    {
+        path: "/auth/confirm-password",
+        element: <ConfirmPassword />
     },
     {
         path: "/",

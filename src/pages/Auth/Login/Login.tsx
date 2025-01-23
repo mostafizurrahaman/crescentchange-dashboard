@@ -68,7 +68,7 @@ const Login = () => {
                                 <Form.Item<FieldNamesType> name="checked" valuePropName="checked" label={null}>
                                     <div className="flex justify-between items-center ">
                                         <Checkbox style={{ color: "white" }}>Remember me</Checkbox>
-                                        <Link to="/auth/forgatePassword" className=" text-md text-white">Forgate Password</Link>
+                                        <Link to="/auth/forgate-password" className=" text-md text-white">Forgate Password</Link>
                                     </div>
 
                                 </Form.Item>
