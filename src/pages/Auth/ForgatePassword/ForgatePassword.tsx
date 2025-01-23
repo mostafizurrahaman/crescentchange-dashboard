@@ -68,7 +68,7 @@ const ForgatePassword = () => {
 
                                 <Form.Item className="">
 
-                                    <Link to="/">
+                                    <Link to="/auth/varification">
                                         <button
                                             className="text-center w-full p-2 font-bold bg-btnPrimary text-black px-8 py-2 rounded-md shadow-lg"
                                             type="submit"
