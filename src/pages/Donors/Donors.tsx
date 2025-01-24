@@ -163,7 +163,7 @@ const Donors = () => {
 
     return (
         <div>
-            <div className="flex flex-col md:flex-row justify-between items-center mt-5 mb-10">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5 mt-10 md:mt-5 mb-10">
                 <h3 className="text-xl md:text-2xl font-semibold text-black">
                     All Donors : 100
                 </h3>

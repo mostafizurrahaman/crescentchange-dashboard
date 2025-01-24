@@ -87,7 +87,7 @@ const ProfileTab = () => {
                                     placeholder="Organisation street address"
                                 />
                             </Form.Item>
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                                 <Form.Item<FieldType>
                                     name="suburb"
                                     label={<p className=" text-md ">Suburb</p>}
@@ -153,8 +153,8 @@ const ProfileTab = () => {
                             </Form.Item>
                             <p>263 characters left</p>
 
-                            <Form.Item<FieldType> className=" flex justify-end items-center">
-                                <button className="bg-primary  py-2 px-4 rounded-xl ">
+                            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
+                                <button className="bg-primary text-white py-2 px-4 rounded-xl ">
                                     Save Seetings
                                 </button>
 

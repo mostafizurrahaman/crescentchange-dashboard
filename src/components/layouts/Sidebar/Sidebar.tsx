@@ -7,7 +7,7 @@ import { PiHandDepositDuotone } from "react-icons/pi";
 const { Sider } = Layout;
 
 const Sidebar = ({ collapsed }) => {
-
+    const location = window.location.pathname.split("/")[1];
     return (
         <div className='fixed top-0 left-0 bottom-0 bg-primary'>
             <Sider className='h-[100vh] w-[300px] bg-primary' width={250} collapsedWidth={80} trigger={null} collapsible collapsed={collapsed}>
@@ -15,7 +15,7 @@ const Sidebar = ({ collapsed }) => {
                 <Menu
                     mode="inline"
                     className='px-2'
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[location]}
                     style={{
                         backgroundColor: '#3212eb',
                         color: 'white'
