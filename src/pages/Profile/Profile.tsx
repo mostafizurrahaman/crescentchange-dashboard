@@ -15,8 +15,8 @@ const Profile = () => {
 
     return (
         <div>
-            <div className=" flex justify-between items-center">
-                <div className="flex justify-between items-center gap-5">
+            <div className="flex flex-col md:flex-row gap-5 justify-between items-center">
+                <div className="flex flex-col md:flex-row justify-center items-center md:justify-between md:items-center gap-5 mb-2">
                     <button onClick={() => handleTabChange("profile")} key='profile' className={`${activeTab === "profile" ? "bg-btnPrimary text-black py-2 px-4 rounded-3xl" : "bg-black text-white py-2 px-4 rounded-3xl"}`}>
                         Profile
                     </button>

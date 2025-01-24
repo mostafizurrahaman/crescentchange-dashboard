@@ -104,8 +104,8 @@ const AccessTab = () => {
                                 />
                             </Form.Item>
 
-                            <div className="w-full flex justify-between items-center">
-                                <div className="w-[50%]">
+                            <div className="w-full flex flex-col md:flex-row md:justify-between md:items-center">
+                                <div className="w-full md:w-[50%]">
                                     <Form.Item<FieldType>
                                         name="expiry-date"
                                         label={<p className=" text-md ">Expiry Date</p>}
@@ -119,7 +119,7 @@ const AccessTab = () => {
                                     </Form.Item>
                                 </div>
 
-                                <div className="w-[50%]">
+                                <div className="w-full md:w-[50%]">
                                     <Form.Item<FieldType>
                                         name="cvv"
                                         label={<p className=" text-md ">CVV </p>}
@@ -139,7 +139,7 @@ const AccessTab = () => {
 
 
 
-                            <Form.Item<FieldType> className=" flex justify-end items-center">
+                            <Form.Item<FieldType> className="mt-5 flex md:justify-end md:items-center">
                                 <button className="bg-primary text-white  py-2 px-4 rounded-xl ">
                                     Save Seetings
                                 </button>
