@@ -1,8 +1,9 @@
+import AnalyticsCard from "../../components/PagesComponents/AnalyticsCard";
 
 const Analytics = () => {
     return (
         <div>
-            <h1>Analytics</h1>
+            <AnalyticsCard />
         </div>
     );
 };
