@@ -1,10 +1,8 @@
-import { Avatar, Button, Input, Space, Table, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Select, Space, Table, Tooltip } from 'antd';
 import user from "../../assets/images/user.png";
 const Donors = () => {
-    const { Search } = Input;
-    const onSearch = (value: string) => {
-        console.log("Search input: ", value);
-    };
+
+
 
     type Donor = {
         id: string;
@@ -135,14 +133,14 @@ const Donors = () => {
             key: "lastDonationDate",
             render: (date: string) => new Date(date).toLocaleDateString(),
         },
-        {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            render: (status: "Active" | "Inactive") => (
-                <Tag color={status === "Active" ? "green" : "red"}>{status}</Tag>
-            ),
-        },
+        // {
+        //     title: "Status",
+        //     dataIndex: "status",
+        //     key: "status",
+        //     render: (status: "Active" | "Inactive") => (
+        //         <Tag color={status === "Active" ? "green" : "red"}>{status}</Tag>
+        //     ),
+        // },
         {
             title: "Actions",
             key: "actions",
@@ -169,13 +167,44 @@ const Donors = () => {
                 <h3 className="text-xl md:text-2xl font-semibold text-black">
                     All Donors : 100
                 </h3>
-                <div className="mt-4 md:mt-0">
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Search to Select"
+                    optionFilterProp="label"
+                    filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                    }
+                    options={[
+                        {
+                            value: '1',
+                            label: 'All Donors',
+                        },
+                        {
+                            value: '2',
+                            label: 'One Time Donors',
+                        },
+                        {
+                            value: '3',
+                            label: 'Recurring Donors',
+                        },
+                        {
+                            value: '4',
+                            label: 'Round-Ups Donors',
+                        },
+
+                    ]}
+                />
+                {/* <div className="mt-4 md:mt-0">
                     <Search allowClear placeholder="input search text" onSearch={onSearch} enterButton />
-                </div>
+                </div> */}
             </div>
             <div className='my-5'>
+                <div className='flex justify-end items-end'>
+
+                </div>
                 <div className="bg-white rounded-xl shadow-lg">
-                    <Table columns={columns} dataSource={data} rowKey="id" style={{ borderRadius: "20px" }} />
+                    <Table columns={columns} dataSource={data} rowKey="id" style={{ borderRadius: "20px", overflow: "auto" }} />
                 </div>
             </div>
 
