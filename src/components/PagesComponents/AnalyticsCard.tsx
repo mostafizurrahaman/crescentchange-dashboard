@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Col } from "antd";
-import { BsDatabase } from "react-icons/bs";
+// import { BsDatabase } from "react-icons/bs";
 import { FaDollarSign, FaUsers } from "react-icons/fa6";
-import user from "../../assets/images/user.png"
+// import user from "../../assets/images/user.png"
 const AnalyticsCard = () => {
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {/* earning */}
                 <Col>
-                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 bg-btnPrimary text-primary rounded-md gap-5  h-auto md:h-28">
+                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 border text-neutral-900 rounded-md gap-5  h-auto md:h-28">
                         <div className="flex  gap-3 items-center">
                             <p className=" rounded-full flex justify-center items-center">
                                 <FaDollarSign size={20} />
