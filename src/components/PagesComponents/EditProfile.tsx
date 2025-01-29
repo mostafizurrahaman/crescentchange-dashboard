@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ConfigProvider, Form, Input, Upload } from "antd";
 
 import { useState } from "react";
@@ -31,9 +32,7 @@ const EditProfile = () => {
 
     const [profilePic, setProfilePic] = useState(null);
 
-    const handleProfilePicUpload = (e) => {
-        setProfilePic(e.file.originFileObj);
-    };
+
     const onFinish = () => { };
     return (
         <div>
@@ -46,7 +45,7 @@ const EditProfile = () => {
                             maxCount={1}
                             beforeUpload={(file) => {
                                 form.setFieldsValue({ img: [file] });
-                                setProfilePic(file.name);
+                                // setProfilePic();
                                 return false;
                             }}
                             className="bg-btnPrimary px-2 py-1 rounded-full cursor-pointer"
@@ -65,7 +64,7 @@ const EditProfile = () => {
                             maxCount={1}
                             beforeUpload={(file) => {
                                 form.setFieldsValue({ img: [file] });
-                                setProfilePic(file.name);
+                                // setProfilePic(file.name);
                                 return false;
                             }}
                             className="bg-btnPrimary px-2 py-1 rounded-full cursor-pointer"
@@ -181,7 +180,7 @@ const EditProfile = () => {
                             >
                                 <Input.TextArea
                                     required
-                                    lines={4}
+                                    rows={4}
                                     style={{ padding: "6px" }}
                                     className=" text-md"
                                     placeholder="Type your message..."
