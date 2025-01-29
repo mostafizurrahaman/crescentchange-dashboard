@@ -4,7 +4,12 @@ import img from "../../../assets/images/user.png";
 import { Link } from 'react-router-dom';
 
 const { Header } = Layout;
-const MainHeader = ({ setCollapsed, collapsed }) => {
+
+interface MainHeaderProps {
+    setCollapsed: (collapsed: boolean) => void;
+    collapsed: boolean;
+}
+const MainHeader: React.FC<MainHeaderProps> = ({ setCollapsed, collapsed }) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();

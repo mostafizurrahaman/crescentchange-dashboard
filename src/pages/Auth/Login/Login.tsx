@@ -74,19 +74,16 @@ const Login = () => {
                                 </Form.Item>
 
                                 <Form.Item className="">
-
                                     <Link to="/">
                                         <button
-                                            className="text-center w-full p-2 font-bold bg-btnPrimary text-black px-8 py-2 rounded-md shadow-lg"
+                                            className="text-center w-full p-2 font-bold bg-white text-black px-8 py-2 rounded-md shadow-lg"
                                             type="submit"
                                         >
                                             Login
                                         </button>
                                     </Link>
-
-
                                 </Form.Item>
-
+                                <p className="text-md text-white">Don't have an account ? <Link to="/auth/signUp1" className=" text-md text-white">Register Now</Link></p>
                             </Form>
                         </ConfigProvider>
                     </div>

@@ -23,7 +23,7 @@ const AnalyticsCard = () => {
                 </Col>
                 {/* user  */}
                 <Col>
-                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 bg-[#ffc8c6] rounded-md gap-5  h-auto md:h-28">
+                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 border text-neutral-900 rounded-md gap-5  h-auto md:h-28">
                         <div className="flex gap-3 items-center">
                             <p className=" rounded-full flex justify-center items-center">
                                 <FaUsers size={20} />
@@ -37,7 +37,7 @@ const AnalyticsCard = () => {
                 </Col>
                 {/* patient */}
                 <Col>
-                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 bg-[#c6ffd4] rounded-md gap-5  h-auto md:h-28">
+                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 border text-neutral-900 rounded-md gap-5  h-auto md:h-28">
                         <div className="flex gap-3 items-center">
                             <p className=" rounded-full flex justify-center items-center">
                                 <FaDollarSign size={20} />
@@ -52,7 +52,7 @@ const AnalyticsCard = () => {
 
                 {/* blocked      */}
                 <Col>
-                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 bg-[#ffedc6] rounded-md gap-5  h-auto md:h-28">
+                    <div className="flex flex-col justify-between md:justify-center items-center border-r-2 p-4 border text-neutral-900 rounded-md gap-5  h-auto md:h-28">
                         <div className="flex gap-3 items-center">
                             <p className=" rounded-full flex justify-center items-center">
                                 <FaUsers size={20} />
