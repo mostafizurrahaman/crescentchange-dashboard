@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
         {
             key: "support",
             icon: <FaQuestion className="w-5 h-5" />,
-            label: <Link to="/support">Support</Link>,
+            label: <Link to="https://crescent-change.webflow.io/">Support</Link>,
         },
         {
             key: "logout",
