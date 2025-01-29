@@ -1,6 +1,7 @@
 import { Button, Layout, theme } from 'antd';
 import { RxHamburgerMenu } from "react-icons/rx";
 import img from "../../../assets/images/user.png";
+import { Link } from 'react-router-dom';
 
 const { Header } = Layout;
 const MainHeader = ({ setCollapsed, collapsed }) => {
@@ -28,7 +29,9 @@ const MainHeader = ({ setCollapsed, collapsed }) => {
                         }}
                     />
                     <div className=' '>
-                        <img src={img} alt="user" className=' w-10 h-10 my-3 ' />
+                        <Link to="/profile">
+                            <img src={img} alt="user" className=' w-10 h-10 my-3' />
+                        </Link>
                     </div>
                 </div>
             </Header>
