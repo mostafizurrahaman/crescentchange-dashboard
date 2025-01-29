@@ -13,6 +13,7 @@ import Login from "../pages/Auth/Login/Login";
 import ForgatePassword from "../pages/Auth/ForgatePassword/ForgatePassword";
 import VarificationComponent from "../pages/Auth/Varification/Varification";
 import ConfirmPassword from "../pages/Auth/ConfirmPassword/ConfirmPassword";
+import Subscriptions from "../pages/Subscriptions/Subscriptions";
 
 
 
@@ -57,11 +58,13 @@ export const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
-            { path: "/", element: <Profile />, index: true },
-            { path: "profile", element: <Profile /> },
-            { path: "analytics", element: <Analytics /> },
+
+            { path: "/", element: <Analytics />, index: true },
+            { path: "/analytics", element: <Analytics /> },
             { path: "donors", element: <Donors /> },
             { path: "deposits", element: <Deposits /> },
+            { path: "subscription", element: <Subscriptions /> },
+            { path: "profile", element: <Profile /> },
 
         ],
     },

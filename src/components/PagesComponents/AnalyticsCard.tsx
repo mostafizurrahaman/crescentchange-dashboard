@@ -58,9 +58,9 @@ const AnalyticsCard = () => {
                                 <FaUsers size={20} />
                             </p>
 
-                            <p className="text-base md:text-lg ">Blocked Accounts</p>
+                            <p className="text-base md:text-lg ">Total Subscriptions</p>
                         </div>
-                        <p className="text-red-500 text-xl font-bold ">
+                        <p className="text-green-500 text-xl font-bold ">
                             920
                         </p>
                     </div>
