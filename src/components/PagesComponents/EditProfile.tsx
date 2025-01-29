@@ -1,6 +1,5 @@
 import { ConfigProvider, Form, Input, Upload } from "antd";
-import img from "../../assets/images/Placeholder Image (3).png"
-import logo from "../../assets/images/abbas.png"
+
 import { useState } from "react";
 import { FaCamera } from "react-icons/fa";
 type FieldType = {
