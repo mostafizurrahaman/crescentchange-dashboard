@@ -2,7 +2,7 @@ import { useState } from "react";
 import ProfileTab from "../../components/ProfileComponents/ProfileTab";
 import AccessTab from "../../components/ProfileComponents/AccessTab";
 import Envlopes from "../../components/ProfileComponents/Envlopes";
-import PreviewTab from "../../components/ProfileComponents/previewTab";
+import PreviewTab from "../../components/ProfileComponents/PreviewTab";
 
 const Profile = () => {
     const tabs = ["profile", "access", "envlopes", "preview"];
