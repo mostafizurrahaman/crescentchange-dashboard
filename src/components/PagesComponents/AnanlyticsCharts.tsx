@@ -39,10 +39,10 @@ const AnalyticsCharts: React.FC = () => {
     const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
     const pieData: PieChartData[] = [
-        { name: "General", value: 5, color: COLORS[0] },
-        { name: "Utilities", value: 5, color: COLORS[1] },
-        { name: "Women", value: 5, color: COLORS[2] },
-        { name: "Imam", value: 5, color: COLORS[3] },
+        { name: "General", value: 20, color: COLORS[0] },
+        { name: "Utilities", value: 25, color: COLORS[1] },
+        { name: "Women", value: 20, color: COLORS[2] },
+        { name: "Imam", value: 30, color: COLORS[3] },
     ];
 
     const RADIAN = Math.PI / 180;
