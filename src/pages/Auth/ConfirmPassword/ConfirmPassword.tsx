@@ -4,11 +4,12 @@ import { FaLockOpen } from "react-icons/fa6";
 import { IoIosLock } from "react-icons/io";
 import { Link } from "react-router-dom";
 
+
 const ConfirmPassword = () => {
 
 
-    const [showpassword, setShowpassword] = useState("false");
-    const [showConfirmpassword, setShowConfirmPassword] = useState("false");
+    const [showpassword, setShowpassword] = useState(false);
+    const [showConfirmpassword, setShowConfirmPassword] = useState(false);
     const togglePasswordVisibility = () => {
         setShowpassword(!showpassword);
     };

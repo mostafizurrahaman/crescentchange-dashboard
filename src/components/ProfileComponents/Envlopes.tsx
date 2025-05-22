@@ -7,7 +7,8 @@ type FieldType = {
     username?: string;
     password?: string;
     remember?: string;
-    name?: string;
+    name: string;
+    subject: string;
     "abn/tfn"?: string;
     "name-on-card"?: string;
     "card-number"?: string;
@@ -85,13 +86,13 @@ const Envlopes = () => {
                                 </Form.Item>
 
                                 <Form.Item<FieldType>
-                                    name="description"
+                                    name={"description" as keyof FieldType}
                                     label={<p className=" text-md ">Envelop Description </p>}
                                     style={{}}
                                 >
                                     <Input.TextArea
                                         required
-                                        lines={4}
+                                        rows={4}
                                         style={{ padding: "6px" }}
                                         className=" text-md"
                                         placeholder="Envelop Description"

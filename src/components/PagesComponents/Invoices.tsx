@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Table, Tag, Button } from "antd";
 import { FaDownload } from "react-icons/fa";
 
@@ -46,14 +48,14 @@ const invoices: Invoice[] = [
 ];
 
 const Invoices: React.FC = () => {
-    const handleDownload = (invoice: Invoice) => {
-        const invoiceData = `
-            Invoice ID: ${invoice.id}
-            Date: ${invoice.date}
-            Plan: ${invoice.plan}
-            Amount: $${invoice.amount}
-            Status: ${invoice.status}
-        `;
+    const handleDownload = (_invoice: Invoice) => {
+        // const invoiceData = `
+        //     Invoice ID: ${invoice.id}
+        //     Date: ${invoice.date}
+        //     Plan: ${invoice.plan}
+        //     Amount: $${invoice.amount}
+        //     Status: ${invoice.status}
+        // `;
         // const blob = new Blob([invoiceData], { type: "text/plain;charset=utf-8" });
         // saveAs(blob, `${invoice.id}.txt`);
     };
