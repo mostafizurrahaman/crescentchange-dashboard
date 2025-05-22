@@ -4,6 +4,7 @@ import AnanlyticsCharts from "../../components/PagesComponents/AnanlyticsCharts"
 import TopDonors from "../../components/PagesComponents/TopDonors";
 import { IoNotificationsOutline } from "react-icons/io5";
 import user from "../../assets/images/user.png";
+import DashboardChart from "../../components/PagesComponents/DashboardChart";
 
 const Analytics = () => {
   return (
@@ -31,6 +32,7 @@ const Analytics = () => {
         <div className=" w-full md:w-[70%]">
           <AnalyticsCard />
           <AnanlyticsCharts />
+          <DashboardChart/>
         </div>
         <div className="hidden md:block w-[30%]">
           <TopDonors />

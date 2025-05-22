@@ -114,7 +114,7 @@ const TopDonors = () => {
 
     return (
         <div className='mt-5'>
-            <h1 className="text-3xl font-bold mb-4">Top 03 Donors</h1>
+            <h1 className="text-3xl font-bold mb-4">Top 05 Donors</h1>
             <div className="bg-white rounded-xl shadow-lg">
                 <Table columns={columns} dataSource={data} rowKey="id" style={{ borderRadius: "20px", overflow: "auto" }} pagination={false} />
             </div>
