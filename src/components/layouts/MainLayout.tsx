@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Outlet } from "react-router-dom";
 import { useState } from 'react';
 import { Layout } from 'antd';
 import Sidebar from "./Sidebar/Sidebar";
-import MainHeader from "./MainHeader/MainHeader";
+// import MainHeader from "./MainHeader/MainHeader";
 
 
 const { Content } = Layout;
@@ -22,7 +23,7 @@ const MainLayout = () => {
                     }}
                     className={``}>
                     {/* my header */}
-                    <MainHeader setCollapsed={setCollapsed} collapsed={collapsed}></MainHeader>
+                    {/* <MainHeader setCollapsed={setCollapsed} collapsed={collapsed}></MainHeader> */}
                     <Content
                         className="p-5 bg-white"
                         style={{}}
