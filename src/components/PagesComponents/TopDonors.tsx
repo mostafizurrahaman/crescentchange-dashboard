@@ -1,125 +1,111 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Avatar, Button, Space, Table } from 'antd';
+import { Link } from "react-router-dom";
 import user from "../../assets/images/user.png";
 
 const TopDonors = () => {
-
-    type Donor = {
-        id: string;
-        slno: string;
-        name: string;
-        profileImage: string;
-        email: string;
-        contactNumber: string;
-        transactionId: string;
-        totalDonations: number;
-        lastDonationDate: string;
-        status: "Active" | "Inactive";
-    };
-
-    const data: Donor[] = [
-        {
-            id: "1",
-            slno: "1",
-            name: "John Doe",
-            profileImage: user,
-            email: "john.doe@example.com",
-            contactNumber: "9876543210",
-            transactionId: "TXN12345",
-            totalDonations: 5000,
-            lastDonationDate: "2024-01-15",
-            status: "Active",
-        },
-        {
-            id: "2",
-            slno: "2",
-            name: "Jane Smith",
-            profileImage: user,
-            email: "jane.smith@example.com",
-            contactNumber: "9123456789",
-            transactionId: "TXN67890",
-            totalDonations: 3000,
-            lastDonationDate: "2024-01-10",
-            status: "Active",
-        },
-        {
-            id: "3",
-            slno: "3",
-            name: "Robert Brown",
-            profileImage: user,
-            email: "robert.brown@example.com",
-            contactNumber: "9812345678",
-            transactionId: "TXN11223",
-            totalDonations: 7000,
-            lastDonationDate: "2023-12-25",
-            status: "Inactive",
-        }
-    ];
-
-    const columns = [
-        {
-            title: "Sl No",
-            dataIndex: "slno",
-            key: "slno",
-        },
-        {
-            title: "Name",
-            key: "name",
-            render: (_: any, record: Donor) => (
-                <div className="flex items-center gap-2">
-                    <Avatar size={40} className="shadow-md" src={record.profileImage} />
-                    <span>{record.name}</span>
-                </div>
-            ),
-        },
-        {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-        },
-        {
-            title: "Contact Number",
-            dataIndex: "contactNumber",
-            key: "contactNumber",
-        },
-
-        {
-            title: "Total Donations",
-            dataIndex: "totalDonations",
-            key: "totalDonations",
-            render: (total: number) => `₹${total.toLocaleString()}`,
-        },
-        {
-            title: "Last Donation Date",
-            dataIndex: "lastDonationDate",
-            key: "lastDonationDate",
-            render: (date: string) => new Date(date).toLocaleDateString(),
-        },
-
-        {
-            title: "Actions",
-            key: "actions",
-            render: (_: any, record: Donor) => (
-                <Space size="middle">
-                    <Button type="link" onClick={() => console.log("View Details:", record)}>
-                        View
-                    </Button>
-                    <Button type="link" danger onClick={() => console.log("Delete Donor:", record.id)}>
-                        Delete
-                    </Button>
-                </Space>
-            ),
-        },
-    ];
-
-    return (
-        <div className='mt-5'>
-            <h1 className="text-3xl font-bold mb-4">Top 05 Donors</h1>
-            <div className="bg-white rounded-xl shadow-lg">
-                <Table columns={columns} dataSource={data} rowKey="id" style={{ borderRadius: "20px", overflow: "auto" }} pagination={false} />
+  return (
+    <div>
+      <div className="">
+        <h1 className="text-3xl font-bold mb-4">Top 05 Donors</h1>
+        <div className="mt-5 border rounded-lg  p-5">
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+            <div className="relative h-10 w-10 rounded-full">
+              <img src={user} alt="" />
+                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">1</div>
             </div>
+            <div>
+              <h1>John Doe</h1>
+              <div className="flex justify-start items-center gap-5">
+                <p className="text-green-500">$45,000</p>
+                <p className="h-5 border-r px-5"></p>
+                <p>Since:July,2025</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+           <div className="relative h-10 w-10 rounded-full">
+              <img src={user} alt="" />
+                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">1</div>
+            </div>
+            <div>
+              <h1>John Doe</h1>
+              <div className="flex justify-start items-center gap-5">
+                <p className="text-green-500">$45,000</p>
+                <p className="h-5 border-r px-5"></p>
+                <p>Since:July,2025</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+           <div className="relative h-10 w-10 rounded-full">
+              <img src={user} alt="" />
+                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">1</div>
+            </div>
+            <div>
+              <h1>John Doe</h1>
+              <div className="flex justify-start items-center gap-5">
+                <p className="text-green-500">$45,000</p>
+                <p className="h-5 border-r px-5"></p>
+                <p>Since:July,2025</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+           <div className="relative h-10 w-10 rounded-full">
+              <img src={user} alt="" />
+                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">2</div>
+            </div>
+            <div>
+              <h1>John Doe</h1>
+              <div className="flex justify-start items-center gap-5">
+                <p className="text-green-500">$45,000</p>
+                <p className="h-5 border-r px-5"></p>
+                <p>Since:July,2025</p>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      </div>
+      <div className="mt-10 ">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Recent Donors</h1>
+          <Link to="/donors">
+            <p className="text-lg">View All</p>
+          </Link>
+        </div>
+        <div className="mt-5 border rounded-lg  p-5">
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+            <img src={user} alt="" />
+            <div>
+              <h1>John Doe</h1>
+              <p>Donated 20 min ago</p>
+            </div>
+          </div>
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+            <img src={user} alt="" />
+            <div>
+              <h1>John Doe</h1>
+              <p>Donated 20 min ago</p>
+            </div>
+          </div>
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+            <img src={user} alt="" />
+            <div>
+              <h1>John Doe</h1>
+              <p>Donated 20 min ago</p>
+            </div>
+          </div>
+          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
+            <img src={user} alt="" />
+            <div>
+              <h1>John Doe</h1>
+              <p>Donated 20 min ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TopDonors;
