@@ -30,7 +30,7 @@ type FieldType = {
 const EditProfile = () => {
     const [form] = Form.useForm();
 
-    const [profilePic, setProfilePic] = useState(null);
+    const [profilePic] = useState(null);
 
 
     const onFinish = () => { };
