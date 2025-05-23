@@ -61,7 +61,7 @@ const Profile = () => {
           <img src={hfl} alt="" />
           <h1 className="text-2xl font-bold">HFL Foundation</h1>
         </div>
-        <button className="bg-btnPrimary  py-2 px-4 rounded-3xl flex justify-center items-center gap-2">
+        <button className="bg-btnPrimary  py-2 px-4 rounded-3xl flex justify-center items-center gap-2 text-white">
           <FiEdit3 className="h-5 w-5" />
           Edit
         </button>
