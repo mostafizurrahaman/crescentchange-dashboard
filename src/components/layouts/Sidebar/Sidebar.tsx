@@ -1,10 +1,10 @@
 import { ConfigProvider, Layout, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { FaUsers, FaMoneyCheckAlt, FaLongArrowAltLeft } from "react-icons/fa";
-import { GrAnalytics } from "react-icons/gr";
+import {  FaMoneyCheckAlt, FaLongArrowAltLeft, FaUser, FaHandHoldingHeart } from "react-icons/fa";
 import { PiHandDepositDuotone } from "react-icons/pi";
-import { FaQuestion } from "react-icons/fa6";
 import logo from "../../../assets/images/logo.png";
+import { IoMdSettings } from "react-icons/io";
+import { MdDashboard } from "react-icons/md";
 const { Sider } = Layout;
 
 interface SidebarProps {
@@ -17,12 +17,17 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   const menuItems = [
     {
       key: "analytics",
-      icon: <GrAnalytics className="w-5 h-5" />,
-      label: <Link to="/analytics">Analytics</Link>,
+      icon: <MdDashboard className="w-5 h-5" />,
+      label: <Link to="/analytics">Dashboard</Link>,
+    },
+    {
+      key: "profile",
+      icon: <FaUser className="w-5 h-5" />,
+      label: <Link to="/profile">Profile</Link>,
     },
     {
       key: "donors",
-      icon: <FaUsers className="w-5 h-5" />,
+      icon: <FaHandHoldingHeart className="w-5 h-5" />,
       label: <Link to="/donors">Donors</Link>,
     },
     {
@@ -30,18 +35,19 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       icon: <PiHandDepositDuotone className="w-5 h-5" />,
       label: <Link to="/deposits">Deposits</Link>,
     },
-    {
+ 
+  ];
+
+  const bottomMenuItems = [
+       {
       key: "subscription",
       icon: <FaMoneyCheckAlt className="w-5 h-5" />,
       label: <Link to="/subscription">Subscription</Link>,
     },
-  ];
-
-  const bottomMenuItems = [
     {
-      key: "support",
-      icon: <FaQuestion className="w-5 h-5" />,
-      label: <Link to="https://crescent-change.webflow.io/">Support</Link>,
+      key: "Settings",
+      icon: <IoMdSettings className="w-5 h-5" />,
+      label: <Link to="/settings">Settings</Link>,
     },
     {
       key: "logout",
@@ -53,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   return (
     <div className="fixed top-0 left-0 bottom-0 bg-[#faf4f0]">
       <Sider
-        className="h-[100vh] w-[300px] bg-[#faf4f0]"
+        className="h-auto w-[300px] bg-[#faf4f0]"
         width={250}
         collapsedWidth={80}
         trigger={null}
@@ -88,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
             items={menuItems}
           />
 
-          <div className="mt-[500px] px-2">
+          <div className="mt-[400px] px-2">
             <Menu
               mode="inline"
               style={{
