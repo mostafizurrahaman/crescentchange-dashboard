@@ -24,6 +24,7 @@ import {
 } from "recharts";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
  const [selectedYear, setSelectedYear] = useState(dayjs().year());
@@ -61,10 +62,12 @@ const Profile = () => {
           <img src={hfl} alt="" />
           <h1 className="text-2xl font-bold">HFL Foundation</h1>
         </div>
+        <Link to="/edit-profile">
         <button className="bg-btnPrimary  py-2 px-4 rounded-3xl flex justify-center items-center gap-2 text-white">
           <FiEdit3 className="h-5 w-5" />
           Edit
         </button>
+        </Link>
       </div>
       <div className="flex flex-col md:flex-row gap-5 justify-start items-center mt-10 mb-3">
         <div className="flex  justify-start items-center gap-5">
