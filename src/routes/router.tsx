@@ -16,6 +16,7 @@ import ConfirmPassword from "../pages/Auth/ConfirmPassword/ConfirmPassword";
 import Subscriptions from "../pages/Subscriptions/Subscriptions";
 import EditProfile from "../components/PagesComponents/EditProfile";
 import AccessTab from "../components/ProfileComponents/AccessTab";
+import Envlopes from "../components/ProfileComponents/Envlopes";
 
 
 
@@ -69,6 +70,7 @@ export const router = createBrowserRouter([
             { path: "profile", element: <Profile /> },
             { path: "edit-profile", element: <EditProfile /> },
             { path: "access", element: <AccessTab /> },
+            { path: "envlope", element: <Envlopes /> },
 
         ],
     },
