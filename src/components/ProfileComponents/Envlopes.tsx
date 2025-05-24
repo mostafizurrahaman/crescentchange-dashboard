@@ -2,6 +2,8 @@ import { ConfigProvider, Form, Input, Modal, Steps } from "antd";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import profile from "../../assets/images/profile.png";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 type FieldType = {
   username?: string;
   password?: string;
@@ -19,6 +21,10 @@ const Envlopes = () => {
   const handleModalOpen = () => setIsModalOpen(true);
   const handleOk = () => setIsModalOpen(false);
   const handleCancle = () => setIsModalOpen(false);
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
   const onFinish = () => {};
   return (
     <div>
@@ -105,6 +111,13 @@ const Envlopes = () => {
             </p>
           </div>
         </div>
+        <button
+          onClick={handleBack}
+          className=" text-black py-2 px-4 rounded-xl flex justify-center items-center gap-2 text-lg"
+        >
+          <FaArrowLeft />
+          previous
+        </button>
         <Modal
           title="Add Envelop"
           open={isModalOpen}
