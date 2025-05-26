@@ -6,7 +6,7 @@ const SubscriptionCard = () => {
   return (
     <div className="my-5 grid grid-cols-1 md:grid-cols-3 justify-between items-center gap-4">
       {/* Free Subscription */}
-      <div className=" bg-[#fdb1f1] p-5 rounded-xl relative z-[999]">
+      <div className="h-96  bg-[#fdb1f1] p-5 rounded-xl relative z-[999]">
         <div className="flex justify-start items-center gap-3 mb-5">
           <FaHandHoldingHeart className="h-10 w-10 bg-white p-2 rounded-full" />
           <p className="text-xl font-semibold">Foundation Plan</p>
@@ -22,9 +22,9 @@ const SubscriptionCard = () => {
           <li>Org profile page</li>
           <li>Track recurring donations</li>
         </ul>
-        <img src={vectors} alt="" className="absolute top-0 right-0 z-[-1]" />
+        <img src={vectors} alt="" className="absolute top-0 right-0 z-[-1] rounded-r-xl" />
       </div>
-      <div className=" bg-[#b5e0ff] p-5 rounded-xl relative z-[999]">
+      <div className="h-96 bg-[#b5e0ff] p-5 rounded-xl relative z-[999]">
         <div className="flex justify-start items-center gap-3 mb-5">
           <FaHandHoldingHeart className="h-10 w-10 bg-white p-2 rounded-full" />
           <p className="text-xl font-semibold">Focus Plan </p>
@@ -33,7 +33,7 @@ const SubscriptionCard = () => {
           $12{" "}
           <span className="text-sm font-thin">
             / month{" "}
-            <span className="bg-green-800 text-neutral-700 px-3 py-1 rounded-lg">
+            <span className="bg-green-800 text-neutral-200 px-3 py-1 rounded-lg">
               Active plan
             </span>
           </span>
@@ -47,9 +47,9 @@ const SubscriptionCard = () => {
           <li>Monthly deposit reports</li>
           <li>Real-time donation tracking</li>
         </ul>
-        <img src={vector1} alt="" className="absolute top-0 right-0 z-[-1]" />
+        <img src={vector1} alt="" className="absolute top-0 right-0 z-[-1] rounded-r-xl" />
       </div>
-      <div className=" bg-[#ffe599] p-5 rounded-xl relative z-[999]">
+      <div className="h-96 bg-[#ffe599] p-5 rounded-xl relative z-[999]">
         <div className="flex justify-start items-center gap-3 mb-5">
           <FaHandHoldingHeart className="h-10 w-10 bg-white p-2 rounded-full" />
           <p className="text-xl font-semibold">Freedom Plan</p>
@@ -66,7 +66,7 @@ const SubscriptionCard = () => {
           <li>Priority support</li>
           <li> Real-time donation tracking</li>
         </ul>
-        <img src={vector2} alt="" className="absolute top-0 right-0 z-[-1]" />
+        <img src={vector2} alt="" className="absolute top-0 right-0 z-[-1] rounded-r-xl" />
       </div>
     </div>
   );
