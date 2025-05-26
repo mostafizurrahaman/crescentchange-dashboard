@@ -1,5 +1,8 @@
 import { useState } from "react";
 import AllDonor from "../../components/DonorComponnet/AllDonor";
+import RoundUp from "../../components/DonorComponnet/RoundUp";
+import Recurring from "../../components/DonorComponnet/Recurring";
+import OneTime from "../../components/DonorComponnet/OneTime";
 const Donors = () => {
   const [activeTab, setActiveTab] = useState("All Donors");
   return (
@@ -48,22 +51,22 @@ const Donors = () => {
 
       {activeTab === "All Donors" && (
         <div>
-     <AllDonor/>
+          <AllDonor />
         </div>
       )}
       {activeTab === "Round Up" && (
         <div>
-          <h1>Round Up</h1>
+          <RoundUp />
         </div>
       )}
       {activeTab === "Recurring" && (
         <div>
-          <h1>Recurring</h1>
+          <Recurring />
         </div>
       )}
       {activeTab === "One Time" && (
         <div>
-          <h1>One Time</h1>
+          <OneTime />
         </div>
       )}
     </div>

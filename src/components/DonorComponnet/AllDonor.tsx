@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Pagination, Select } from "antd";
 
 import dollor from "../../assets/images/dollor.png";
 import flower from "../../assets/images/Flower.png";
@@ -113,6 +113,10 @@ const AllDonor = () => {
             <p>20 min ago</p>
           </div>
         ))}
+      </div>
+
+      <div className="flex justify-end items-center my-10">
+        <Pagination />
       </div>
     </div>
   );
