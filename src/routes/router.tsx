@@ -17,6 +17,7 @@ import Subscriptions from "../pages/Subscriptions/Subscriptions";
 import EditProfile from "../components/PagesComponents/EditProfile";
 import AccessTab from "../components/ProfileComponents/AccessTab";
 import Envlopes from "../components/ProfileComponents/Envlopes";
+import Seetings from "../pages/Settings/Seetings";
 
 
 
@@ -71,6 +72,7 @@ export const router = createBrowserRouter([
             { path: "edit-profile", element: <EditProfile /> },
             { path: "access", element: <AccessTab /> },
             { path: "envlope", element: <Envlopes /> },
+            { path: "settings", element: <Seetings /> },
 
         ],
     },
