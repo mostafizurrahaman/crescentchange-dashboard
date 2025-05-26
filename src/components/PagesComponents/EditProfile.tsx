@@ -38,10 +38,9 @@ type FieldType = {
   lines: number;
 };
 const EditProfile = () => {
-  const [form] = Form.useForm();
-  const [profilePic, setProfilePic] = useState<File | null>(null);
+  const [, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [logo, setLogo] = useState<File | null>(null);
+  const [, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
 
 

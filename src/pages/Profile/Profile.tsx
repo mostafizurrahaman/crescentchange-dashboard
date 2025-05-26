@@ -27,7 +27,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
- const [selectedYear, setSelectedYear] = useState(dayjs().year());
+ const [selectedYear, ] = useState(dayjs().year());
   const data = [
     { name: "Jan", value: 30 },
     { name: "Feb", value: 50 },
