@@ -1,5 +1,5 @@
 import { ConfigProvider, Form, Input } from "antd";
-import img from "../../assets/images/signup.png";
+import img from "../../assets/images/login.png";
 import { Link } from "react-router-dom";
 const SignUp1 = () => {
   const onFinish = () => {};
