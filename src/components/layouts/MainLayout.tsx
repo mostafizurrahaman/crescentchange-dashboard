@@ -9,7 +9,7 @@ import Sidebar from "./Sidebar/Sidebar";
 
 const { Content } = Layout;
 const MainLayout = () => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed] = useState(false);
 
 
     return (

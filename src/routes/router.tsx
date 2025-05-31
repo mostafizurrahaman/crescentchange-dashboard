@@ -14,6 +14,10 @@ import ForgatePassword from "../pages/Auth/ForgatePassword/ForgatePassword";
 import VarificationComponent from "../pages/Auth/Varification/Varification";
 import ConfirmPassword from "../pages/Auth/ConfirmPassword/ConfirmPassword";
 import Subscriptions from "../pages/Subscriptions/Subscriptions";
+import EditProfile from "../components/PagesComponents/EditProfile";
+import AccessTab from "../components/ProfileComponents/AccessTab";
+import Envlopes from "../components/ProfileComponents/Envlopes";
+import Seetings from "../pages/Settings/Seetings";
 
 
 
@@ -65,6 +69,10 @@ export const router = createBrowserRouter([
             { path: "deposits", element: <Deposits /> },
             { path: "subscription", element: <Subscriptions /> },
             { path: "profile", element: <Profile /> },
+            { path: "edit-profile", element: <EditProfile /> },
+            { path: "access", element: <AccessTab /> },
+            { path: "envlope", element: <Envlopes /> },
+            { path: "settings", element: <Seetings /> },
 
         ],
     },
