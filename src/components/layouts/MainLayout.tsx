@@ -26,6 +26,7 @@ const MainLayout = () => {
             setCollapsed={setCollapsed}
             collapsed={collapsed}
           ></MainHeader>
+
           <Content className="p-5 bg-white" style={{}}>
             {/* my content */}
             <Outlet></Outlet>
