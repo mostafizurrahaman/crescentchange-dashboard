@@ -104,7 +104,7 @@ const Login = () => {
                 {/* Sign-up redirect */}
                 <p className="mt-6 text-lg text-center font-semibold">
                   Don't have an account?{" "}
-                  <Link to="/auth/signup" className="text-[#a55eea]">
+                  <Link to="/auth/signUp1" className="text-[#a55eea]">
                     Sign Up
                   </Link>
                 </p>
