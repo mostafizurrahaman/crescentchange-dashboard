@@ -2,7 +2,6 @@ import { ConfigProvider, Layout, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import {  FaMoneyCheckAlt, FaLongArrowAltLeft, FaUser, FaHandHoldingHeart } from "react-icons/fa";
 import { PiHandDepositDuotone } from "react-icons/pi";
-import logo from "../../../assets/images/logo.png";
 import { IoMdSettings } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 const { Sider } = Layout;
@@ -57,18 +56,19 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 bg-[#faf4f0]">
+    // <div className="fixed top-0 left-0 bottom-0 bg-[#f7f7f7]">
+    <div className="bg-primary h-full border border-l">
       <Sider
-        className="h-auto w-[300px] bg-[#faf4f0]"
+        className="h-auto w-[300px] bg-[#f7f7f7]"
         width={250}
         collapsedWidth={80}
         trigger={null}
         collapsible
         collapsed={collapsed}
       >
-        <div className="flex items-center justify-center ">
+        {/* <div className="flex items-center justify-center ">
           <img src={logo} alt="" className="my-10 " />
-        </div>
+        </div> */}
 
         <ConfigProvider
           theme={{
@@ -88,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
             className="px-2"
             selectedKeys={[location]}
             style={{
-              backgroundColor: "#faf4f0",
+              backgroundColor: "#f7f7f7",
               color: "black",
             }}
             items={menuItems}
@@ -98,7 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
             <Menu
               mode="inline"
               style={{
-                backgroundColor: "#faf4f0",
+                backgroundColor: "#f7f7f7",
                 color: "black",
               }}
               items={bottomMenuItems}

@@ -18,6 +18,7 @@ import EditProfile from "../components/PagesComponents/EditProfile";
 import AccessTab from "../components/ProfileComponents/AccessTab";
 import Envlopes from "../components/ProfileComponents/Envlopes";
 import Seetings from "../pages/Settings/Seetings";
+import RootLayout from "../components/layouts/RootLayout";
 
 
 
@@ -60,7 +61,8 @@ export const router = createBrowserRouter([
     },
     {
         path: "/",
-        element: <MainLayout />,
+        element: <RootLayout />,
+        // element: <MainLayout />,
         children: [
 
             { path: "/", element: <Analytics />, index: true },
