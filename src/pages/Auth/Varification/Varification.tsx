@@ -1,14 +1,16 @@
-import img from "../../../assets/images/image 420.png"
+import img from "../../../assets/images/image 420.png";
 import logo from "../../../assets/images/logo.png";
 import OTPInput from "react-otp-input";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const VerificationComponent = () => {
   const [otp, setOtp] = useState(""); // initialize as empty string
-
-  //   const handleVerifyOtp = () => {
-  //     console.log("Verifying OTP:", otp);
-  //   };
+  const nevigate = useNavigate();
+  const handleVerifyOtp = () => {
+    console.log("Verifying OTP:", otp);
+    nevigate("/auth/confirm-password");
+  };
 
   const handleResendOtp = () => {
     console.log("Resend OTP clicked");
@@ -28,7 +30,8 @@ const VerificationComponent = () => {
                 Enter Verification Code
               </h1>
               <p className="text-center text-gray-500">
-                We’ve sent a verification code to <span className="text-black">userofficialemail@gmail.com</span>
+                We’ve sent a verification code to{" "}
+                <span className="text-black">userofficialemail@gmail.com</span>
               </p>
               <p className="py-3">Enter your verification code</p>
               <div className="pb-7 pt-2 flex justify-center items-center">
@@ -47,7 +50,7 @@ const VerificationComponent = () => {
               </div>
 
               <button
-                // onClick={handleVerifyOtp}
+                onClick={handleVerifyOtp}
                 className="text-center w-full p-3 font-bold text-xl bg-btnPrimary text-black rounded-md shadow-lg"
               >
                 Verify

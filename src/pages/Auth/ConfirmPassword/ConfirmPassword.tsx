@@ -1,71 +1,105 @@
-"use client";
-import { useState } from "react";
-import { FaLockOpen } from "react-icons/fa6";
-import { IoIosLock } from "react-icons/io";
-import { Link } from "react-router-dom";
-
+import { ConfigProvider, Form, Input } from "antd";
+import img from "../../../assets/images/image 420.png"; // Path to the image
+import logo from "../../../assets/images/logo.png"; // Path to the logo
+import { useNavigate } from "react-router-dom";
 
 const ConfirmPassword = () => {
-
-
-    const [showpassword, setShowpassword] = useState(false);
-    const [showConfirmpassword, setShowConfirmPassword] = useState(false);
-    const togglePasswordVisibility = () => {
-        setShowpassword(!showpassword);
-    };
-    const toggoleConfirmPasswordVisible = () => {
-        setShowConfirmPassword(!showConfirmpassword);
-    };
-    return (
-        <div className="bg-primary py-16 md:py-0 h-[100vh] w-full flex items-center justify-center text-white">
-            <div className="container mx-auto">
-                <div className="flex justify-center items-center p-2">
-                    <div className="border rounded-lg text-white text-center p-5 lg:px-20 lg:py-20">
-                        <p className="text-3xl pb-10">Confirm Password</p>
-                        <div className="flex justify-between items-center border-b-2 mb-10 ">
-                            <input
-                                type={showpassword ? "password" : "text"}
-                                placeholder="Password"
-                                className="bg-transparent text-white p-2 focus:outline-none"
-                            />
-
-                            <div className="flex items-center">
-                                <button onClick={togglePasswordVisibility} type="button">
-                                    {showpassword ? (
-                                        <IoIosLock className="text-white" />
-                                    ) : (
-                                        <FaLockOpen className="text-white" />
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center border-b-2 mb-10">
-                            <input
-                                type={showConfirmpassword ? "password" : "text"}
-                                placeholder="Confirm Password"
-                                className="bg-transparent text-white p-2 focus:outline-none md:w-96 lg:w-96"
-                            />
-                            <div className="flex items-center">
-                                <button onClick={toggoleConfirmPasswordVisible} type="button">
-                                    {showConfirmpassword ? (
-                                        <IoIosLock className="text-white" />
-                                    ) : (
-                                        <FaLockOpen className="text-white" />
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-
-                        <Link to="/auth/login">
-                            <button className="text-center w-full p-3 font-bold text-xl bg-btnPrimary text-black rounded-md shadow-lg">
-                                Send
-                            </button>
-                        </Link>
-                    </div>
+  const neviaget = useNavigate();
+  const onFinish = () => {};
+  const handleResetPassword = () => {
+    neviaget("/");
+  };
+  return (
+    <div className="">
+      <div className="relative grid grid-cols-1 md:grid-cols-2 justify-center items-center p-4">
+        {/* Left section - Login Form */}
+        <div className="bg-white p-10">
+          <img src={logo} alt="Logo" className="absolute top-5" />
+          <div>
+            <ConfigProvider
+              theme={{
+                components: {
+                  Form: {
+                    borderRadius: 0,
+                  },
+                  Input: {
+                    borderRadius: 5,
+                  },
+                },
+              }}
+            >
+              <Form
+                name="login"
+                initialValues={{ remember: false }}
+                style={{ maxWidth: 600 }}
+                onFinish={onFinish}
+                layout="vertical"
+              >
+                <div className="mb-4 text-center">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
+                    Reset Your Password
+                  </h2>
+                  <p className="text-neutral-600 lg:text-lg pt-3 pb-6">
+                    The password must be different than previous password.
+                  </p>
                 </div>
-            </div>
+
+                {/* Email input field */}
+                {/* <Form.Item
+                  name="email"
+                  label={<p className="text-md">Email</p>}
+                >
+                  <Input
+                    required
+                    className="text-md"
+                    placeholder="Enter Email Address"
+                  />
+                </Form.Item> */}
+
+                {/* Password input field */}
+                <Form.Item
+                  name="password"
+                  label={<p className="text-md">New Password</p>}
+                >
+                  <Input.Password
+                    required
+                    className="text-md"
+                    placeholder="Enter Password"
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  label={<p className="text-md">Confirm Password</p>}
+                >
+                  <Input.Password
+                    required
+                    className="text-md"
+                    placeholder="Enter Password"
+                  />
+                </Form.Item>
+
+                {/* Sign In button */}
+                <Form.Item>
+                  <button
+                    onClick={handleResetPassword}
+                    className=" w-full py-4 font-bold bg-btnPrimary rounded-md text-xl"
+                    type="submit"
+                  >
+                    Update Password
+                  </button>
+                </Form.Item>
+              </Form>
+            </ConfigProvider>
+          </div>
         </div>
-    );
+
+        {/* Right section - Image */}
+        <div className="flex justify-end items-end">
+          <img src={img} alt="sign-up" className="w-full h-screen" />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ConfirmPassword;
