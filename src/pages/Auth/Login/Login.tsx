@@ -1,16 +1,17 @@
-import {  ConfigProvider, Form, Input } from "antd";
-import img from "../../../assets/images/login.png";
+import { Checkbox, ConfigProvider, Form, Input } from "antd";
+import img from "../../../assets/images/login.png"; // Path to the image
 import { Link } from "react-router-dom";
-type FieldType = {
-  remember: boolean;
-};
+import logo from "../../../assets/images/logo.png"; // Path to the logo
 
 const Login = () => {
   const onFinish = () => {};
+
   return (
-    <div className="h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="bg-white h-screen w-full md:w-[50%]  px-32 py-40">
+    <div className="">
+      <div className="relative grid grid-cols-1 md:grid-cols-2 justify-center items-center p-4">
+        {/* Left section - Login Form */}
+        <div className="bg-white p-10">
+          <img src={logo} alt="Logo" className="absolute top-5" />
           <div>
             <ConfigProvider
               theme={{
@@ -25,71 +26,85 @@ const Login = () => {
               }}
             >
               <Form
-                name="contact"
+                name="login"
                 initialValues={{ remember: false }}
-                //   style={{ maxWidth: 800 }}
+                style={{ maxWidth: 600 }}
                 onFinish={onFinish}
                 layout="vertical"
-                className="mt-20"
               >
-                <div className="mb-4  ">
-                  <h2 className="   text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                    Sign In
+                <div className="mb-4 text-center">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
+                    Welcome Back!
                   </h2>
-                  <p className="text-neutral-600  lg:text-lg">
-                    Start your journey. Empower your cause. Accept donations
-                    easily.
+                  <p className="text-neutral-600 lg:text-lg pt-3 pb-6">
+                    Sign in to manage everything.
                   </p>
                 </div>
+
+                {/* Email input field */}
                 <Form.Item
                   name="email"
-                  label={<p className=" text-md ">Enter your Email</p>}
-                  style={{}}
+                  label={<p className="text-md">Email</p>}
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Your Email"
+                    className="text-md"
+                    placeholder="Enter Email Address"
                   />
                 </Form.Item>
+
+                {/* Password input field */}
                 <Form.Item
                   name="password"
-                  label={<p className=" text-md ">Enter your Password</p>}
-                  style={{}}
+                  label={<p className="text-md">Password</p>}
                 >
-                  <Input
+                  <Input.Password
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Password"
+                    className="text-md"
+                    placeholder="Enter Password"
                   />
                 </Form.Item>
 
-                <Form.Item<FieldType>
-                  name={"remember"}
-                  valuePropName="checked"
-                  label={null}
-                ></Form.Item>
-
-                <Form.Item className="">
+                {/* Sign In button */}
+                <Form.Item>
                   <Link to="/">
                     <button
-                      className="text-center w-full p-2 font-bold bg-[#a55eea] text-white px-8 py-2 rounded-md shadow-lg"
+                      className="w-full py-4 font-bold bg-btnPrimary rounded-md text-xl"
                       type="submit"
                     >
                       Sign In
                     </button>
                   </Link>
                 </Form.Item>
-                <div className="flex justify-center items-center font-semibold gap-2 text-md">
-                  <Link to="/auth/forgate-password" className=" text-md ">
-                    Forgate Password
+
+                {/* Forgot password and signup link */}
+                <div className="flex justify-between items-center font-semibold gap-2 text-md">
+                  <ConfigProvider
+                    theme={{
+                      components: {
+                        Checkbox: {
+                          colorPrimary: "rgb(209,255,67)",
+                          colorPrimaryBorder: "rgb(209,255,67)",
+                          colorPrimaryHover: "rgb(209,255,67)",
+                        },
+                      },
+                    }}
+                  >
+                    {" "}
+                    <Checkbox>Remember Password</Checkbox>{" "}
+                  </ConfigProvider>
+                  <Link
+                    to="/auth/forgot-password"
+                    className="text-md underline"
+                  >
+                    Forgot Password?
                   </Link>
                 </div>
-                <p className="text-md mt-40 text-lg text-center font-semibold">
-                  Don't have an account ?{" "}
-                  <Link to="/auth/signUp1" className=" text-md text-[#a55eea]">
+
+                {/* Sign-up redirect */}
+                <p className="mt-6 text-lg text-center font-semibold">
+                  Don't have an account?{" "}
+                  <Link to="/auth/signup" className="text-[#a55eea]">
                     Sign Up
                   </Link>
                 </p>
@@ -97,12 +112,10 @@ const Login = () => {
             </ConfigProvider>
           </div>
         </div>
-        <div className="md:full md:w-[50%] ">
-          <img
-            src={img}
-            alt="sign up"
-            className="w-full h-screen hidden md:block "
-          />
+
+        {/* Right section - Image */}
+        <div className="flex justify-end items-end">
+          <img src={img} alt="sign-up" className="w-full h-screen" />
         </div>
       </div>
     </div>

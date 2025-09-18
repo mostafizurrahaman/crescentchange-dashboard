@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         'primary': '#f7f7f7',
-        'btnPrimary': '#a55eea',
+        'btnPrimary': '#d1ff43',
       },
     },
   },
