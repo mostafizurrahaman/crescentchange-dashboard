@@ -3,7 +3,7 @@ import Profile from "../pages/Profile/Profile";
 import Analytics from "../pages/Analytics/Analytics";
 import Donors from "../pages/Donors/Donors";
 import Deposits from "../pages/Deposits/Deposits";
-import MainLayout from "../components/layouts/MainLayout";
+// import MainLayout from "../components/layouts/MainLayout"; 
 import SignUp1 from "../components/AuthComponents/SignUp1";
 import SignUp2 from "../components/AuthComponents/SignUp2";
 import SignUp3 from "../components/AuthComponents/SignUp3";
