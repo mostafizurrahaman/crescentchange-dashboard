@@ -1,17 +1,23 @@
-import { ConfigProvider, Form, Input } from "antd";
-import img from "../../assets/images/login.png";
+import { ConfigProvider, Form, Input, Select } from "antd";
+import { FaLocationArrow, FaPhoneAlt, FaGlobe } from "react-icons/fa"; // Importing icons from react-icons
+import img from "../../assets/images/login.png"; // Adjust path as necessary
 import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo.png"; // Adjust path as necessary
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { IoLocateOutline, IoLocation } from "react-icons/io5";
+
 const SignUp2 = () => {
   const [active, setActive] = useState("Charity");
 
   const onFinish = () => {};
-
+  
   return (
-    <div className="h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="bg-white h-screen w-full md:w-[50%]  px-32 py-40">
+    <div className="h-screen flex">
+      {/* Left section - Form */}
+      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2">
+        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+        <div className="w-full max-w-sm mt-20">
           <div>
             <ConfigProvider
               theme={{
@@ -28,117 +34,130 @@ const SignUp2 = () => {
               <Form
                 name="contact"
                 initialValues={{ remember: false }}
-                //   style={{ maxWidth: 800 }}
                 onFinish={onFinish}
                 layout="vertical"
                 className="mt-20"
               >
                 <div className="mb-4">
-                  <h2 className="  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                    Tell Us About Your Organization
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+                    Organization Details
                   </h2>
-                  <p className="text-neutral-600  lg:text-lg font-semibold">
-                    Empowering change through education, relief, and support.
-                    Your help makes an impact.
+                  <p className="text-neutral-600 lg:text-lg font-semibold">
+                    Tell us a little more about your organization.
                   </p>
                 </div>
                 <div className="my-10">
                   <div className="h-2 w-full bg-btnPrimary"></div>
-                  <p className="">Step 2/5</p>
+                  <p>Step 2/5</p>
                 </div>
+
                 <Form.Item
                   name="service-type"
-                  label={
-                    <p className=" text-lg text-neutral-500 "> services type</p>
-                  }
-                  style={{}}
+                  label={<p className="text-lg text-neutral-500">Service Type</p>}
                 >
-                  <div className="flex justify-between items-center gap-2">
-                    <button
-                      className={
-                        active === "Charity"
-                          ? "w-full py-2 bg-btnPrimary text-white rounded-md"
-                          : "w-full py-2 bg-neutral-300 text-black rounded-md"
-                      }
-                      type="button"
-                      onClick={() => setActive("Charity")}
-                    >
-                      Charity
-                    </button>
-                    <button
-                      className={
-                        active === "Mosque"
-                          ? "w-full py-2 bg-btnPrimary text-white rounded-md"
-                          : "w-full py-2 bg-neutral-300 text-black rounded-md"
-                      }
-                      type="button"
-                      onClick={() => setActive("Mosque")}
-                    >
-                      Mosque
-                    </button>
-                    <button
-                      className={
-                        active === "Non profit Organization"
-                          ? "w-full py-2 bg-btnPrimary text-white rounded-md"
-                          : "w-full py-2 bg-neutral-300 text-black rounded-md"
-                      }
-                      type="button"
-                      onClick={() => setActive("Non profit Organization")}
-                    >
-                      Non profit Organization
-                    </button>
-                  </div>
+                  <Select
+                    placeholder="Select a service type"
+                    className="w-full"
+                    value={active}
+                    onChange={(value) => setActive(value)}
+                    options={[
+                      { label: "Charity", value: "Charity" },
+                      { label: "Mosque", value: "Mosque" },
+                      { label: "Non profit Organization", value: "Non profit Organization" },
+                    ]}
+                  />
                 </Form.Item>
-
+{/* 
                 <Form.Item
-                  name="organoisation-name"
-                  label={
-                    <p className=" text-lg text-neutral-500 ">
-                      Your organisation name
-                    </p>
-                  }
-                  style={{}}
+                  name="organisation-name"
+                  label={<p className="text-lg text-neutral-500">Organisation Name</p>}
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-neutral-500"
+                    className="text-neutral-500"
                     placeholder="Your Organisation Name"
+                    style={{ padding: "8px", borderRadius: "8px", width: "100%" }}
                   />
-                </Form.Item>
+                </Form.Item> */}
+
                 <Form.Item
-                  name="organoisation-address"
-                  label={
-                    <p className=" text-lg text-neutral-500 ">
-                      Your organisation Address
-                    </p>
-                  }
-                  style={{}}
+                  name="organisation-address"
+                  label={<p className="text-lg text-neutral-500">Organisation Address</p>}
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Your Organisation Address"
+                    className="text-neutral-500"
+                    prefix={<IoLocation className="mr-2" />}
+                    placeholder="Enter Organization Address"
+                    style={{ padding: "8px", borderRadius: "8px", width: "100%" }}
                   />
                 </Form.Item>
 
-                <Form.Item className="">
+                <div className="grid grid-cols-2 gap-6">
+                  <Form.Item
+                    name="state"
+                    label={<p className="text-lg text-neutral-500">State</p>}
+                  >
+                    <Select
+                      placeholder="Select state"
+                      className="w-full"
+                      defaultValue="New York"
+                      options={[{ label: "New York", value: "New York" }, { label: "California", value: "California" }]}
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="zip-code"
+                    label={<p className="text-lg text-neutral-500">Postal Code</p>}
+                  >
+                    <Input
+                      placeholder="Enter Postal Code"
+                      className="w-full"
+                      style={{ padding: "8px", borderRadius: "8px" }}
+                    />
+                  </Form.Item>
+                </div>
+
+                <Form.Item
+                  name="organization-website"
+                  label={<p className="text-lg text-neutral-500">Organization Website</p>}
+                >
+                  <Input
+                    required
+                    className="text-neutral-500"
+                    prefix={<FaGlobe className="mr-2" />}
+                    placeholder="www.organizationwebsite.com"
+                    style={{ padding: "8px", borderRadius: "8px", width: "100%" }}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="contact-phone"
+                  label={<p className="text-lg text-neutral-500">Contact Phone Number</p>}
+                >
+                  <Input
+                    required
+                    className="text-neutral-500"
+                    prefix={<FaPhoneAlt className="mr-2" />}
+                    placeholder="+61 0 1234 5678"
+                    style={{ padding: "8px", borderRadius: "8px", width: "100%" }}
+                  />
+                </Form.Item>
+
+                <Form.Item>
                   <Link to="/auth/signUp3">
                     <button
-                      className="text-center  p-2 font-bold bg-btnPrimary text-white w-full py-2 rounded-md shadow-lg"
+                      className="text-center p-2 font-bold bg-btnPrimary  w-full py-2 rounded-md shadow-lg"
                       type="submit"
                     >
-                      Continue
+                   Save & Continue
                     </button>
                   </Link>
                 </Form.Item>
               </Form>
-              <div className=" font-semibold gap-2 text-md">
-                <Link
-                  to="/auth/signUp1"
-                  className=" text-md flex items-center justify-start gap-2"
-                >
+
+              <div className="font-semibold gap-2 text-md">
+                <Link to="/auth/signUp1" className="text-md flex items-center justify-start gap-2">
                   <FaArrowLeft />
                   Back
                 </Link>
@@ -146,9 +165,11 @@ const SignUp2 = () => {
             </ConfigProvider>
           </div>
         </div>
-        <div className="md:full md:w-[50%] ">
-          <img src={img} alt="sign up" className="w-full  h-screen " />
-        </div>
+      </div>
+
+      {/* Right section - Image */}
+      <div className="w-full md:w-1/2">
+        <img src={img} alt="sign-up" className="w-full h-full object-cover" />
       </div>
     </div>
   );
