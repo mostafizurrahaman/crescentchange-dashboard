@@ -1,13 +1,19 @@
-import { ConfigProvider, Form, Input } from "antd";
-import img from "../../assets/images/login.png";
+import { ConfigProvider, Form, Input,} from "antd";
+import img from "../../assets/images/login.png"; // Adjust path as necessary
 import { Link } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import logo from "../../assets/images/logo.png"; // Adjust path as necessary
+
+
 const SignUp3 = () => {
+
   const onFinish = () => {};
+
   return (
-    <div className="h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="bg-white h-screen w-full md:w-[50%]  px-32 py-40">
+    <div className="h-screen flex">
+      {/* Left section - Form */}
+      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2">
+        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+        <div className="w-full max-w-sm mt-20">
           <div>
             <ConfigProvider
               theme={{
@@ -31,12 +37,10 @@ const SignUp3 = () => {
               >
                 <div className="mb-4">
                   <h2 className="  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                    Register Your Organization
+                   Verify Your Registration
                   </h2>
                   <p className="text-neutral-600  lg:text-lg">
-                    Register your nonprofit to join our trusted network and
-                    amplify your impact. It’s quick, secure, and built to
-                    support your mission.
+                   Verify your registration details for compliance.
                   </p>
                 </div>
                 <div className="my-10">
@@ -52,36 +56,48 @@ const SignUp3 = () => {
                     required
                     style={{ padding: "6px" }}
                     className=" text-md"
-                    placeholder="Your TFN or ABN"
+                    placeholder="62 123 456 789"
                   />
                 </Form.Item>
                 <Form.Item
-                  name="website"
-                  label={<p className=" text-md ">Organization Website </p>}
+                  name="ten-digit"
+                  label={<p className=" text-md ">ACNC Registration Number</p>}
                   style={{}}
                 >
                   <Input
                     required
                     style={{ padding: "6px" }}
                     className=" text-md"
-                    placeholder="Your Email"
+                    placeholder="ACNC-987654"
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="ten-digit"
+                  label={<p className=" text-md ">Zakat License Holder Number (Optional)</p>}
+                  style={{}}
+                >
+                  <Input
+                    required
+                    style={{ padding: "6px" }}
+                    className=" text-md"
+                    placeholder="ZL-45678"
                   />
                 </Form.Item>
 
-             
-                  <Form.Item className="">
-                    <Link to="/auth/signUp4">
-                      <button
-                        className="text-center  p-2 font-bold bg-btnPrimary text-white w-full py-2 rounded-md shadow-lg"
-                        type="submit"
-                      >
-                        Continue
-                      </button>
-                    </Link>
-                  </Form.Item>
-          
+
+                
+                <Form.Item className="">
+                  <Link to="/auth/signUp4">
+                    <button
+                      className="text-center  p-2 font-bold bg-btnPrimary  w-full py-2 rounded-md shadow-lg"
+                      type="submit"
+                    >
+                      Continue
+                    </button>
+                  </Link>
+                </Form.Item>
               </Form>
-              <div className=" font-semibold gap-2 text-md">
+              {/* <div className=" font-semibold gap-2 text-md">
                 <Link
                   to="/auth/signUp2"
                   className=" text-md flex items-center justify-start gap-2"
@@ -89,13 +105,15 @@ const SignUp3 = () => {
                   <FaArrowLeft />
                   Back
                 </Link>
-              </div>
+              </div> */}
             </ConfigProvider>
           </div>
         </div>
-        <div className="md:full md:w-[50%] ">
-          <img src={img} alt="sign up" className="w-full  h-screen " />
-        </div>
+      </div>
+
+      {/* Right section - Image */}
+      <div className="w-full md:w-1/2">
+        <img src={img} alt="sign-up" className="w-full h-full object-cover" />
       </div>
     </div>
   );

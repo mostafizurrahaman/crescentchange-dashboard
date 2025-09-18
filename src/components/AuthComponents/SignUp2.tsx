@@ -1,11 +1,10 @@
 import { ConfigProvider, Form, Input, Select } from "antd";
-import { FaLocationArrow, FaPhoneAlt, FaGlobe } from "react-icons/fa"; // Importing icons from react-icons
+import {  FaPhoneAlt, FaGlobe } from "react-icons/fa"; // Importing icons from react-icons
 import img from "../../assets/images/login.png"; // Adjust path as necessary
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png"; // Adjust path as necessary
 import { useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
-import { IoLocateOutline, IoLocation } from "react-icons/io5";
+import {  IoLocation } from "react-icons/io5";
 
 const SignUp2 = () => {
   const [active, setActive] = useState("Charity");
@@ -156,12 +155,12 @@ const SignUp2 = () => {
                 </Form.Item>
               </Form>
 
-              <div className="font-semibold gap-2 text-md">
+              {/* <div className="font-semibold gap-2 text-md">
                 <Link to="/auth/signUp1" className="text-md flex items-center justify-start gap-2">
                   <FaArrowLeft />
                   Back
                 </Link>
-              </div>
+              </div> */}
             </ConfigProvider>
           </div>
         </div>
