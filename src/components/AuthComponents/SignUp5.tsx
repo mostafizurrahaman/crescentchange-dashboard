@@ -1,4 +1,4 @@
-import { Checkbox, ConfigProvider, Form } from "antd";
+import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -31,52 +31,68 @@ const SignUp5 = () => {
               >
                 <div className="mb-4">
                   <h2 className="  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                    Review & Sign Up
+                   Add Your Card Details
                   </h2>
-                  <p className="  lg:text-lg text-neutral-600">
-                    Securely enter your card information to complete your
-                    donation. Your data is encrypted and protected at every
-                    step.
+                  <p className=" text-neutral-600 lg:text-lg ">
+               Securely enter your card information to complete your donation. Your data is encrypted and protected at every step.
                   </p>
                 </div>
                 <div className="my-10">
                   <div className="h-2 w-full bg-btnPrimary"></div>
-                  <p className="">Step 5/5</p>
+                  <p className="">Step 4/5</p>
+                </div>
+                <Form.Item
+                  name="card-name"
+                  label={<p className=" text-md ">Account Holder Name</p>}
+                  style={{}}
+                >
+                  <Input
+                    required
+                    style={{ padding: "6px" }}
+                    className=" text-md"
+                    placeholder="Name"
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="card-number"
+                  label={<p className=" text-md ">Card Number</p>}
+                  style={{}}
+                >
+                  <Input
+                    required
+                    style={{ padding: "6px" }}
+                    className=" text-md"
+                    placeholder="Card Number"
+                  />
+                </Form.Item>
+
+                <div className="flex justify-between items-center gap-2">
+                  <Form.Item
+                    name="expiry-date"
+                    label={<p className=" text-md ">Expiry Date</p>}
+                    style={{width: "50%"}}
+                  >
+                    <Input
+                      style={{ padding: "6px", width: "100%" }}
+                      className=" text-md"
+                      placeholder="Expiry Date"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="expiry-date"
+                    label={<p className=" text-md ">CVV</p>}
+                    style={{width: "50%"}}
+                  >
+                    <Input
+                      style={{ padding: "6px", width: "100%" }}
+                      className=" text-md"
+                      placeholder="CVV"
+                    />
+                  </Form.Item>
                 </div>
 
-                <div className="my-10">
-                  <h1 className="text-lg font-bold">Terms & Donation Policy</h1>
-                  <p className="text-neutral-600">
-                    These Terms apply to your use of our dashboard and your
-                    participation in automated donations and reward programs.
-                  </p>
-                  <p className="text-neutral-600">
-                    By continuing, you agree to:
-                  </p>
-                  <ul className="list-disc ml-10 my-5">
-                    <li className="text-neutral-600 list-disc">
-                      We may process recurring donations on your behalf
-                      according to your selected plan.
-                    </li>
-                    <li className="text-neutral-600 list-disc">
-                      Your payment information will be securely stored and never
-                      shared.
-                    </li>
-                    <li className="text-neutral-600 list-disc">
-                      You may occasionally receive updates or perks from trusted
-                      partner brands.
-                    </li>
-                    <li className="text-neutral-600 list-disc">
-                      You acknowledge that all activity complies with our
-                      privacy policy and nonprofit verification standards.
-                    </li>
-                  </ul>
-                  <Checkbox style={{ color: "black" }}>
-                    I Agree with terms & conditions
-                  </Checkbox>
-                </div>
                 <Form.Item className="">
-                  <Link to="/auth/login">
+                  <Link to="/auth/signUp5">
                     <button
                       className="text-center  p-2 font-bold bg-btnPrimary text-white w-full py-2 rounded-md shadow-lg"
                       type="submit"
@@ -88,7 +104,7 @@ const SignUp5 = () => {
               </Form>
               <div className=" font-semibold gap-2 text-md">
                 <Link
-                  to="/auth/signUp4"
+                  to="/auth/signUp3"
                   className=" text-md flex items-center justify-start gap-2"
                 >
                   <FaArrowLeft />

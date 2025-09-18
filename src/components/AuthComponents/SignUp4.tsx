@@ -1,13 +1,19 @@
-import { ConfigProvider, Form, Input } from "antd";
-import img from "../../assets/images/login.png";
+import { Button, ConfigProvider, Form, Input, Upload } from "antd";
+import { FaPhoneAlt, FaVoicemail } from "react-icons/fa"; // Importing icons from react-icons
+import img from "../../assets/images/login.png"; // Adjust path as necessary
 import { Link } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import logo from "../../assets/images/logo.png"; // Adjust path as necessary
+import { UploadOutlined } from "@ant-design/icons";
+
 const SignUp4 = () => {
   const onFinish = () => {};
+
   return (
-    <div className="h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="bg-white h-screen w-full md:w-[50%]  px-32 py-40">
+    <div className="h-screen flex">
+      {/* Left section - Form */}
+      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2">
+        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+        <div className="w-full max-w-sm mt-20">
           <div>
             <ConfigProvider
               theme={{
@@ -24,99 +30,126 @@ const SignUp4 = () => {
               <Form
                 name="contact"
                 initialValues={{ remember: false }}
-                //   style={{ maxWidth: 800 }}
                 onFinish={onFinish}
                 layout="vertical"
                 className="mt-20"
               >
                 <div className="mb-4">
-                  <h2 className="  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                   Add Your Card Details
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+                    Add a Board Member
                   </h2>
-                  <p className=" text-neutral-600 lg:text-lg ">
-               Securely enter your card information to complete your donation. Your data is encrypted and protected at every step.
+                  <p className="text-neutral-600 lg:text-lg font-semibold">
+                    Each organization must have at least one verified member.
                   </p>
                 </div>
                 <div className="my-10">
                   <div className="h-2 w-full bg-btnPrimary"></div>
-                  <p className="">Step 4/5</p>
+                  <p>Step 2/5</p>
                 </div>
+
                 <Form.Item
-                  name="card-name"
-                  label={<p className=" text-md ">Account Holder Name</p>}
-                  style={{}}
+                  name="name"
+                  label={<p className="text-lg text-neutral-500">Full Name</p>}
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Name"
+                    className="text-neutral-500"
+                    placeholder="Full Name"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                    }}
                   />
                 </Form.Item>
+
                 <Form.Item
-                  name="card-number"
-                  label={<p className=" text-md ">Card Number</p>}
-                  style={{}}
+                  name="emailaddress"
+                  label={
+                    <p className="text-lg text-neutral-500">Email Address</p>
+                  }
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Card Number"
+                    className="text-neutral-500"
+                    prefix={<FaVoicemail className="mr-2" />}
+                    placeholder="Enter Email Address"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                    }}
+                  />
+                </Form.Item>
+             
+                <Form.Item
+                  name="contact-phone"
+                  label={
+                    <p className="text-lg text-neutral-500">Contact Phone</p>
+                  }
+                >
+                  <Input
+                    required
+                    className="text-neutral-500"
+                    prefix={<FaPhoneAlt className="mr-2" />}
+                    placeholder="+61 0 1234 5678"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                    }}
                   />
                 </Form.Item>
 
-                <div className="flex justify-between items-center gap-2">
-                  <Form.Item
-                    name="expiry-date"
-                    label={<p className=" text-md ">Expiry Date</p>}
-                    style={{width: "50%"}}
-                  >
-                    <Input
-                      style={{ padding: "6px", width: "100%" }}
-                      className=" text-md"
-                      placeholder="Expiry Date"
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="expiry-date"
-                    label={<p className=" text-md ">CVV</p>}
-                    style={{width: "50%"}}
-                  >
-                    <Input
-                      style={{ padding: "6px", width: "100%" }}
-                      className=" text-md"
-                      placeholder="CVV"
-                    />
-                  </Form.Item>
-                </div>
+                <Form.Item
+                  name="gov-id"
+                  label={
+                    <p className="text-lg text-neutral-500">
+                      Upload Government Issued Document (Driver’s License / ID)
+                    </p>
+                  }
+                >
+                  <Upload>
+                    <Button
+                      icon={<UploadOutlined />}
+                      className="text-neutral-500"
+                      style={{
+                        padding: "8px",
+                        borderRadius: "8px",
+                        width: "100%",
+                      }}
+                    >
+                      Click to Upload
+                    </Button>
+                  </Upload>
+                </Form.Item>
 
-                <Form.Item className="">
+                <Form.Item>
                   <Link to="/auth/signUp5">
                     <button
-                      className="text-center  p-2 font-bold bg-btnPrimary text-white w-full py-2 rounded-md shadow-lg"
+                      className="text-center p-2 font-bold bg-btnPrimary  w-full py-2 rounded-md shadow-lg"
                       type="submit"
                     >
-                      Continue
+                      Save & Continue
                     </button>
                   </Link>
                 </Form.Item>
               </Form>
-              <div className=" font-semibold gap-2 text-md">
-                <Link
-                  to="/auth/signUp3"
-                  className=" text-md flex items-center justify-start gap-2"
-                >
+
+              {/* <div className="font-semibold gap-2 text-md">
+                <Link to="/auth/signUp1" className="text-md flex items-center justify-start gap-2">
                   <FaArrowLeft />
                   Back
                 </Link>
-              </div>
+              </div> */}
             </ConfigProvider>
           </div>
         </div>
-        <div className="md:full md:w-[50%] ">
-          <img src={img} alt="sign up" className="w-full  h-screen " />
-        </div>
+      </div>
+
+      {/* Right section - Image */}
+      <div className="w-full md:w-1/2">
+        <img src={img} alt="sign-up" className="w-full h-full object-cover" />
       </div>
     </div>
   );
