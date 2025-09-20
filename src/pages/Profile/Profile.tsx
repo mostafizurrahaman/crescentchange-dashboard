@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import profile from "../../assets/images/profile.png";
-import hfl from "../../assets/images/hfl.png";
+import hfl from "../../assets/images/Profile Logo.png";
+import tick from "../../assets/images/Checkmark.png";
 import { FiEdit3 } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 import { IoIosLink } from "react-icons/io";
@@ -27,7 +28,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
- const [selectedYear, ] = useState(dayjs().year());
+  const [selectedYear] = useState(dayjs().year());
   const data = [
     { name: "Jan", value: 30 },
     { name: "Feb", value: 50 },
@@ -43,70 +44,49 @@ const Profile = () => {
     { name: "Dec", value: 100 },
   ];
 
-  const onChange = () => {
-    
-  };
+  const onChange = () => {};
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">Profile</h1>
-      <p className="text-lg text-gray-600 mb-4">
-        See how your supporters are giving and where your impact is growing.
-      </p>
-      <div className="my-6">
+      <div className="flex justify-between items-center gap-2">
+        <div>
+          <h1 className="text-3xl font-bold mb-4">Profile</h1>
+          <p className="text-lg text-gray-600 mb-4">
+            See how your supporters are giving and where your impact is growing.
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <button className="bg-white px-4 py-3 rounded-3xl border">
+            Preview Profile{" "}
+          </button>
+          <button className="bg-white px-4 py-3 rounded-3xl border">
+            Update Profile
+          </button>
+        </div>
+      </div>
+      <div className="my-6 relative">
         <img src={profile} alt="" className="w-full" />
+        <div className="absolute ml-28 top-60">
+          <img src={hfl} alt="" className="h-40 w-40" />
+        </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-5 justify-between items-center">
+      <div className="flex flex-col md:flex-row gap-5 justify-between items-center mt-24">
         <div className="flex justify-start items-center gap-5">
-          <img src={hfl} alt="" />
           <h1 className="text-2xl font-bold">HFL Foundation</h1>
+          <img src={tick} alt="" />
         </div>
-        <Link to="/edit-profile">
-        <button className="bg-btnPrimary  py-2 px-4 rounded-3xl flex justify-center items-center gap-2 text-white">
-          <FiEdit3 className="h-5 w-5" />
-          Edit
-        </button>
-        </Link>
-      </div>
-      <div className="flex flex-col md:flex-row gap-5 justify-start items-center mt-10 mb-3">
-        <div className="flex  justify-start items-center gap-5">
-          <LuCalendarDays />
-          <p>Date established: 01/01/2023</p>
-          <p className="h-5 border-r border-dashed"></p>
-        </div>
-        <div className="flex  justify-start items-center gap-5">
-          <IoIosLink />
-          <p>www.hflfoundation.org</p>
-          <p className="h-5 border-r border-dashed"></p>
-        </div>
-        <div className="flex  justify-start items-center gap-5">
-          <AiOutlineMail />
-          <p>contact@hflfoundation.org</p>
-          <p className="h-5 border-r border-dashed"></p>
-        </div>
-        <div className="flex  justify-start items-center gap-5">
-          <IoCallOutline />
-          <p>+234 80 0000 0000</p>
-          {/* <p className="h-5 border-r border-dashed"></p> */}
-        </div>
-      </div>
-      <div className="flex  justify-start items-center gap-2">
-        <CiLocationOn />
-        <p>Darul Huda Center 45 Crescent Lane Sydney, Australia</p>
-      </div>
 
-   
-      <div className="my-6 border-b"></div>
+        <p className="text-gray-400">
+          Established since: <span className="text-black">01 July 2018</span>
+        </p>
+      </div>
+     
+    
+
       <div className="flex flex-col md:flex-row gap-5 justify-between items-center">
         <div className="w-full md:w-[70%]">
-          <h1 className="text-2xl font-bold">Mission & Operations</h1>
-          <p className="text-lg text-gray-600 my-4">
-            Hope for Learning Foundation exists to unlock the power of education
-            for underserved communities. We champion access, equity, and
-            opportunity — because every child deserves a future filled with
-            knowledge, growth, and hope.
-          </p>
+        
           <p className="my-5 border-b"></p>
           <div className="my-10">
             <div className="flex justify-between items-center gap-5">
@@ -225,7 +205,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
