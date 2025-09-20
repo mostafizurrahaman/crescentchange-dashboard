@@ -75,6 +75,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = () => {
           </div>
         ))}
       </div>
+      {/* recent donors */}
       <div className="bg-white rounded-3xl p-6 border my-3">
         <div className="flex justify-between items-center ">
           <h1 className="text-2xl font-medium mb-2">Recent donors</h1>
@@ -89,19 +90,59 @@ const TopDonors: React.FC<AnalyticsCardProps> = () => {
             className="flex justify-between items-center gap-2 mb-4"
           >
             <div className="flex justify-start items-center gap-2">
-              {/* <p>{item.id}</p> */}
               <img src={user} alt="" />
               <div>
                 <h1>{item.name}</h1>
                 <p className="text-gray-400">{item.time} </p>
               </div>
             </div>
-            {/* <div>
-              <p>${item.money}</p>
-              <p className="text-green-500">+ {item.percentage}</p>
-            </div> */}
           </div>
         ))}
+      </div>
+
+      {/* breakdown by causes */}
+      <div className="bg-white rounded-3xl p-6 border my-3">
+        <h1 className="text-xl font-medium">Breakdown by Causes</h1>
+        <div className="my-6">
+          <p className="text-gray-400">Total Donations</p>
+          <h1 className="text-2xl font-medium">
+            <span className="text-gray-400">$</span> 12,0000
+          </h1>
+        </div>
+        <div className="flex justify-between items-center gap-1">
+          <div className="bg-pink-200 h-12 w-[60%] rounded-2xl"></div>
+          <div className="bg-blue-200 h-12 w-[20%] rounded-2xl"></div>
+          <div className="bg-yellow-200 h-12 w-[20%] rounded-2xl"></div>
+        </div>
+        <div className="grid grid-cols-3 gap-5 mt-6">
+          <div>
+            <div className="flex justify-start items-center gap-1">
+              <div className="h-2 w-2 bg-pink-200"></div>
+              <p>Non-profit</p>
+            </div>
+            <h1 className="text-2xl font-medium">
+              <span className="text-gray-400">$</span> 40,0000
+            </h1>
+          </div>
+          <div>
+            <div className="flex justify-start items-center gap-1">
+              <div className="h-2 w-2 bg-blue-200"></div>
+              <p>Non-profit</p>
+            </div>
+            <h1 className="text-2xl font-medium">
+              <span className="text-gray-400">$</span> 40,0000
+            </h1>
+          </div>
+          <div>
+            <div className="flex justify-start items-center gap-1">
+              <div className="h-2 w-2 bg-yellow-200"></div>
+              <p>Non-profit</p>
+            </div>
+            <h1 className="text-2xl font-medium">
+              <span className="text-gray-400">$</span> 40,0000
+            </h1>
+          </div>
+        </div>
       </div>
     </div>
   );
