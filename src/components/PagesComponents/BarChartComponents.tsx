@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import {  Select,  } from "antd";
+import { BsArrowUpRight } from "react-icons/bs";
 
 const BarChartComponents = () => {
   const data = [
@@ -30,16 +30,14 @@ const BarChartComponents = () => {
   return (
     <div
       style={{ width: "100%", height: 400 }}
-      className="bg-secondary  py-10 px-5 rounded-lg border"
+      className="bg-white  p-6 rounded-3xl border"
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className=" font-bold text-xl">Donation Insights</h3>
-        <Select defaultValue="2025" className="w-[150px]">
-          <Select.Option value="Last 30 Days">Last 30 Days</Select.Option>
-          <Select.Option value="2">Last 60 Days</Select.Option>
-          <Select.Option value="3">Last 90 Days</Select.Option>
-          <Select.Option value="4">Last 120 Days</Select.Option>
-        </Select>
+      <div className="mb-6">
+          <h3 className=" font-bold text-xl">Trends & Insights</h3>
+          <p className="text-gray-400">+8.2% from last month</p>
+      </div>
+          <BsArrowUpRight className="h-5 w-5 cursor-pointer" />
       </div>
       <ResponsiveContainer>
         <BarChart data={data}>
@@ -48,8 +46,9 @@ const BarChartComponents = () => {
           <CartesianGrid strokeDasharray="3 3" stroke="#d3d3d3" />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#ffffff",
-              border: "none",
+              backgroundColor: "#ebe9ec",
+              border: "1px  gray",
+              borderRadius:"20px"
             }}
             itemStyle={{
               color: "#000000",
@@ -60,7 +59,7 @@ const BarChartComponents = () => {
           />
           <Bar
             dataKey="value"
-            fill="#fdb1f1"
+            fill="#c08fff"
             barSize={30}
             radius={[10, 10, 0, 0]}
           />
