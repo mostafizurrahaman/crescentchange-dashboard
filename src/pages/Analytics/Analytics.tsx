@@ -3,6 +3,7 @@ import AnanlyticsCharts from "../../components/PagesComponents/AnanlyticsCharts"
 import TopDonors from "../../components/PagesComponents/TopDonors";
 import DashboardChart from "../../components/PagesComponents/DashboardChart";
 import { useState } from "react";
+import QuickLinks from "../../components/DashboardComponnets/QuickLinks";
 
 const Analytics = () => {
   const [active, setActive] = useState<"Today" | "This Week" | "This Month">(
@@ -63,7 +64,7 @@ const Analytics = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center gap-5">
+      <div className="flex justify-between items-start gap-5">
         <div className=" w-full md:w-[70%]">
           {/* {TODO: there will need to pass the data} */}
           <AnalyticsCard filter={active} data={data} />
@@ -71,6 +72,7 @@ const Analytics = () => {
           <DashboardChart filter={active} data={data} />
         </div>
         <div className="hidden md:block w-[30%]">
+          <QuickLinks />
           <TopDonors filter={active} data={data} />
         </div>
       </div>

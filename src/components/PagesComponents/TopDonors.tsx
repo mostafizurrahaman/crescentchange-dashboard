@@ -7,17 +7,78 @@ interface AnalyticsCardProps {
 }
 
 const TopDonors: React.FC<AnalyticsCardProps> = () => {
+  const data = [
+    {
+      id: 1,
+      name: "Josh Bill",
+      img: user,
+      time: "Since: July, 2025",
+      money: "24,000",
+      percentage: "8.2%",
+    },
+    {
+      id: 2,
+      name: "Emily Carter",
+      img: user,
+      time: "Since: March, 2024",
+      money: "18,500",
+      percentage: "6.5%",
+    },
+    {
+      id: 3,
+      name: "Michael Brown",
+      img: user,
+      time: "Since: January, 2023",
+      money: "15,200",
+      percentage: "5.1%",
+    },
+    {
+      id: 4,
+      name: "Sophia Davis",
+      img: user,
+      time: "Since: October, 2022",
+      money: "12,700",
+      percentage: "4.2%",
+    },
+    {
+      id: 5,
+      name: "Daniel Wilson",
+      img: user,
+      time: "Since: May, 2021",
+      money: "10,300",
+      percentage: "3.7%",
+    },
+  ];
+
   return (
     <div>
-      <div className="">
-        <h1 className="text-3xl font-bold mb-4">Top 05 Donors</h1>
-        <div className="mt-5 border rounded-lg  p-5">
+      <div className="bg-white rounded-3xl p-6 border my-3">
+        <h1 className="text-2xl font-medium mb-2">Top 05 Donors</h1>
+        <p className="text-gray-400 mb-6">Sorted by total donations</p>
+        {data.map((item) => (
+          <div
+            key={item.id}
+            className="flex justify-between items-center gap-2 mb-4"
+          >
+            <div className="flex justify-start items-center gap-2">
+              <p>{item.id}</p>
+              <img src={user} alt="" />
+              <div>
+                <h1>{item.name}</h1>
+                <p className="text-gray-400">{item.time} </p>
+              </div>
+            </div>
+            <div>
+              <p>${item.money}</p>
+              <p className="text-green-500">+ {item.percentage}</p>
+            </div>
+          </div>
+        ))}
+
+        <div className="mt-5 ">
           <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
             <div className="relative h-10 w-10 rounded-full">
               <img src={user} alt="" />
-              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
-                1
-              </div>
             </div>
             <div>
               <h1>John Doe</h1>

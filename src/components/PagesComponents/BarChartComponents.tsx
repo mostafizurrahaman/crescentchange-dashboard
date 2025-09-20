@@ -30,7 +30,7 @@ const BarChartComponents = () => {
   return (
     <div
       style={{ width: "100%", height: 400 }}
-      className="bg-white  p-6 rounded-3xl border"
+      className="p-6"
     >
       <div className="flex justify-between items-center mb-4">
       <div className="mb-6">
