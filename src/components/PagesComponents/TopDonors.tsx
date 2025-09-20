@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import user from "../../assets/images/user.png";
+interface AnalyticsCardProps {
+  filter: "Today" | "This Week" | "This Month";
+  data: { message: string };
+}
 
-const TopDonors = () => {
+const TopDonors: React.FC<AnalyticsCardProps> = () => {
   return (
     <div>
       <div className="">
@@ -11,7 +15,9 @@ const TopDonors = () => {
           <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
             <div className="relative h-10 w-10 rounded-full">
               <img src={user} alt="" />
-                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">1</div>
+              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
+                1
+              </div>
             </div>
             <div>
               <h1>John Doe</h1>
@@ -23,9 +29,11 @@ const TopDonors = () => {
             </div>
           </div>
           <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-           <div className="relative h-10 w-10 rounded-full">
+            <div className="relative h-10 w-10 rounded-full">
               <img src={user} alt="" />
-                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">1</div>
+              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
+                1
+              </div>
             </div>
             <div>
               <h1>John Doe</h1>
@@ -37,9 +45,11 @@ const TopDonors = () => {
             </div>
           </div>
           <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-           <div className="relative h-10 w-10 rounded-full">
+            <div className="relative h-10 w-10 rounded-full">
               <img src={user} alt="" />
-                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">1</div>
+              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
+                1
+              </div>
             </div>
             <div>
               <h1>John Doe</h1>
@@ -51,9 +61,11 @@ const TopDonors = () => {
             </div>
           </div>
           <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-           <div className="relative h-10 w-10 rounded-full">
+            <div className="relative h-10 w-10 rounded-full">
               <img src={user} alt="" />
-                <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">2</div>
+              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
+                2
+              </div>
             </div>
             <div>
               <h1>John Doe</h1>

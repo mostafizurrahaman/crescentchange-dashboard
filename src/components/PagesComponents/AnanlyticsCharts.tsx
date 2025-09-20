@@ -5,7 +5,12 @@ import flower4 from "../../assets/images/Vector.png";
 import flower5 from "../../assets/images/Frame.png";
 import recurring from "../../assets/images/recurring.png";
 import onetime from "../../assets/images/ontime.png";
-const AnanlyticsCharts = () => {
+interface AnalyticsCardProps {
+  filter: "Today" | "This Week" | "This Month";
+  data: { message: string };
+}
+
+const AnanlyticsCharts:React.FC<AnalyticsCardProps> = () => {
   return (
     <div className=" my-5">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

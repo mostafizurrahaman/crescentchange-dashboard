@@ -5,8 +5,12 @@ import { FaUserGroup } from "react-icons/fa6";
 import flower from "../../assets/images/Flower.png";
 import flower1 from "../../assets/images/Flower (1).png";
 import flower2 from "../../assets/images/Flower (2).png";
+interface AnalyticsCardProps {
+  filter: "Today" | "This Week" | "This Month";
+  data: { message: string };
+}
 
-const AnalyticsCard = () => {
+const AnalyticsCard: React.FC<AnalyticsCardProps> = () => {
   return (
     <div>
       <div className="flex justify-start items-center gap-5 my-5">
@@ -48,7 +52,6 @@ const AnalyticsCard = () => {
         <img src={flower1} alt="" className="absolute bottom-0 left-96 " />
         <img src={flower2} alt="" className="absolute top-0 left-52 " />
       </div>
-   
     </div>
   );
 };
