@@ -81,31 +81,21 @@ const Profile = () => {
           Established since: <span className="text-black">01 July 2018</span>
         </p>
       </div>
-     
-    
 
       <div className="flex flex-col md:flex-row gap-5 justify-between items-center">
         <div className="w-full md:w-[70%]">
-        
-          <p className="my-5 border-b"></p>
           <div className="my-10">
-            <div className="flex justify-between items-center gap-5">
-              <h1 className="text-2xl font-bold">Causes Analytics</h1>
-              <Select defaultValue={"Backpacks & Books"}>
-                <Select.Option value="Backpacks & Books">
-                  Backpacks & Books
-                </Select.Option>
-                <Select.Option value="Every Child, Every Meal">
-                  Every Child, Every Meal
-                </Select.Option>
-                <Select.Option value="Warmth in Winter">
-                  Warmth in Winter
-                </Select.Option>
-                <Select.Option value="Digital Dreams">
-                  Digital Dreams
-                </Select.Option>
-              </Select>
+            <div className="p-6 bg-white rounded-3xl border">
+              <p className="text-gray-400">About</p>
+              <p className="my-6 text-gray-800">
+                Hope for Learning Foundation exists to unlock the power of
+                education for underserved communities. We champion access,
+                equity, and opportunity — because every child deserves a future
+                filled with knowledge, growth, and hope.
+              </p>
+                <p className="text-gray-400">Connect & Contact</p>
             </div>
+
             <div
               style={{ width: "100%", height: 400 }}
               className="bg-secondary  p-4 rounded-lg"
