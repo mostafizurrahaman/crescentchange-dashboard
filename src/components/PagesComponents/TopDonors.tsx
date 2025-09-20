@@ -74,108 +74,34 @@ const TopDonors: React.FC<AnalyticsCardProps> = () => {
             </div>
           </div>
         ))}
-
-        <div className="mt-5 ">
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <div className="relative h-10 w-10 rounded-full">
-              <img src={user} alt="" />
-            </div>
-            <div>
-              <h1>John Doe</h1>
-              <div className="flex justify-start items-center gap-5">
-                <p className="text-green-500">$45,000</p>
-                <p className="h-5 border-r px-5"></p>
-                <p>Since:July,2025</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <div className="relative h-10 w-10 rounded-full">
-              <img src={user} alt="" />
-              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
-                1
-              </div>
-            </div>
-            <div>
-              <h1>John Doe</h1>
-              <div className="flex justify-start items-center gap-5">
-                <p className="text-green-500">$45,000</p>
-                <p className="h-5 border-r px-5"></p>
-                <p>Since:July,2025</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <div className="relative h-10 w-10 rounded-full">
-              <img src={user} alt="" />
-              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
-                1
-              </div>
-            </div>
-            <div>
-              <h1>John Doe</h1>
-              <div className="flex justify-start items-center gap-5">
-                <p className="text-green-500">$45,000</p>
-                <p className="h-5 border-r px-5"></p>
-                <p>Since:July,2025</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <div className="relative h-10 w-10 rounded-full">
-              <img src={user} alt="" />
-              <div className="absolute bottom-0 right-0 bg-black text-white h-5 w-5 flex justify-center items-center rounded-full  ">
-                2
-              </div>
-            </div>
-            <div>
-              <h1>John Doe</h1>
-              <div className="flex justify-start items-center gap-5">
-                <p className="text-green-500">$45,000</p>
-                <p className="h-5 border-r px-5"></p>
-                <p>Since:July,2025</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      <div className="mt-10 ">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Recent Donors</h1>
-          <Link to="/donors">
-            <p className="text-lg">View All</p>
+      <div className="bg-white rounded-3xl p-6 border my-3">
+        <div className="flex justify-between items-center ">
+          <h1 className="text-2xl font-medium mb-2">Recent donors</h1>
+          <Link to="">
+            <button className="text-purple-500 underline ">View All</button>
           </Link>
         </div>
-        <div className="mt-5 border rounded-lg  p-5">
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <img src={user} alt="" />
-            <div>
-              <h1>John Doe</h1>
-              <p>Donated 20 min ago</p>
+
+        {data.map((item) => (
+          <div
+            key={item.id}
+            className="flex justify-between items-center gap-2 mb-4"
+          >
+            <div className="flex justify-start items-center gap-2">
+              {/* <p>{item.id}</p> */}
+              <img src={user} alt="" />
+              <div>
+                <h1>{item.name}</h1>
+                <p className="text-gray-400">{item.time} </p>
+              </div>
             </div>
+            {/* <div>
+              <p>${item.money}</p>
+              <p className="text-green-500">+ {item.percentage}</p>
+            </div> */}
           </div>
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <img src={user} alt="" />
-            <div>
-              <h1>John Doe</h1>
-              <p>Donated 20 min ago</p>
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <img src={user} alt="" />
-            <div>
-              <h1>John Doe</h1>
-              <p>Donated 20 min ago</p>
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-5 bg-white p-5 rounded-lg  border-b overflow-y-auto">
-            <img src={user} alt="" />
-            <div>
-              <h1>John Doe</h1>
-              <p>Donated 20 min ago</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
