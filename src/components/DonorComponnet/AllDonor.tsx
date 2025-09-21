@@ -1,45 +1,106 @@
 import { Pagination, Select } from "antd";
 
-import { FaArrowUp, FaHandHoldingHeart } from "react-icons/fa";
-import { FaUserGroup } from "react-icons/fa6";
-import user from "../../assets/images/user.png";
+import { Table } from "antd";
+
+import { Input } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 
 const AllDonor = () => {
-  const donors = [
+  const { Search } = Input;
+  const { Option } = Select;
+  const onSearch = (value: string) => {
+    console.log("Search input: ", value);
+  };
+  const data = [
     {
-      id: 1,
-      name: "John Doe",
-      amount: "$45,000",
-      since: "Since:July,2025",
-      time: "20 min ago",
-      image: user,
+      key: "1",
+      name: "Josh Bill",
+      email: "johnnb@gmail.com",
+      dateTime: "12 Dec 2023 03:00 PM",
+      donationType: "Round Up",
+      donationMessage: "-",
+      amount: 34.5,
     },
     {
-      id: 2,
-      name: "Jane Smith",
-      amount: "$30,000",
-      since: "Since:June,2025",
-      time: "1 hour ago",
-      image: user,
+      key: "2",
+      name: "M Karim",
+      email: "kkkarim@gmail.com",
+      dateTime: "12 Dec 2023 03:00 PM",
+      donationType: "Recurring",
+      donationMessage: "“Sending love & hope to everyone you’re helping”",
+      amount: 62.75,
     },
     {
-      id: 3,
-      name: "Michael Johnson",
-      amount: "$25,000",
-      since: "Since:May,2025",
-      time: "2 hours ago",
-      image: user,
+      key: "3",
+      name: "Josh Adam",
+      email: "jadddam@gmail.com",
+      dateTime: "12 Dec 2023 03:00 PM",
+      donationType: "One Time",
+      donationMessage: "-",
+      amount: 15.2,
     },
     {
-      id: 3,
-      name: "Michael Johnson",
-      amount: "$25,000",
-      since: "Since:May,2025",
-      time: "2 hours ago",
-      image: user,
+      key: "4",
+      name: "Fajar Surya",
+      email: "fjsurya@gmail.com",
+      dateTime: "12 Dec 2023 03:00 PM",
+      donationType: "One Time",
+      donationMessage: "“Sending love & hope to everyone you’re helping”",
+      amount: 47.3,
+    },
+    {
+      key: "5",
+      name: "Linda Blair",
+      email: "lindablair98@gmail.com",
+      dateTime: "12 Dec 2023 03:00 PM",
+      donationType: "Recurring",
+      donationMessage: "“Sending love & hope to everyone you’re helping”",
+      amount: 23.9,
     },
   ];
 
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email Address",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Date & Time",
+      dataIndex: "dateTime",
+      key: "dateTime",
+    },
+    {
+      title: "Donation Type",
+      dataIndex: "donationType",
+      key: "donationType",
+    },
+    {
+      title: "Donation Message",
+      dataIndex: "donationMessage",
+      key: "donationMessage",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (amount) => `$${amount.toFixed(2)}`,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <div>
+          <a href="#">View</a> | <a href="#">Reset</a>
+        </div>
+      ),
+    },
+  ];
   return (
     <div className="">
       <div className="bg-white border rounded-3xl p-6">
@@ -75,7 +136,7 @@ const AllDonor = () => {
               <span className="text-sm text-gray-400">per user</span>{" "}
             </h1>
           </div>
-        <div className="bg-[#f7f4f9] p-6 rounded-3xl">
+          <div className="bg-[#f7f4f9] p-6 rounded-3xl">
             <p className="text-lg font-medium">Total Donors</p>
             <h1 className="text-2xl text-gray-400 font-medium mt-10">
               {" "}
@@ -85,32 +146,50 @@ const AllDonor = () => {
           </div>
         </div>
       </div>
-      <h1 className="text-3xl font-bold my-10">Donation History</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {donors.map((donor) => (
-          <div
-            key={donor.id}
-            className="flex justify-between items-center mb-5 border-b border-r pb-5 pr-5"
-          >
-            <div>
-              <img src={user} alt="" />
-              <div className="flex flex-col justify-start ">
-                <h1 className="text-xl font-bold">Donor Name</h1>
-                <div className="flex justify-start items-center gap-5">
-                  <p className="text-green-500">$45,000</p>
-                  <p className="h-5 border-r "></p>
-                  <p>Since: July,2025</p>
-                </div>
-              </div>
+      <div className="bg-white p-6 rounded-3xl border my-6">
+        <div className="flex justify-between items-center gap-5">
+          <h1 className="text-xl font-medium">Donation History</h1>
+
+          <div className="flex items-center gap-3">
+            <div className="mt-4 md:mt-0">
+              <Search
+                placeholder="input search text"
+                onSearch={onSearch}
+                enterButton
+              />
             </div>
 
-            <p>20 min ago</p>
-          </div>
-        ))}
-      </div>
+            <div className="mt-4 md:mt-0">
+              <Select defaultValue="selected" style={{ width: 120 }}>
+                <Option value="selected">Selected</Option>
+                <Option value="all">All</Option>
+              </Select>
+            </div>
 
-      <div className="flex justify-end items-center my-10">
-        <Pagination />
+            <div className="mt-4 md:mt-0">
+              <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
+                Monthly
+              </button>
+            </div>
+            {/* export korte hobe */}
+            <div className="group relative mt-4 md:mt-0">
+              <MoreOutlined className="text-xl cursor-pointer" />
+              <span className="absolute left-0 bottom-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                Export
+              </span>
+            </div>
+          </div>
+        </div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{ pageSize: 5 }}
+          style={{ marginTop: 20 }}
+        />
+
+        <div className="flex justify-end items-center my-10">
+          <Pagination />
+        </div>
       </div>
     </div>
   );

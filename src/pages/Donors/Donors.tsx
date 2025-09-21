@@ -3,74 +3,64 @@ import AllDonor from "../../components/DonorComponnet/AllDonor";
 import RoundUp from "../../components/DonorComponnet/RoundUp";
 import Recurring from "../../components/DonorComponnet/Recurring";
 import OneTime from "../../components/DonorComponnet/OneTime";
+
 const Donors = () => {
   const [activeTab, setActiveTab] = useState("All Donors");
+
+  const tabContent: Record<string, { title: string; description: string }> = {
+    "All Donors": {
+      title: "Donors",
+      description: "Every name here is a story of support. See them shine.",
+    },
+    "Round Up": {
+      title: "Round Up Donations",
+      description:
+        "Small contributions that add up to big impacts through round up donations.",
+    },
+    Recurring: {
+      title: "Recurring Donations",
+      description:
+        "Consistent support from generous donors who give on a recurring basis.",
+    },
+    "One Time": {
+      title: "One Time Donations",
+      description:
+        "One-time gifts that make a meaningful difference right away.",
+    },
+  };
+
   return (
     <div>
-      <div className="flex justify-between items-centergap-2">
+      <div className="flex justify-between items-center gap-5">
         <div>
-          <h1 className="text-xl md:text-3xl font-semibold my-3">Donors</h1>
+          <h1 className="text-xl md:text-3xl font-semibold my-3">
+            {tabContent[activeTab].title}
+          </h1>
           <p className="text-gray-500 mb-10">
-          Every name here is a story of support. See them shine.
+            {tabContent[activeTab].description}
           </p>
         </div>
 
         <div className="flex justify-start items-center gap-5 mb-5">
-          <button
-            className={`px-4 py-2 rounded-3xl ${
-              activeTab === "All Donors" ? "bg-black text-white" : "bg-white border"
-            }`}
-            onClick={() => setActiveTab("All Donors")}
-          >
-            All Donors
-          </button>
-          <button
-            className={`px-4 py-2 rounded-3xl ${
-              activeTab === "Round Up" ? "bg-black text-white" : "bg-white border"
-            }`}
-            onClick={() => setActiveTab("Round Up")}
-          >
-            Round Up
-          </button>
-          <button
-            className={`px-4 py-2 rounded-3xl ${
-              activeTab === "Recurring" ? "bg-black text-white" : "bg-white border"
-            }`}
-            onClick={() => setActiveTab("Recurring")}
-          >
-            Recurring
-          </button>
-          <button
-            className={`px-4 py-2 rounded-3xl ${
-              activeTab === "One Time" ? "bg-black text-white" : "bg-white border"
-            }`}
-            onClick={() => setActiveTab("One Time")}
-          >
-            One Time
-          </button>
+          {["All Donors", "Round Up", "Recurring", "One Time"].map((tab) => (
+            <button
+              key={tab}
+              className={`px-4 py-2 rounded-3xl ${
+                activeTab === tab ? "bg-black text-white" : "bg-white border"
+              }`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
       </div>
 
-      {activeTab === "All Donors" && (
-        <div>
-          <AllDonor />
-        </div>
-      )}
-      {activeTab === "Round Up" && (
-        <div>
-          <RoundUp />
-        </div>
-      )}
-      {activeTab === "Recurring" && (
-        <div>
-          <Recurring />
-        </div>
-      )}
-      {activeTab === "One Time" && (
-        <div>
-          <OneTime />
-        </div>
-      )}
+      {/* Conditional Components */}
+      {activeTab === "All Donors" && <AllDonor />}
+      {activeTab === "Round Up" && <RoundUp />}
+      {activeTab === "Recurring" && <Recurring />}
+      {activeTab === "One Time" && <OneTime />}
     </div>
   );
 };
