@@ -9,6 +9,8 @@ import donor from "../../../assets/images/donor.png";
 import deposit from "../../../assets/images/deposit.png";
 import logout from "../../../assets/images/Sign Out.png";
 import calenderimg from "../../../assets/images/Calendar.png";
+import integration from "../../../assets/images/integration.png";
+import report from "../../../assets/images/reports.png";
 
 const { Sider } = Layout;
 
@@ -40,6 +42,16 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose }) => {
       key: "deposits",
       icon: <img src={deposit} alt="Deposits" className="w-5 h-5" />,
       label: <Link to="/deposits">Deposits</Link>,
+    },
+    {
+      key: "integrations",
+      icon: <img src={integration} alt="Deposits" className="w-5 h-5" />,
+      label: <Link to="/integrations">Integrations</Link>,
+    },
+    {
+      key: "reports",
+      icon: <img src={report} alt="Reports" className="w-5 h-5" />,
+      label: <Link to="/reports">Reports</Link>,
     },
   ];
 
