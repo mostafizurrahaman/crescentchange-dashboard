@@ -1,63 +1,36 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  ConfigProvider,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Upload,
-} from "antd";
-
+import { Upload } from "antd";
 import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
 import profile from "../../assets/images/profile.png";
 import hfl from "../../assets/images/Profile Logo.png";
-import { Link } from "react-router-dom";
-import { FaPencil } from "react-icons/fa6";
-type FieldType = {
-  "organisation-name"?: string;
-  "organisation-address"?: string;
-  suburb?: string;
-  state?: string;
-  "post-code"?: string;
-  country?: string;
-  website?: string;
-  telephone?: string;
-  "email-address"?: string;
-  username?: string;
-  password?: string;
-  remember?: string;
-  name?: string;
-  "abn/tfn"?: string;
-  "name-on-card"?: string;
-  "card-number"?: string;
-  "expiry-date"?: string;
-  cvv?: string;
-  "mission-statement"?: string;
-  "date-of-established"?: string;
-  lines: number;
-};
+import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
+
 const EditProfile = () => {
-  const [, setProfilePic] = useState<File | null>(null);
+  const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [, setLogo] = useState<File | null>(null);
+  const [logo, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [active, setActive] = useState<"discard" | "save" | null>(null);
+  const [activeTab, setActiveTab] = useState<"profile" | "access" | "causes">(
+    "profile"
+  );
 
-  const onFinish = () => {};
   const handleBeforeUpload = (file: File) => {
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
     return false;
   };
+
   const handleBeforeUploadLogo = (file: File) => {
     setLogo(file);
     setPreviewLogo(URL.createObjectURL(file));
     return false;
   };
+
   return (
     <div>
-      <div className=" ">
+      <div>
         {/* header */}
         <div>
           <div className="flex justify-between items-center gap-5">
@@ -90,228 +63,82 @@ const EditProfile = () => {
             Manage how your organisation appears to donors.
           </p>
         </div>
-        {/* profile */}
-        <div>
-          <div className="mt-10">
-            <div className="my-5  w-full relative">
-              {previewImage ? (
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  className="w-full h-80  rounded-2xl"
-                />
-              ) : (
-                <img
-                  src={profile}
-                  alt="Preview"
-                  className="w-full h-80  rounded-2xl"
-                />
-              )}
-              <Upload
-                showUploadList={false}
-                maxCount={1}
-                beforeUpload={handleBeforeUpload}
-                className=" cursor-pointer absolute top-10 right-20 z-[999]"
-              >
-                <div className="bg-neutral-200 px-6 py-3 rounded-full flex justify-center items-center gap-2">
-                  <FaCamera className="h-5 w-5" />
-                  <p className="text-lg ">Change Cover Photo</p>
-                </div>
-              </Upload>
-            </div>
 
-            <div className="  relative -top-28 left-24">
-              {previewLogo ? (
-                <img
-                  src={previewLogo}
-                  alt="Preview"
-                  className="h-40 w-40 rounded-full"
-                />
-              ) : (
-                <img
-                  src={hfl}
-                  alt="Preview"
-                  className="h-40 w-40 rounded-full"
-                />
-              )}
-              <Upload
-                showUploadList={false}
-                maxCount={1}
-                beforeUpload={handleBeforeUploadLogo}
-                className=" cursor-pointer "
-              >
-                <div className="relative -top-14 left-32 bg-neutral-800 h-10 w-10 rounded-full flex justify-center items-center gap-2">
-                  <FaPen className="h-5 w-5 text-white" />
-                </div>
-              </Upload>
-            </div>
+        {/* profile cover */}
+        <div className="mt-10">
+          <div className="my-5 w-full relative">
+            <img
+              src={previewImage || profile}
+              alt="Cover"
+              className="w-full h-80 rounded-2xl"
+            />
+            <Upload
+              showUploadList={false}
+              maxCount={1}
+              beforeUpload={handleBeforeUpload}
+              className="cursor-pointer absolute top-10 right-20 z-[999]"
+            >
+              <div className="bg-neutral-200 px-6 py-3 rounded-full flex justify-center items-center gap-2">
+                <FaCamera className="h-5 w-5" />
+                <p className="text-lg">Change Cover Photo</p>
+              </div>
+            </Upload>
+          </div>
+
+          <div className="relative -top-28 left-24">
+            <img
+              src={previewLogo || hfl}
+              alt="Logo"
+              className="h-40 w-40 rounded-full"
+            />
+            <Upload
+              showUploadList={false}
+              maxCount={1}
+              beforeUpload={handleBeforeUploadLogo}
+              className="cursor-pointer"
+            >
+              <div className="relative -top-14 left-32 bg-neutral-800 h-10 w-10 rounded-full flex justify-center items-center">
+                <FaPen className="h-5 w-5 text-white" />
+              </div>
+            </Upload>
           </div>
         </div>
 
-        <div>
-          <div className="w-full md:w-[60%] mx-auto">
-            <ConfigProvider
-              theme={{
-                components: {
-                  Form: {
-                    borderRadius: 0,
-                  },
-                  Input: {
-                    borderRadius: 5,
-                  },
-                },
-              }}
+        {/* outlet */}
+        <div className="w-full flex justify-between items-start">
+          {/* Sidebar */}
+          <div className="w-full md:w-[20%] border-r flex flex-col gap-3">
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={`px-4 py-2 rounded ${
+                activeTab === "profile" ? "bg-black text-white" : "bg-white"
+              }`}
             >
-              <Form
-                name="contact"
-                initialValues={{ remember: false }}
-                onFinish={onFinish}
-                layout="vertical"
-                className="mt-10"
-              >
-                <Form.Item<FieldType>
-                  name="organisation-name"
-                  label={<p className=" text-md ">Organisation Name</p>}
-                >
-                  <Input
-                    required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Organisation Name"
-                  />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  name="organisation-address"
-                  label={<p className=" text-md ">Organisation address</p>}
-                  style={{}}
-                >
-                  <Input
-                    required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Organisation address"
-                  />
-                </Form.Item>
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-                  <Form.Item<FieldType>
-                    name="country"
-                    label={<p className=" text-md ">Country</p>}
-                    style={{ width: "100%" }}
-                  >
-                    <Input
-                      required
-                      style={{ padding: "6px" }}
-                      className=" text-md"
-                      placeholder="Country"
-                    />
-                  </Form.Item>
-                  <Form.Item<FieldType>
-                    name="state"
-                    label={<p className=" text-md ">State </p>}
-                    style={{ width: "100%" }}
-                  >
-                    <Input
-                      required
-                      style={{ padding: "6px" }}
-                      className=" text-md"
-                      placeholder="State"
-                    />
-                  </Form.Item>
-                  <Form.Item<FieldType>
-                    name="post-code"
-                    label={<p className=" text-md ">Post code</p>}
-                    style={{ width: "100%" }}
-                  >
-                    <InputNumber
-                      required
-                      style={{ padding: "3px", width: "100%" }}
-                      className=" text-md"
-                      placeholder="Post code"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-                  <Form.Item<FieldType>
-                    name="date-of-established"
-                    label={<p className=" text-md ">Date Of Established</p>}
-                    style={{ width: "100%" }}
-                  >
-                    <DatePicker
-                      required
-                      style={{ padding: "6px", width: "100%" }}
-                      className=" text-md"
-                      placeholder="Date Of Established"
-                    />
-                  </Form.Item>
-                  <Form.Item<FieldType>
-                    name="telephone"
-                    label={<p className=" text-md ">Contact No</p>}
-                    style={{ width: "100%" }}
-                  >
-                    <Input
-                      required
-                      style={{ padding: "6px" }}
-                      className=" text-md"
-                      placeholder="Contact No"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-                  <Form.Item<FieldType>
-                    name="website"
-                    label={<p className=" text-md ">Organization Website</p>}
-                    style={{ width: "100%" }}
-                  >
-                    <Input
-                      required
-                      style={{ padding: "6px", width: "100%" }}
-                      className=" text-md"
-                      placeholder="Organization Website"
-                    />
-                  </Form.Item>
-                  <Form.Item<FieldType>
-                    name="email-address"
-                    label={<p className=" text-md ">Email address</p>}
-                    style={{ width: "100%" }}
-                  >
-                    <Input
-                      required
-                      style={{ padding: "6px" }}
-                      className=" text-md"
-                      placeholder="Email address"
-                    />
-                  </Form.Item>
-                </div>
+              Edit Profile
+            </button>
+            <button
+              onClick={() => setActiveTab("access")}
+              className={`px-4 py-2 rounded ${
+                activeTab === "access" ? "bg-black text-white" : "bg-white"
+              }`}
+            >
+              Access
+            </button>
+            <button
+              onClick={() => setActiveTab("causes")}
+              className={`px-4 py-2 rounded ${
+                activeTab === "causes" ? "bg-black text-white" : "bg-white"
+              }`}
+            >
+              Causes
+            </button>
+          </div>
 
-                <Form.Item<FieldType>
-                  name="mission-statement"
-                  label={<p className=" text-md ">Mission & Operation</p>}
-                  style={{}}
-                >
-                  <Input.TextArea
-                    required
-                    rows={4}
-                    style={{ padding: "6px" }}
-                    className=" text-md"
-                    placeholder="Type your message..."
-                  />
-                </Form.Item>
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-                  <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
-                    <button className="bg-neutral-300 text-black py-2 px-4 rounded-xl ">
-                      See preview
-                    </button>
-                  </Form.Item>
-                  <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
-                    <Link to="/access">
-                      <button className="bg-btnPrimary text-white py-2 px-4 rounded-xl ">
-                        Save and Continue
-                      </button>
-                    </Link>
-                  </Form.Item>
-                </div>
-              </Form>
-            </ConfigProvider>
+          {/* Content */}
+          <div className="w-full md:w-[80%]">
+            {activeTab === "profile" && <ProfileEditForm />}
+            {activeTab === "access" && <p>Access settings coming soon...</p>}
+            {activeTab === "causes" && <p>Causes management coming soon...</p>}
           </div>
         </div>
       </div>
