@@ -1,9 +1,11 @@
 import { Pagination, Select } from "antd";
 
 import { Table } from "antd";
-
+import roundup from "../../assets/images/roundup.png";
+import people from "../../assets/images/People Community.png";
 import { Input } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+
 
 const RoundUp = () => {
   const { Search } = Input;
@@ -118,31 +120,39 @@ const RoundUp = () => {
             </Select>
           </div>
         </div>
-        <div className="flex justify-start items-end gap-1 mt-10 mb-6">
-          <h1 className="text-3xl md:text-5xl font-bold">
-            {" "}
-            <span className="text-gray-400">$</span> 40,000
-          </h1>
-          <p className="text-green-500">
-            8.2% <span className="text-gray-400"> vs last month</span>
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-6  ">
-          <div className="bg-[#f7f4f9] p-6 rounded-3xl">
-            <p className="text-lg font-medium">Avg Donation</p>
-            <h1 className="text-2xl font-medium mt-10">
+        <div className="grid grid-cols-2 justify-between items-center gap-2">
+          <div className="flex justify-start items-end gap-1 mt-10 mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
-              <span className="text-gray-400">$</span> 400{" "}
-              <span className="text-sm text-gray-400">per user</span>{" "}
+              <span className="text-gray-400">$</span> 10,000
             </h1>
+            <p className="text-green-500">
+              +6.2% <span className="text-gray-400"> vs last month</span>
+            </p>
           </div>
-          <div className="bg-[#f7f4f9] p-6 rounded-3xl">
-            <p className="text-lg font-medium">Total Donors</p>
-            <h1 className="text-2xl text-gray-400 font-medium mt-10">
-              {" "}
-              <span className="text-black">12.2</span>K
-              <span className="text-sm text-green-500">5.4%</span>{" "}
-            </h1>
+
+          <div className="grid grid-cols-2 gap-6 ">
+            <div className=" bg-gradient-to-tr from-[#e3ebf5] to bg-[f8f6f8] p-6 rounded-3xl">
+              <div className="flex justify-between items-center gap-2">
+                <p className="text-lg font-medium">Avg Donation</p>
+                <img src={roundup} alt="" />
+              </div>
+              <h1 className="text-2xl font-medium mt-10">
+                <span className="text-gray-400">$</span> 400{" "}
+                <span className="text-sm text-gray-400">per user</span>{" "}
+              </h1>
+            </div>
+            <div className=" bg-gradient-to-tr from-[#e3ebf5] to bg-[f8f6f8] p-6 rounded-3xl">
+              <div className="flex justify-between items-center gap-2">
+                <p className="text-lg font-medium">Total Donors</p>
+                <img src={people} alt="" />
+              </div>
+
+              <h1 className="text-2xl text-gray-400 font-medium mt-10">
+                <span className="text-black">12.2</span>K
+                <span className="text-sm text-green-500">5.4%</span>{" "}
+              </h1>
+            </div>
           </div>
         </div>
       </div>
