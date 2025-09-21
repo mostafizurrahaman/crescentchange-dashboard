@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
             { path: "profile", element: <Profile /> },
             { path: "edit-profile", element: <EditProfile /> },
             { path: "access", element: <AccessTab /> },
-            { path: "envlope", element: <Envlopes /> },
+            { path: "causes", element: <Envlopes /> },
             { path: "settings", element: <Seetings /> },
 
         ],

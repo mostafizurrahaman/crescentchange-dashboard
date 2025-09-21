@@ -175,6 +175,20 @@ const ProfileEditForm = () => {
               placeholder="Hope for Learning Foundation exists to unlock the power of education for underserved communities. We champion access, equity, and opportunity — because every child deserves a future filled with knowledge, growth, and hope."
             />
           </Form.Item>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
+            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
+              <button className="bg-neutral-300 text-black py-2 px-4 rounded-xl ">
+                See preview
+              </button>
+            </Form.Item>
+            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
+              <Link to="/access">
+                <button className="bg-btnPrimary text-white py-2 px-4 rounded-xl ">
+                  Save and Continue
+                </button>
+              </Link>
+            </Form.Item>
+          </div>
         </Form>
       </ConfigProvider>
     </div>

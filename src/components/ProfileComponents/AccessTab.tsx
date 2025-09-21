@@ -34,64 +34,28 @@ const AccessTab = () => {
   const handleOk = () => setIsModalOpen(false);
   const handleCancle = () => setIsModalOpen(false);
 
-const navigate= useNavigate();
-
+  const navigate = useNavigate();
 
   const onFinish = (values: FieldType) => {
     console.log("Success:", values);
   };
 
-const handleBack = () => {
-  navigate(-1);
-};
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
-    <div className=" my-5">
-      <div>
-        <h1 className="text-3xl font-bold mb-4">Profile</h1>
-        <p className="text-lg text-gray-600 mb-4">
-          See how your supporters are giving and where your impact is growing.
-        </p>
-        <div>
-          <ConfigProvider
-            theme={{
-              components: {
-                Steps: {
-                  colorPrimary: "rgb(165,94,234)",
-                },
-              },
-            }}
-          >
-            <Steps
-              current={1}
-              items={[
-                {
-                  title: "Profile",
-                },
-                {
-                  title: "Access",
-                },
-                {
-                  title: "Envlope",
-                },
-              ]}
-            />
-          </ConfigProvider>
-        </div>
-        <div className="my-6">
-          <img src={profile} alt="" className="w-full" />
-        </div>
-      </div>
-      <div className="w-full md:w-[60%] mx-auto">
+    <div className="">
+      <div className="">
         <Form
           name="contact"
           initialValues={{ remember: false }}
           onFinish={onFinish}
           layout="vertical"
-          className="mt-10"
+          className="px-6"
         >
           <h1 className="text-2xl font-bold my-2">Tax Details</h1>
-          <div className="flex justify-between items-center gap-5 border-b pb-5">
+          <div className="flex justify-between items-center gap-5 ">
             <Form.Item<FieldType>
               name="organisation-name"
               label={<p className=" text-md ">Registered Charity Name</p>}
@@ -101,7 +65,7 @@ const handleBack = () => {
                 required
                 style={{ padding: "6px", width: "100%" }}
                 className=" text-md"
-                placeholder="Registered Charity Name"
+                placeholder="hfl_foundation"
               />
             </Form.Item>
             <Form.Item<FieldType>
@@ -144,7 +108,7 @@ const handleBack = () => {
               />
             </Form.Item>
           </div>
-          <div className="flex justify-between items-center gap-5 border-b pb-5">
+          <div className="flex justify-between items-center gap-5 ">
             <Form.Item<FieldType>
               name="expiry-date"
               label={<p className=" text-md ">Expiry Date</p>}
@@ -170,21 +134,7 @@ const handleBack = () => {
               />
             </Form.Item>
           </div>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
-              <button onClick={handleBack} className=" text-black py-2 px-4 rounded-xl flex justify-center items-center gap-2 text-lg">
-                <FaArrowLeft />
-                previous
-              </button>
-            </Form.Item>
-            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
-              <Link to="/envlope">
-                <button className="bg-btnPrimary text-white py-2 px-4 rounded-xl ">
-                  Save and Continue
-                </button>
-              </Link>
-            </Form.Item>
-          </div>
+        
         </Form>
       </div>
 

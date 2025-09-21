@@ -8,6 +8,8 @@ import editUser from "../../assets/images/Icons.png";
 import donor from "../../assets/images/donor.png";
 import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
+import AccessTab from "../ProfileComponents/AccessTab";
+import Envlope from "./Envlope";
 
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -141,7 +143,7 @@ const EditProfile = () => {
             >
               <div className=" flex justify-center items-center gap-2">
                 <img src={deposit} alt="" />
-                <p> Causes</p>
+                <p> causes</p>
               </div>
             </div>
           </div>
@@ -149,8 +151,8 @@ const EditProfile = () => {
           {/* Content */}
           <div className="w-full md:w-[80%]">
             {activeTab === "profile" && <ProfileEditForm />}
-            {activeTab === "access" && <p>Access settings coming soon...</p>}
-            {activeTab === "causes" && <p>Causes management coming soon...</p>}
+            {activeTab === "access" && <AccessTab />}
+            {activeTab === "causes" && <Envlope />}
           </div>
         </div>
       </div>
