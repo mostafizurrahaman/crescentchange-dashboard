@@ -9,11 +9,11 @@ import {
 } from "antd";
 
 import { useState } from "react";
-import { FaCamera } from "react-icons/fa";
-import { Steps } from "antd";
+import { FaCamera, FaPen } from "react-icons/fa";
 import profile from "../../assets/images/profile.png";
-import hfl from "../../assets/images/hfl.png";
+import hfl from "../../assets/images/Profile Logo.png";
 import { Link } from "react-router-dom";
+import { FaPencil } from "react-icons/fa6";
 type FieldType = {
   "organisation-name"?: string;
   "organisation-address"?: string;
@@ -42,10 +42,8 @@ const EditProfile = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+  const [active, setActive] = useState<"discard" | "save" | null>(null);
 
-
-
-  
   const onFinish = () => {};
   const handleBeforeUpload = (file: File) => {
     setProfilePic(file);
@@ -60,40 +58,39 @@ const EditProfile = () => {
   return (
     <div>
       <div className=" ">
-        <h1 className="text-3xl font-bold mb-4">Profile</h1>
-        <p className="text-lg text-gray-600 mb-4">
-          See how your supporters are giving and where your impact is growing.
-        </p>
+        {/* header */}
         <div>
-          <ConfigProvider
-            theme={{
-              components: {
-                Steps: {
-                  colorPrimary: "rgb(165,94,234)",
-                },
-              },
-            }}
-          >
-            <Steps
-              current={1}
-              items={[
-                {
-                  title: "Profile",
-                },
-                {
-                  title: "Access",
-                },
-                {
-                  title: "Envlope",
-                },
-              ]}
-            />
-          </ConfigProvider>
+          <div className="flex justify-between items-center gap-5">
+            <h1 className="text-4xl font-semibold mb-4">Edit Information</h1>
+            <div className="flex justify-start items-center gap-3">
+              <button
+                onClick={() => setActive("discard")}
+                className={`px-4 py-3 rounded-3xl border transition ${
+                  active === "discard"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
+                }`}
+              >
+                Discard Changes
+              </button>
+
+              <button
+                onClick={() => setActive("save")}
+                className={`px-4 py-3 rounded-3xl border transition ${
+                  active === "save"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
+                }`}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+          <p className="text-lg text-gray-600 mb-6">
+            Manage how your organisation appears to donors.
+          </p>
         </div>
-
-
-
-
+        {/* profile */}
         <div>
           <div className="mt-10">
             <div className="my-5  w-full relative">
@@ -101,7 +98,7 @@ const EditProfile = () => {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="w-full h-80 rounded-2xl"
+                  className="w-full h-80  rounded-2xl"
                 />
               ) : (
                 <img
@@ -123,18 +120,18 @@ const EditProfile = () => {
               </Upload>
             </div>
 
-            <div className="my-5 flex flex-col gap-5 justify-center items-center relative">
+            <div className="  relative -top-28 left-24">
               {previewLogo ? (
                 <img
                   src={previewLogo}
                   alt="Preview"
-                  className="h-28 w-28 rounded-2xl"
+                  className="h-40 w-40 rounded-full"
                 />
               ) : (
                 <img
                   src={hfl}
                   alt="Preview"
-                  className="h-28 w-28  rounded-2xl"
+                  className="h-40 w-40 rounded-full"
                 />
               )}
               <Upload
@@ -143,13 +140,15 @@ const EditProfile = () => {
                 beforeUpload={handleBeforeUploadLogo}
                 className=" cursor-pointer "
               >
-                <div className="bg-neutral-200 px-6 py-3 rounded-full flex justify-center items-center gap-2">
-                  <FaCamera className="h-5 w-5" />
-                  <p className="text-lg ">Change Profile Photo</p>
+                <div className="relative -top-14 left-32 bg-neutral-800 h-10 w-10 rounded-full flex justify-center items-center gap-2">
+                  <FaPen className="h-5 w-5 text-white" />
                 </div>
               </Upload>
             </div>
           </div>
+        </div>
+
+        <div>
           <div className="w-full md:w-[60%] mx-auto">
             <ConfigProvider
               theme={{

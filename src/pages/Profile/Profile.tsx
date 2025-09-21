@@ -67,9 +67,11 @@ const Profile = () => {
           >
             Preview Profile{" "}
           </button>
-          <button className="bg-white px-4 py-3 rounded-3xl border">
-            Update Profile
-          </button>
+          <Link to="/edit-profile">
+            <button className="bg-white px-4 py-3 rounded-3xl border">
+              Update Profile
+            </button>
+          </Link>
         </div>
       </div>
       <div className="my-6 relative">
