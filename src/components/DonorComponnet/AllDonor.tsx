@@ -1,9 +1,5 @@
 import { Pagination, Select } from "antd";
 
-import dollor from "../../assets/images/dollor.png";
-import flower from "../../assets/images/Flower.png";
-import flower1 from "../../assets/images/Flower (1).png";
-import flower2 from "../../assets/images/Flower (2).png";
 import { FaArrowUp, FaHandHoldingHeart } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import user from "../../assets/images/user.png";
@@ -45,10 +41,13 @@ const AllDonor = () => {
   ];
 
   return (
-    <div>
-      <div className="w-full">
+    <div className="">
+      <div className="bg-white border rounded-3xl p-6">
         <div className="flex justify-between items-center mb-5">
-          <p className="text-gray-500 mb-10">Total Donation</p>
+          <div>
+            <p className=" text-xl font-medium">Total Donation</p>
+            <p className="text-neutral-400">+8.2% from last month</p>
+          </div>
           <div>
             <Select defaultValue="Monthly" className="w-[150px]">
               <Select.Option value="Last 30 Days">Last 30 Days</Select.Option>
@@ -58,37 +57,32 @@ const AllDonor = () => {
             </Select>
           </div>
         </div>
-      </div>
-      <div>
-        <div className="bg-[#d8f77c] p-5 rounded-md relative z-[1]">
-          <img src={dollor} alt="" className="mb-5" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-            <div>
-              <div className="flex justify-start items-center gap-5">
-                <h1 className="text-3xl md:text-5xl font-bold"> $40,000</h1>
-                <p className="flex justify-center items-center gap-2 text-green-500 bg-white px-4 py-1 rounded-md">
-                  <FaArrowUp />
-                  8.2%
-                </p>
-              </div>
-              <p className="text-gray-500 text-2xl mt-5">Total Donated</p>
-            </div>
-            <div className="grid grid-cols-2 gap-6  ">
-              <div className="bg-white p-5 rounded-md">
-                <FaHandHoldingHeart className="h-8 w-8" />
-                <h1 className="text-2xl font-bold my-3">$400</h1>
-                <p>Avg Donation</p>
-              </div>
-              <div className="bg-white p-5 rounded-md">
-                <FaUserGroup className="h-8 w-8" />
-                <h1 className="text-2xl font-bold my-3">$400</h1>
-                <p>Total donors</p>
-              </div>
-            </div>
+        <div className="flex justify-start items-end gap-1 mt-10 mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold">
+            {" "}
+            <span className="text-gray-400">$</span> 40,000
+          </h1>
+          <p className="text-green-500">
+            8.2% <span className="text-gray-400"> vs last month</span>
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-6  ">
+          <div className="bg-[#f7f4f9] p-6 rounded-3xl">
+            <p className="text-lg font-medium">Avg Donation</p>
+            <h1 className="text-2xl font-medium mt-10">
+              {" "}
+              <span className="text-gray-400">$</span> 400{" "}
+              <span className="text-sm text-gray-400">per user</span>{" "}
+            </h1>
           </div>
-          <img src={flower} alt="" className="absolute top-0 right-56 " />
-          <img src={flower1} alt="" className="absolute bottom-0 left-96 " />
-          <img src={flower2} alt="" className="absolute top-0 left-52" />
+        <div className="bg-[#f7f4f9] p-6 rounded-3xl">
+            <p className="text-lg font-medium">Total Donors</p>
+            <h1 className="text-2xl text-gray-400 font-medium mt-10">
+              {" "}
+              <span className="text-black">12.2</span>K
+              <span className="text-sm text-green-500">5.4%</span>{" "}
+            </h1>
+          </div>
         </div>
       </div>
       <h1 className="text-3xl font-bold my-10">Donation History</h1>
