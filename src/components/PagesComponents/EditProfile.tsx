@@ -10,6 +10,7 @@ import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
 import AccessTab from "../ProfileComponents/AccessTab";
 import Envlope from "./Envlope";
+import EditCauses from "../EditProfileComponents/EditCauses";
 
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -152,7 +153,7 @@ const EditProfile = () => {
           <div className="w-full md:w-[80%]">
             {activeTab === "profile" && <ProfileEditForm />}
             {activeTab === "access" && <AccessTab />}
-            {activeTab === "causes" && <Envlope />}
+            {activeTab === "causes" && <EditCauses  />}
           </div>
         </div>
       </div>
