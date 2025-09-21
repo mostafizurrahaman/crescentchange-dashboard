@@ -4,6 +4,9 @@ import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
 import profile from "../../assets/images/profile.png";
 import hfl from "../../assets/images/Profile Logo.png";
+import editUser from "../../assets/images/Icons.png";
+import donor from "../../assets/images/donor.png";
+import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
 
 const EditProfile = () => {
@@ -105,33 +108,42 @@ const EditProfile = () => {
         </div>
 
         {/* outlet */}
-        <div className="w-full flex justify-between items-start">
+        <div className="w-full flex justify-between items-start gap-5 border-r">
           {/* Sidebar */}
-          <div className="w-full md:w-[20%] border-r flex flex-col gap-3">
-            <button
+          <div className="w-full md:w-[20%] border-r flex flex-col gap-3 px-6 min-h-screen">
+            <div
               onClick={() => setActiveTab("profile")}
-              className={`px-4 py-2 rounded ${
-                activeTab === "profile" ? "bg-black text-white" : "bg-white"
+              className={`px-10 py-4 rounded-3xl ${
+                activeTab === "profile" ? "bg-[#ebe9ec] text-black" : "bg-white"
               }`}
             >
-              Edit Profile
-            </button>
-            <button
+              <div className=" flex justify-center items-center gap-2">
+                <img src={editUser} alt="" />
+                <p> Edit Profile</p>
+              </div>
+            </div>
+            <div
               onClick={() => setActiveTab("access")}
-              className={`px-4 py-2 rounded ${
-                activeTab === "access" ? "bg-black text-white" : "bg-white"
+              className={`px-10 py-4 rounded-3xl ${
+                activeTab === "access" ? "bg-[#ebe9ec] text-black" : "bg-white"
               }`}
             >
-              Access
-            </button>
-            <button
+              <div className=" flex justify-center items-center gap-2">
+                <img src={donor} alt="" />
+                <p> Access</p>
+              </div>
+            </div>
+            <div
               onClick={() => setActiveTab("causes")}
-              className={`px-4 py-2 rounded ${
-                activeTab === "causes" ? "bg-black text-white" : "bg-white"
+              className={`px-10 py-4 rounded-3xl ${
+                activeTab === "causes" ? "bg-[#ebe9ec] text-black" : "bg-white"
               }`}
             >
-              Causes
-            </button>
+              <div className=" flex justify-center items-center gap-2">
+                <img src={deposit} alt="" />
+                <p> Causes</p>
+              </div>
+            </div>
           </div>
 
           {/* Content */}

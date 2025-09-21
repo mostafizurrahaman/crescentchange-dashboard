@@ -26,7 +26,7 @@ type FieldType = {
 const ProfileEditForm = () => {
   const onFinish = () => {};
   return (
-    <div>
+    <div className="">
       <ConfigProvider
         theme={{
           components: {
@@ -44,19 +44,35 @@ const ProfileEditForm = () => {
           initialValues={{ remember: false }}
           onFinish={onFinish}
           layout="vertical"
-          className="mt-10"
+          className="px-6"
         >
-          <Form.Item<FieldType>
-            name="organisation-name"
-            label={<p className=" text-md ">Organisation Name</p>}
-          >
-            <Input
-              required
-              style={{ padding: "6px" }}
-              className=" text-md"
-              placeholder="Organisation Name"
-            />
-          </Form.Item>
+          <div className="flex justify-between items-start gap-2">
+            <Form.Item<FieldType>
+              name="organisation-name"
+              style={{ width: "50%" }}
+              label={<p className=" text-md ">Organisation Name</p>}
+            >
+              <Input
+                required
+                style={{ padding: "6px" }}
+                className=" text-md"
+                placeholder="Organisation Name"
+              />
+            </Form.Item>
+            <Form.Item<FieldType>
+              name="date-of-established"
+              label={<p className=" text-md ">Date Of Established</p>}
+              style={{ width: "50%" }}
+            >
+              <DatePicker
+                required
+                style={{ padding: "6px", width: "100%" }}
+                className=" text-md"
+                placeholder="Date Of Established"
+              />
+            </Form.Item>
+          </div>
+
           <Form.Item<FieldType>
             name="organisation-address"
             label={<p className=" text-md ">Organisation address</p>}
@@ -109,60 +125,46 @@ const ProfileEditForm = () => {
           </div>
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
             <Form.Item<FieldType>
-              name="date-of-established"
-              label={<p className=" text-md ">Date Of Established</p>}
-              style={{ width: "100%" }}
-            >
-              <DatePicker
-                required
-                style={{ padding: "6px", width: "100%" }}
-                className=" text-md"
-                placeholder="Date Of Established"
-              />
-            </Form.Item>
-            <Form.Item<FieldType>
               name="telephone"
-              label={<p className=" text-md ">Contact No</p>}
+              label={<p className=" text-md ">Mobile</p>}
               style={{ width: "100%" }}
             >
               <Input
                 required
                 style={{ padding: "6px" }}
                 className=" text-md"
-                placeholder="Contact No"
-              />
-            </Form.Item>
-          </div>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-            <Form.Item<FieldType>
-              name="website"
-              label={<p className=" text-md ">Organization Website</p>}
-              style={{ width: "100%" }}
-            >
-              <Input
-                required
-                style={{ padding: "6px", width: "100%" }}
-                className=" text-md"
-                placeholder="Organization Website"
+                placeholder="Mobile"
               />
             </Form.Item>
             <Form.Item<FieldType>
               name="email-address"
-              label={<p className=" text-md ">Email address</p>}
+              label={<p className=" text-md ">Email </p>}
               style={{ width: "100%" }}
             >
               <Input
                 required
                 style={{ padding: "6px" }}
                 className=" text-md"
-                placeholder="Email address"
+                placeholder="Email "
+              />
+            </Form.Item>
+            <Form.Item<FieldType>
+              name="website"
+              label={<p className=" text-md "> Website</p>}
+              style={{ width: "100%" }}
+            >
+              <Input
+                required
+                style={{ padding: "6px", width: "100%" }}
+                className=" text-md"
+                placeholder=" Website"
               />
             </Form.Item>
           </div>
 
           <Form.Item<FieldType>
-            name="mission-statement"
-            label={<p className=" text-md ">Mission & Operation</p>}
+            name="about"
+            label={<p className=" text-md ">About</p>}
             style={{}}
           >
             <Input.TextArea
@@ -170,23 +172,9 @@ const ProfileEditForm = () => {
               rows={4}
               style={{ padding: "6px" }}
               className=" text-md"
-              placeholder="Type your message..."
+              placeholder="Hope for Learning Foundation exists to unlock the power of education for underserved communities. We champion access, equity, and opportunity — because every child deserves a future filled with knowledge, growth, and hope."
             />
           </Form.Item>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
-            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
-              <button className="bg-neutral-300 text-black py-2 px-4 rounded-xl ">
-                See preview
-              </button>
-            </Form.Item>
-            <Form.Item<FieldType> className=" mt-5 flex md:justify-end md:items-center">
-              <Link to="/access">
-                <button className="bg-btnPrimary text-white py-2 px-4 rounded-xl ">
-                  Save and Continue
-                </button>
-              </Link>
-            </Form.Item>
-          </div>
         </Form>
       </ConfigProvider>
     </div>
