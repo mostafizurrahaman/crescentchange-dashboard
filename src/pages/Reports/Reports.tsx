@@ -25,7 +25,36 @@ const Reports = () => {
           ))}
         </div>
       </div>
-      {activeTab === "All Donors" && "All Donor"}
+
+      {activeTab === "All Donors" && (
+        <div className="grid grid-cols-1 md:grid-cols-3 justify-center  items-center gap-3">
+          <div className="bg-white p-6 rounded-3xl border">
+            <p className="text-lg font-medium">Total Donations</p>
+            <h1 className="text-2xl font-medium mt-10">
+              {" "}
+              <span className="text-gray-400">$</span> 4000{" "}
+              <span className="text-sm text-green-400">+8.2% </span>{" "}
+              <span className="text-gray-400 text-sm">vs last month</span>{" "}
+            </h1>
+          </div>
+          <div className="bg-white p-6 rounded-3xl border">
+            <p className="text-lg font-medium">Total Donors</p>
+            <h1 className="text-2xl font-medium mt-10">
+              {" "}
+              <span className="text-gray-400">$</span> 4000{" "}
+              <span className="text-sm text-green-500">5.4%</span>{" "}
+            </h1>
+          </div>
+          <div className="bg-white p-6 rounded-3xl border">
+            <p className="text-lg font-medium">Avg. Donation</p>
+            <h1 className="text-2xl font-medium mt-10">
+              {" "}
+              <span className="text-gray-400">$</span> 400{" "}
+              <span className="text-sm text-gray-400">per user</span>{" "}
+            </h1>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
