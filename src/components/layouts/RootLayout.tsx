@@ -60,7 +60,7 @@ const RootLayout = () => {
                     </span>
                   </div>
                 </Link>
-                <Link to="/admin-profile">
+                <Link to="/profile">
                   <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-3xl">
                     <img
                       src={hfl}
