@@ -1,5 +1,6 @@
+import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
-import { FaDownload, FaHandHoldingHeart } from "react-icons/fa";
+import {  FaHandHoldingHeart } from "react-icons/fa";
 
 interface DepositData {
   title: string;
@@ -9,43 +10,55 @@ interface DepositData {
   donor: string;
   method: string;
   card: string;
-  status?: string; // Optional field for status
+  status?: string;
+  transectionId: string;
+  deposit: string;
+  transferVia: string;
 }
 
 const Subscriptions = () => {
-  const data: DepositData[] = [
-    {
-      key: "1",
-      title: "Foundation Plan",
-      date: "Thursday, 31st of June",
-      donor: "John Doe",
-      amount: "$500",
-      method: "Credit Card",
-      card: "**** 521456",
-      status: "Successful",
-    },
-    {
-      key: "2",
-      title: "Focus Plan",
-      date: "Wednesday, 30th of June",
-      donor: "Jane Smith",
-      amount: "$250",
-      method: "PayPal",
-      card: "**** 874512",
-      status: "Pending",
-    },
+const data: DepositData[] = [
+  {
+    key: "1",
+    title: "Foundation Plan",
+    date: "Thursday, 31st of June",
+    donor: "John Doe",
+    amount: "$500",
+    method: "Credit Card",
+    card: "**** 521456",
+    status: "Successful",
+    transectionId: "TXN001",
+    deposit: "Direct",
+    transferVia: "Stripe",
+  },
+  {
+    key: "2",
+    title: "Focus Plan",
+    date: "Wednesday, 30th of June",
+    donor: "Jane Smith",
+    amount: "$250",
+    method: "PayPal",
+    card: "**** 874512",
+    status: "Pending",
+    transectionId: "TXN002",
+    deposit: "Escrow",
+    transferVia: "PayPal",
+  },
+  {
+    key: "3",
+    title: "Freedom Plan",
+    date: "Tuesday, 29th of June",
+    donor: "Michael Johnson",
+    amount: "$1000",
+    method: "Bank Transfer",
+    card: "**** 963258",
+    status: "Failed",
+    transectionId: "TXN003",
+    deposit: "Direct",
+    transferVia: "Wire",
+  },
+];
 
-    {
-      key: "3",
-      title: "Freedom Plan",
-      date: "Tuesday, 29th of June",
-      donor: "Michael Johnson",
-      amount: "$1000",
-      method: "Bank Transfer",
-      card: "**** 963258",
-      status: "Failed",
-    },
-  ];
   return (
     <div>
       <div className="w-full">
@@ -67,26 +80,23 @@ const Subscriptions = () => {
             key={item.key}
             className="bg-white p-5 rounded-xl shadow-md border "
           >
-            <div className="flex justify-between items-center mb-5 border-b pb-5">
+            <div className="flex justify-between items-center mb-5 pb-5 border-b">
               <div className="flex justify-start items-center gap-5">
                 <h1 className="text-xl md:text-2xl  font-semibold flex justify-center items-center gap-2">
-                  <FaHandHoldingHeart className="h-10 w-10 bg-[#b5e0ff] p-2 rounded-full"/>
+                  <FaHandHoldingHeart className="h-10 w-10 bg-[#b5e0ff] p-2 rounded-full" />
                   {item.title}
                 </h1>
               </div>
-              <FaDownload className="bg-btnPrimary text-white p-2 rounded-full h-8 w-8" />
+              <LiaArrowDownSolid className="bg-purple-500 text-white p-1 rounded-full h-8 w-8" />
             </div>
-            <div className="text-lg">
+            <div className="text-lg border-b pb-6">
               <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Payment Date & Time</p>
+                <p className="text-gray-500">Deposited to:</p>
                 <p>{item.date}</p>
               </div>
+
               <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Plan Valodity</p>
-                <p>{item.date}</p>
-              </div>
-              <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Amonunt</p>
+                <p className="text-gray-500">Status:</p>
                 <p>{item.amount}</p>
               </div>
               <div className="flex justify-between items-center gap-5 mb-3">
@@ -94,20 +104,30 @@ const Subscriptions = () => {
                 <p
                   className={`${
                     item.status === "Successful"
-                      ? "bg-green-500 text-white px-3 py-1 rounded-md"
+                      ? "bg-green-500 text-white px-2 py-1 rounded-3xl text-sm"
                       : ""
                   } ${
                     item.status === "Failed"
-                      ? "bg-red-500 text-white px-3 py-1 rounded-md"
+                      ? "bg-red-500 text-white px-2 py-1 rounded-3xl text-sm"
                       : ""
                   } ${
                     item.status === "Pending"
-                      ? "bg-yellow-500 text-white px-3 py-1 rounded-md"
+                      ? "bg-yellow-500 text-white px-2 py-1 rounded-3xl text-sm"
                       : ""
                   }`}
                 >
                   {item.status}
                 </p>
+              </div>
+            </div>
+            <div className="pt-6">
+              <div className="flex justify-between items-center gap-5 mb-3">
+                <p className="text-gray-500">Timestamp:</p>
+                <p>{item.date}</p>
+              </div>
+              <div className="flex justify-between items-center gap-5 mb-3">
+                <p className="text-gray-500">Transaction ID:</p>
+                <p>{item.amount}</p>
               </div>
             </div>
           </div>
