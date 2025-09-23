@@ -1,15 +1,34 @@
 import { useState } from "react";
 import { CgMoreVertical } from "react-icons/cg";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/ai";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineMail,
+} from "react-icons/ai";
 import { Modal, Input, Select, Button } from "antd";
 
 type Role = "Admin" | "Editor" | "Manager";
 
 const teamMembers = [
-  { name: "John Bills", email: "billsjohn09@gmail.com", status: "Active", role: "Admin" },
-  { name: "Billy Clark", email: "clark999@gmail.com", status: "Pending", role: "Editor" },
-  { name: "Anna K.", email: "annakazama54@gmail.com", status: "Active", role: "Manager" },
+  {
+    name: "John Bills",
+    email: "billsjohn09@gmail.com",
+    status: "Active",
+    role: "Admin",
+  },
+  {
+    name: "Billy Clark",
+    email: "clark999@gmail.com",
+    status: "Pending",
+    role: "Editor",
+  },
+  {
+    name: "Anna K.",
+    email: "annakazama54@gmail.com",
+    status: "Active",
+    role: "Manager",
+  },
 ];
 
 export default function Settings() {
@@ -21,8 +40,16 @@ export default function Settings() {
   const [showInviteModal, setShowInviteModal] = useState(false);
 
   // Password state
-  const [passwords, setPasswords] = useState({ current: "", new: "", confirm: "" });
-  const [showPw, setShowPw] = useState({ current: false, new: false, confirm: false });
+  const [passwords, setPasswords] = useState({
+    current: "",
+    new: "",
+    confirm: "",
+  });
+  const [showPw, setShowPw] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
 
   // Invite state
   const [invite, setInvite] = useState({ email: "", role: "Manager" as Role });
@@ -46,8 +73,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="p-6 w-full md:w-[80%]">
-      {/* Header */}
+    <div className="">
       <h1 className="text-2xl md:text-3xl font-semibold mb-2">Settings</h1>
       <p className="text-gray-500 mb-8">
         Manage team access and keep your organisation account secure.
@@ -55,20 +81,31 @@ export default function Settings() {
 
       {/* Team Access */}
       <div className="mb-10">
-        <h2 className="text-lg font-semibold mb-3">Team Access</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold mb-3">Team Access</h2>
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="bg-white px-3 py-1 rounded-3xl border"
+          >
+            Invite a new member
+          </button>
+        </div>
         <p className="text-gray-500 mb-5">
           Manage your team and assign roles to manage your organization.
         </p>
 
-        <div className="flex flex-wrap gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {members.map((member) => (
-            <div key={member.email} className="relative bg-white shadow rounded-xl p-4 w-72">
-              <div className="flex justify-between items-start">
+            <div
+              key={member.email}
+              className=" bg-white p-6 rounded-3xl border "
+            >
+              <div className="flex justify-between items-center gap-2 border-b pb-6">
                 <div>
-                  <p className="font-semibold">{member.name}</p>
+                  <p className="font-semibold text-lg mb-2">{member.name}</p>
                   <p className="text-gray-500 text-sm">{member.email}</p>
                 </div>
-                <div className="relative group">
+                <div className="">
                   <CgMoreVertical className="cursor-pointer text-gray-500" />
                   <div className="absolute hidden group-hover:block right-0 mt-2 w-28 bg-white border rounded shadow">
                     <button className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 w-full text-left">
@@ -83,22 +120,22 @@ export default function Settings() {
                   </div>
                 </div>
               </div>
-              <div className="mt-3">
-                <p>
-                  Status:{" "}
-                  <span
-                    className={`${
-                      member.status === "Active" ? "text-green-600" : "text-yellow-600"
-                    } font-medium`}
-                  >
-                    {member.status}
-                  </span>
+              <div className="flex justify-between items-center gap-3 mt-3">
+                <p>Status: </p>
+                <p
+                  className={`${
+                    member.status === "Active"
+                      ? "text-green-600"
+                      : "text-yellow-600"
+                  } font-medium`}
+                >
+                  {member.status}
                 </p>
-                <p>
-                  Role:{" "}
-                  <span className="inline-block bg-black text-white text-xs px-2 py-1 rounded">
-                    {member.role}
-                  </span>
+              </div>
+              <div className="flex justify-between items-center gap-3 mt-3">
+                <p>Role: </p>
+                <p className="inline-block bg-black text-white text-xs px-2 py-1 rounded">
+                  {member.role}
                 </p>
               </div>
             </div>
@@ -177,20 +214,28 @@ export default function Settings() {
             <Input
               type={showPw[field as keyof typeof showPw] ? "text" : "password"}
               value={passwords[field as keyof typeof passwords]}
-              onChange={(e) => setPasswords((p) => ({ ...p, [field]: e.target.value }))}
+              onChange={(e) =>
+                setPasswords((p) => ({ ...p, [field]: e.target.value }))
+              }
               suffix={
                 showPw[field as keyof typeof showPw] ? (
                   <AiOutlineEyeInvisible
                     className="cursor-pointer"
                     onClick={() =>
-                      setShowPw((p) => ({ ...p, [field]: !p[field as keyof typeof p] }))
+                      setShowPw((p) => ({
+                        ...p,
+                        [field]: !p[field as keyof typeof p],
+                      }))
                     }
                   />
                 ) : (
                   <AiOutlineEye
                     className="cursor-pointer"
                     onClick={() =>
-                      setShowPw((p) => ({ ...p, [field]: !p[field as keyof typeof p] }))
+                      setShowPw((p) => ({
+                        ...p,
+                        [field]: !p[field as keyof typeof p],
+                      }))
                     }
                   />
                 )
@@ -200,11 +245,14 @@ export default function Settings() {
         ))}
 
         <p className="text-xs text-gray-500 mb-4">
-          Your Password must contain at least 8 characters, 1 uppercase letter, 1 number, and 1 special character.
+          Your Password must contain at least 8 characters, 1 uppercase letter,
+          1 number, and 1 special character.
         </p>
 
         <div className="flex justify-end gap-3">
-          <Button onClick={() => setShowPasswordModal(false)}>Discard Changes</Button>
+          <Button onClick={() => setShowPasswordModal(false)}>
+            Discard Changes
+          </Button>
           <Button type="primary" onClick={handlePasswordChange}>
             Save Changes
           </Button>
@@ -223,7 +271,9 @@ export default function Settings() {
           <Input
             type="email"
             value={invite.email}
-            onChange={(e) => setInvite((i) => ({ ...i, email: e.target.value }))}
+            onChange={(e) =>
+              setInvite((i) => ({ ...i, email: e.target.value }))
+            }
             prefix={<AiOutlineMail />}
           />
         </div>
@@ -232,7 +282,9 @@ export default function Settings() {
           <label className="block text-sm mb-1">Role</label>
           <Select
             value={invite.role}
-            onChange={(value) => setInvite((i) => ({ ...i, role: value as Role }))}
+            onChange={(value) =>
+              setInvite((i) => ({ ...i, role: value as Role }))
+            }
             className="w-full"
           >
             <Select.Option value="Admin">Admin</Select.Option>
