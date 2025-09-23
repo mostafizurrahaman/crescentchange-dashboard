@@ -19,7 +19,7 @@ const SubscriptionCard: React.FC = () => {
   return (
     <div className="my-5 grid grid-cols-1 items-start justify-between gap-4 md:grid-cols-3">
       {/* Foundation */}
-      <div className="rounded-3xl bg-white p-6">
+      <div className="rounded-3xl bg-white p-6 ">
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100">
             <img src={star} alt="" className="h-5 w-5" />
@@ -27,7 +27,7 @@ const SubscriptionCard: React.FC = () => {
           <p className="text-2xl font-semibold">Foundation Plan</p>
         </div>
 
-        <div className="my-6 space-y-2">
+        <div className="my-6 space-y-2 h-40">
           <h1 className="text-4xl font-bold">
             <span className="text-gray-400"> $</span>
             12 <span className="text-sm font-thin text-gray-600">/ month</span>

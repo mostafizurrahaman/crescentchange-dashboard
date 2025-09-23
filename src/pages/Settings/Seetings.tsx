@@ -1,35 +1,48 @@
 import { useState } from "react";
 import { CgMoreVertical } from "react-icons/cg";
 import { FaEdit, FaTrash } from "react-icons/fa";
-// import { MoreVertical, Edit2, Trash2 } from "lucide-react";
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from "react-icons/ai";
+import { Modal, Input, Select, Button } from "antd";
+
+type Role = "Admin" | "Editor" | "Manager";
 
 const teamMembers = [
-  {
-    name: "John Bills",
-    email: "billsjohn09@gmail.com",
-    status: "Active",
-    role: "Admin",
-  },
-  {
-    name: "Billy Clark",
-    email: "clark999@gmail.com",
-    status: "Pending",
-    role: "Editor",
-  },
-  {
-    name: "Anna K.",
-    email: "annakazama54@gmail.com",
-    status: "Active",
-    role: "Manager",
-  },
+  { name: "John Bills", email: "billsjohn09@gmail.com", status: "Active", role: "Admin" },
+  { name: "Billy Clark", email: "clark999@gmail.com", status: "Pending", role: "Editor" },
+  { name: "Anna K.", email: "annakazama54@gmail.com", status: "Active", role: "Manager" },
 ];
 
 export default function Settings() {
   const [members, setMembers] = useState(teamMembers);
   const [twoFA, setTwoFA] = useState(false);
 
+  // Modal states
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+
+  // Password state
+  const [passwords, setPasswords] = useState({ current: "", new: "", confirm: "" });
+  const [showPw, setShowPw] = useState({ current: false, new: false, confirm: false });
+
+  // Invite state
+  const [invite, setInvite] = useState({ email: "", role: "Manager" as Role });
+
   const handleRemove = (email: string) => {
     setMembers((prev) => prev.filter((m) => m.email !== email));
+  };
+
+  const handlePasswordChange = () => {
+    if (passwords.new !== passwords.confirm) {
+      alert("Passwords do not match!");
+      return;
+    }
+    console.log("Submit new password:", passwords);
+    setShowPasswordModal(false);
+  };
+
+  const handleInvite = () => {
+    console.log("Invite sent:", invite);
+    setShowInviteModal(false);
   };
 
   return (
@@ -49,10 +62,7 @@ export default function Settings() {
 
         <div className="flex flex-wrap gap-5">
           {members.map((member) => (
-            <div
-              key={member.email}
-              className="relative bg-white shadow rounded-xl p-4 w-72"
-            >
+            <div key={member.email} className="relative bg-white shadow rounded-xl p-4 w-72">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-semibold">{member.name}</p>
@@ -73,15 +83,12 @@ export default function Settings() {
                   </div>
                 </div>
               </div>
-
               <div className="mt-3">
                 <p>
                   Status:{" "}
                   <span
                     className={`${
-                      member.status === "Active"
-                        ? "text-green-600"
-                        : "text-yellow-600"
+                      member.status === "Active" ? "text-green-600" : "text-yellow-600"
                     } font-medium`}
                   >
                     {member.status}
@@ -96,8 +103,12 @@ export default function Settings() {
               </div>
             </div>
           ))}
+
           {/* Invite new member button */}
-          <button className="w-72 h-32 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-gray-500 hover:border-gray-400">
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="w-72 h-32 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-gray-500 hover:border-gray-400"
+          >
             + Invite a new member
           </button>
         </div>
@@ -115,7 +126,12 @@ export default function Settings() {
             to reset it.
           </p>
         </div>
-        <span className="text-xl">↗</span>
+        <button
+          onClick={() => setShowPasswordModal(true)}
+          className="text-xl cursor-pointer"
+        >
+          ↗
+        </button>
       </div>
 
       {/* Two-Factor Authentication */}
@@ -139,6 +155,99 @@ export default function Settings() {
           <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
         </label>
       </div>
+
+      {/* ==================== AntD MODALS ==================== */}
+
+      {/* Update Password Modal */}
+      <Modal
+        title="Update your Password"
+        open={showPasswordModal}
+        onCancel={() => setShowPasswordModal(false)}
+        footer={null}
+      >
+        {["current", "new", "confirm"].map((field) => (
+          <div className="mb-4 relative" key={field}>
+            <label className="block text-sm mb-1">
+              {field === "current"
+                ? "Enter Current Password"
+                : field === "new"
+                ? "Enter New Password"
+                : "Confirm New Password"}
+            </label>
+            <Input
+              type={showPw[field as keyof typeof showPw] ? "text" : "password"}
+              value={passwords[field as keyof typeof passwords]}
+              onChange={(e) => setPasswords((p) => ({ ...p, [field]: e.target.value }))}
+              suffix={
+                showPw[field as keyof typeof showPw] ? (
+                  <AiOutlineEyeInvisible
+                    className="cursor-pointer"
+                    onClick={() =>
+                      setShowPw((p) => ({ ...p, [field]: !p[field as keyof typeof p] }))
+                    }
+                  />
+                ) : (
+                  <AiOutlineEye
+                    className="cursor-pointer"
+                    onClick={() =>
+                      setShowPw((p) => ({ ...p, [field]: !p[field as keyof typeof p] }))
+                    }
+                  />
+                )
+              }
+            />
+          </div>
+        ))}
+
+        <p className="text-xs text-gray-500 mb-4">
+          Your Password must contain at least 8 characters, 1 uppercase letter, 1 number, and 1 special character.
+        </p>
+
+        <div className="flex justify-end gap-3">
+          <Button onClick={() => setShowPasswordModal(false)}>Discard Changes</Button>
+          <Button type="primary" onClick={handlePasswordChange}>
+            Save Changes
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Invite Modal */}
+      <Modal
+        title="Invite Your Team Member"
+        open={showInviteModal}
+        onCancel={() => setShowInviteModal(false)}
+        footer={null}
+      >
+        <div className="mb-4 relative">
+          <label className="block text-sm mb-1">Email</label>
+          <Input
+            type="email"
+            value={invite.email}
+            onChange={(e) => setInvite((i) => ({ ...i, email: e.target.value }))}
+            prefix={<AiOutlineMail />}
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm mb-1">Role</label>
+          <Select
+            value={invite.role}
+            onChange={(value) => setInvite((i) => ({ ...i, role: value as Role }))}
+            className="w-full"
+          >
+            <Select.Option value="Admin">Admin</Select.Option>
+            <Select.Option value="Editor">Editor</Select.Option>
+            <Select.Option value="Manager">Manager</Select.Option>
+          </Select>
+        </div>
+
+        <div className="flex justify-end gap-3">
+          <Button onClick={() => setShowInviteModal(false)}>Cancel</Button>
+          <Button type="primary" onClick={handleInvite}>
+            Invite
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }
