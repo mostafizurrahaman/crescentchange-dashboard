@@ -1,72 +1,122 @@
-import { FaHandHoldingHeart } from "react-icons/fa";
-import vectors from "../../assets/images/Vectors.png";
-import vector1 from "../../assets/images/Vector (1).png";
-import vector2 from "../../assets/images/Frame.png";
+import star from "../../assets/images/Star Emphasis.png";
+import { HiCheckBadge } from "react-icons/hi2";
 const SubscriptionCard = () => {
   return (
     <div className="my-5 grid grid-cols-1 md:grid-cols-3 justify-between items-center gap-4">
       {/* Free Subscription */}
-      <div className="h-96  bg-[#fdb1f1] p-5 rounded-xl relative z-[999]">
-        <div className="flex justify-start items-center gap-3 mb-5">
-          <FaHandHoldingHeart className="h-10 w-10 bg-white p-2 rounded-full" />
-          <p className="text-xl font-semibold">Foundation Plan</p>
+      <div className="bg-white p-6 rounded-3xl">
+        <div className="flex justify-start items-center gap-3 mb-6">
+          <div className="bg-neutral-100 h-8 w-8 rounded-full flex justify-center items-center">
+            <img src={star} alt="" className="h-5 w-5" />
+          </div>
+          <p className="text-2xl font-semibold ">Foundation Plan</p>
         </div>
-        <h1 className="text-3xl font-bold">
-          $12 <span className="text-sm font-thin">/ month</span>
-        </h1>
-        <button className="bg-btnPrimary text-white  w-full py-2 rounded-2xl my-10">
+        <div className="my-6 space-y-2 ">
+          <h1 className="text-4xl font-bold">
+            <span className="text-gray-400"> $</span>
+            12 <span className="text-sm font-thin text-gray-600">/ month</span>
+          </h1>
+
+          <ul className="text-lg  text-gray-500 list-decimal ">
+            <li className="flex justify-start items-center gap-2">
+              <HiCheckBadge className="h-4 w-4" /> Basic donor analytics
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" /> Org profile page
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" />
+              Track recurring donations
+            </li>
+          </ul>
+        </div>
+
+        <button className="bg-purple-500 text-white  w-full py-4 rounded-3xl ">
           Get Started
         </button>
-        <ul className="text-lg  text-gray-700 list-decimal px-5">
-          <li>Basic donor analytics</li>
-          <li>Org profile page</li>
-          <li>Track recurring donations</li>
-        </ul>
-        <img src={vectors} alt="" className="absolute top-0 right-0 z-[-1] rounded-r-xl" />
       </div>
-      <div className="h-96 bg-[#b5e0ff] p-5 rounded-xl relative z-[999]">
-        <div className="flex justify-start items-center gap-3 mb-5">
-          <FaHandHoldingHeart className="h-10 w-10 bg-white p-2 rounded-full" />
-          <p className="text-xl font-semibold">Focus Plan </p>
+      <div className="bg-white p-6 rounded-3xl">
+        <div className="flex justify-start items-center gap-3 mb-6">
+          <div className="bg-neutral-100 h-8 w-8 rounded-full flex justify-center items-center">
+            <img src={star} alt="" className="h-5 w-5" />
+          </div>
+          <p className="text-2xl font-semibold ">Focus Plan</p>
+          <button className="bg-green-500 text-white px-2 py-1 rounded-3xl">
+            Active Plan
+          </button>
         </div>
-        <h1 className="text-3xl font-bold">
-          $12{" "}
-          <span className="text-sm font-thin">
-            / month{" "}
-            <span className="bg-green-800 text-neutral-200 px-3 py-1 rounded-lg">
-              Active plan
-            </span>
-          </span>
-        </h1>
-        <button className="bg-btnPrimary text-white  w-full py-2 rounded-2xl my-10">
-          Cancel subscription
+        <div className="my-6 space-y-2 ">
+          <h1 className="text-4xl font-bold">
+            <span className="text-gray-400"> $</span>
+            20 <span className="text-sm font-thin text-gray-600">/ month</span>
+          </h1>
+
+          <ul className="text-lg  text-gray-500 list-decimal ">
+            <li className="flex justify-start items-center gap-2">
+              <HiCheckBadge className="h-4 w-4" /> Everything in Basic, and
+              more.
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" /> Advanced donation filters.
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" />
+              Monthly deposit reports.
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" />
+              Real-time donation tracking.
+            </li>
+          </ul>
+        </div>
+
+        <button className="border-2 border-purple-500 text-purple-500 font-bold w-full py-4 rounded-3xl ">
+    Cancel Subscription
         </button>
-        <ul className="text-lg  text-gray-700 list-decimal px-5">
-          <li>Everything in Basic, and more</li>
-          <li>Advanced donation filters</li>
-          <li>Monthly deposit reports</li>
-          <li>Real-time donation tracking</li>
-        </ul>
-        <img src={vector1} alt="" className="absolute top-0 right-0 z-[-1] rounded-r-xl" />
       </div>
-      <div className="h-96 bg-[#ffe599] p-5 rounded-xl relative z-[999]">
-        <div className="flex justify-start items-center gap-3 mb-5">
-          <FaHandHoldingHeart className="h-10 w-10 bg-white p-2 rounded-full" />
-          <p className="text-xl font-semibold">Freedom Plan</p>
+      <div className="bg-white p-6 rounded-3xl">
+        <div className="flex justify-start items-center gap-3 mb-6">
+          <div className="bg-neutral-100 h-8 w-8 rounded-full flex justify-center items-center">
+            <img src={star} alt="" className="h-5 w-5" />
+          </div>
+          <p className="text-2xl font-semibold ">Freedom Plan</p>
         </div>
-        <h1 className="text-3xl font-bold">
-          $40 <span className="text-sm font-thin">/ year</span>
-        </h1>
-        <button className="bg-btnPrimary text-white  w-full py-2 rounded-2xl my-10">
-          Upgrade pro
+        <div className="my-6 space-y-2 ">
+          <h1 className="text-4xl font-bold">
+            <span className="text-gray-400"> $</span>
+            40 <span className="text-sm font-thin text-gray-600">/ month</span>
+          </h1>
+
+          <ul className="text-lg  text-gray-500 list-decimal ">
+            <li className="flex justify-start items-center gap-2">
+              <HiCheckBadge className="h-4 w-4" />
+              Access to donation dashboard.
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" /> View donor analytics.
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" />
+              Priority support.
+            </li>
+            <li className="flex justify-start items-center gap-2">
+              {" "}
+              <HiCheckBadge className="h-4 w-4" />
+              Real-time donation tracking.
+            </li>
+          </ul>
+        </div>
+
+        <button className="bg-purple-500 text-white  w-full py-4 rounded-3xl ">
+          Upgrade 
         </button>
-        <ul className="text-lg  text-gray-700 list-decimal px-5">
-          <li>Access to donation dashboard</li>
-          <li> View donor analytics</li>
-          <li>Priority support</li>
-          <li> Real-time donation tracking</li>
-        </ul>
-        <img src={vector2} alt="" className="absolute top-0 right-0 z-[-1] rounded-r-xl" />
       </div>
     </div>
   );
