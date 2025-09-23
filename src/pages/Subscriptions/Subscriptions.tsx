@@ -1,6 +1,8 @@
 import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
-import {  FaHandHoldingHeart } from "react-icons/fa";
+import { FaHandHoldingHeart } from "react-icons/fa";
+import { useState } from "react";
+import { Modal } from "antd";
 
 interface DepositData {
   title: string;
@@ -17,47 +19,51 @@ interface DepositData {
 }
 
 const Subscriptions = () => {
-const data: DepositData[] = [
-  {
-    key: "1",
-    title: "Foundation Plan",
-    date: "Thursday, 31st of June",
-    donor: "John Doe",
-    amount: "$500",
-    method: "Credit Card",
-    card: "**** 521456",
-    status: "Successful",
-    transectionId: "TXN001",
-    deposit: "Direct",
-    transferVia: "Stripe",
-  },
-  {
-    key: "2",
-    title: "Focus Plan",
-    date: "Wednesday, 30th of June",
-    donor: "Jane Smith",
-    amount: "$250",
-    method: "PayPal",
-    card: "**** 874512",
-    status: "Pending",
-    transectionId: "TXN002",
-    deposit: "Escrow",
-    transferVia: "PayPal",
-  },
-  {
-    key: "3",
-    title: "Freedom Plan",
-    date: "Tuesday, 29th of June",
-    donor: "Michael Johnson",
-    amount: "$1000",
-    method: "Bank Transfer",
-    card: "**** 963258",
-    status: "Failed",
-    transectionId: "TXN003",
-    deposit: "Direct",
-    transferVia: "Wire",
-  },
-];
+  const data: DepositData[] = [
+    {
+      key: "1",
+      title: "Foundation Plan",
+      date: "Thursday, 31st of June",
+      donor: "John Doe",
+      amount: "$500",
+      method: "Credit Card",
+      card: "**** 521456",
+      status: "Successful",
+      transectionId: "TXN001",
+      deposit: "Direct",
+      transferVia: "Stripe",
+    },
+    {
+      key: "2",
+      title: "Focus Plan",
+      date: "Wednesday, 30th of June",
+      donor: "Jane Smith",
+      amount: "$250",
+      method: "PayPal",
+      card: "**** 874512",
+      status: "Pending",
+      transectionId: "TXN002",
+      deposit: "Escrow",
+      transferVia: "PayPal",
+    },
+    {
+      key: "3",
+      title: "Freedom Plan",
+      date: "Tuesday, 29th of June",
+      donor: "Michael Johnson",
+      amount: "$1000",
+      method: "Bank Transfer",
+      card: "**** 963258",
+      status: "Failed",
+      transectionId: "TXN003",
+      deposit: "Direct",
+      transferVia: "Wire",
+    },
+  ];
+
+
+
+
 
   return (
     <div>
@@ -133,6 +139,8 @@ const data: DepositData[] = [
           </div>
         ))}
       </div>
+
+   
     </div>
   );
 };
