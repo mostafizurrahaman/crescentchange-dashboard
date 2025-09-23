@@ -1,7 +1,6 @@
 import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
-import { FaHandHoldingHeart } from "react-icons/fa";
-
+import star from "../../assets/images/Star Emphasis.png";
 
 interface DepositData {
   title: string;
@@ -88,7 +87,9 @@ const Subscriptions = () => {
             <div className="flex justify-between items-center mb-5 pb-5 border-b">
               <div className="flex justify-start items-center gap-5">
                 <h1 className="text-xl md:text-2xl  font-semibold flex justify-center items-center gap-2">
-                  <FaHandHoldingHeart className="h-10 w-10 bg-[#b5e0ff] p-2 rounded-full" />
+             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100">
+            <img src={star} alt="" className="h-5 w-5" />
+          </div>
                   {item.title}
                 </h1>
               </div>
