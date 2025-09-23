@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { Modal } from "antd";
 import star from "../../assets/images/Star Emphasis.png";

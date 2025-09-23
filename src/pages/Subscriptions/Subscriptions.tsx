@@ -1,20 +1,19 @@
 import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
 import { FaHandHoldingHeart } from "react-icons/fa";
-import { useState } from "react";
-import { Modal } from "antd";
+
 
 interface DepositData {
   title: string;
   key: string;
   date: string;
   amount: string;
-  donor: string;
+  donor: string; 
   method: string;
   card: string;
   status?: string;
   transectionId: string;
-  deposit: string;
+  deposit: string; 
   transferVia: string;
 }
 
