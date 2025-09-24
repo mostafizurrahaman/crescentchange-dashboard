@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import  { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Modal, Button, Form, Input, Select } from "antd";
 import books from "../../assets/images/books.png";
@@ -23,7 +24,7 @@ const EditCauses = () => {
   const [form] = Form.useForm();
 
   // Function to handle modal toggle
-  const toggleModal = (cause) => {
+  const toggleModal = (cause:any) => {
     setSelectedCause(cause || null);
     form.resetFields();
     setShowModal(!showModal);
@@ -102,7 +103,7 @@ const EditCauses = () => {
           layout="vertical"
           onFinish={handleSubmit}
           initialValues={{
-            name: selectedCause ? selectedCause.name : "",
+            name: selectedCause ? selectedCause?.name : "",
             note: selectedCause
               ? "Our students need notebooks, pencils, and basic materials for the semester"
               : "",
@@ -115,7 +116,7 @@ const EditCauses = () => {
               { required: true, message: "Please select a cause subject" },
             ]}
           >
-            <Select defaultValue={selectedCause ? selectedCause.name : ""}>
+            <Select defaultValue={selectedCause ? selectedCause?.name : ""}>
               <Select.Option value="Backpacks & Books">
                 Backpacks & Books
               </Select.Option>

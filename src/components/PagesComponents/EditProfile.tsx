@@ -9,7 +9,6 @@ import donor from "../../assets/images/donor.png";
 import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
 import AccessTab from "../ProfileComponents/AccessTab";
-import Envlope from "./Envlope";
 import EditCauses from "../EditProfileComponents/EditCauses";
 
 const EditProfile = () => {

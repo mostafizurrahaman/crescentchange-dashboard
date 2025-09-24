@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pagination, Select } from "antd";
 
 import { Table } from "antd";
@@ -91,7 +92,7 @@ const Recurring = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount) => `$${amount.toFixed(2)}`,
+      render: (amount:any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",

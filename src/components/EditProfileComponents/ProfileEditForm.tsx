@@ -1,6 +1,6 @@
 import { ConfigProvider, DatePicker, Form, Input, InputNumber } from "antd";
-import { Link } from "react-router-dom";
 type FieldType = {
+
   "organisation-name"?: string;
   "organisation-address"?: string;
   suburb?: string;
@@ -22,6 +22,7 @@ type FieldType = {
   "mission-statement"?: string;
   "date-of-established"?: string;
   lines: number;
+   about?: string;
 };
 const ProfileEditForm = () => {
   const onFinish = () => {};

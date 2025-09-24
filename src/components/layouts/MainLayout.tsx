@@ -2,11 +2,9 @@
 
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
-import { Layout } from "antd";
 import Sidebar from "./Sidebar/Sidebar";
 import MainHeader from "./MainHeader/MainHeader";
 
-const { Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 

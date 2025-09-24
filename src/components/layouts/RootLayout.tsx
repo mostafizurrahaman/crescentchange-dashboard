@@ -73,7 +73,7 @@ const RootLayout = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> 
       </div>
 
       <ConfigProvider

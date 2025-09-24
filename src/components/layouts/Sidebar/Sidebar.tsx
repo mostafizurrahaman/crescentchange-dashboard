@@ -19,7 +19,7 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ collapsed}) => {
   const location = useLocation().pathname.split("/")[1];
 
   const menuItems = [
