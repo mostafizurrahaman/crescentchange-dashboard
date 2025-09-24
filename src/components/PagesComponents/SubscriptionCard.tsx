@@ -10,7 +10,7 @@ const SubscriptionCard: React.FC = () => {
   const openUpgrade = () => setIsModalOpen(true);
   const closeUpgrade = () => setIsModalOpen(false);
 
-  const handleSelectPlan = async (plan: "focus" | "freedom") => {
+  const handleSelectPlan = async (_plan: "focus" | "freedom") => {
     // TODO: wire to your backend/Stripe
     // await fetch("/api/upgrade", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ plan }) });
     setIsModalOpen(false);

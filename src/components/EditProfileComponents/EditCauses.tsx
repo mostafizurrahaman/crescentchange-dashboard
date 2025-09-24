@@ -9,6 +9,13 @@ import meal from "../../assets/images/Food.png";
 import cat from "../../assets/images/Animal Cat.png";
 import { FaPen, FaTrash } from "react-icons/fa";
 
+type Cause = {
+  id: string;
+  name: string;
+  description?: string;
+};
+
+
 // Sample data for causes
 const causesData = [
   { id: 1, name: "Backpacks & Books", image: books, color: "bg-blue-200" },
@@ -20,7 +27,7 @@ const causesData = [
 
 const EditCauses = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedCause, setSelectedCause] = useState(null);
+  const [selectedCause, setSelectedCause] = useState<Cause | null>(null);
   const [form] = Form.useForm();
 
   // Function to handle modal toggle

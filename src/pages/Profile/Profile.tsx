@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import profile from "../../assets/images/profile.png";
 import hfl from "../../assets/images/Profile Logo.png";
 import tick from "../../assets/images/Checkmark.png";
 
-import { IoCallOutline, IoLocationSharp } from "react-icons/io5";
+import { IoCallOutline} from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
 import books from "../../assets/images/books.png";
 import dream from "../../assets/images/Phone Device.png";
@@ -23,18 +24,21 @@ import {
   Line,
   Legend,
 } from "recharts";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { MdOutlineEmail, MdOutlineSchool } from "react-icons/md";
+import { MdOutlineEmail, } from "react-icons/md";
 import { TfiLocationPin } from "react-icons/tfi";
 
 const Profile = () => {
   const [selectedYear, setSelectedYear] = useState(dayjs().year());
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const onChange = (date: any, dateString: string) => {
+const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
+  // make sure it's not an array
+  if (typeof dateString === "string") {
     setSelectedYear(Number(dateString));
-  };
+  }
+};
 
   const data = [
     { name: "Jan", value: 30 },

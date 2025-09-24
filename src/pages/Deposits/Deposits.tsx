@@ -2,7 +2,6 @@
 import { DatePicker, Pagination, Select } from "antd";
 import { FC } from "react";
 import setting from "../../assets/images/Settings.png";
-import { FaArrowDown } from "react-icons/fa";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 interface DepositData {
   key: string;

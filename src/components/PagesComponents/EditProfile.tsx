@@ -12,9 +12,9 @@ import AccessTab from "../ProfileComponents/AccessTab";
 import EditCauses from "../EditProfileComponents/EditCauses";
 
 const EditProfile = () => {
-  const [profilePic, setProfilePic] = useState<File | null>(null);
+  const [, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [logo, setLogo] = useState<File | null>(null);
+  const [, setLogo] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [active, setActive] = useState<"discard" | "save" | null>(null);
   const [activeTab, setActiveTab] = useState<"profile" | "access" | "causes">(
