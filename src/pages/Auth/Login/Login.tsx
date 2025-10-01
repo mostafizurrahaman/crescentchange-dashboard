@@ -1,17 +1,18 @@
 import { Checkbox, ConfigProvider, Form, Input } from "antd";
-import img from "../../../assets/images/login.png"; // Path to the image
+import img from "../../../assets/images/login.png";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/images/logo.png"; // Path to the logo
+import logo from "../../../assets/images/logo.png";
+import { AiOutlineMail } from "react-icons/ai";
+import { MdLockOutline } from "react-icons/md";
 
 const Login = () => {
   const onFinish = () => {};
 
   return (
-    <div className="">
-      <div className="relative grid grid-cols-1 md:grid-cols-2 justify-center items-center p-4">
-        {/* Left section - Login Form */}
-        <div className="bg-white p-10">
-          <img src={logo} alt="Logo" className="absolute top-5" />
+    <div className="h-screen flex p-2">
+      <div className="bg-white flex flex-col justify-center items-center w-full md:w-1/2">
+        <img src={logo} alt="Logo" className="absolute top-5 right-5 left-10" />
+        <div className=" w-[400px] ">
           <div>
             <ConfigProvider
               theme={{
@@ -26,59 +27,58 @@ const Login = () => {
               }}
             >
               <Form
-                name="login"
+                name="contact"
                 initialValues={{ remember: false }}
-                style={{ maxWidth: 600 }}
                 onFinish={onFinish}
                 layout="vertical"
+                className=""
               >
                 <div className="mb-4 text-center">
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
                     Welcome Back!
                   </h2>
-                  <p className="text-neutral-600 lg:text-lg pt-3 pb-6">
-                    Sign in to manage everything.
+                  <p className="text-neutral-400 lg:text-lg">
+                    Sign in to access the Super Admin Dashboard.
                   </p>
                 </div>
-
-                {/* Email input field */}
                 <Form.Item
-                  name="email"
-                  label={<p className="text-md">Email</p>}
+                  name="email-address"
+                  label={
+                    <p className="text-lg ">Email Address</p>
+                  }
                 >
                   <Input
                     required
-                    className="text-md"
-                    placeholder="Enter Email Address"
+                    className=""
+                    prefix={<AiOutlineMail className="mr-2 h-5 w-5" />}
+                    placeholder="mailto:admin@crescentchange.org"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
-
-                {/* Password input field */}
                 <Form.Item
                   name="password"
-                  label={<p className="text-md">Password</p>}
+                  label={<p className="text-lg ">Password</p>}
                 >
                   <Input.Password
                     required
-                    className="text-md"
-                    placeholder="Enter Password"
+                    className=""
+                    prefix={<MdLockOutline className="mr-2 h-5 w-5" />}
+                    placeholder="Enter Your Password"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
-
-                {/* Sign In button */}
-                <Form.Item>
-                  <Link to="/">
-                    <button
-                      className="w-full py-4 font-bold bg-btnPrimary rounded-md text-xl"
-                      type="submit"
-                    >
-                      Sign In
-                    </button>
-                  </Link>
-                </Form.Item>
-
                 {/* Forgot password and signup link */}
-                <div className="flex justify-between items-center font-semibold gap-2 text-md">
+                <div className="flex justify-between items-center font-semibold gap-2 text-md my-6">
                   <ConfigProvider
                     theme={{
                       components: {
@@ -93,30 +93,35 @@ const Login = () => {
                     {" "}
                     <Checkbox>Remember Password</Checkbox>{" "}
                   </ConfigProvider>
-                  <Link
-                    to="/auth/forgate-password"
-                    className="text-md underline"
-                  >
+                  <Link to="/forgate-password" className="text-md underline hover:text-black">
                     Forgot Password?
                   </Link>
                 </div>
-
-                {/* Sign-up redirect */}
+                <Form.Item>
+                  <Link to="/">
+                    <button
+                      className="text-center text-lg p-2 font-bold bg-[#d1ff43]   w-full py-4 rounded-md hover:text-black"
+                      type="submit"
+                    >
+                      Sign In
+                    </button>
+                  </Link>
+                </Form.Item>
+                   {/* Sign-up redirect */}
                 <p className="mt-6 text-lg text-center font-semibold">
                   Don't have an account?{" "}
                   <Link to="/auth/signUp1" className="text-[#a55eea]">
                     Sign Up
                   </Link>
                 </p>
-              </Form> 
+              </Form>
             </ConfigProvider>
           </div>
         </div>
+      </div>
 
-        {/* Right section - Image */}
-        <div className="flex justify-end items-end">
-          <img src={img} alt="sign-up" className="w-full h-screen" />
-        </div>
+      <div className="w-full md:w-1/2 ">
+        <img src={img} alt="sign-up" className="w-full h-full" />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
@@ -29,7 +30,7 @@ const SignUp5: React.FC = () => {
       {/* Left section - Form */}
       <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2 relative">
         <img src={logo} alt="Logo" className="absolute top-5 left-10" />
-        <div className="w-full max-w-sm mt-20">
+        <div className="w-full max-w-sm ">
           <div>
             <ConfigProvider
               theme={{
