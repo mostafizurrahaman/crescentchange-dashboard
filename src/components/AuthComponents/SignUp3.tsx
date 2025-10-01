@@ -1,111 +1,139 @@
-import { ConfigProvider, Form, Input,} from "antd";
-import img from "../../assets/images/login.png"; // Adjust path as necessary
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo.png"; // Adjust path as necessary
+import React from "react";
+import { ConfigProvider, Form, Input } from "antd";
+import img from "../../assets/images/login.png";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../../assets/images/logo.png";
 
+const STEPS = [
+  { path: "/auth/signUp1", label: "Account" },
+  { path: "/auth/signUp2", label: "Organization" },
+  { path: "/auth/signUp3", label: "Compliance" }, // <-- this page
+  { path: "/auth/signUp4", label: "Bank" },
+  { path: "/auth/signUp5", label: "Review" },
+  // { path: "/auth/signUp6", label: "Done" }, // uncomment if you have a 6th step
+];
 
-const SignUp3 = () => {
-
+const SignUp3: React.FC = () => {
+  const location = useLocation();
   const onFinish = () => {};
+
+  // Determine current step from the route
+  const total = STEPS.length;
+  let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
+  if (currentIdx === -1) currentIdx = 0;
+  const current = currentIdx + 1; // 1-based
+  const isLast = current >= total;
+  const nextPath = !isLast ? STEPS[currentIdx + 1].path : STEPS[currentIdx].path;
 
   return (
     <div className="h-screen flex">
-      {/* Left section - Form */}
-      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2">
+      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2 relative">
         <img src={logo} alt="Logo" className="absolute top-5 left-10" />
-        <div className="w-full max-w-sm mt-20">
+        <div className="w-full max-w-sm ">
           <div>
             <ConfigProvider
               theme={{
                 components: {
-                  Form: {
-                    borderRadius: 0,
-                  },
-                  Input: {
-                    borderRadius: 5,
-                  },
+                  Form: { borderRadius: 0 },
+                  Input: { borderRadius: 5 },
                 },
               }}
             >
               <Form
                 name="contact"
                 initialValues={{ remember: false }}
-                //   style={{ maxWidth: 800 }}
                 onFinish={onFinish}
                 layout="vertical"
                 className="mt-20"
               >
-                <div className="mb-4">
-                  <h2 className="  text-xl md:text-2xl  lg:text-3xl font-bold mb-6 ">
-                   Verify Your Registration
+                <div className="mb-4 text-center">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+                    Verify Your Registration
                   </h2>
-                  <p className="text-neutral-600  lg:text-lg">
-                   Verify your registration details for compliance.
+                  <p className="text-neutral-600 lg:text-lg">
+                    Verify your registration details for compliance.
                   </p>
+
+                  {/* Segmented step progress */}
+                  <Stepper total={total} current={current} />
+
+                  <p className="mt-4 mb-6">Step {current}/{total}</p>
                 </div>
-                <div className="my-10">
-                  <div className="h-2 w-full bg-btnPrimary"></div>
-                  <p className="">Step 3/5</p>
-                </div>
+
                 <Form.Item
-                  name="ten-digit"
-                  label={<p className=" text-md ">TFN/ABN</p>}
-                  style={{}}
+                  name="tfn_abn"
+                  label={<p className="text-md">TFN/ABN</p>}
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
+                    className="text-md"
                     placeholder="62 123 456 789"
+                       style={{
+                    padding: "8px",
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: "52px",
+                  }}
                   />
                 </Form.Item>
+
                 <Form.Item
-                  name="ten-digit"
-                  label={<p className=" text-md ">ACNC Registration Number</p>}
-                  style={{}}
+                  name="acnc"
+                  label={<p className="text-md">ACNC Registration Number</p>}
                 >
                   <Input
                     required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
+                    className="text-md"
                     placeholder="ACNC-987654"
+                      style={{
+                    padding: "8px",
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: "52px",
+                  }}
                   />
                 </Form.Item>
+
                 <Form.Item
-                  name="ten-digit"
-                  label={<p className=" text-md ">Zakat License Holder Number (Optional)</p>}
-                  style={{}}
+                  name="zakat_license"
+                  label={
+                    <p className="text-md">
+                      Zakat License Holder Number (Optional)
+                    </p>
+                  }
                 >
                   <Input
-                    required
-                    style={{ padding: "6px" }}
-                    className=" text-md"
+                    className="text-md"
                     placeholder="ZL-45678"
+                      style={{
+                    padding: "8px",
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: "52px",
+                  }}
                   />
                 </Form.Item>
 
-
-                
-                <Form.Item className="">
-                  <Link to="/auth/signUp4">
+                <Form.Item>
+                  {!isLast ? (
+                    <Link to={nextPath}>
+                      <button
+                        className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black"
+                        type="button"
+                      >
+                        Continue
+                      </button>
+                    </Link>
+                  ) : (
                     <button
-                      className="text-center  p-2 font-bold bg-btnPrimary  w-full py-2 rounded-md shadow-lg"
+                      className="text-center p-2 font-bold bg-btnPrimary w-full py-2 rounded-md shadow-lg hover:text-black"
                       type="submit"
                     >
-                      Continue
+                      Finish
                     </button>
-                  </Link>
+                  )}
                 </Form.Item>
               </Form>
-              {/* <div className=" font-semibold gap-2 text-md">
-                <Link
-                  to="/auth/signUp2"
-                  className=" text-md flex items-center justify-start gap-2"
-                >
-                  <FaArrowLeft />
-                  Back
-                </Link>
-              </div> */}
             </ConfigProvider>
           </div>
         </div>
@@ -118,5 +146,33 @@ const SignUp3 = () => {
     </div>
   );
 };
+
+/** Reusable thin segmented progress bar (same look as steps 1 & 2) */
+function Stepper({ total, current }: { total: number; current: number }) {
+  const segments = Array.from({ length: total });
+
+  return (
+    <div
+      className="flex items-center gap-3 w-1/2 mx-auto"
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={total}
+      aria-valuenow={current}
+      aria-label={`Onboarding progress: Step ${current} of ${total}`}
+    >
+      {segments.map((_, i) => {
+        const isActive = i < current; // fill all segments up to current
+        return (
+          <div
+            key={i}
+            className={`h-2 flex-1 rounded-full transition-colors duration-200 ${
+              isActive ? "bg-[#a55eea]" : "bg-neutral-200"
+            }`}
+          />
+        );
+      })}
+    </div>
+  );
+}
 
 export default SignUp3;
