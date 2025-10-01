@@ -93,7 +93,7 @@ const Login = () => {
                     {" "}
                     <Checkbox>Remember Password</Checkbox>{" "}
                   </ConfigProvider>
-                  <Link to="/forgate-password" className="text-md underline hover:text-black">
+                  <Link to="/auth/forgate-password" className="text-md underline hover:text-black">
                     Forgot Password?
                   </Link>
                 </div>
