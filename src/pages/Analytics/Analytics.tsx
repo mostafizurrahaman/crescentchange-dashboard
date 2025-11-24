@@ -12,7 +12,7 @@ const Analytics = () => {
   const [active, setActive] = useState<FilterType>("today");
 
   // Call API with correct filter
-  const { data: dashboardData, isLoading } = useGetDonationStatsQuery({ filter: active });
+  const { data: dashboardData } = useGetDonationStatsQuery({ filter: active });
 
   console.log("dashboardData", dashboardData);
 

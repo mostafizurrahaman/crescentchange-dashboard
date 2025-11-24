@@ -1,58 +1,102 @@
 import { BsArrowUpRight } from "react-icons/bs";
+
 interface AnalyticsCardProps {
-  filter: "Today" | "This Week" | "This Month";
-  data: { message: string };
+  filter: "today" | "this_week" | "this_month";
+  data: {
+    message: string;
+    data: {
+      totalDonatedAmount: {
+        isIncrease: boolean;
+        percentageChange: number;
+        value: number;
+      };
+      averageDonationPerUser: {
+        isIncrease: boolean;
+        percentageChange: number;
+        value: number;
+      };
+      totalDonors: {
+        value: number;
+        percentageChange: number;
+        isIncrease: boolean;
+      };
+      topCause: string | null;
+    };
+  };
 }
 
-const AnalyticsCard: React.FC<AnalyticsCardProps> = () => {
+const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
+  const stats = data?.data;
+
   return (
     <div className="bg-white border rounded-3xl p-6">
       <div className="flex justify-between items-start gap-5 my-5">
         <div>
           <h1 className="text-3xl font-bold">Total Donated</h1>
-          <p className="text-gray-500 mb-12">+8.2% from last month</p>
+          <p className="text-gray-500 mb-12">
+            {stats?.totalDonatedAmount?.isIncrease ? "+" : "-"}$
+            {stats?.totalDonatedAmount?.value} from last month
+          </p>
+
           <div className="flex justify-start items-end gap-2">
-            <p className="text-3xl md:text-5xl font-bold text-gray-400 ">
-              $ <span className="text-black">40,000 </span>
+            <p className="text-3xl md:text-5xl font-bold text-gray-400">
+              $ <span className="text-black">{stats?.totalDonatedAmount?.value}</span>
             </p>
             <p className="text-gray-400">
-              <span className="text-green-500">+8.2% </span>vs last month
+              <span
+                className={
+                  stats?.totalDonatedAmount?.isIncrease
+                    ? "text-green-500"
+                    : "text-red-500"
+                }
+              >
+                {stats?.totalDonatedAmount?.percentageChange}%
+              </span>{" "}
+              vs last month
             </p>
           </div>
         </div>
+
         <BsArrowUpRight className="h-5 w-5 cursor-pointer" />
       </div>
+
       <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+        
         <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
-          <div className="flex justify-between items-start mb-12">
-            <h1 className="text-xl font-medium ">Avg. Donation</h1>
+          <h1 className="text-xl font-medium mb-12">Avg. Donation</h1>
+
+          <div className="flex items-end gap-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-black">
+              <span className="text-gray-400">$</span>{" "}
+              {stats?.averageDonationPerUser?.value}
+            </h1>
+            <p className="text-gray-400">per user</p>
           </div>
-          <div className="flex justify-start items-end gap-2">
+        </div>
+
+        <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
+          <h1 className="text-xl font-medium mb-12">Total Donors</h1>
+
+          <div className="flex items-end gap-2">
             <h1 className="text-2xl md:text-3xl text-black font-bold">
-              <span className="text-gray-400"> $</span> 100{" "}
+              {stats?.totalDonors?.value}
             </h1>
-            <p className=" text-gray-400">per user</p>
+            <p
+              className={
+                stats?.totalDonors?.isIncrease
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
+            >
+              {stats?.totalDonors?.percentageChange}%
+            </p>
           </div>
         </div>
+
         <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
-          <div className="flex justify-between items-start mb-12">
-            <h1 className="text-xl font-medium ">Total Donors</h1>
-            <BsArrowUpRight className="h-5 w-5 cursor-pointer" />
-          </div>
-          <div className="flex justify-start items-end gap-2">
-            <h1 className="text-2xl md:text-3xl text-gray-400 font-bold">
-              <span className="text-black"> 34.2</span> K{" "}
-            </h1>
-            <p className=" text-green-500">5.4%</p>
-          </div>
-        </div>
-        <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
-          <div className="flex justify-between items-start mb-12">
-            <h1 className="text-xl font-medium ">Top Cause</h1>
-            <BsArrowUpRight className="h-5 w-5 cursor-pointer " />
-          </div>
-          <p className="underline text-xl font-medium cursor-pointer">
-            Youth Education
+          <h1 className="text-xl font-medium mb-12">Top Cause</h1>
+          <p className="underline text-xl font-medium">
+            {stats?.topCause || "No cause available"}
           </p>
         </div>
       </div>
