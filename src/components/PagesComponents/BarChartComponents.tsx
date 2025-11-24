@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BarChart,
   Bar,
@@ -7,56 +8,54 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { BsArrowUpRight } from "react-icons/bs";
+import { DatePicker } from "antd";
+import { useState } from "react";
+import { useGetTrendsQuery } from "../../redux/features/dashboardApi/dashboardApi";
 
 const BarChartComponents = () => {
-  const data = [
-    { name: "Jan", value: 30 },
-    { name: "Feb", value: 50 },
-    { name: "Mar", value: 40 },
-    { name: "Apr", value: 70 },
-    { name: "May", value: 90 },
-    { name: "Jun", value: 60 },
-    { name: "Jul", value: 80 },
-    { name: "Aug", value: 100 },
-    { name: "Sep", value: 75 },
-    { name: "Oct", value: 85 },
-    { name: "Nov", value: 95 },
-    { name: "Dec", value: 100 },
-  ];
+  const [year, setYear] = useState(new Date().getFullYear());
 
- 
+  const { data: trendsData } = useGetTrendsQuery({ year });
+
+  // Convert API response → Recharts format
+  const chartData =
+    trendsData?.data?.map((item:any) => ({
+      name: item.month,
+      value: item.totalAmount,
+    })) || [];
 
   return (
-    <div
-      style={{ width: "100%", height: 400 }}
-      className="p-6"
-    >
+    <div style={{ width: "100%", height: 400 }} className="p-6">
       <div className="flex justify-between items-center mb-4">
-      <div className="mb-6">
-          <h3 className=" font-bold text-xl">Trends & Insights</h3>
+        <div className="mb-6">
+          <h3 className="font-bold text-xl">Trends & Insights</h3>
           <p className="text-gray-400">+8.2% from last month</p>
+        </div>
+
+        <DatePicker
+          picker="year"
+          onChange={(date, dateString) => {
+            setYear(Number(dateString));
+          }}
+          placeholder="Select Year"
+        />
       </div>
-          <BsArrowUpRight className="h-5 w-5 cursor-pointer" />
-      </div>
+
       <ResponsiveContainer>
-        <BarChart data={data}>
+        <BarChart data={chartData}>
           <XAxis dataKey="name" stroke="#000000" />
           <YAxis stroke="#000000" />
           <CartesianGrid strokeDasharray="3 3" stroke="#d3d3d3" />
+
           <Tooltip
             contentStyle={{
               backgroundColor: "#ebe9ec",
-              border: "1px  gray",
-              borderRadius:"20px"
+              borderRadius: "12px",
             }}
-            itemStyle={{
-              color: "#000000",
-            }}
-            labelStyle={{
-              color: "#000000",
-            }}
+            itemStyle={{ color: "#000000" }}
+            labelStyle={{ color: "#000000" }}
           />
+
           <Bar
             dataKey="value"
             fill="#c08fff"

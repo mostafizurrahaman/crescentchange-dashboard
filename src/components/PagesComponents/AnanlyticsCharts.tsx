@@ -25,16 +25,19 @@ interface AnalyticsCardProps {
       topCause: string | null;
       donationTypeBreakdown: {
         "round-up": {
+          amount: number;
           value: number;
           percentageChange: number;
           isIncrease: boolean;
         };
         recurring: {
+          amount: number;
           value: number;
           percentageChange: number;
           isIncrease: boolean;
         };
         "one-time": {
+          amount: number;
           value: number;
           percentageChange: number;
           isIncrease: boolean;

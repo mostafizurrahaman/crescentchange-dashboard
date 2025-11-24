@@ -8,7 +8,13 @@ const DashboardApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getTrends: builder.query({
+      query: ({ year }) => ({
+        url: `/donation/analytics/yearly-trends?year=${year}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetDonationStatsQuery } = DashboardApi;
+export const { useGetDonationStatsQuery, useGetTrendsQuery } = DashboardApi;
