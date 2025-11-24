@@ -14,7 +14,7 @@ const Analytics = () => {
   // Call API with correct filter
   const { data: dashboardData } = useGetDonationStatsQuery({ filter: active });
 
-  console.log("dashboardData", dashboardData);
+  // console.log("dashboardData", dashboardData);
 
   const btnClass = (filter: FilterType) =>
     `px-9 py-3 rounded-3xl border transition ${
