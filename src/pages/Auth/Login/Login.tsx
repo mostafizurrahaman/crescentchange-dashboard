@@ -6,16 +6,17 @@ import logo from "../../../assets/images/logo.png";
 import { AiOutlineMail } from "react-icons/ai";
 import { MdLockOutline } from "react-icons/md";
 import { useLoginApiMutation } from "../../../redux/features/auth/authApi";
-// import Password from "antd/es/input/Password";
+import { useDispatch } from "react-redux";
 
 interface login {
   email: string;
-  Password: string;
+  password: string;
 }
 
 const Login = () => {
   const [form] = Form.useForm();
   const nevigate = useNavigate();
+  const dispatch = useDispatch();
   const [loginApi, { isLoading }] = useLoginApiMutation();
   const onFinish = async (values: login) => {
     const data = {
@@ -27,6 +28,7 @@ const Login = () => {
       const res = await loginApi(data).unwrap();
       message.success(res?.message);
       form.resetFields();
+      localStorage.setItem("token", res?.data?.accessToken);
       nevigate("/");
     } catch (error) {
       // message.error(error?.data.message);
@@ -52,7 +54,9 @@ const Login = () => {
               }}
             >
               {isLoading ? (
-                <div className="flex justify-center items-center"><Spin className="h-20 w-20"></Spin></div>
+                <div className="flex justify-center items-center">
+                  <Spin className="h-20 w-20"></Spin>
+                </div>
               ) : (
                 <Form
                   name="contact"

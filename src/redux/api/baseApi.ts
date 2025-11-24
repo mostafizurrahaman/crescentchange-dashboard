@@ -4,7 +4,6 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import { message } from "antd";
-import type { RootState } from "../store";
 import { BASE_URL } from "../utils/baseUrl";
 
 interface ApiError {
@@ -13,9 +12,10 @@ interface ApiError {
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   credentials: "include",
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
-    console.log("token", token)
+  prepareHeaders: (headers, ) => {
+    const token = localStorage.getItem("token");
+    // const token = (getState() as RootState).auth.token;
+    console.log("Token being sent:", token);
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
