@@ -4,30 +4,21 @@ import TopDonors from "../../components/PagesComponents/TopDonors";
 import DashboardChart from "../../components/PagesComponents/DashboardChart";
 import { useState } from "react";
 import QuickLinks from "../../components/DashboardComponnets/QuickLinks";
+import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+
+type FilterType = "today" | "this-week" | "this-month";
 
 const Analytics = () => {
-  const [active, setActive] = useState<"Today" | "This Week" | "This Month">(
-    "This Month"
-  );
+  const [active, setActive] = useState<FilterType>("today");
 
-  const getFilteredData = () => {
-    switch (active) {
-      case "Today":
-        return { message: "Showing today's data" };
-      case "This Week":
-        return { message: "Showing this week's data" };
-      case "This Month":
-        return { message: "Showing this month's data" };
-      default:
-        return { message: "No data" };
-    }
-  };
+  // Call API with correct filter
+  const { data: dashboardData, isLoading } = useGetDonationStatsQuery({ filter: active });
 
-  const data = getFilteredData();
+  console.log("dashboardData", dashboardData);
 
-  const btnClass = (label: string) =>
+  const btnClass = (filter: FilterType) =>
     `px-9 py-3 rounded-3xl border transition ${
-      active === label ? "bg-black text-white" : "bg-white text-black"
+      active === filter ? "bg-black text-white" : "bg-white text-black"
     }`;
 
   return (
@@ -43,22 +34,13 @@ const Analytics = () => {
           </p>
         </div>
         <div className="w-full md:w-[30%] flex justify-start items-center gap-5">
-          <button
-            className={btnClass("Today")}
-            onClick={() => setActive("Today")}
-          >
+          <button className={btnClass("today")} onClick={() => setActive("today")}>
             Today
           </button>
-          <button
-            className={btnClass("This Week")}
-            onClick={() => setActive("This Week")}
-          >
+          <button className={btnClass("this-week")} onClick={() => setActive("this-week")}>
             This Week
           </button>
-          <button
-            className={btnClass("This Month")}
-            onClick={() => setActive("This Month")}
-          >
+          <button className={btnClass("this-month")} onClick={() => setActive("this-month")}>
             This Month
           </button>
         </div>
@@ -66,14 +48,13 @@ const Analytics = () => {
 
       <div className="flex justify-between items-start gap-5">
         <div className=" w-full md:w-[70%]">
-          {/* {TODO: there will need to pass the data} */}
-          <AnalyticsCard filter={active} data={data} />
-          <AnanlyticsCharts filter={active} data={data} />
-          <DashboardChart filter={active} data={data} />
+          <AnalyticsCard filter={active} data={dashboardData} />
+          <AnanlyticsCharts filter={active} data={dashboardData} />
+          <DashboardChart filter={active} data={dashboardData} />
         </div>
         <div className="hidden md:block w-[30%]">
           <QuickLinks />
-          <TopDonors filter={active} data={data} />
+          <TopDonors filter={active} data={dashboardData} />
         </div>
       </div>
     </div>
