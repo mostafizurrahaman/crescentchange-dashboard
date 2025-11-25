@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import profile from "../../assets/images/profile.png";
 import hfl from "../../assets/images/Profile Logo.png";
 import tick from "../../assets/images/Checkmark.png";
-
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
 import books from "../../assets/images/books.png";
@@ -13,7 +11,7 @@ import cloth from "../../assets/images/Jacket.png";
 import meal from "../../assets/images/Food.png";
 import cat from "../../assets/images/Animal Cat.png";
 
-import { DatePicker, Modal, Select } from "antd";
+import { DatePicker, Modal, Select, Space, Typography } from "antd";
 import {
   XAxis,
   YAxis,
@@ -29,37 +27,85 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { TfiLocationPin } from "react-icons/tfi";
-import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
+import {
+  useGetAllProfileQuery,
+  useGetCauseStatsQuery,
+  useGetRaisedCausedQuery,
+} from "../../redux/features/profileApi/profileApi";
 
 const Profile = () => {
   const [selectedYear, setSelectedYear] = useState(dayjs().year());
+  const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1);
+  const [selectedCauseId, setSelectedCauseId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { Text } = Typography;
+  const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
+  const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
+  const fromMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
+  const toMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
 
   const { data: profileData } = useGetAllProfileQuery(null);
-  console.log("profile", profileData);
   const OrgProfile = profileData?.data;
-  const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
-    // make sure it's not an array
-    if (typeof dateString === "string") {
-      setSelectedYear(Number(dateString));
+
+  const { data: causeData } = useGetRaisedCausedQuery({
+    orgId: "6920518d1ccf4652ca34317a",
+    startDate: fromMonth,
+    endDate: toMonth,
+    page: 1,
+    limit: 5,
+  });
+
+  const { data: chartData } = useGetCauseStatsQuery({
+    orgId: "6920518d1ccf4652ca34317a",
+    causeId: selectedCauseId || undefined,
+    year: selectedYear,
+  });
+
+  const formattedChartData =
+    chartData?.data?.map((item: any) => ({
+      name: item.month,
+      value: item.totalDonation,
+    })) || [];
+
+  const handleFromYear = (value: Dayjs | null) => {
+    if (value) {
+      const updated = fromDate
+        ? fromDate.year(value.year())
+        : dayjs().year(value.year());
+      setFromDate(updated);
+      setSelectedYear(value.year());
     }
   };
 
-  const data = [
-    { name: "Jan", value: 30 },
-    { name: "Feb", value: 50 },
-    { name: "Mar", value: 40 },
-    { name: "Apr", value: 70 },
-    { name: "May", value: 90 },
-    { name: "Jun", value: 60 },
-    { name: "Jul", value: 80 },
-    { name: "Aug", value: 100 },
-    { name: "Sep", value: 75 },
-    { name: "Oct", value: 85 },
-    { name: "Nov", value: 95 },
-    { name: "Dec", value: 100 },
-  ];
+  const handleFromMonth = (value: Dayjs | null) => {
+    if (value) {
+      const updated = fromDate
+        ? fromDate.month(value.month())
+        : dayjs().month(value.month());
+      setFromDate(updated);
+      setSelectedMonth(value.month() + 1);
+    }
+  };
+  const handleToYear = (value: Dayjs | null) => {
+    if (value) {
+      const updated = toDate
+        ? toDate.year(value.year())
+        : dayjs().year(value.year());
+      setToDate(updated);
+    }
+  };
 
+  const handleToMonth = (value: Dayjs | null) => {
+    if (value) {
+      const updated = toDate
+        ? toDate.month(value.month())
+        : dayjs().month(value.month());
+      setToDate(updated);
+    }
+  };
+  const data = chartData?.data;
+  console.log("data", causeData?.data);
+  console.log("selectedCauseId", selectedCauseId);
   return (
     <div>
       <div className="flex justify-between items-center gap-2">
@@ -142,49 +188,69 @@ const Profile = () => {
                 <p className="text-gray-400">Address</p>
                 <div className="flex justify-start items-center gap-2 my-3">
                   <TfiLocationPin className="h-5 w-5" />
-                  <p className="font-medium">
-                 {OrgProfile?.address}
-                  </p>
+                  <p className="font-medium">{OrgProfile?.address}</p>
                 </div>
-                {/* <div className="flex justify-start items-center gap-2 my-3">
-                  <TfiLocationPin className="h-5 w-5" />
-                  <p className="font-medium">
-                    67 Burger Road, Moon Lane, Sydney, Australia
-                  </p>
-                </div> */}
               </div>
             </div>
           </div>
+          {/* chart */}
           <div className="bg-white p-6 rounded-3xl border">
-            {/* chart */}
             <div
-              style={{ width: "100%", height: 400 }}
+              style={{ width: "100%", height: 420 }}
               className="bg-secondary p-4 rounded-lg"
             >
-              <h1 className="text-2xl font-medium">Causes Analytics</h1>
-              <div className="flex justify-between items-center mb-4">
-                <div className="bg-gray-50 p-3 rounded-3xl">
-                  <Select
-                    style={{ width: 300 }}
-                    defaultValue="Backpacks & Books"
-                  >
-                    <Select.Option value="backpacks">
-                      Backpacks & Books
-                    </Select.Option>
-                  </Select>
-                </div>
+              <h1 className="text-2xl font-medium mb-4">Causes Analytics</h1>
 
-                <DatePicker
-                  onChange={onChange}
-                  defaultValue={dayjs(selectedYear, "YYYY")}
-                  format={"YYYY"}
-                  picker="year"
-                  className="w-full md:w-auto"
-                />
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+                <Select
+                  placeholder="Select Cause"
+                  style={{ width: 300 }}
+                  value={selectedCauseId}
+                  onChange={setSelectedCauseId}
+                >
+                  {causeData?.data?.map((cause: any) => (
+                    <Select.Option key={cause.causeId} value={cause.causeId}>
+                      {cause.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+                <Space direction="vertical" size="large">
+                  <Space>
+                    <Text strong>From:</Text>
+                    <DatePicker
+                      picker="year"
+                      value={fromDate}
+                      onChange={handleFromYear}
+                      placeholder="Select Year"
+                    />
+                    <DatePicker
+                      picker="month"
+                      value={fromDate}
+                      onChange={handleFromMonth}
+                      placeholder="Select Month"
+                    />
+                  </Space>
+
+                  <Space>
+                    <Text strong>To:</Text>
+                    <DatePicker
+                      picker="year"
+                      value={toDate}
+                      onChange={handleToYear}
+                      placeholder="Select Year"
+                    />
+                    <DatePicker
+                      picker="month"
+                      value={toDate}
+                      onChange={handleToMonth}
+                      placeholder="Select Month"
+                    />
+                  </Space>
+                </Space>
               </div>
 
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={data}>
+                <LineChart data={formattedChartData}>
                   <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -196,6 +262,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
+
         {/* right side */}
         <div className="w-full md:w-[30%]">
           <div className="bg-white p-6 rounded-3xl border mt-10">
@@ -290,7 +357,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      {/* main data ends */}
+
       {/* Modal */}
 
       <Modal
@@ -407,7 +474,7 @@ const Profile = () => {
                   </div>
 
                   <DatePicker
-                    onChange={onChange}
+                    // onChange={onChange}
                     defaultValue={dayjs(selectedYear, "YYYY")}
                     format={"YYYY"}
                     picker="year"
