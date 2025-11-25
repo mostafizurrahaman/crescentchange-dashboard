@@ -6,15 +6,13 @@ import { useState } from "react";
 import QuickLinks from "../../components/DashboardComponnets/QuickLinks";
 import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
 
-type FilterType = "today" | "this-week" | "this-month";
+type FilterType = "today" | "this_week" | "this_month";
 
 const Analytics = () => {
   const [active, setActive] = useState<FilterType>("today");
 
-  // Call API with correct filter
   const { data: dashboardData } = useGetDonationStatsQuery({ filter: active });
 
-  // console.log("dashboardData", dashboardData);
 
   const btnClass = (filter: FilterType) =>
     `px-9 py-3 rounded-3xl border transition ${
@@ -37,10 +35,10 @@ const Analytics = () => {
           <button className={btnClass("today")} onClick={() => setActive("today")}>
             Today
           </button>
-          <button className={btnClass("this-week")} onClick={() => setActive("this-week")}>
+          <button className={btnClass("this_week")} onClick={() => setActive("this_week")}>
             This Week
           </button>
-          <button className={btnClass("this-month")} onClick={() => setActive("this-month")}>
+          <button className={btnClass("this_month")} onClick={() => setActive("this_month")}>
             This Month
           </button>
         </div>

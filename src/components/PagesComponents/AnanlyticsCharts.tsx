@@ -49,7 +49,7 @@ interface AnalyticsCardProps {
 
 const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
   const stats = data?.data;
-  console.log("stats", stats);
+  // console.log("stats", stats);
 
   return (
     <div className="my-3">

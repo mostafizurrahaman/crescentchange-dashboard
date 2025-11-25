@@ -1,29 +1,62 @@
 import { BsArrowUpRight } from "react-icons/bs";
 
+
+interface TopCause {
+  _id: string;
+  name: string;
+  totalAmount: number;
+}
+
+interface AnalyticsData {
+  totalDonatedAmount: {
+    value: number;
+    percentageChange: number;
+    isIncrease: boolean;
+  };
+  averageDonationPerUser: {
+    value: number;
+    percentageChange: number;
+    isIncrease: boolean;
+  };
+  totalDonors: {
+    value: number;
+    percentageChange: number;
+    isIncrease: boolean;
+  };
+  topCause: TopCause | null;
+}
+
 interface AnalyticsCardProps {
   filter: "today" | "this_week" | "this_month";
   data: {
     message: string;
-    data: {
-      totalDonatedAmount: {
-        isIncrease: boolean;
-        percentageChange: number;
-        value: number;
-      };
-      averageDonationPerUser: {
-        isIncrease: boolean;
-        percentageChange: number;
-        value: number;
-      };
-      totalDonors: {
-        value: number;
-        percentageChange: number;
-        isIncrease: boolean;
-      };
-      topCause: string | null;
-    };
+    data: AnalyticsData;
   };
 }
+// interface AnalyticsCardProps {
+//   filter: "today" | "this_week" | "this_month";
+//   data: {
+//     message: string;
+//     data: {
+//       totalDonatedAmount: {
+//         isIncrease: boolean;
+//         percentageChange: number;
+//         value: number;
+//       };
+//       averageDonationPerUser: {
+//         isIncrease: boolean;
+//         percentageChange: number;
+//         value: number;
+//       };
+//       totalDonors: {
+//         value: number;
+//         percentageChange: number;
+//         isIncrease: boolean;
+//       };
+//       topCause: string | null;
+//     };
+//   };
+// }
 
 const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
   const stats = data?.data;
@@ -96,7 +129,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
         <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
           <h1 className="text-xl font-medium mb-12">Top Cause</h1>
           <p className="underline text-xl font-medium">
-            {stats?.topCause || "No cause available"}
+            {stats?.topCause?.name || "No cause available"}
           </p>
         </div>
       </div>

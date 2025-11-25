@@ -1,6 +1,6 @@
 import BarChartComponents from "./BarChartComponents";
 interface AnalyticsCardProps {
-  filter: "Today" | "This Week" | "This Month";
+  filter:  "today" | "this_week" | "this_month";
   data: { message: string };
 }
 

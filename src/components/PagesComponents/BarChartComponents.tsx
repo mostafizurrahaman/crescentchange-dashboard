@@ -34,7 +34,7 @@ const BarChartComponents = () => {
 
         <DatePicker
           picker="year"
-          onChange={(date, dateString) => {
+          onChange={( dateString) => {
             setYear(Number(dateString));
           }}
           placeholder="Select Year"
@@ -54,6 +54,7 @@ const BarChartComponents = () => {
             }}
             itemStyle={{ color: "#000000" }}
             labelStyle={{ color: "#000000" }}
+            
           />
 
           <Bar
