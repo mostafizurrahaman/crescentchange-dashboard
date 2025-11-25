@@ -8,6 +8,12 @@ interface IDonor {
   image: string | null;
 }
 
+interface IbreakDownByCause {
+  totalDonationAmount: number;
+  category: string;
+  causeId: string;
+  causeName: string;
+}
 interface ITopDonor {
   donor: IDonor;
   totalAmount: number;
@@ -15,10 +21,16 @@ interface ITopDonor {
   previousAmount: number;
   percentageChange: number;
   isIncrease: boolean;
+  lastDonationDate: string;
+  lastDonationAmount: number;
+  
 }
 
 interface ITopDonors {
+  breakDownByCause: any;
   topDonors: ITopDonor[];
+  recentDonors: ITopDonor[];
+  IbreakDownByCause: IbreakDownByCause;
 }
 
 interface AnalyticsCardProps {
@@ -28,8 +40,10 @@ interface AnalyticsCardProps {
 
 const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
   const topDonors = data?.data?.topDonors;
+  const recentDonors = data?.data?.recentDonors;
+  const TotalDonationAmount = data?.data?.breakDownByCause;
 
-  console.log(topDonors);
+  console.log(TotalDonationAmount);
 
   return (
     <div>
@@ -71,20 +85,24 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
           </Link>
         </div>
 
-        {/* {topDonors?.map((item) => (
+        {recentDonors?.map((item) => (
           <div
-            key={item.id}
+            key={item?.donor._id}
             className="flex justify-between items-center gap-2 mb-4"
           >
             <div className="flex justify-start items-center gap-2">
               <img src={user} alt="" />
               <div>
-                <h1>{item.name}</h1>
-                <p className="text-gray-400">{item.time} </p>
+                <h1>{item?.donor?.name}</h1>
+                <p className="text-gray-400">{item?.lastDonationDate} </p>
               </div>
             </div>
+            <div>
+              <p>${item.lastDonationAmount}</p>
+              <p className="text-gray-400">Last Donation</p>
+            </div>
           </div>
-        ))} */}
+        ))}
       </div>
 
       {/* breakdown by causes */}
@@ -93,7 +111,8 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
         <div className="my-6">
           <p className="text-gray-400">Total Donations</p>
           <h1 className="text-2xl font-medium">
-            <span className="text-gray-400">$</span> 12,0000
+            <span className="text-gray-400">$</span>
+            {TotalDonationAmount?.totalDonationAmount}
           </h1>
         </div>
         <div className="flex justify-between items-center gap-1">

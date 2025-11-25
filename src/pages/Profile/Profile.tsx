@@ -5,7 +5,7 @@ import profile from "../../assets/images/profile.png";
 import hfl from "../../assets/images/Profile Logo.png";
 import tick from "../../assets/images/Checkmark.png";
 
-import { IoCallOutline} from "react-icons/io5";
+import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
 import books from "../../assets/images/books.png";
 import dream from "../../assets/images/Phone Device.png";
@@ -27,18 +27,23 @@ import {
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { MdOutlineEmail, } from "react-icons/md";
+import { MdOutlineEmail } from "react-icons/md";
 import { TfiLocationPin } from "react-icons/tfi";
+import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 
 const Profile = () => {
   const [selectedYear, setSelectedYear] = useState(dayjs().year());
   const [isModalOpen, setIsModalOpen] = useState(false);
-const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
-  // make sure it's not an array
-  if (typeof dateString === "string") {
-    setSelectedYear(Number(dateString));
-  }
-};
+
+  const { data: profileData } = useGetAllProfileQuery(null);
+  console.log("profile", profileData);
+  const OrgProfile = profileData?.data;
+  const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
+    // make sure it's not an array
+    if (typeof dateString === "string") {
+      setSelectedYear(Number(dateString));
+    }
+  };
 
   const data = [
     { name: "Jan", value: 30 },
@@ -87,12 +92,13 @@ const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
       {/* main data start */}
       <div className="flex flex-col md:flex-row gap-5 justify-between items-center mt-24">
         <div className="flex justify-start items-center gap-5">
-          <h1 className="text-2xl font-bold">HFL Foundation</h1>
+          <h1 className="text-2xl font-bold">{OrgProfile?.name}</h1>
           <img src={tick} alt="" />
         </div>
 
         <p className="text-gray-400">
-          Established since: <span className="text-black">01 July 2018</span>
+          Established since:{" "}
+          <span className="text-black">{OrgProfile?.dateOfEstablishment}</span>
         </p>
       </div>
 
@@ -101,19 +107,14 @@ const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
           <div className="my-10">
             <div className="p-6 bg-white rounded-3xl border">
               <p className="text-gray-400">About</p>
-              <p className="my-6 text-gray-800">
-                Hope for Learning Foundation exists to unlock the power of
-                education for underserved communities. We champion access,
-                equity, and opportunity — because every child deserves a future
-                filled with knowledge, growth, and hope.
-              </p>
+              <p className="my-6 text-gray-800">{OrgProfile?.aboutUs}</p>
               <p className="text-gray-400">Connect & Contact</p>
               <div className="flex justify-start items-center gap-2 my-3">
                 <CiGlobe className="h-5 w-5" />
                 <p className="text-gray-400">
                   Website:{" "}
                   <span className="text-black underline">
-                    www.hfl-foundation.org
+                    {OrgProfile?.website}
                   </span>
                 </p>
               </div>
@@ -121,9 +122,9 @@ const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
                 <div className="flex justify-start items-center gap-2 my-3">
                   <MdOutlineEmail className="h-5 w-5" />
                   <p className="text-gray-400">
-                    Email::{" "}
+                    Email:{" "}
                     <span className="text-black underline">
-                      contact@hfl-foundation.org
+                      {OrgProfile?.auth?.email}
                     </span>
                   </p>
                 </div>
@@ -132,7 +133,7 @@ const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
                   <p className="text-gray-400">
                     Phone:
                     <span className="text-black underline">
-                      +61 470 292 023
+                      {OrgProfile?.phoneNumber}
                     </span>
                   </p>
                 </div>
@@ -142,15 +143,15 @@ const onChange = (_date: Dayjs | null, dateString: string | string[]) => {
                 <div className="flex justify-start items-center gap-2 my-3">
                   <TfiLocationPin className="h-5 w-5" />
                   <p className="font-medium">
-                    57 Donut Road, Crescent Lane, Sydney, Australia
+                 {OrgProfile?.address}
                   </p>
                 </div>
-                <div className="flex justify-start items-center gap-2 my-3">
+                {/* <div className="flex justify-start items-center gap-2 my-3">
                   <TfiLocationPin className="h-5 w-5" />
                   <p className="font-medium">
                     67 Burger Road, Moon Lane, Sydney, Australia
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
