@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import profile from "../../assets/images/profile.png";
@@ -38,9 +39,7 @@ const Profile = () => {
   const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1);
   const [selectedCauseId, setSelectedCauseId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { Text } = Typography;
-  const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
-  const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
+
   const fromMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
   const toMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
 
@@ -64,45 +63,9 @@ const Profile = () => {
   const formattedChartData =
     chartData?.data?.map((item: any) => ({
       name: item.month,
-      value: item.totalDonation,
+      value: item.totalAmount,
     })) || [];
 
-  const handleFromYear = (value: Dayjs | null) => {
-    if (value) {
-      const updated = fromDate
-        ? fromDate.year(value.year())
-        : dayjs().year(value.year());
-      setFromDate(updated);
-      setSelectedYear(value.year());
-    }
-  };
-
-  const handleFromMonth = (value: Dayjs | null) => {
-    if (value) {
-      const updated = fromDate
-        ? fromDate.month(value.month())
-        : dayjs().month(value.month());
-      setFromDate(updated);
-      setSelectedMonth(value.month() + 1);
-    }
-  };
-  const handleToYear = (value: Dayjs | null) => {
-    if (value) {
-      const updated = toDate
-        ? toDate.year(value.year())
-        : dayjs().year(value.year());
-      setToDate(updated);
-    }
-  };
-
-  const handleToMonth = (value: Dayjs | null) => {
-    if (value) {
-      const updated = toDate
-        ? toDate.month(value.month())
-        : dayjs().month(value.month());
-      setToDate(updated);
-    }
-  };
   const data = chartData?.data;
   console.log("data", causeData?.data);
   console.log("selectedCauseId", selectedCauseId);
@@ -203,7 +166,7 @@ const Profile = () => {
 
               <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                 <Select
-                  placeholder="Select Cause"
+                  placeholder={causeData?.data?.[0]?.name || "Select a Cause"}
                   style={{ width: 300 }}
                   value={selectedCauseId}
                   onChange={setSelectedCauseId}
@@ -214,39 +177,6 @@ const Profile = () => {
                     </Select.Option>
                   ))}
                 </Select>
-                <Space direction="vertical" size="large">
-                  <Space>
-                    <Text strong>From:</Text>
-                    <DatePicker
-                      picker="year"
-                      value={fromDate}
-                      onChange={handleFromYear}
-                      placeholder="Select Year"
-                    />
-                    <DatePicker
-                      picker="month"
-                      value={fromDate}
-                      onChange={handleFromMonth}
-                      placeholder="Select Month"
-                    />
-                  </Space>
-
-                  <Space>
-                    <Text strong>To:</Text>
-                    <DatePicker
-                      picker="year"
-                      value={toDate}
-                      onChange={handleToYear}
-                      placeholder="Select Year"
-                    />
-                    <DatePicker
-                      picker="month"
-                      value={toDate}
-                      onChange={handleToMonth}
-                      placeholder="Select Month"
-                    />
-                  </Space>
-                </Space>
               </div>
 
               <ResponsiveContainer width="100%" height={300}>
