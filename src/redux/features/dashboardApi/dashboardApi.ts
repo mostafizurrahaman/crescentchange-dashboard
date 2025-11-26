@@ -3,8 +3,9 @@ import { baseApi } from "../../api/baseApi";
 const DashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDonationStats: builder.query({
-      query: ({ filter }) => ({
-        url: `/donation/analytics/stats?filter=${filter}`,
+      query: ({ filter, donationType }) => ({
+        // url: `/donation/analytics/stats?filter=${filter}`,
+        url: `/donation/analytics/stats?filter=${filter}&donationType=${donationType}`,
         method: "GET",
       }),
     }),

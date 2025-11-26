@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Modal, Pagination, Select } from "antd";
+import { Button, Modal, Pagination, Select, Tooltip } from "antd";
 import { Table } from "antd";
 import { Input } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
 import roundup from "../../assets/images/roundup.png";
@@ -11,12 +11,10 @@ import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { FaEye } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
-// interface IAllDonorsProps {
-//   donors: any[];
-//   total: number;
-//   loading?: boolean;
-// }
-
+import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import {  DownloadOutlined } from "@ant-design/icons";
 interface ITabProps {
   tab: string;
 }
@@ -29,7 +27,7 @@ const AllDonor = ({ tab }: ITabProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { data: profileData } = useGetAllProfileQuery(null);
-  const { data: donorData } = useGetAllDonorsQuery({
+  const { data: donorData, refetch } = useGetAllDonorsQuery({
     page: currentPage,
     limit: pageSize,
     status,
@@ -38,6 +36,11 @@ const AllDonor = ({ tab }: ITabProps) => {
     sort,
     organizationId: profileData?.data?._id,
   });
+
+  const { data: statsData } = useGetDonationStatsQuery({
+    filter: "this_month",
+    donationType: tab,
+  });
   console.log("data", donorData?.data);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
@@ -45,9 +48,23 @@ const AllDonor = ({ tab }: ITabProps) => {
   };
   const { Search } = Input;
   const { Option } = Select;
+  // Handle search
   const onSearch = (value: string) => {
-    console.log("Search input: ", value);
+    setSearchTerm(value);
+    setCurrentPage(1); // Reset page
   };
+
+  // Handle status change
+  const handleStatusChange = (value: string) => {
+    setStatus(value);
+    setCurrentPage(1); // Reset page
+  };
+
+  // Whenever searchTerm or status changes, refetch data
+  useEffect(() => {
+    refetch();
+  }, [searchTerm, status, currentPage]);
+
   const data = donorData?.data;
 
   const columns = [
@@ -111,6 +128,12 @@ const AllDonor = ({ tab }: ITabProps) => {
       render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      // render: (amount: any) => `$${amount.toFixed(2)}`,
+    },
+    {
       title: "Action",
       key: "action",
       render: (record: any) => (
@@ -125,30 +148,65 @@ const AllDonor = ({ tab }: ITabProps) => {
       ),
     },
   ];
+  const exportToExcel = () => {
+    const tableData = donorData?.data || [];
+
+    // Prepare the data for export
+    const formattedData = tableData.map((row: any) => ({
+      Name: row.donor?.name || "-",
+      "Email Address": row.donor?.auth?.email || "-",
+      "Date & Time": new Date(row.donationDate).toLocaleString(),
+      "Donation Type": row.donationType,
+      "Donation Message": row.specialMessage || "-",
+      Amount: `$${row.amount.toFixed(2)}`,
+      Status: row.status,
+    }));
+
+    // Create a new workbook
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Donations");
+
+    // Export the file as Excel (.xlsx)
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const file = new Blob([excelBuffer], {
+      bookType: "xlsx",
+      type: "application/octet-stream",
+    });
+    saveAs(file, "donations.xlsx");
+  };
   return (
     <div className="">
       <div className="bg-white border rounded-3xl p-6">
         <div className="flex justify-between items-center mb-5">
           <div>
             <p className=" text-xl font-medium">Total Donation</p>
-            <p className="text-neutral-400">+8.2% from last month</p>
+            <p className="text-neutral-400">
+              {statsData?.data?.totalDonatedAmount?.isIncrease === true
+                ? "+"
+                : "-"}{" "}
+              ${statsData?.data?.totalDonatedAmount?.percentageChange} % from
+              last month
+            </p>
           </div>
-          <div>
+          {/* <div>
             <Select defaultValue="Monthly" className="w-[150px]">
               <Select.Option value="Last 30 Days">Last 30 Days</Select.Option>
               <Select.Option value="2">Last 60 Days</Select.Option>
               <Select.Option value="3">Last 90 Days</Select.Option>
               <Select.Option value="4">Last 120 Days</Select.Option>
             </Select>
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-start items-end gap-1 mt-10 mb-6">
           <h1 className="text-3xl md:text-5xl font-bold">
             {" "}
-            <span className="text-gray-400">$</span> 40,000
+            <span className="text-gray-400">$</span>{" "}
+            {statsData?.data?.totalDonatedAmount?.value}
           </h1>
           <p className="text-green-500">
-            8.2% <span className="text-gray-400"> vs last month</span>
+            {statsData?.data?.totalDonatedAmount?.percentageChange}%{" "}
+            <span className="text-gray-400"> vs last month</span>
           </p>
         </div>
         <div className="grid grid-cols-2 gap-6  ">
@@ -156,16 +214,21 @@ const AllDonor = ({ tab }: ITabProps) => {
             <p className="text-lg font-medium">Avg Donation</p>
             <h1 className="text-2xl font-medium mt-10">
               {" "}
-              <span className="text-gray-400">$</span> 400{" "}
-              <span className="text-sm text-gray-400">per user</span>{" "}
+              <span className="text-gray-400">$</span>{" "}
+              {statsData?.data?.averageDonationPerUser?.value}
+              <span className="text-sm text-gray-400"> per user</span>{" "}
             </h1>
           </div>
           <div className="bg-[#f7f4f9] p-6 rounded-3xl">
             <p className="text-lg font-medium">Total Donors</p>
             <h1 className="text-2xl text-gray-400 font-medium mt-10">
               {" "}
-              <span className="text-black">12.2</span>K
-              <span className="text-sm text-green-500">5.4%</span>{" "}
+              <span className="text-black">
+                {statsData?.data?.totalDonors?.value}
+              </span>
+              <span className="text-sm text-green-500">
+                {statsData?.data?.totalDonors?.percentageChange} %
+              </span>{" "}
             </h1>
           </div>
         </div>
@@ -180,11 +243,17 @@ const AllDonor = ({ tab }: ITabProps) => {
                 placeholder="input search text"
                 onSearch={onSearch}
                 enterButton
+                allowClear
               />
             </div>
 
             <div className="mt-4 md:mt-0">
-              <Select placeholder={"Filter by status"} style={{ width: 150 }}>
+              <Select
+                value={status}
+                onChange={handleStatusChange}
+                placeholder={"Filter by status"}
+                style={{ width: 150 }}
+              >
                 <Option value="processing">Processing</Option>
                 <Option value="completed">Completed</Option>
                 <Option value="failed">Failed</Option>
@@ -194,18 +263,25 @@ const AllDonor = ({ tab }: ITabProps) => {
               </Select>
             </div>
 
-            <div className="mt-4 md:mt-0">
+            {/* TODO */}
+
+            {/* <div className="mt-4 md:mt-0">
               <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
                 Monthly
               </button>
-            </div>
-            {/* export korte hobe */}
-            <div className="group relative mt-4 md:mt-0">
-              <MoreOutlined className="text-xl cursor-pointer" />
-              <span className="absolute left-0 bottom-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                Export
-              </span>
-            </div>
+            </div> */}
+
+        
+            <Tooltip title="Export to Excel" placement="bottom">
+              <Button
+                type="text"
+                icon={<DownloadOutlined />}
+                onClick={exportToExcel}
+                className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+              >
+                <span className="text-lg font-medium">Export</span>
+              </Button>
+            </Tooltip>
           </div>
         </div>
         <Table
@@ -233,7 +309,7 @@ const AllDonor = ({ tab }: ITabProps) => {
               <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
             </p>
 
-            <h3  className="border-b mb-2 ">Donation Info:</h3>
+            <h3 className="border-b mb-2 ">Donation Info:</h3>
             <p>
               <strong>Type:</strong> {selectedDonation?.donationType}
             </p>
@@ -245,12 +321,12 @@ const AllDonor = ({ tab }: ITabProps) => {
               {selectedDonation?.specialMessage || "-"}
             </p>
 
-            <h3  className="border-b mb-2 ">Cause:</h3>
+            <h3 className="border-b mb-2 ">Cause:</h3>
             <p>
               <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
             </p>
 
-            <h3  className="border-b mb-2 ">Receipt:</h3>
+            <h3 className="border-b mb-2 ">Receipt:</h3>
             {selectedDonation?.receiptId && (
               <div>
                 <p className="mb-5">

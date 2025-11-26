@@ -11,8 +11,10 @@ type FilterType = "today" | "this_week" | "this_month";
 const Analytics = () => {
   const [active, setActive] = useState<FilterType>("today");
 
-  const { data: dashboardData } = useGetDonationStatsQuery({ filter: active });
-
+  const { data: dashboardData } = useGetDonationStatsQuery({
+    filter: active,
+    donationType: "all",
+  });
 
   const btnClass = (filter: FilterType) =>
     `px-9 py-3 rounded-3xl border transition ${
@@ -32,13 +34,22 @@ const Analytics = () => {
           </p>
         </div>
         <div className="w-full md:w-[30%] flex justify-start items-center gap-5">
-          <button className={btnClass("today")} onClick={() => setActive("today")}>
+          <button
+            className={btnClass("today")}
+            onClick={() => setActive("today")}
+          >
             Today
           </button>
-          <button className={btnClass("this_week")} onClick={() => setActive("this_week")}>
+          <button
+            className={btnClass("this_week")}
+            onClick={() => setActive("this_week")}
+          >
             This Week
           </button>
-          <button className={btnClass("this_month")} onClick={() => setActive("this_month")}>
+          <button
+            className={btnClass("this_month")}
+            onClick={() => setActive("this_month")}
+          >
             This Month
           </button>
         </div>
