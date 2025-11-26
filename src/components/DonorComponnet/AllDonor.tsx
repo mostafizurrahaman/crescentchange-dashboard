@@ -184,7 +184,7 @@ const AllDonor = ({ tab }: ITabProps) => {
             <p className="text-neutral-400">
               {statsData?.data?.totalDonatedAmount?.isIncrease === true
                 ? "+"
-                : "-"}{" "}
+                : "-"}
               ${statsData?.data?.totalDonatedAmount?.percentageChange} % from
               last month
             </p>
@@ -233,6 +233,9 @@ const AllDonor = ({ tab }: ITabProps) => {
           </div>
         </div>
       </div>
+
+
+
       <div className="bg-white p-6 rounded-3xl border my-6">
         <div className="flex justify-between items-center gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
@@ -291,9 +294,7 @@ const AllDonor = ({ tab }: ITabProps) => {
           style={{ marginTop: 20 }}
         />
 
-        <div className="flex justify-end items-center my-10">
-          <Pagination />
-        </div>
+      
         <Modal
           title="Donor Details"
           open={isOpen}
