@@ -67,8 +67,8 @@ const Donors = () => {
       {/* Conditional Components */}
       {activeTab === "All Donors" && <AllDonor tab={tabValueMap[activeTab]} />}
       {activeTab === "Round Up" && <RoundUp tab={tabValueMap[activeTab]} />}
-      {activeTab === "Recurring" && <Recurring  />}
-      {activeTab === "One Time" && <OneTime  />}
+      {activeTab === "Recurring" && <Recurring  tab={tabValueMap[activeTab]}/>}
+      {activeTab === "One Time" && <OneTime tab={tabValueMap[activeTab]} />}
     </div>
   );
 };
