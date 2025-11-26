@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pagination, Select } from "antd";
+import { Modal, Pagination, Select } from "antd";
 import { Table } from "antd";
 import { Input } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import {  useState } from "react";
+import { useState } from "react";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
-
+import roundup from "../../assets/images/roundup.png";
+import recurring from "../../assets/images/recurring.png";
+import oneTime from "../../assets/images/one-time.png";
+import { FaEye } from "react-icons/fa";
+import { IoIosRefresh } from "react-icons/io";
 // interface IAllDonorsProps {
 //   donors: any[];
 //   total: number;
@@ -22,8 +26,8 @@ const AllDonor = ({ tab }: ITabProps) => {
   const [sort, setSort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { data: profileData } = useGetAllProfileQuery(null);
   const { data: donorData } = useGetAllDonorsQuery({
     page: currentPage,
@@ -35,85 +39,70 @@ const AllDonor = ({ tab }: ITabProps) => {
     organizationId: profileData?.data?._id,
   });
   console.log("data", donorData?.data);
-
+  const handleViewClick = (record: any) => {
+    setSelectedDonation(record);
+    setIsOpen(true);
+  };
   const { Search } = Input;
   const { Option } = Select;
   const onSearch = (value: string) => {
     console.log("Search input: ", value);
   };
-  const data = [
-    {
-      key: "1",
-      name: "Josh Bill",
-      email: "johnnb@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "Round Up",
-      donationMessage: "-",
-      amount: 34.5,
-    },
-    {
-      key: "2",
-      name: "M Karim",
-      email: "kkkarim@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "Recurring",
-      donationMessage: "“Sending love & hope to everyone you’re helping”",
-      amount: 62.75,
-    },
-    {
-      key: "3",
-      name: "Josh Adam",
-      email: "jadddam@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "One Time",
-      donationMessage: "-",
-      amount: 15.2,
-    },
-    {
-      key: "4",
-      name: "Fajar Surya",
-      email: "fjsurya@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "One Time",
-      donationMessage: "“Sending love & hope to everyone you’re helping”",
-      amount: 47.3,
-    },
-    {
-      key: "5",
-      name: "Linda Blair",
-      email: "lindablair98@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "Recurring",
-      donationMessage: "“Sending love & hope to everyone you’re helping”",
-      amount: 23.9,
-    },
-  ];
+  const data = donorData?.data;
 
   const columns = [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "donor",
       key: "name",
+      render: (donor: any) => donor?.name || "-",
     },
     {
       title: "Email Address",
-      dataIndex: "email",
+      dataIndex: "donor",
       key: "email",
+      render: (donor: any) => donor?.auth?.email || "-",
     },
     {
       title: "Date & Time",
-      dataIndex: "dateTime",
+      dataIndex: "donationDate",
       key: "dateTime",
+      render: (date: string) => new Date(date).toLocaleString(),
     },
     {
       title: "Donation Type",
       dataIndex: "donationType",
       key: "donationType",
+      render: (donationType: string) => {
+        return (
+          <div className="flex justify-center items-center gap-2">
+            {donationType === "round-up" && (
+              <div className="flex items-center gap-2 bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+                <img src={roundup} alt="Round Up" className="w-4 h-4" />
+                <span>Round Up</span>
+              </div>
+            )}
+            {donationType === "recurring" && (
+              <div className="flex items-center gap-2 bg-green-100 text-green-600 px-3 py-1 rounded-full">
+                <img src={recurring} alt="Round Up" className="w-4 h-4" />
+                <span>Recurring</span>
+              </div>
+            )}
+            {donationType === "one-time" && (
+              <div className="flex items-center gap-2 bg-pink-100 text-pink-600 px-3 py-1 rounded-full">
+                <img src={oneTime} alt="Round Up" className="w-4 h-4" />
+                <span>One Time</span>
+              </div>
+            )}
+          </div>
+        );
+      },
     },
+
     {
       title: "Donation Message",
-      dataIndex: "donationMessage",
-      key: "donationMessage",
+      dataIndex: "specialMessage",
+      key: "specialMessage",
     },
     {
       title: "Amount",
@@ -124,9 +113,14 @@ const AllDonor = ({ tab }: ITabProps) => {
     {
       title: "Action",
       key: "action",
-      render: () => (
-        <div>
-          <a href="#">View</a> | <a href="#">Reset</a>
+      render: (record: any) => (
+        <div className="flex justify-center items-center gap-2">
+          <button onClick={() => handleViewClick(record)}>
+            <FaEye className="text-blue-500"></FaEye>
+          </button>
+          <button>
+            <IoIosRefresh className="text-green-500" />
+          </button>
         </div>
       ),
     },
@@ -190,9 +184,13 @@ const AllDonor = ({ tab }: ITabProps) => {
             </div>
 
             <div className="mt-4 md:mt-0">
-              <Select defaultValue="selected" style={{ width: 120 }}>
-                <Option value="selected">Selected</Option>
-                <Option value="all">All</Option>
+              <Select placeholder={"Filter by status"} style={{ width: 150 }}>
+                <Option value="processing">Processing</Option>
+                <Option value="completed">Completed</Option>
+                <Option value="failed">Failed</Option>
+                <Option value="refunded">Fefunded</Option>
+                <Option value="canceled">Canceled</Option>
+                <Option value="refunding">Refunding</Option>
               </Select>
             </div>
 
@@ -220,6 +218,56 @@ const AllDonor = ({ tab }: ITabProps) => {
         <div className="flex justify-end items-center my-10">
           <Pagination />
         </div>
+        <Modal
+          title="Donor Details"
+          open={isOpen}
+          onCancel={() => setIsOpen(false)}
+          footer={null}
+        >
+          <div>
+            <h3 className="border-b mb-2 ">Donor Info:</h3>
+            <p>
+              <strong>Name:</strong> {selectedDonation?.donor?.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
+            </p>
+
+            <h3  className="border-b mb-2 ">Donation Info:</h3>
+            <p>
+              <strong>Type:</strong> {selectedDonation?.donationType}
+            </p>
+            <p>
+              <strong>Amount:</strong> ${selectedDonation?.amount.toFixed(2)}
+            </p>
+            <p>
+              <strong>Message:</strong>{" "}
+              {selectedDonation?.specialMessage || "-"}
+            </p>
+
+            <h3  className="border-b mb-2 ">Cause:</h3>
+            <p>
+              <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
+            </p>
+
+            <h3  className="border-b mb-2 ">Receipt:</h3>
+            {selectedDonation?.receiptId && (
+              <div>
+                <p className="mb-5">
+                  <strong>Receipt Number:</strong>{" "}
+                  {selectedDonation?.receiptId.receiptNumber}
+                </p>
+                <a
+                  href={selectedDonation?.receiptId.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <strong>Download Receipt</strong>
+                </a>
+              </div>
+            )}
+          </div>
+        </Modal>
       </div>
     </div>
   );
