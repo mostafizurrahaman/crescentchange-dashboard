@@ -47,7 +47,7 @@ const Profile = () => {
   const OrgProfile = profileData?.data;
 
   const { data: causeData } = useGetRaisedCausedQuery({
-    orgId: "6920518d1ccf4652ca34317a",
+    orgId: profileData?.data?._id,
     startDate: fromMonth,
     endDate: toMonth,
     page: 1,
@@ -55,7 +55,7 @@ const Profile = () => {
   });
 
   const { data: chartData } = useGetCauseStatsQuery({
-    orgId: "6920518d1ccf4652ca34317a",
+    orgId: profileData?.data?._id,
     causeId: selectedCauseId || undefined,
     year: selectedYear,
   });

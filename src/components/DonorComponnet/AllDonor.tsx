@@ -1,12 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pagination, Select } from "antd";
-
 import { Table } from "antd";
-
 import { Input } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import {  useState } from "react";
+import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
+import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
 
-const AllDonor = () => {
+// interface IAllDonorsProps {
+//   donors: any[];
+//   total: number;
+//   loading?: boolean;
+// }
+
+interface ITabProps {
+  tab: string;
+}
+const AllDonor = ({ tab }: ITabProps) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [sort, setSort] = useState("");
+  const [status, setStatus] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
+
+  const { data: profileData } = useGetAllProfileQuery(null);
+  const { data: donorData } = useGetAllDonorsQuery({
+    page: currentPage,
+    limit: pageSize,
+    status,
+    donationType: tab,
+    searchTerm,
+    sort,
+    organizationId: profileData?.data?._id,
+  });
+  console.log("data", donorData?.data);
+
   const { Search } = Input;
   const { Option } = Select;
   const onSearch = (value: string) => {
@@ -90,7 +119,7 @@ const AllDonor = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount:any) => `$${amount.toFixed(2)}`,
+      render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",

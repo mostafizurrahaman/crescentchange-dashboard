@@ -6,11 +6,15 @@ import roundup from "../../assets/images/roundup.png";
 import people from "../../assets/images/People Community.png";
 import { Input } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
-
-const RoundUp = () => {
+const RoundUp = ({ tab }) => {
+  console.log("roundUp tab", tab);
   const { Search } = Input;
   const { Option } = Select;
+
+  const [donationType, setDonationType] = useState("all");
+
   const onSearch = (value: string) => {
     console.log("Search input: ", value);
   };
@@ -92,7 +96,7 @@ const RoundUp = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount:any) => `$${amount.toFixed(2)}`,
+      render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",

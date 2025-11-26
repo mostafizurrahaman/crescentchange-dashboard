@@ -3,9 +3,17 @@ import AllDonor from "../../components/DonorComponnet/AllDonor";
 import RoundUp from "../../components/DonorComponnet/RoundUp";
 import Recurring from "../../components/DonorComponnet/Recurring";
 import OneTime from "../../components/DonorComponnet/OneTime";
-
 const Donors = () => {
   const [activeTab, setActiveTab] = useState("All Donors");
+  const tabValueMap: Record<
+    string,
+    "all" | "round-up" | "recurring" | "one-time"
+  > = {
+    "All Donors": "all",
+    "Round Up": "round-up",
+    Recurring: "recurring",
+    "One Time": "one-time",
+  };
 
   const tabContent: Record<string, { title: string; description: string }> = {
     "All Donors": {
@@ -57,10 +65,10 @@ const Donors = () => {
       </div>
 
       {/* Conditional Components */}
-      {activeTab === "All Donors" && <AllDonor />}
-      {activeTab === "Round Up" && <RoundUp />}
-      {activeTab === "Recurring" && <Recurring />}
-      {activeTab === "One Time" && <OneTime />}
+      {activeTab === "All Donors" && <AllDonor tab={tabValueMap[activeTab]} />}
+      {activeTab === "Round Up" && <RoundUp tab={tabValueMap[activeTab]} />}
+      {activeTab === "Recurring" && <Recurring  />}
+      {activeTab === "One Time" && <OneTime  />}
     </div>
   );
 };
