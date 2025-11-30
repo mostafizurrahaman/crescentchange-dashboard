@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Pagination, Select } from "antd";
@@ -6,60 +7,31 @@ import { Table } from "antd";
 
 import { Input } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
+import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 const Reports = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [sort, setSort] = useState("");
+  const [status, setStatus] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("All Donors");
   const { Search } = Input;
   const { Option } = Select;
   const onSearch = (value: string) => {
     console.log("Search input: ", value);
   };
-  const data = [
-    {
-      key: "1",
-      name: "Josh Bill",
-      email: "johnnb@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "Round Up",
-      donationMessage: "-",
-      amount: 34.5,
-    },
-    {
-      key: "2",
-      name: "M Karim",
-      email: "kkkarim@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "Recurring",
-      donationMessage: "“Sending love & hope to everyone you’re helping”",
-      amount: 62.75,
-    },
-    {
-      key: "3",
-      name: "Josh Adam",
-      email: "jadddam@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "One Time",
-      donationMessage: "-",
-      amount: 15.2,
-    },
-    {
-      key: "4",
-      name: "Fajar Surya",
-      email: "fjsurya@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "One Time",
-      donationMessage: "“Sending love & hope to everyone you’re helping”",
-      amount: 47.3,
-    },
-    {
-      key: "5",
-      name: "Linda Blair",
-      email: "lindablair98@gmail.com",
-      dateTime: "12 Dec 2023 03:00 PM",
-      donationType: "Recurring",
-      donationMessage: "“Sending love & hope to everyone you’re helping”",
-      amount: 23.9,
-    },
-  ];
+  const { data: profileData } = useGetAllProfileQuery(null);
+  const { data: donorData, refetch } = useGetAllDonorsQuery({
+    page: currentPage,
+    limit: pageSize,
+    status,
+    donationType: "all",
+    searchTerm,
+    sort,
+    organizationId: profileData?.data?._id,
+  });
+  const data = donorData?.data;
 
   const columns = [
     {
@@ -91,7 +63,7 @@ const Reports = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount:any) => `$${amount.toFixed(2)}`,
+      render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",

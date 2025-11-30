@@ -133,7 +133,6 @@ const OneTime = ({ tab }: ITabProps) => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      // render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",
