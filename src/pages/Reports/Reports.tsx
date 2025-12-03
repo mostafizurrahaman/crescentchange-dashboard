@@ -25,18 +25,25 @@ const Reports = () => {
   const { Search } = Input;
   const { Option } = Select;
   const onSearch = (value: string) => {
-    console.log("Search input: ", value);
+    setSearchTerm(value);
+    setCurrentPage(1); // Reset page
   };
   const { data: profileData } = useGetAllProfileQuery(null);
-  const { data: donorData, refetch } = useGetAllDonorsQuery({
-    page: currentPage,
-    limit: pageSize,
-    status,
-    donationType: "all",
-    searchTerm,
-    sort,
-    organizationId: profileData?.data?._id,
-  });
+  const organizationId = profileData?.data?._id;
+  const { data: donorData, refetch } = useGetAllDonorsQuery(
+    {
+      page: currentPage,
+      limit: pageSize,
+      status,
+      donationType: "all",
+      searchTerm,
+      sort,
+      organizationId,
+    },
+    {
+      skip: !organizationId,
+    }
+  );
   const data = donorData?.data;
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
@@ -185,6 +192,7 @@ const Reports = () => {
                   placeholder="input search text"
                   onSearch={onSearch}
                   enterButton
+                  allowClear
                 />
               </div>
 

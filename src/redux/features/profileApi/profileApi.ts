@@ -11,6 +11,7 @@ const ProfileApi = baseApi.injectEndpoints({
     getCauseStats: builder.query({
       query: ({ orgId, causeId, year }) => ({
         url: `/donation/organization/${orgId}/cause-stats?year=${year}&causeId=${causeId}`,
+        
         method: "GET",
       }),
     }),

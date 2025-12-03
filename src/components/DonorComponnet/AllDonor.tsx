@@ -14,7 +14,7 @@ import { IoIosRefresh } from "react-icons/io";
 import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import {  DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 interface ITabProps {
   tab: string;
 }
@@ -27,15 +27,19 @@ const AllDonor = ({ tab }: ITabProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { data: profileData } = useGetAllProfileQuery(null);
-  const { data: donorData, refetch } = useGetAllDonorsQuery({
-    page: currentPage,
-    limit: pageSize,
-    status,
-    donationType: tab,
-    searchTerm,
-    sort,
-    organizationId: profileData?.data?._id,
-  });
+  const organizationId = profileData?.data?._id;
+  const { data: donorData } = useGetAllDonorsQuery(
+    {
+      page: currentPage,
+      limit: pageSize,
+      status,
+      donationType: tab,
+      searchTerm,
+      sort,
+      organizationId,
+    },
+    { skip: !organizationId }
+  );
 
   const { data: statsData } = useGetDonationStatsQuery({
     filter: "this_month",
@@ -62,7 +66,7 @@ const AllDonor = ({ tab }: ITabProps) => {
 
   // Whenever searchTerm or status changes, refetch data
   useEffect(() => {
-    refetch();
+    // refetch();
   }, [searchTerm, status, currentPage]);
 
   const data = donorData?.data;
@@ -234,8 +238,6 @@ const AllDonor = ({ tab }: ITabProps) => {
         </div>
       </div>
 
-
-
       <div className="bg-white p-6 rounded-3xl border my-6">
         <div className="flex justify-between items-center gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
@@ -274,7 +276,6 @@ const AllDonor = ({ tab }: ITabProps) => {
               </button>
             </div> */}
 
-        
             <Tooltip title="Export to Excel" placement="bottom">
               <Button
                 type="text"
@@ -294,7 +295,6 @@ const AllDonor = ({ tab }: ITabProps) => {
           style={{ marginTop: 20 }}
         />
 
-      
         <Modal
           title="Donor Details"
           open={isOpen}

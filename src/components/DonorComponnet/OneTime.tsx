@@ -29,15 +29,19 @@ const OneTime = ({ tab }: ITabProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { data: profileData } = useGetAllProfileQuery(null);
-  const { data: donorData, refetch } = useGetAllDonorsQuery({
-    page: currentPage,
-    limit: pageSize,
-    status,
-    donationType: tab,
-    searchTerm,
-    sort,
-    organizationId: profileData?.data?._id,
-  });
+   const organizationId = profileData?.data?._id;
+  const { data: donorData, refetch } = useGetAllDonorsQuery(
+    {
+      page: currentPage,
+      limit: pageSize,
+      status,
+      donationType: tab,
+      searchTerm,
+      sort,
+      organizationId,
+    },
+    { skip: !organizationId }
+  );
 
   const { data: statsData } = useGetDonationStatsQuery({
     filter: "this_month",

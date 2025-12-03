@@ -43,22 +43,35 @@ const Profile = () => {
   const fromMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
   const toMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
 
-  const { data: profileData } = useGetAllProfileQuery(null);
+  const { data: profileData, isLoading: isProfileLoading } =
+    useGetAllProfileQuery(null);
   const OrgProfile = profileData?.data;
+  const orgId = profileData?.data?._id;
+  console.log("orgId", orgId);
 
-  const { data: causeData } = useGetRaisedCausedQuery({
-    orgId: profileData?.data?._id,
-    startDate: fromMonth,
-    endDate: toMonth,
-    page: 1,
-    limit: 5,
-  });
+  const { data: causeData, isLoading: isCauseLoading } =
+    useGetRaisedCausedQuery(
+      {
+        orgId,
+        startDate: fromMonth,
+        endDate: toMonth,
+        page: 1,
+        limit: 5,
+      },
+      { skip: !orgId }
+    );
 
-  const { data: chartData } = useGetCauseStatsQuery({
-    orgId: profileData?.data?._id,
-    causeId: selectedCauseId || undefined,
-    year: selectedYear,
-  });
+  const { data: chartData, isLoading: isChartLoading } = useGetCauseStatsQuery(
+    {
+      orgId,
+      causeId: selectedCauseId || undefined,
+      year: selectedYear,
+    },
+    {
+      skip: !orgId 
+      
+    }
+  );
 
   const formattedChartData =
     chartData?.data?.map((item: any) => ({
@@ -69,6 +82,14 @@ const Profile = () => {
   const data = chartData?.data;
   console.log("data", causeData?.data);
   console.log("selectedCauseId", selectedCauseId);
+  const isLoading = isProfileLoading || isCauseLoading || isChartLoading;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl font-semibold">Loading...</div>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="flex justify-between items-center gap-2">
