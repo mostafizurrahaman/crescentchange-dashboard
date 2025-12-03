@@ -49,6 +49,11 @@ const Reports = () => {
     setSelectedDonation(record);
     setIsOpen(true);
   };
+  // Handle status change
+  const handleStatusChange = (value: string) => {
+    setStatus(value);
+    setCurrentPage(1); // Reset page
+  };
   const columns = [
     {
       title: "Name",
@@ -197,9 +202,17 @@ const Reports = () => {
               </div>
 
               <div className="mt-4 md:mt-0">
-                <Select defaultValue="selected" style={{ width: 120 }}>
-                  <Option value="selected">Selected</Option>
-                  <Option value="all">All</Option>
+                <Select
+                  value={status}
+                  onChange={handleStatusChange}
+                  placeholder={"Filter by status"}
+                  style={{ width: 150 }}
+                >
+                  <Option value="processing">Processing</Option>
+                  <Option value="completed">Completed</Option>
+                  <Option value="failed">Failed</Option>
+                  <Option value="refunded">Refunded</Option>
+                  <Option value="canceled">Canceled</Option>
                 </Select>
               </div>
 
