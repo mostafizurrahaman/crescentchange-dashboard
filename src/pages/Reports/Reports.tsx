@@ -14,6 +14,7 @@ import { FaEye } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
 const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -29,6 +30,11 @@ const Reports = () => {
     setSearchTerm(value);
     setCurrentPage(1); // Reset page
   };
+
+  const { data: statsData } = useGetDonationStatsQuery({
+    filter: "this_month",
+    donationType: "all",
+  });
   const { data: profileData } = useGetAllProfileQuery(null);
   const organizationId = profileData?.data?._id;
   const { data: donorData, refetch } = useGetAllDonorsQuery(
@@ -136,6 +142,29 @@ const Reports = () => {
       ),
     },
   ];
+  const allDataExport = () => {
+    const allData = statsData?.data;
+    console.log(statsData?.data);
+    const formattedData = [
+      {
+        "Total Donation": statsData?.data?.totalDonatedAmount?.percentageChange,
+        "Total Donors": statsData?.data?.totalDonors?.percentageChange,
+        "Avg Donation": statsData?.data?.averageDonationPerUser?.value,
+      },
+    ];
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Donations");
+
+    // Export the file as Excel (.xlsx)
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const file = new Blob([excelBuffer], {
+      bookType: "xlsx",
+      type: "application/octet-stream",
+    });
+    saveAs(file, "Reports.xlsx");
+  };
+
   const exportToExcel = () => {
     const tableData = donorData?.data || [];
 
@@ -161,7 +190,7 @@ const Reports = () => {
       bookType: "xlsx",
       type: "application/octet-stream",
     });
-    saveAs(file, "donations.xlsx");
+    saveAs(file, "Report table.xlsx");
   };
   return (
     <div>
@@ -172,7 +201,7 @@ const Reports = () => {
             Generate, track, and export your donation insights.
           </p>
         </div>
-        <div className="flex justify-start items-center gap-5 mb-5">
+        {/* <div className="flex justify-start items-center gap-5 mb-5">
           {["All Donors", "Export"].map((tab) => (
             <button
               key={tab}
@@ -184,7 +213,17 @@ const Reports = () => {
               {tab}
             </button>
           ))}
-        </div>
+        </div> */}
+        <Tooltip title="Export to Excel" placement="bottom">
+          <Button
+            type="text"
+            icon={<DownloadOutlined />}
+            onClick={allDataExport}
+            className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+          >
+            <span className="text-lg font-medium">Export</span>
+          </Button>
+        </Tooltip>
       </div>
 
       <div>
@@ -192,26 +231,34 @@ const Reports = () => {
           <div className="bg-white p-6 rounded-3xl border">
             <p className="text-lg font-medium">Total Donations</p>
             <h1 className="text-2xl font-medium mt-10">
-              {" "}
-              <span className="text-gray-400">$</span> 4000{" "}
-              <span className="text-sm text-green-400">+8.2% </span>{" "}
-              <span className="text-gray-400 text-sm">vs last month</span>{" "}
+              <p className="text-neutral-400">
+                {statsData?.data?.totalDonatedAmount?.isIncrease === true
+                  ? "+"
+                  : "-"}
+                ${statsData?.data?.totalDonatedAmount?.percentageChange} % from
+                last month
+              </p>
             </h1>
           </div>
           <div className="bg-white p-6 rounded-3xl border">
             <p className="text-lg font-medium">Total Donors</p>
-            <h1 className="text-2xl font-medium mt-10">
+            <h1 className="text-2xl text-gray-400 font-medium mt-10">
               {" "}
-              <span className="text-gray-400">$</span> 4000{" "}
-              <span className="text-sm text-green-500">5.4%</span>{" "}
+              <span className="text-black">
+                {statsData?.data?.totalDonors?.value}
+              </span>
+              <span className="text-sm text-green-500">
+                {statsData?.data?.totalDonors?.percentageChange} %
+              </span>{" "}
             </h1>
           </div>
           <div className="bg-white p-6 rounded-3xl border">
             <p className="text-lg font-medium">Avg. Donation</p>
             <h1 className="text-2xl font-medium mt-10">
               {" "}
-              <span className="text-gray-400">$</span> 400{" "}
-              <span className="text-sm text-gray-400">per user</span>{" "}
+              <span className="text-gray-400">$</span>{" "}
+              {statsData?.data?.averageDonationPerUser?.value}
+              <span className="text-sm text-gray-400"> per user</span>{" "}
             </h1>
           </div>
         </div>
@@ -268,10 +315,6 @@ const Reports = () => {
             pagination={{ pageSize: 5 }}
             style={{ marginTop: 20 }}
           />
-
-          <div className="flex justify-end items-center my-10">
-            <Pagination />
-          </div>
 
           <Modal
             title="Donor Details"
