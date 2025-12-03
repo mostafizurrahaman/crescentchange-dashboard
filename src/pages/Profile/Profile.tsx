@@ -68,8 +68,7 @@ const Profile = () => {
       year: selectedYear,
     },
     {
-      skip: !orgId 
-      
+      skip: !orgId,
     }
   );
 
@@ -80,7 +79,7 @@ const Profile = () => {
     })) || [];
 
   const data = chartData?.data;
-  console.log("data", causeData?.data);
+  console.log("causeData", causeData?.data);
   console.log("selectedCauseId", selectedCauseId);
   const isLoading = isProfileLoading || isCauseLoading || isChartLoading;
   if (isLoading) {
@@ -226,7 +225,33 @@ const Profile = () => {
                 <button className="text-purple-500 underline">View All</button>
               </Link>
             </div>
-            <div className="flex justify-between items-start gap-5 my-5">
+
+            {causeData?.data?.map((data: any) => (
+              <div
+                key={data._id}
+                className="flex justify-between items-start gap-5 my-5 "
+              >
+                <div className="flex gap-2">
+                  <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
+                    <img src={books} alt="" className="" />
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-medium">{data?.name}</h1>
+                    <p className="text-neutral-400">
+                      {data?.startMonth}- {data?.endMonth}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-end items-end">
+                  <p className="text-neutral-400">Raised: </p>
+                  <p className="text-green-500 text-xl">
+                    ${data?.totalDonationAmount}
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            {/* <div className="flex justify-between items-start gap-5 my-5">
               <div className="flex gap-2">
                 <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
                   <img src={books} alt="" className="" />
@@ -304,7 +329,7 @@ const Profile = () => {
                 <p className="text-neutral-400">Raised: </p>
                 <p className="text-green-500 text-xl">$8,489,509</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -460,7 +485,7 @@ const Profile = () => {
                     </button>
                   </Link>
                 </div>
-                <div className="flex justify-between items-start gap-5 my-5">
+                {/* <div className="flex justify-between items-start gap-5 my-5">
                   <div className="flex gap-2">
                     <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
                       <img src={books} alt="" className="" />
@@ -540,7 +565,7 @@ const Profile = () => {
                     <p className="text-neutral-400">Raised: </p>
                     <p className="text-green-500 text-xl">$8,489,509</p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
