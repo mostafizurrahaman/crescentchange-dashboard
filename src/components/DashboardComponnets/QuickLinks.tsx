@@ -4,6 +4,7 @@ import warning from "../../assets/images/Error Circle.png";
 import reports from "../../assets/images/Document Bullet List.png";
 import intregation from "../../assets/images/Puzzle Cube.png";
 import tickets from "../../assets/images/Ticket.png";
+import { Link } from "react-router-dom";
 
 const QuickLinks = () => {
   const data = [
@@ -53,12 +54,15 @@ const QuickLinks = () => {
             key={item.id}
             className="bg-white p-3 rounded-3xl flex flex-col items-center gap-2"
           >
-            <img
-              src={item.img}
-              alt={item.title}
-              className=" mb-4 font-semibold"
-            />
-            <p>{item.title}</p>
+            {" "}
+            <Link to={item?.link}>
+              <img
+                src={item.img}
+                alt={item.title}
+                className=" mb-4 font-semibold"
+              />
+              <p>{item.title}</p>
+            </Link>
           </div>
         ))}
       </div>
