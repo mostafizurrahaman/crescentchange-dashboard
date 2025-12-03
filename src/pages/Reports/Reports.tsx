@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Modal, Pagination, Select } from "antd";
+import { Button, Modal, Pagination, Select, Tooltip } from "antd";
 import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { Table } from "antd";
-
+import { DownloadOutlined } from "@ant-design/icons";
 import { Input } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { FaEye } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -135,6 +136,33 @@ const Reports = () => {
       ),
     },
   ];
+  const exportToExcel = () => {
+    const tableData = donorData?.data || [];
+
+    // Prepare the data for export
+    const formattedData = tableData.map((row: any) => ({
+      Name: row.donor?.name || "-",
+      "Email Address": row.donor?.auth?.email || "-",
+      "Date & Time": new Date(row.donationDate).toLocaleString(),
+      "Donation Type": row.donationType,
+      "Donation Message": row.specialMessage || "-",
+      Amount: `$${row.amount.toFixed(2)}`,
+      Status: row.status,
+    }));
+
+    // Create a new workbook
+    const ws = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Donations");
+
+    // Export the file as Excel (.xlsx)
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const file = new Blob([excelBuffer], {
+      bookType: "xlsx",
+      type: "application/octet-stream",
+    });
+    saveAs(file, "donations.xlsx");
+  };
   return (
     <div>
       <div className="flex justify-between items-center gap-5">
@@ -216,18 +244,22 @@ const Reports = () => {
                 </Select>
               </div>
 
-              <div className="mt-4 md:mt-0">
+              {/* <div className="mt-4 md:mt-0">
                 <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
                   Monthly
                 </button>
-              </div>
+              </div> */}
               {/* export korte hobe */}
-              <div className="group relative mt-4 md:mt-0">
-                <MoreOutlined className="text-xl cursor-pointer" />
-                <span className="absolute left-0 bottom-0 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  Export
-                </span>
-              </div>
+              <Tooltip title="Export to Excel" placement="bottom">
+                <Button
+                  type="text"
+                  icon={<DownloadOutlined />}
+                  onClick={exportToExcel}
+                  className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+                >
+                  <span className="text-lg font-medium">Export</span>
+                </Button>
+              </Tooltip>
             </div>
           </div>
           <Table

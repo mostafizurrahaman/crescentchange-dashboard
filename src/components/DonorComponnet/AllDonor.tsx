@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Modal, Pagination, Select, Tooltip } from "antd";
+import { Button, Modal, Select, Tooltip } from "antd";
 import { Table } from "antd";
 import { Input } from "antd";
 import { useEffect, useState } from "react";
@@ -64,7 +64,6 @@ const AllDonor = ({ tab }: ITabProps) => {
     setCurrentPage(1); // Reset page
   };
 
-  // Whenever searchTerm or status changes, refetch data
   useEffect(() => {
     // refetch();
   }, [searchTerm, status, currentPage]);
