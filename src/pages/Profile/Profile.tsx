@@ -49,6 +49,7 @@ import digital from "../../assets/images/💻.png";
 import mental from "../../assets/images/🧠.png";
 import qurban from "../../assets/images/🐑.png";
 import women from "../../assets/images/👩_👧.png";
+import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const Profile = () => {
   const [selectedYear, setSelectedYear] = useState(dayjs().year());
@@ -153,9 +154,17 @@ const Profile = () => {
         </div>
       </div>
       <div className="my-6 relative">
-        <img src={profile} alt="" className="w-full" />
+        <img
+          src={`${IMAGE_URL}${OrgProfile?.coverImage}`}
+          alt=""
+          className="w-full h-80  rounded-3xl"
+        />
         <div className="absolute ml-28 top-60">
-          <img src={hfl} alt="" className="h-40 w-40" />
+          <img
+            src={`${IMAGE_URL}${OrgProfile?.logoImage}`}
+            alt=""
+            className="h-40 w-40 rounded-full"
+          />
         </div>
       </div>
       {/* main data start */}

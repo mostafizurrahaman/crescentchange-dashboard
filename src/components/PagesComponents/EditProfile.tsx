@@ -2,7 +2,6 @@
 import { message, Upload } from "antd";
 import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
-// import profile from "../../assets/images/profile.png";
 import editUser from "../../assets/images/Icons.png";
 import donor from "../../assets/images/donor.png";
 import deposit from "../../assets/images/deposit.png";
