@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Upload } from "antd";
+import { message, Upload } from "antd";
 import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
-import profile from "../../assets/images/profile.png";
+// import profile from "../../assets/images/profile.png";
 import hfl from "../../assets/images/Profile Logo.png";
 import editUser from "../../assets/images/Icons.png";
 import donor from "../../assets/images/donor.png";
@@ -10,26 +10,50 @@ import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
 import AccessTab from "../ProfileComponents/AccessTab";
 import EditCauses from "../EditProfileComponents/EditCauses";
+import {
+  useEditOrgCoverImageMutation,
+  useEditOrgLogoMutation,
+  useGetAllProfileQuery,
+} from "../../redux/features/profileApi/profileApi";
+import { BASE_URL, IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const EditProfile = () => {
-  const [, setProfilePic] = useState<File | null>(null);
+  const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [, setLogo] = useState<File | null>(null);
+  const [logo, setLogo] = useState<File | null>(null);
+  const [coverEditMode, setCoverEditMode] = useState(false);
+  const [logoEditMode, setLogoEditMode] = useState(false);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [active, setActive] = useState<"discard" | "save" | null>(null);
   const [activeTab, setActiveTab] = useState<"profile" | "access" | "causes">(
     "profile"
   );
-
+  const { data: orgData } = useGetAllProfileQuery(null);
+  const [editOrgCoverImage] = useEditOrgCoverImageMutation();
+  const [editOrgLogo] = useEditOrgLogoMutation();
+  console.log("cover", orgData?.data?.coverImage);
   const handleBeforeUpload = (file: File) => {
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
     return false;
   };
+  const handelEditCoverImage = async () => {
+    if (!profilePic) return message.error("Please select an image first!");
+    try {
+      const formData = new FormData();
+      formData.append("profileImage", profilePic!);
+      await editOrgCoverImage(formData).unwrap();
+      message.success("Cover image updated successfully");
+    } catch (error) {
+      message.error("Failed to update cover image");
+      console.log(error);
+    }
+  };
 
   const handleBeforeUploadLogo = (file: File) => {
     setLogo(file);
     setPreviewLogo(URL.createObjectURL(file));
+
     return false;
   };
 
@@ -73,19 +97,25 @@ const EditProfile = () => {
         <div className="mt-10">
           <div className="my-5 w-full relative">
             <img
-              src={previewImage || profile}
+              src={previewImage || `${IMAGE_URL}${orgData?.data?.coverImage}`}
               alt="Cover"
               className="w-full h-80 rounded-2xl"
             />
+            {/* Edit the cober image with thge api */}
+
             <Upload
               showUploadList={false}
               maxCount={1}
               beforeUpload={handleBeforeUpload}
+              onChange={handelEditCoverImage}
               className="cursor-pointer absolute top-10 right-20 z-[999]"
             >
               <div className="bg-neutral-200 px-6 py-3 rounded-full flex justify-center items-center gap-2">
-                <FaCamera className="h-5 w-5" />
-                <p className="text-lg">Change Cover Photo</p>
+                {coverEditMode ? (
+                  <p> Save</p>
+                ) : (
+                  <FaCamera className="h-5 w-5 text-black" />
+                )}
               </div>
             </Upload>
           </div>
@@ -152,7 +182,7 @@ const EditProfile = () => {
           <div className="w-full md:w-[80%]">
             {activeTab === "profile" && <ProfileEditForm />}
             {activeTab === "access" && <AccessTab />}
-            {activeTab === "causes" && <EditCauses  />}
+            {activeTab === "causes" && <EditCauses />}
           </div>
         </div>
       </div>

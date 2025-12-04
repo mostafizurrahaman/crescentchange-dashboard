@@ -11,7 +11,7 @@ const ProfileApi = baseApi.injectEndpoints({
     getCauseStats: builder.query({
       query: ({ orgId, causeId, year }) => ({
         url: `/donation/organization/${orgId}/cause-stats?year=${year}&causeId=${causeId}`,
-        
+
         method: "GET",
       }),
     }),
@@ -21,6 +21,36 @@ const ProfileApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    //  Edit profile:
+    editOrgDetails: builder.mutation({
+      query: (data) => ({
+        url: "/organization/profile-details",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    editTaxDetails: builder.mutation({
+      query: (data) => ({
+        url: "/organization/tax-details",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    editOrgLogo: builder.mutation({
+      query: (data) => ({
+        url: "/organization/logo-image",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    editOrgCoverImage: builder.mutation({
+      query: (data) => ({
+        url: "/auth/update-photo",
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -28,4 +58,8 @@ export const {
   useGetAllProfileQuery,
   useGetCauseStatsQuery,
   useGetRaisedCausedQuery,
+  useEditOrgDetailsMutation,
+  useEditOrgCoverImageMutation,
+  useEditOrgLogoMutation,
+  useEditTaxDetailsMutation,
 } = ProfileApi;

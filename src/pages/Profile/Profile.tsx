@@ -315,7 +315,7 @@ const Profile = () => {
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         centered
-        width={650}
+        width={800}
         className="rounded-3xl my-10"
       >
         <div className="rounded-2xl overflow-hidden">
