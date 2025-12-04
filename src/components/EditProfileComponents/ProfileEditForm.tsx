@@ -1,6 +1,17 @@
-import { ConfigProvider, DatePicker, Form, Input, InputNumber } from "antd";
-type FieldType = {
+import {
+  ConfigProvider,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Button,
+  message,
+} from "antd";
+import { useState } from "react";
+import { useEditOrgDetailsMutation } from "../../redux/features/profileApi/profileApi";
+import dayjs from "dayjs";
 
+type FieldType = {
   "organisation-name"?: string;
   "organisation-address"?: string;
   suburb?: string;
@@ -20,163 +31,206 @@ type FieldType = {
   "expiry-date"?: string;
   cvv?: string;
   "mission-statement"?: string;
-  "date-of-established"?: string;
-  lines: number;
-   about?: string;
+  "date-of-established"?: any;
+  lines?: number;
+  about?: string;
 };
+
 const ProfileEditForm = () => {
-  const onFinish = () => {};
+  const [editOrgDetails, { isLoading }] = useEditOrgDetailsMutation();
+  const [form] = Form.useForm<FieldType>();
+  const [active, setActive] = useState<"save" | "discard" | null>(null);
+
+  const onFinish = async (values: FieldType) => {
+    try {
+      const payload = {
+        name: values.name,
+        aboutUs: values.about,
+        country: values.country,
+        website: values.website,
+        phoneNumber: values.telephone,
+        state: values.state,
+        postalCode: values["post-code"],
+        isProfileVisible: true,
+        dateOfEstablishment: values["date-of-established"]
+          ? dayjs(values["date-of-established"]).format("YYYY-MM-DD")
+          : null,
+        address: values["organisation-address"],
+      };
+
+      const response = await editOrgDetails(payload).unwrap();
+      message.success("Profile updated successfully!");
+      console.log("Updated data:", response);
+      form.resetFields();
+      setActive("save");
+    } catch (error: any) {
+      message.error(error?.data?.message || "Failed to update profile");
+      console.error(error);
+    }
+  };
+
+  const handleDiscard = () => {
+    form.resetFields();
+    setActive("discard");
+    message.info("Changes discarded");
+  };
+
   return (
-    <div className="">
+    <div>
       <ConfigProvider
         theme={{
           components: {
-            Form: {
-              borderRadius: 0,
-            },
-            Input: {
-              borderRadius: 5,
-            },
+            Form: { borderRadius: 0 },
+            Input: { borderRadius: 5 },
           },
         }}
       >
         <Form
+          form={form}
           name="contact"
           initialValues={{ remember: false }}
           onFinish={onFinish}
           layout="vertical"
           className="px-6"
         >
-          <div className="flex justify-between items-start gap-2">
+          {/* Organisation Name and Date */}
+          <div className="flex flex-col md:flex-row gap-2">
             <Form.Item<FieldType>
-              name="organisation-name"
-              style={{ width: "50%" }}
-              label={<p className=" text-md ">Organisation Name</p>}
+              name="name"
+              label="Organisation Name"
+              rules={[
+                { required: true, message: "Please enter organisation name" },
+              ]}
+              style={{ flex: 1 }}
             >
-              <Input
-                required
-                style={{ padding: "6px" }}
-                className=" text-md"
-                placeholder="Organisation Name"
-              />
+              <Input placeholder="Organisation Name" />
             </Form.Item>
+
             <Form.Item<FieldType>
               name="date-of-established"
-              label={<p className=" text-md ">Date Of Established</p>}
-              style={{ width: "50%" }}
+              label="Date Of Established"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select date of establishment",
+                },
+              ]}
+              style={{ flex: 1 }}
             >
               <DatePicker
-                required
-                style={{ padding: "6px", width: "100%" }}
-                className=" text-md"
+                style={{ width: "100%" }}
                 placeholder="Date Of Established"
               />
             </Form.Item>
           </div>
 
+          {/* Organisation Address */}
           <Form.Item<FieldType>
             name="organisation-address"
-            label={<p className=" text-md ">Organisation address</p>}
-            style={{}}
+            label="Organisation Address"
+            rules={[
+              { required: true, message: "Please enter organisation address" },
+            ]}
           >
-            <Input
-              required
-              style={{ padding: "6px" }}
-              className=" text-md"
-              placeholder="Organisation address"
-            />
+            <Input placeholder="Organisation Address" />
           </Form.Item>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
+
+          {/* Country, State, Post Code */}
+          <div className="flex flex-col md:flex-row gap-5">
             <Form.Item<FieldType>
               name="country"
-              label={<p className=" text-md ">Country</p>}
-              style={{ width: "100%" }}
+              label="Country"
+              rules={[{ required: true, message: "Please enter country" }]}
+              style={{ flex: 1 }}
             >
-              <Input
-                required
-                style={{ padding: "6px" }}
-                className=" text-md"
-                placeholder="Country"
-              />
+              <Input placeholder="Country" />
             </Form.Item>
+
             <Form.Item<FieldType>
               name="state"
-              label={<p className=" text-md ">State </p>}
-              style={{ width: "100%" }}
+              label="State"
+              rules={[{ required: true, message: "Please enter state" }]}
+              style={{ flex: 1 }}
             >
-              <Input
-                required
-                style={{ padding: "6px" }}
-                className=" text-md"
-                placeholder="State"
-              />
+              <Input placeholder="State" />
             </Form.Item>
+
             <Form.Item<FieldType>
               name="post-code"
-              label={<p className=" text-md ">Post code</p>}
-              style={{ width: "100%" }}
+              label="Post code"
+              rules={[{ required: true, message: "Please enter post code" }]}
+           
             >
-              <InputNumber
-                required
-                style={{ padding: "3px", width: "100%" }}
-                className=" text-md"
+              <Input
+                style={{ padding: "6px" }}
+                className="text-md"
                 placeholder="Post code"
               />
             </Form.Item>
           </div>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5">
+
+          {/* Contact info */}
+          <div className="flex flex-col md:flex-row gap-5">
             <Form.Item<FieldType>
               name="telephone"
-              label={<p className=" text-md ">Mobile</p>}
-              style={{ width: "100%" }}
+              label="Mobile"
+              rules={[
+                { required: true, message: "Please enter mobile number" },
+              ]}
+              style={{ flex: 1 }}
             >
-              <Input
-                required
-                style={{ padding: "6px" }}
-                className=" text-md"
-                placeholder="Mobile"
-              />
+              <Input placeholder="Mobile" />
             </Form.Item>
+
             <Form.Item<FieldType>
               name="email-address"
-              label={<p className=" text-md ">Email </p>}
-              style={{ width: "100%" }}
+              label="Email"
+              rules={[
+                { required: true, message: "Please enter email" },
+                { type: "email", message: "Please enter a valid email" },
+              ]}
+              style={{ flex: 1 }}
             >
-              <Input
-                required
-                style={{ padding: "6px" }}
-                className=" text-md"
-                placeholder="Email "
-              />
+              <Input placeholder="Email" />
             </Form.Item>
+
             <Form.Item<FieldType>
               name="website"
-              label={<p className=" text-md "> Website</p>}
-              style={{ width: "100%" }}
+              label="Website"
+              rules={[{ required: true, message: "Please enter website" }]}
+              style={{ flex: 1 }}
             >
-              <Input
-                required
-                style={{ padding: "6px", width: "100%" }}
-                className=" text-md"
-                placeholder=" Website"
-              />
+              <Input placeholder="Website" />
             </Form.Item>
           </div>
 
+          {/* About */}
           <Form.Item<FieldType>
             name="about"
-            label={<p className=" text-md ">About</p>}
-            style={{}}
+            label="About"
+            rules={[
+              { required: true, message: "Please enter about information" },
+            ]}
           >
             <Input.TextArea
-              required
               rows={4}
-              style={{ padding: "6px" }}
-              className=" text-md"
-              placeholder="Hope for Learning Foundation exists to unlock the power of education for underserved communities. We champion access, equity, and opportunity — because every child deserves a future filled with knowledge, growth, and hope."
+              placeholder="Write about your organisation..."
             />
           </Form.Item>
-    
+
+          {/* Buttons */}
+          <div className="flex justify-start items-center gap-3 mt-4">
+            <Button
+              onClick={handleDiscard}
+              type={active === "discard" ? "primary" : "default"}
+            >
+              Discard Changes
+            </Button>
+
+            <Button htmlType="submit" type="primary" loading={isLoading}>
+              Save Changes
+            </Button>
+          </div>
         </Form>
       </ConfigProvider>
     </div>

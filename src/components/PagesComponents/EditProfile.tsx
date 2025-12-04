@@ -3,7 +3,6 @@ import { message, Upload } from "antd";
 import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
 // import profile from "../../assets/images/profile.png";
-import hfl from "../../assets/images/Profile Logo.png";
 import editUser from "../../assets/images/Icons.png";
 import donor from "../../assets/images/donor.png";
 import deposit from "../../assets/images/deposit.png";
@@ -15,7 +14,7 @@ import {
   useEditOrgLogoMutation,
   useGetAllProfileQuery,
 } from "../../redux/features/profileApi/profileApi";
-import { BASE_URL, IMAGE_URL } from "../../redux/utils/baseUrl";
+import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -49,6 +48,18 @@ const EditProfile = () => {
       console.log(error);
     }
   };
+  const handelEditLogo = async () => {
+    if (!logo) return message.error("Please select an image first!");
+    try {
+      const formData = new FormData();
+      formData.append("logoImage", logo!);
+      await editOrgLogo(formData).unwrap();
+      message.success("Logo updated successfully");
+    } catch (error) {
+      message.error("Failed to update logo");
+      console.log(error);
+    }
+  };
 
   const handleBeforeUploadLogo = (file: File) => {
     setLogo(file);
@@ -57,6 +68,9 @@ const EditProfile = () => {
     return false;
   };
 
+
+
+
   return (
     <div>
       <div>
@@ -64,7 +78,7 @@ const EditProfile = () => {
         <div>
           <div className="flex justify-between items-center gap-5">
             <h1 className="text-4xl font-semibold mb-4">Edit Information</h1>
-            <div className="flex justify-start items-center gap-3">
+            {/* <div className="flex justify-start items-center gap-3">
               <button
                 onClick={() => setActive("discard")}
                 className={`px-4 py-3 rounded-3xl border transition ${
@@ -86,7 +100,7 @@ const EditProfile = () => {
               >
                 Save Changes
               </button>
-            </div>
+            </div> */}
           </div>
           <p className="text-lg text-gray-600 mb-6">
             Manage how your organisation appears to donors.
@@ -112,9 +126,12 @@ const EditProfile = () => {
             >
               <div className="bg-neutral-200 px-6 py-3 rounded-full flex justify-center items-center gap-2">
                 {coverEditMode ? (
-                  <p> Save</p>
-                ) : (
                   <FaCamera className="h-5 w-5 text-black" />
+                ) : (
+                  <div className="flex justify-center items-center gap-2">
+                    <FaCamera className="h-5 w-5 text-black" />
+                    <p>Change Cover Image</p>
+                  </div>
                 )}
               </div>
             </Upload>
@@ -122,7 +139,7 @@ const EditProfile = () => {
 
           <div className="relative -top-28 left-24">
             <img
-              src={previewLogo || hfl}
+              src={previewLogo || `${IMAGE_URL}${orgData?.data?.logoImage}`}
               alt="Logo"
               className="h-40 w-40 rounded-full"
             />
@@ -130,6 +147,7 @@ const EditProfile = () => {
               showUploadList={false}
               maxCount={1}
               beforeUpload={handleBeforeUploadLogo}
+              onChange={handelEditLogo}
               className="cursor-pointer"
             >
               <div className="relative -top-14 left-32 bg-neutral-800 h-10 w-10 rounded-full flex justify-center items-center">
