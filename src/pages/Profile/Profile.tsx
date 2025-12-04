@@ -106,28 +106,28 @@ const Profile = () => {
     );
   }
 
-const causeList = [
-  { cause: "water", icon: water },
-  { cause: "education", icon: education },
-  { cause: "food", icon: food },
-  { cause: "youth", icon: youth },
-  { cause: "orphans", icon: orphans },
-  { cause: "quran_education", icon: Quran },
-  { cause: "health_medical", icon: health },
-  { cause: "emergency_relief", icon: emergency },
-  { cause: "shelter_housing", icon: shelter },
-  { cause: "mosque_utilities", icon: mosque },
-  { cause: "zakat", icon: zakat },
-  { cause: "sadaqah", icon: sadaqah },
-  { cause: "ramadan", icon: ramadan },
-  { cause: "qurban", icon: qurban },
-  { cause: "fitrah", icon: fitrah },
-  { cause: "admin_operational", icon: admin },
-  { cause: "refugees", icon: refugee },
-  { cause: "digital_dawah", icon: digital },
-  { cause: "women_families", icon: women },
-  { cause: "mental_health", icon: mental }
-];
+  const causeList = [
+    { cause: "water", icon: water },
+    { cause: "education", icon: education },
+    { cause: "food", icon: food },
+    { cause: "youth", icon: youth },
+    { cause: "orphans", icon: orphans },
+    { cause: "quran_education", icon: Quran },
+    { cause: "health_medical", icon: health },
+    { cause: "emergency_relief", icon: emergency },
+    { cause: "shelter_housing", icon: shelter },
+    { cause: "mosque_utilities", icon: mosque },
+    { cause: "zakat", icon: zakat },
+    { cause: "sadaqah", icon: sadaqah },
+    { cause: "ramadan", icon: ramadan },
+    { cause: "qurban", icon: qurban },
+    { cause: "fitrah", icon: fitrah },
+    { cause: "admin_operational", icon: admin },
+    { cause: "refugees", icon: refugee },
+    { cause: "digital_dawah", icon: digital },
+    { cause: "women_families", icon: women },
+    { cause: "mental_health", icon: mental },
+  ];
 
   return (
     <div>
@@ -303,98 +303,19 @@ const causeList = [
                 </div>
               );
             })}
-
-            {/* <div className="flex justify-between items-start gap-5 my-5">
-              <div className="flex gap-2">
-                <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                  <img src={books} alt="" className="" />
-                </div>
-                <div>
-                  <h1 className="text-lg font-medium">Backpacks & Books</h1>
-                  <p className="text-neutral-400">July 2025-oct 2025</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-end items-end">
-                <p className="text-neutral-400">Raised: </p>
-                <p className="text-green-500 text-xl">$8,489,509</p>
-              </div>
-            </div>
-            <div className="flex justify-between items-start gap-5 my-5">
-              <div className="flex gap-2">
-                <div className="bg-purple-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                  <img src={dream} alt="" className="" />
-                </div>
-
-                <div>
-                  <h1 className="text-lg font-bold">Digital Dreams</h1>
-                  <p className="text-neutral-400">July 2025-oct 2025</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-end items-end">
-                <p className="text-neutral-400">Raised: </p>
-                <p className="text-green-500 text-xl">$8,489,509</p>
-              </div>
-            </div>
-            <div className="flex justify-between items-start gap-5 my-5">
-              <div className="flex gap-2">
-                <div className="bg-yellow-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                  <img src={cloth} alt="" className="" />
-                </div>
-
-                <div>
-                  <h1 className="text-lg font-bold">Warmth in Winter</h1>
-                  <p className="text-neutral-400">July 2025-oct 2025</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-end items-end">
-                <p className="text-neutral-400">Raised: </p>
-                <p className="text-green-500 text-xl">$8,489,509</p>
-              </div>
-            </div>
-            <div className="flex justify-between items-start gap-5 my-5">
-              <div className="flex gap-2">
-                <div className="bg-red-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                  <img src={meal} alt="" className="" />
-                </div>
-
-                <div>
-                  <h1 className="text-lg font-bold">Every Child, Every Meal</h1>
-                  <p className="text-neutral-400">July 2025-oct 2025</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-end items-end">
-                <p className="text-neutral-400">Raised: </p>
-                <p className="text-green-500 text-xl">$8,489,509</p>
-              </div>
-            </div>
-            <div className="flex justify-between items-start gap-5 my-5">
-              <div className="flex gap-2">
-                <div className="bg-pink-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                  <img src={cat} alt="" className="" />
-                </div>
-
-                <div>
-                  <h1 className="text-lg font-bold">Meow Care Center</h1>
-                  <p className="text-neutral-400">July 2025-oct 2025</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-end items-end">
-                <p className="text-neutral-400">Raised: </p>
-                <p className="text-green-500 text-xl">$8,489,509</p>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
 
       {/* Modal */}
 
+      {/* Modal */}
       <Modal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         centered
-        width={500}
+        width={650}
         className="rounded-3xl my-10"
       >
         <div className="rounded-2xl overflow-hidden">
@@ -403,224 +324,142 @@ const causeList = [
             <img
               src={profile}
               alt="cover"
-              className="w-full h-40 object-cover"
+              className="w-full h-48 object-cover"
             />
-            <div className="absolute -bottom-10 left-4">
+            <div className="absolute -bottom-10 left-5">
               <img
                 src={hfl}
                 alt="logo"
-                className="h-20 w-20 rounded-full border-4 border-white shadow-md"
+                className="h-24 w-24 rounded-full border-4 border-white shadow-md"
               />
             </div>
           </div>
 
-          {/* Foundation Details */}
-          <div className="flex flex-col md:flex-row gap-5 justify-between items-center mt-10">
-            <div className="flex justify-start items-center gap-5">
-              <h1 className="text-2xl font-bold">HFL Foundation</h1>
-            </div>
-
-            <p className="text-gray-400">
-              Established since:{" "}
-              <span className="text-black">01 July 2018</span>
+          {/* PROFILE SECTION */}
+          <div className="flex flex-col md:flex-row justify-between items-center mt-12 px-3">
+            <h1 className="text-2xl font-bold">{OrgProfile?.name}</h1>
+            <p className="text-gray-500">
+              Established:{" "}
+              <span className="text-black">
+                {OrgProfile?.dateOfEstablishment}
+              </span>
             </p>
           </div>
 
-          <div className="flex flex-col  gap-5 justify-between items-start ">
-            <div className="w-full">
-              {/* About Section */}
-              <div className="my-10">
-                <div className="p-6 bg-white rounded-3xl border">
-                  <p className="text-gray-400">About</p>
-                  <p className="my-3 text-gray-800">
-                    Hope for Learning Foundation exists to unlock the power of
-                    education for underserved communities. We champion access,
-                    equity, and opportunity — because every child deserves a
-                    future filled with knowledge, growth, and hope.
-                  </p>
-                  <p className="text-gray-400">Connect & Contact</p>
+          {/* ABOUT + CONTACT */}
+          <div className="p-5 mt-5 bg-white border rounded-3xl">
+            <p className="text-gray-400">About</p>
+            <p className="my-2">{OrgProfile?.aboutUs}</p>
 
-                  <div className="flex justify-start items-center gap-2 my-3">
-                    <CiGlobe className="h-5 w-5" />
-                    <p className="text-gray-400">
-                      Website:{" "}
-                      <span className="text-black underline">
-                        www.hfl-foundation.org
-                      </span>
-                    </p>
-                  </div>
-                  <div className="flex flex-col justify-start items-start">
-                    <div className="flex justify-start items-center gap-2 my-3">
-                      <MdOutlineEmail className="h-5 w-5" />
-                      <p className="text-gray-400">
-                        Email:{" "}
-                        <span className="text-black underline">
-                          contact@hfl-foundation.org
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex justify-start items-center gap-2 my-3">
-                      <IoCallOutline className="h-5 w-5" />
-                      <p className="text-gray-400">
-                        Phone:{" "}
-                        <span className="text-black underline">
-                          +61 470 292 023
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="my-3">
-                    <p className="text-gray-400">Address</p>
-                    <div className="flex justify-start items-center gap-2 my-3">
-                      <TfiLocationPin className="h-5 w-5" />
-                      <p className="font-medium">
-                        57 Donut Road, Crescent Lane, Sydney, Australia
-                      </p>
-                    </div>
-                    <div className="flex justify-start items-center gap-2 my-3">
-                      <TfiLocationPin className="h-5 w-5" />
-                      <p className="font-medium">
-                        67 Burger Road, Moon Lane, Sydney, Australia
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            <p className="text-gray-400 mt-4">Connect & Contact</p>
+
+            <div className="flex items-center gap-2 mt-2">
+              <CiGlobe />
+              <p className="text-gray-500">
+                Website:{" "}
+                <span className="underline">{OrgProfile?.website}</span>
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2 mt-3">
+              <div className="flex items-center gap-2">
+                <MdOutlineEmail />
+                <p className="text-gray-500">
+                  Email:{" "}
+                  <span className="underline">{OrgProfile?.auth?.email}</span>
+                </p>
               </div>
+              <div className="flex items-center gap-2">
+                <IoCallOutline />
+                <p className="text-gray-500">
+                  Phone:{" "}
+                  <span className="underline">{OrgProfile?.phoneNumber}</span>
+                </p>
+              </div>
+            </div>
 
-              {/* Causes Analytics */}
-              <div className="bg-white p-3 rounded-3xl border">
-                <h1 className="text-2xl font-medium">Causes Analytics</h1>
-                <div className="flex justify-between items-center mb-4">
-                  <div className="bg-gray-50 p-3 rounded-3xl">
-                    <Select
-                      style={{ width: 300 }}
-                      defaultValue="Backpacks & Books"
-                    >
-                      <Select.Option value="backpacks">
-                        Backpacks & Books
-                      </Select.Option>
-                    </Select>
-                  </div>
+            <div className="mt-4">
+              <p className="text-gray-400">Address</p>
+              <div className="flex items-center gap-2 mt-2">
+                <TfiLocationPin />
+                <p className="text-gray-800 font-medium">
+                  {OrgProfile?.address}
+                </p>
+              </div>
+            </div>
+          </div>
 
-                  <DatePicker
-                    // onChange={onChange}
-                    defaultValue={dayjs(selectedYear, "YYYY")}
-                    format={"YYYY"}
-                    picker="year"
-                    className="w-full md:w-auto"
+          {/* CAUSES ANALYTICS */}
+          <div className="p-5 mt-6 bg-white rounded-3xl border">
+            <h2 className="text-xl font-semibold mb-3">Cause Analytics</h2>
+
+            <Select
+              placeholder="Select Cause"
+              value={selectedCauseId}
+              onChange={setSelectedCauseId}
+              style={{ width: "100%" }}
+            >
+              {causeData?.data?.map((d: any) => (
+                <Select.Option key={d.causeId} value={d.causeId}>
+                  {d.name}
+                </Select.Option>
+              ))}
+            </Select>
+
+            <div className="mt-5">
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={formattedChartData}>
+                  <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#7b42f6"
+                    strokeWidth={2}
                   />
-                </div>
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
 
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={data}>
-                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+          {/* RAISED CAUSES LIST */}
+          <div className="p-5 my-6 bg-white border rounded-3xl">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold">Raised Causes</h2>
+              <button className="text-purple-500 underline">View All</button>
             </div>
 
-            {/* Raised Causes Section */}
-            <div className="w-full">
-              <div className="bg-white p-6 rounded-3xl border ">
-                <div className="flex justify-between items-start gap-5 ">
-                  <div>
-                    <h1 className="text-2xl font-bold my-3">Raised Causes</h1>
-                    <p className="text-gray-400">Sorted by total donations</p>
-                  </div>
-                  <Link to="">
-                    <button className="text-purple-500 underline">
-                      View All
-                    </button>
-                  </Link>
-                </div>
-                {/* <div className="flex justify-between items-start gap-5 my-5">
-                  <div className="flex gap-2">
-                    <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                      <img src={books} alt="" className="" />
+            {causeData?.data?.map((c: any) => {
+              const iconMatch = causeList.find(
+                (i) => i.cause === c.category?.toLowerCase()
+              );
+              return (
+                <div
+                  key={c._id}
+                  className="flex justify-between items-center border-b py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center">
+                      {iconMatch && (
+                        <img src={iconMatch.icon} className="h-8 w-8" />
+                      )}
                     </div>
                     <div>
-                      <h1 className="text-lg font-medium">Backpacks & Books</h1>
-                      <p className="text-neutral-400">July 2025-oct 2025</p>
+                      <p className="font-medium text-[16px]">{c.name}</p>
+                      <p className="text-gray-500 text-sm">
+                        {c.startMonth} - {c.endMonth}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-end items-end">
-                    <p className="text-neutral-400">Raised: </p>
-                    <p className="text-green-500 text-xl">$8,489,509</p>
-                  </div>
+                  <p className="text-green-600 font-bold text-lg">
+                    ${c.totalDonationAmount}
+                  </p>
                 </div>
-                <div className="flex justify-between items-start gap-5 my-5">
-                  <div className="flex gap-2">
-                    <div className="bg-purple-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                      <img src={dream} alt="" className="" />
-                    </div>
-
-                    <div>
-                      <h1 className="text-lg font-bold">Digital Dreams</h1>
-                      <p className="text-neutral-400">July 2025-oct 2025</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-end items-end">
-                    <p className="text-neutral-400">Raised: </p>
-                    <p className="text-green-500 text-xl">$8,489,509</p>
-                  </div>
-                </div>
-                <div className="flex justify-between items-start gap-5 my-5">
-                  <div className="flex gap-2">
-                    <div className="bg-yellow-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                      <img src={cloth} alt="" className="" />
-                    </div>
-
-                    <div>
-                      <h1 className="text-lg font-bold">Warmth in Winter</h1>
-                      <p className="text-neutral-400">July 2025-oct 2025</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-end items-end">
-                    <p className="text-neutral-400">Raised: </p>
-                    <p className="text-green-500 text-xl">$8,489,509</p>
-                  </div>
-                </div>
-                <div className="flex justify-between items-start gap-5 my-5">
-                  <div className="flex gap-2">
-                    <div className="bg-red-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                      <img src={meal} alt="" className="" />
-                    </div>
-
-                    <div>
-                      <h1 className="text-lg font-bold">
-                        Every Child, Every Meal
-                      </h1>
-                      <p className="text-neutral-400">July 2025-oct 2025</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-end items-end">
-                    <p className="text-neutral-400">Raised: </p>
-                    <p className="text-green-500 text-xl">$8,489,509</p>
-                  </div>
-                </div>
-                <div className="flex justify-between items-start gap-5 my-5">
-                  <div className="flex gap-2">
-                    <div className="bg-pink-100 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                      <img src={cat} alt="" className="" />
-                    </div>
-
-                    <div>
-                      <h1 className="text-lg font-bold">Meow Care Center</h1>
-                      <p className="text-neutral-400">July 2025-oct 2025</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-end items-end">
-                    <p className="text-neutral-400">Raised: </p>
-                    <p className="text-green-500 text-xl">$8,489,509</p>
-                  </div>
-                </div> */}
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </Modal>
