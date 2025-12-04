@@ -7,12 +7,7 @@ import tick from "../../assets/images/Checkmark.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
 import books from "../../assets/images/books.png";
-import dream from "../../assets/images/Phone Device.png";
-import cloth from "../../assets/images/Jacket.png";
-import meal from "../../assets/images/Food.png";
-import cat from "../../assets/images/Animal Cat.png";
-
-import { DatePicker, Modal, Select, Space, Typography } from "antd";
+import { DatePicker, Modal, Select } from "antd";
 import {
   XAxis,
   YAxis,
@@ -23,7 +18,7 @@ import {
   Line,
   Legend,
 } from "recharts";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
@@ -33,6 +28,27 @@ import {
   useGetCauseStatsQuery,
   useGetRaisedCausedQuery,
 } from "../../redux/features/profileApi/profileApi";
+
+import water from "../../assets/images/water.png";
+import food from "../../assets/images/🍽️.png";
+import education from "../../assets/images/📚 (1).png";
+import youth from "../../assets/images/🧑_🤝_🧑.png";
+import orphans from "../../assets/images/🧸.png";
+import Quran from "../../assets/images/📖.png";
+import health from "../../assets/images/🏥.png";
+import emergency from "../../assets/images/🚨.png";
+import shelter from "../../assets/images/🏠.png";
+import mosque from "../../assets/images/🕌.png";
+import zakat from "../../assets/images/💰.png";
+import sadaqah from "../../assets/images/🤲.png";
+import ramadan from "../../assets/images/🌙.png";
+import fitrah from "../../assets/images/🥖.png";
+import admin from "../../assets/images/🗂️.png";
+import refugee from "../../assets/images/🧳.png";
+import digital from "../../assets/images/💻.png";
+import mental from "../../assets/images/🧠.png";
+import qurban from "../../assets/images/🐑.png";
+import women from "../../assets/images/👩_👧.png";
 
 const Profile = () => {
   const [selectedYear, setSelectedYear] = useState(dayjs().year());
@@ -89,6 +105,30 @@ const Profile = () => {
       </div>
     );
   }
+
+const causeList = [
+  { cause: "water", icon: water },
+  { cause: "education", icon: education },
+  { cause: "food", icon: food },
+  { cause: "youth", icon: youth },
+  { cause: "orphans", icon: orphans },
+  { cause: "quran_education", icon: Quran },
+  { cause: "health_medical", icon: health },
+  { cause: "emergency_relief", icon: emergency },
+  { cause: "shelter_housing", icon: shelter },
+  { cause: "mosque_utilities", icon: mosque },
+  { cause: "zakat", icon: zakat },
+  { cause: "sadaqah", icon: sadaqah },
+  { cause: "ramadan", icon: ramadan },
+  { cause: "qurban", icon: qurban },
+  { cause: "fitrah", icon: fitrah },
+  { cause: "admin_operational", icon: admin },
+  { cause: "refugees", icon: refugee },
+  { cause: "digital_dawah", icon: digital },
+  { cause: "women_families", icon: women },
+  { cause: "mental_health", icon: mental }
+];
+
   return (
     <div>
       <div className="flex justify-between items-center gap-2">
@@ -226,30 +266,43 @@ const Profile = () => {
               </Link>
             </div>
 
-            {causeData?.data?.map((data: any) => (
-              <div
-                key={data._id}
-                className="flex justify-between items-start gap-5 my-5 "
-              >
-                <div className="flex gap-2">
-                  <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
-                    <img src={books} alt="" className="" />
+            {causeData?.data?.map((data: any) => {
+              const matchedCausedData = causeList?.find(
+                (item) =>
+                  item?.cause.toLocaleLowerCase() ===
+                  data?.category?.toLocaleLowerCase()
+              );
+              return (
+                <div
+                  key={data._id}
+                  className="flex justify-between items-start gap-5 my-5 "
+                >
+                  <div className="flex gap-2">
+                    <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
+                      {matchedCausedData && (
+                        <img
+                          src={matchedCausedData?.icon}
+                          alt={data.name}
+                          className="h-10 w-10"
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <h1 className="text-lg font-medium">{data?.name}</h1>
+                      <p className="text-neutral-400">
+                        {data?.startMonth}- {data?.endMonth}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h1 className="text-lg font-medium">{data?.name}</h1>
-                    <p className="text-neutral-400">
-                      {data?.startMonth}- {data?.endMonth}
+                  <div className="flex flex-col justify-end items-end">
+                    <p className="text-neutral-400">Raised: </p>
+                    <p className="text-green-500 text-xl">
+                      ${data?.totalDonationAmount}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col justify-end items-end">
-                  <p className="text-neutral-400">Raised: </p>
-                  <p className="text-green-500 text-xl">
-                    ${data?.totalDonationAmount}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
 
             {/* <div className="flex justify-between items-start gap-5 my-5">
               <div className="flex gap-2">
