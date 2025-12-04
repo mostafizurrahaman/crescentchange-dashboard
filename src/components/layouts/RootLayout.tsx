@@ -9,13 +9,13 @@ import { Link } from "react-router-dom";
 import brandlogo from "../../assets/images/logo.png";
 import hfl from "../../assets/images/hfl.png";
 import Sidebar from "./Sidebar/Sidebar";
-
-
+import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
+import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const RootLayout = () => {
   const [drawer, setDrawer] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
+  const { data: orgData } = useGetAllProfileQuery(null);
   const toggleDrawer = () => setDrawer(!drawer);
   const closeDrawer = () => setDrawer(false);
 
@@ -63,17 +63,19 @@ const RootLayout = () => {
                 <Link to="/profile">
                   <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-3xl">
                     <img
-                      src={hfl}
+                      src={`${IMAGE_URL}${orgData?.data?.logoImage}` || hfl}
                       alt=""
                       className="w-10 h-10 rounded-full border border-primary"
                     />
-                    <p className="md:text-xl font-semibold ">HFL Foundation</p>
+                    <p className="md:text-xl font-semibold ">
+                      {orgData?.data?.name}
+                    </p>
                   </div>
                 </Link>
               </div>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
 
       <ConfigProvider

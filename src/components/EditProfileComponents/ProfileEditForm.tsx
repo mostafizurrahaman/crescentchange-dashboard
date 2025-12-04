@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ConfigProvider,
   DatePicker,
   Form,
   Input,
-  InputNumber,
   Button,
   message,
 } from "antd";

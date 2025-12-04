@@ -1,4 +1,5 @@
 import { Form, Input, InputNumber } from "antd";
+import { useEditTaxDetailsMutation } from "../../redux/features/profileApi/profileApi";
 
 type FieldType = {
   "organisation-name"?: string;
@@ -25,8 +26,11 @@ type FieldType = {
 };
 
 const AccessTab = () => {
+  const [editTaxDetails] = useEditTaxDetailsMutation();
   const onFinish = (values: FieldType) => {
-    console.log("Success:", values);
+   const data={
+    
+   }
   };
 
   return (
