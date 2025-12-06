@@ -13,7 +13,6 @@ import {
   useEditOrgLogoMutation,
   useGetAllCausesQuery,
   useGetAllProfileQuery,
-  useGetRaisedCausedQuery,
 } from "../../redux/features/profileApi/profileApi";
 import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
@@ -29,12 +28,9 @@ const EditProfile = () => {
     "profile"
   );
   const { data: orgData } = useGetAllProfileQuery(null);
-  const { data: allCausedData } = useGetAllCausesQuery({
-    orgId: orgData?.data?._id,
-  });
+
   const [editOrgCoverImage] = useEditOrgCoverImageMutation();
   const [editOrgLogo] = useEditOrgLogoMutation();
-  console.log("cover", allCausedData?.data);
   const handleBeforeUpload = (file: File) => {
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
@@ -201,7 +197,9 @@ const EditProfile = () => {
           <div className="w-full md:w-[80%]">
             {activeTab === "profile" && <ProfileEditForm />}
             {activeTab === "access" && <AccessTab />}
-            {activeTab === "causes" && <EditCauses />}
+            {activeTab === "causes" && (
+              <EditCauses orgId={orgData?.data?._id} />
+            )}
           </div>
         </div>
       </div>

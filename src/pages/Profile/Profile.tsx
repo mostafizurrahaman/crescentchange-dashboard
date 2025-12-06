@@ -6,8 +6,7 @@ import hfl from "../../assets/images/Profile Logo.png";
 import tick from "../../assets/images/Checkmark.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
-import books from "../../assets/images/books.png";
-import { DatePicker, Modal, Select } from "antd";
+import {  Modal, Select } from "antd";
 import {
   XAxis,
   YAxis,
