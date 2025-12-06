@@ -69,7 +69,7 @@ const AccessTab = () => {
             />
           </Form.Item>
         </div>
-        <h1 className="text-2xl font-bold my-2">Card Details</h1>
+        {/* <h1 className="text-2xl font-bold my-2">Card Details</h1>
         <div className="flex justify-between items-center gap-5">
           <Form.Item<FieldType>
             name="organisation-name"
@@ -121,7 +121,7 @@ const AccessTab = () => {
               placeholder="CVV"
             />
           </Form.Item>
-        </div>
+        </div> */}
       </Form>
     </div>
   );

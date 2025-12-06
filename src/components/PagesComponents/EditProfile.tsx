@@ -11,7 +11,6 @@ import EditCauses from "../EditProfileComponents/EditCauses";
 import {
   useEditOrgCoverImageMutation,
   useEditOrgLogoMutation,
-  useGetAllCausesQuery,
   useGetAllProfileQuery,
 } from "../../redux/features/profileApi/profileApi";
 import { IMAGE_URL } from "../../redux/utils/baseUrl";
@@ -20,10 +19,8 @@ const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
-  const [coverEditMode, setCoverEditMode] = useState(false);
-  const [logoEditMode, setLogoEditMode] = useState(false);
+  const [coverEditMode] = useState(false);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
-  const [active, setActive] = useState<"discard" | "save" | null>(null);
   const [activeTab, setActiveTab] = useState<"profile" | "access" | "causes">(
     "profile"
   );
