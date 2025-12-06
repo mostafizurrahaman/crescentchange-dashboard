@@ -1,127 +1,63 @@
-import { Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, message } from "antd";
 import { useEditTaxDetailsMutation } from "../../redux/features/profileApi/profileApi";
 
 type FieldType = {
-  "organisation-name"?: string;
-  "organisation-address"?: string;
-  suburb?: string;
-  state?: string;
-  "post-code"?: string;
-  country?: string;
-  website?: string;
-  telephone?: string;
-  "email-address"?: string;
-  username?: string;
-  password?: string;
-  remember?: string;
-  name?: string;
-  "abn/tfn"?: string;
-  "name-on-card"?: string;
-  "card-number"?: string;
-  "expiry-date"?: string;
-  cvv?: string;
-  "mission-statement"?: string;
-  "date-of-established"?: string;
-  lines: number;
+  registeredCharityName: string;
+  tfnOrAbnNumber: number;
 };
 
 const AccessTab = () => {
   const [editTaxDetails] = useEditTaxDetailsMutation();
-  const onFinish = (values: FieldType) => {
-   const data={
-    
-   }
+
+  const onFinish = async (values: FieldType) => {
+    try {
+      const data = {
+        registeredCharityName: values.registeredCharityName,
+        tfnOrAbnNumber: values.tfnOrAbnNumber,
+      };
+
+      console.log("Submitting:", data);
+
+      const res = await editTaxDetails(data).unwrap();
+      message.success(res?.message || "Updated Successfully");
+    } catch (error: any) {
+      message.error(error?.data?.message || "Update Failed");
+    }
   };
 
   return (
-    <div className="">
+    <div>
       <Form
-        name="contact"
-        initialValues={{ remember: false }}
-        onFinish={onFinish}
+        name="tax-details"
         layout="vertical"
+        onFinish={onFinish}
         className="px-6"
       >
         <h1 className="text-2xl font-bold my-2">Tax Details</h1>
-        <div className="flex justify-between items-center gap-5 ">
-          <Form.Item<FieldType>
-            name="organisation-name"
-            label={<p className=" text-md ">Registered Charity Name</p>}
-            style={{ width: "100%" }}
-          >
-            <Input
-              required
-              style={{ padding: "6px", width: "100%" }}
-              className=" text-md"
-              placeholder="hfl_foundation"
-            />
-          </Form.Item>
-          <Form.Item<FieldType>
-            name="organisation-address"
-            label={<p className=" text-md ">ABN/ TFN</p>}
-            style={{ width: "100%" }}
-          >
-            <InputNumber
-              required
-              style={{ padding: "3px", width: "100%" }}
-              className=" text-md"
-              placeholder="ABN/ TFN"
-            />
-          </Form.Item>
-        </div>
-        {/* <h1 className="text-2xl font-bold my-2">Card Details</h1>
+
         <div className="flex justify-between items-center gap-5">
           <Form.Item<FieldType>
-            name="organisation-name"
-            label={<p className=" text-md ">Account Holder Name</p>}
+            name="registeredCharityName"
+            label="Registered Charity Name"
             style={{ width: "100%" }}
+            rules={[{ required: true, message: "Charity name is required" }]}
           >
-            <Input
-              required
-              style={{ padding: "6px", width: "100%" }}
-              className=" text-md"
-              placeholder="Account Holder Name"
-            />
+            <Input placeholder="hfl_foundation" style={{ padding: 6 }} />
           </Form.Item>
+
           <Form.Item<FieldType>
-            name="card-number"
-            label={<p className=" text-md ">Card Number</p>}
+            name="tfnOrAbnNumber"
+            label="ABN / TFN"
             style={{ width: "100%" }}
+            rules={[{ required: true, message: "ABN/TFN is required" }]}
           >
-            <InputNumber
-              required
-              style={{ padding: "3px", width: "100%" }}
-              className=" text-md"
-              placeholder="Card Number"
-            />
+            <Input placeholder="ABN/TFN" style={{ width: "100%" }} />
           </Form.Item>
         </div>
-        <div className="flex justify-between items-center gap-5 ">
-          <Form.Item<FieldType>
-            name="expiry-date"
-            label={<p className=" text-md ">Expiry Date</p>}
-            style={{ width: "100%" }}
-          >
-            <Input
-              required
-              style={{ padding: "6px", width: "100%" }}
-              className=" text-md"
-              placeholder="04/27"
-            />
-          </Form.Item>
-          <Form.Item<FieldType>
-            name="cvv"
-            label={<p className=" text-md ">CVV</p>}
-            style={{ width: "100%" }}
-          >
-            <InputNumber
-              required
-              style={{ padding: "3px", width: "100%" }}
-              className=" text-md"
-              placeholder="CVV"
-            />
-          </Form.Item>
-        </div> */}
+
+        <Button type="primary" htmlType="submit" className="mt-3">
+          Save
+        </Button>
       </Form>
     </div>
   );
