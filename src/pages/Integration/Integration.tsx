@@ -15,8 +15,31 @@ const Integration = () => {
             Each name represents a journey of support. Watch them glow.
           </p>
         </div>
+        <button className=" bg-slate-200 p-3 rounded-md">Add Bank</button>
       </div>
-
+      {/* Add Bank Section Start */}
+      <div>
+        <div className="bg-white p-6 border rounded-3xl">
+          <div className="flex justify-between items-center gap-3">
+            <img src={img4} alt="" />
+            <HiOutlineArrowNarrowRight className="h-5 w-5 " />
+          </div>
+          <div className="my-3 border-b pb-6">
+            <h1>Stripe</h1>
+            <p className="text-gray-400 mt-2">
+              Contributions from automatic spare change Support our cause
+              effortlessly!
+            </p>
+          </div>
+          <div className="flex justify-between items-center gap-3">
+            <button className="flex justify-center items-center gap-2">
+              Connect
+            </button>
+            <Switch></Switch>
+          </div>
+        </div>
+      </div>
+      {/* Add Bank Section End */}
       <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3 justify-between items-center">
         <div className="bg-white p-6 border rounded-3xl">
           <div className="flex justify-between items-center gap-3">
