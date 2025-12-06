@@ -51,6 +51,33 @@ const ProfileApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    createCause: builder.mutation({
+      query: (data) => ({
+        url: "/cause",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    updateCause: builder.mutation({
+      query: ({ data, _id }) => ({
+        url: `/cause/${_id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    deleteCause: builder.mutation({
+      query: (_id) => ({
+        url: `/cause/${_id}`,
+        method: "DELETE",
+      }),
+    }),
+    getAllCauses: builder.query({
+      query: (orgId) => ({
+        url: `/cause/organization/${orgId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -62,4 +89,8 @@ export const {
   useEditOrgCoverImageMutation,
   useEditOrgLogoMutation,
   useEditTaxDetailsMutation,
+  useCreateCauseMutation,
+  useUpdateCauseMutation,
+  useDeleteCauseMutation,
+  useGetAllCausesQuery
 } = ProfileApi;
