@@ -1,11 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import img1 from "../../assets/images/image 415.png";
 import img2 from "../../assets/images/slack.png";
 import img3 from "../../assets/images/image 417.png";
 import img4 from "../../assets/images/Logo (1).png";
-import { Switch } from "antd";
+import img5 from "../../assets/images/stripe.png";
+import { message, Modal, Switch } from "antd";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+import { useState } from "react";
+import {
+  useAddBankAccountMutation,
+  useGetStripeAccountStatusQuery,
+} from "../../redux/features/integrationApi/integrationApi";
 
 const Integration = () => {
+  const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
+  const [addBankAccount] = useAddBankAccountMutation();
+  const { data: bankData } = useGetStripeAccountStatusQuery(null);
+  console.log(bankData?.data);
+  const handleAddBankModal = async () => {
+    try {
+      const res = await addBankAccount().unwrap();
+      message.success(res?.message);
+    } catch (error) {
+      message.error("Bank Not Added");
+    }
+  };
+
+  const handleOk = () => setIsAddBankModalOpen(false);
   return (
     <div>
       <div className="flex justify-between items-center gap-5">
@@ -15,30 +36,102 @@ const Integration = () => {
             Each name represents a journey of support. Watch them glow.
           </p>
         </div>
-        <button className=" bg-slate-200 p-3 rounded-md">Add Bank</button>
+        <button
+          onClick={handleAddBankModal}
+          className=" bg-slate-200 p-3 rounded-md"
+        >
+          Add Bank
+        </button>
       </div>
-      {/* Add Bank Section Start */}
-      <div>
-        <div className="bg-white p-6 border rounded-3xl">
-          <div className="flex justify-between items-center gap-3">
-            <img src={img4} alt="" />
-            <HiOutlineArrowNarrowRight className="h-5 w-5 " />
+      <div className="w-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 p-6 rounded-3xl border border-gray-200">
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-3">
+            <img
+              src={img5}
+              alt="Stripe Logo"
+              className="h-8 w-8 object-contain"
+            />
+            <h2 className="text-lg font-semibold">Stripe Connect</h2>
           </div>
-          <div className="my-3 border-b pb-6">
-            <h1>Stripe</h1>
-            <p className="text-gray-400 mt-2">
-              Contributions from automatic spare change Support our cause
-              effortlessly!
-            </p>
-          </div>
-          <div className="flex justify-between items-center gap-3">
-            <button className="flex justify-center items-center gap-2">
-              Connect
-            </button>
-            <Switch></Switch>
+          {/* <HiOutlineArrowNarrowRight className="h-6 w-6 text-gray-500 hover:text-black transition-all" /> */}
+        </div>
+
+        {/* Status & Data */}
+        <div className="border-y py-5">
+          <div className="flex flex-col gap-3">
+            {/* Has Account */}
+            <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
+              <span className="text-gray-600 font-medium">Has Account</span>
+              <span
+                className={`px-3 py-1 rounded-lg text-sm font-semibold 
+        ${
+          bankData?.data?.hasAccount
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+        }`}
+              >
+                {bankData?.data?.hasAccount ? "True" : "False"}
+              </span>
+            </div>
+
+            {/* Active */}
+            <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
+              <span className="text-gray-600 font-medium">isActive</span>
+              <span
+                className={`px-3 py-1 rounded-lg text-sm font-semibold
+        ${
+          bankData?.data?.isActive
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+        }`}
+              >
+                {bankData?.data?.isActive ? "True" : "False"}
+              </span>
+            </div>
+
+            {/* Submitted */}
+            <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
+              <span className="text-gray-600 font-medium">
+                detailsSubmitted
+              </span>
+              <span
+                className={`px-3 py-1 rounded-lg text-sm font-semibold 
+        ${
+          bankData?.data?.detailsSubmitted
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+        }`}
+              >
+                {bankData?.data?.detailsSubmitted ? "True" : "False"}
+              </span>
+            </div>
+
+            {/* Payouts */}
+            <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
+              <span className="text-gray-600 font-medium">payoutsEnabled</span>
+              <span
+                className={`px-3 py-1 rounded-lg text-sm font-semibold 
+        ${
+          bankData?.data?.payoutsEnabled
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+        }`}
+              >
+                {bankData?.data?.payoutsEnabled ? "True" : "False"}
+              </span>
+            </div>
           </div>
         </div>
+
+        {/* Footer */}
+        {/* <div className="flex justify-between items-center mt-5">
+          <button className="px-4 py-2 rounded-xl font-medium text-white bg-blue-600 hover:bg-blue-700 transition-all">
+            {true ? "View Dashboard" : "Connect"}
+          </button>
+          <Switch defaultChecked={true} />
+        </div> */}
       </div>
+
       {/* Add Bank Section End */}
       <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3 justify-between items-center">
         <div className="bg-white p-6 border rounded-3xl">
@@ -118,6 +211,11 @@ const Integration = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Bank Modal */}
+      <Modal title="Add Bank" open={isAddBankModalOpen} onOk={handleOk}>
+        <div></div>
+      </Modal>
     </div>
   );
 };

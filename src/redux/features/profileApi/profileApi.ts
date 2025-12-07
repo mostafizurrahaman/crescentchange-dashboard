@@ -78,6 +78,7 @@ const ProfileApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    
   }),
 });
 
