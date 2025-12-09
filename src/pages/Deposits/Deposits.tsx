@@ -3,6 +3,7 @@ import { DatePicker, Pagination, Select } from "antd";
 import { FC } from "react";
 import setting from "../../assets/images/Settings.png";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
+import { useGetDepositStatsQuery } from "../../redux/features/depositApi/depositApi";
 interface DepositData {
   key: string;
   amount: string;
@@ -14,6 +15,9 @@ interface DepositData {
 }
 
 const Deposits: FC = () => {
+  const { data: depositStats } = useGetDepositStatsQuery("");
+  console.log("depositStats", depositStats?.data);
+
   const data: DepositData[] = [
     {
       key: "1",
@@ -74,11 +78,11 @@ const Deposits: FC = () => {
           <div className="flex justify-start items-end gap-1 mt-10 mb-6">
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
-              <span className="text-gray-400">$</span> 40,000
+              <span className="text-gray-400">$</span>{depositStats?.data?.totalDeposits}
             </h1>
-            <p className="text-green-500">
+            {/* <p className="text-green-500">
               8.2% <span className="text-gray-400"> vs last month</span>
-            </p>
+            </p> */}
           </div>
           <p className="px-4 py-2 bg-gray-100 rounded-3xl">
             Your next payout is in 3 days: 10th May, 2025
