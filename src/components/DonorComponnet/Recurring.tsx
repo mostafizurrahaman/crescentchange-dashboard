@@ -22,8 +22,8 @@ interface ITabProps {
 }
 const Recurring = ({ tab }: ITabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [sort, setSort] = useState("");
+  const [pageSize] = useState(10);
+  const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);

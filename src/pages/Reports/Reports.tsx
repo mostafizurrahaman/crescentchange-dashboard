@@ -17,11 +17,10 @@ import { saveAs } from "file-saver";
 import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
 const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [sort, setSort] = useState("");
+  const [pageSize] = useState(10);
+  const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState("All Donors");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { Search } = Input;

@@ -20,8 +20,8 @@ interface ITabProps {
 }
 const AllDonor = ({ tab }: ITabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [sort, setSort] = useState("");
+  const [pageSize] = useState(10);
+  const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -173,8 +173,9 @@ const AllDonor = ({ tab }: ITabProps) => {
     // Export the file as Excel (.xlsx)
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const file = new Blob([excelBuffer], {
-      bookType: "xlsx",
-      type: "application/octet-stream",
+      // bookType: "xlsx",
+      // type: "application/octet-stream",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "donations.xlsx");
   };

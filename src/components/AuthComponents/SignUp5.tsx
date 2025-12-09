@@ -23,7 +23,7 @@ const SignUp5: React.FC = () => {
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
   if (currentIdx === -1) currentIdx = total - 1; // default to last if not matched
   const current = currentIdx + 1; // 1-based
-  const isLast = current >= total;
+  // const isLast = current >= total;
 
   return (
     <div className="h-screen flex">

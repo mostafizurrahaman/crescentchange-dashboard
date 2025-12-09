@@ -55,7 +55,7 @@ const QuickLinks = () => {
             className="bg-white p-3 rounded-3xl flex flex-col items-center gap-2"
           >
             {" "}
-            <Link to={item?.link}>
+            <Link to={item?.link || ""}>
               <img
                 src={item.img}
                 alt={item.title}
