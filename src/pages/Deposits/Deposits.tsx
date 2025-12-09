@@ -14,20 +14,12 @@ import setting from "../../assets/images/Settings.png";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 import {
   useGetDepositStatsQuery,
+  useGetMyBalanceQuery,
   useGetOrgAllDepositsQuery,
 } from "../../redux/features/depositApi/depositApi";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-interface DepositData {
-  key: string;
-  amount: string;
-  depositedTo: string;
-  method: string;
-  status: "Successful" | "Pending" | "Failed";
-  timestamp: string;
-  transactionId: string;
-}
+
 
 const Deposits: FC = () => {
   const [page, setPage] = useState(1);
@@ -36,10 +28,9 @@ const Deposits: FC = () => {
   const [payoutMethod, setPayoutMethod] = useState("stripe_connect");
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState("");
-
-  const { data: depositStats } = useGetDepositStatsQuery("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
+  const { data: depositStats } = useGetDepositStatsQuery("");
   const { data: depositData } = useGetOrgAllDepositsQuery({
     status,
     payoutMethod,
@@ -49,6 +40,8 @@ const Deposits: FC = () => {
     limit,
   });
 
+  const {data:getMyBalance} = useGetMyBalanceQuery("");
+console.log(getMyBalance?.data?.availableBalance);
   const printRef = useRef();
 
   const handleDownLoadPdf = (item: any) => {
@@ -148,7 +141,11 @@ const Deposits: FC = () => {
     setIsModalOpen(false);
   };
 
-  const [availableBalance] = useState(5000); // dynamic from api
+const handlefilterChange = (selectedKeys: any, confirm: any, dataIndex: any) => {
+  confirm();
+  setSearchTerm(selectedKeys[0]);
+};
+
 
   const onFinish = (values: any) => {
     console.log(values);
@@ -157,45 +154,7 @@ const Deposits: FC = () => {
 
   const handleCancel = () => setIsModalOpen(false);
 
-  const data: DepositData[] = [
-    {
-      key: "1",
-      amount: "$12,450.00",
-      depositedTo: "2323 **** 4756",
-      method: "PayPal",
-      status: "Successful",
-      timestamp: "July 30, 2025 - 2:48 PM",
-      transactionId: "8FSD-4829-ACDF",
-    },
-    {
-      key: "2",
-      amount: "$12,450.00",
-      depositedTo: "2323 **** 4756",
-      method: "PayPal",
-      status: "Pending",
-      timestamp: "July 30, 2025 - 2:48 PM",
-      transactionId: "8FSD-4829-ACDF",
-    },
-    {
-      key: "3",
-      amount: "$12,450.00",
-      depositedTo: "2323 **** 4756",
-      method: "PayPal",
-      status: "Successful",
-      timestamp: "July 30, 2025 - 2:48 PM",
-      transactionId: "8FSD-4829-ACDF",
-    },
-    {
-      key: "4",
-      amount: "$12,450.00",
-      depositedTo: "2323 **** 4756",
-      method: "PayPal",
-      status: "Failed",
-      timestamp: "July 30, 2025 - 2:48 PM",
-      transactionId: "8FSD-4829-ACDF",
-    },
-  ];
-
+  
   return (
     <div className="">
       <div>
@@ -232,21 +191,16 @@ const Deposits: FC = () => {
 
       <div className="flex justify-between items-center mb-5 mt-8">
         <h1 className="text-xl md:text-2xl font-semibold">Deposit</h1>
-        <div className="flex gap-3">
-          <Select defaultValue="Newest First" className="w-[150px]">
-            <Select.Option value="Newest First">Newest First</Select.Option>
-            <Select.Option value="Oldest First">Oldest First</Select.Option>
-          </Select>
-          <Select defaultValue="High to Low" className="w-[150px]">
-            <Select.Option value="High to Low">High to Low</Select.Option>
-            <Select.Option value="Low to High">Low to High</Select.Option>
-          </Select>
-          <Select defaultValue="PayPal" className="w-[150px]">
-            <Select.Option value="PayPal">PayPal</Select.Option>
-            <Select.Option value="Credit Card">Credit Card</Select.Option>
-            <Select.Option value="Bank Transfer">Bank Transfer</Select.Option>
-          </Select>
-        </div>
+        <Select
+    value={payoutMethod}
+    className="w-[150px]"
+    onChange={(v) => setPayoutMethod(v)}
+  >
+    <Select.Option value="paypal">PayPal</Select.Option>
+    <Select.Option value="credit_card">Credit Card</Select.Option>
+    <Select.Option value="bank_transfer">Bank Transfer</Select.Option>
+    <Select.Option value="stripe_connect">Stripe Connect</Select.Option>
+  </Select>
       </div>
 
       {/* Cards */}
@@ -325,11 +279,10 @@ const Deposits: FC = () => {
       <Modal
         title="Adjust Payout Schedule"
         open={isModalOpen}
-        onOk={() => form.submit()} // submit form when OK clicked
+        onOk={() => form.submit()} 
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical" onFinish={onFinish}>
-          {/* Date Picker Field */}
           <Form.Item
             label="Select Payout Date"
             name="payoutDate"
@@ -338,14 +291,11 @@ const Deposits: FC = () => {
             <DatePicker style={{ width: "100%" }} />
           </Form.Item>
 
-          {/* Available balance - Read only */}
           <Form.Item label="Available Balance">
-            <Input value={availableBalance} disabled />
-            {/* OR if static ↓ */}
-            {/* <Input value="৳ 5,000" disabled /> */}
+            <Input value={getMyBalance?.data?.lifetimeEarnings} disabled />
+        
           </Form.Item>
 
-          {/* Withdraw Amount Field */}
           <Form.Item
             label="Amount to Withdraw"
             name="withdrawAmount"

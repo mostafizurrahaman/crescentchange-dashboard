@@ -15,8 +15,17 @@ const DepositApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getMyBalance: builder.query({
+      query: () => ({
+        url: `/balance`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetDepositStatsQuery, useGetOrgAllDepositsQuery } =
-  DepositApi;
+export const {
+  useGetDepositStatsQuery,
+  useGetOrgAllDepositsQuery,
+  useGetMyBalanceQuery,
+} = DepositApi;
