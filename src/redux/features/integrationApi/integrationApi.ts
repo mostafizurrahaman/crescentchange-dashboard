@@ -3,9 +3,10 @@ import { baseApi } from "../../api/baseApi";
 const IntregrationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addBankAccount: builder.mutation({
-      query: () => ({
+      query: (body) => ({
         url: "/organization/stripe-connect/onboard",
         method: "POST",
+        body,
       }),
     }),
 

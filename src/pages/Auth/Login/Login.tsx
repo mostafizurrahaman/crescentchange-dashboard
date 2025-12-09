@@ -6,7 +6,6 @@ import logo from "../../../assets/images/logo.png";
 import { AiOutlineMail } from "react-icons/ai";
 import { MdLockOutline } from "react-icons/md";
 import { useLoginApiMutation } from "../../../redux/features/auth/authApi";
-import { useDispatch } from "react-redux";
 
 interface login {
   email: string;
@@ -16,7 +15,6 @@ interface login {
 const Login = () => {
   const [form] = Form.useForm();
   const nevigate = useNavigate();
-  const dispatch = useDispatch();
   const [loginApi, { isLoading }] = useLoginApiMutation();
   const onFinish = async (values: login) => {
     const data = {

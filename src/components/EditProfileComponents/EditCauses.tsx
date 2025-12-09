@@ -32,7 +32,6 @@ import {
   useUpdateCauseMutation,
   useDeleteCauseMutation,
 } from "../../redux/features/profileApi/profileApi";
-import { data } from "react-router-dom";
 
 const EditCauses = ({ orgId }: any) => {
   const { data: allCausedData, refetch } = useGetAllCausesQuery(orgId);

@@ -22,13 +22,14 @@ import jsPDF from "jspdf";
 
 const Deposits: FC = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(2);
-  const [status, setStatus] = useState("pending");
+  const [limit] = useState(2);
+  const [status] = useState("pending");
   const [payoutMethod, setPayoutMethod] = useState("stripe_connect");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sort, setSort] = useState("");
+  const [searchTerm] = useState("");
+  const [sort] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const printRef = useRef();
+const printRef = useRef<HTMLDivElement>(null);
+
   const [form] = Form.useForm();
   const { data: depositStats } = useGetDepositStatsQuery("");
   const { data: depositData } = useGetOrgAllDepositsQuery({
@@ -41,7 +42,6 @@ const Deposits: FC = () => {
   });
   console.log(depositData);
   const { data: getMyBalance } = useGetMyBalanceQuery("");
-
   const handleDownLoadPdf = (item: any) => {
     try {
       const pdf = new jsPDF("p", "mm", "a4");
@@ -101,7 +101,8 @@ const Deposits: FC = () => {
           ? [250, 204, 21]
           : [239, 68, 68];
 
-      pdf.setFillColor(...badgeColor);
+      pdf.setFillColor(...(badgeColor as [number, number, number]));
+
       pdf.roundedRect(130, 85, 60, 12, 3, 3, "F");
       pdf.setTextColor(255);
       pdf.text(item.status?.toUpperCase() ?? "UNKNOWN", 138, 93);
@@ -141,7 +142,7 @@ const Deposits: FC = () => {
         amount: Number(values.withdrawAmount),
         scheduledDate: values.payoutDate,
       };
-      const res = payoutRequest(data).unwrap();
+      payoutRequest(data).unwrap();
       message.success("Payout Requested Successfully");
       setIsModalOpen(false);
       form.resetFields();

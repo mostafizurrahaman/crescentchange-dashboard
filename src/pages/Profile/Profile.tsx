@@ -51,8 +51,8 @@ import women from "../../assets/images/👩_👧.png";
 import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const Profile = () => {
-  const [selectedYear, setSelectedYear] = useState(dayjs().year());
-  const [selectedMonth, setSelectedMonth] = useState(dayjs().month() + 1);
+  const [selectedYear] = useState(dayjs().year());
+  const [selectedMonth] = useState(dayjs().month() + 1);
   const [selectedCauseId, setSelectedCauseId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -94,9 +94,9 @@ const Profile = () => {
       value: item.totalAmount,
     })) || [];
 
-  const data = chartData?.data;
-  console.log("causeData", causeData?.data);
-  console.log("selectedCauseId", selectedCauseId);
+  // const data = chartData?.data;
+  // console.log("causeData", causeData?.data);
+  // console.log("selectedCauseId", selectedCauseId);
   const isLoading = isProfileLoading || isCauseLoading || isChartLoading;
   if (isLoading) {
     return (

@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, message } from "antd";
+import { Button, Form, Input,  message } from "antd";
 import { useEditTaxDetailsMutation } from "../../redux/features/profileApi/profileApi";
 
 type FieldType = {

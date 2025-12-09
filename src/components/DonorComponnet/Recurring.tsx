@@ -69,6 +69,7 @@ const Recurring = ({ tab }: ITabProps) => {
   // Whenever searchTerm or status changes, refetch data
   useEffect(() => {
     refetch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, status, currentPage]);
 
   const data = donorData?.data;
@@ -176,8 +177,9 @@ const Recurring = ({ tab }: ITabProps) => {
     // Export the file as Excel (.xlsx)
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const file = new Blob([excelBuffer], {
-      bookType: "xlsx",
-      type: "application/octet-stream",
+      // bookType: "xlsx",
+      // type: "application/octet-stream",
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "donations.xlsx");
   };

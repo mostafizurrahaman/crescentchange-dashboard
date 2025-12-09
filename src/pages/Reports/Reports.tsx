@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Button, Modal, Pagination, Select, Tooltip } from "antd";
+import { Button, Modal,  Select, Tooltip } from "antd";
 import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
@@ -36,7 +36,7 @@ const Reports = () => {
   });
   const { data: profileData } = useGetAllProfileQuery(null);
   const organizationId = profileData?.data?._id;
-  const { data: donorData, refetch } = useGetAllDonorsQuery(
+  const { data: donorData} = useGetAllDonorsQuery(
     {
       page: currentPage,
       limit: pageSize,
@@ -142,7 +142,6 @@ const Reports = () => {
     },
   ];
   const allDataExport = () => {
-    const allData = statsData?.data;
     console.log(statsData?.data);
     const formattedData = [
       {
@@ -158,8 +157,9 @@ const Reports = () => {
     // Export the file as Excel (.xlsx)
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const file = new Blob([excelBuffer], {
-      bookType: "xlsx",
-      type: "application/octet-stream",
+      // bookType: "xlsx",
+      // type: "application/octet-stream",
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "Reports.xlsx");
   };
@@ -186,8 +186,9 @@ const Reports = () => {
     // Export the file as Excel (.xlsx)
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const file = new Blob([excelBuffer], {
-      bookType: "xlsx",
-      type: "application/octet-stream",
+      // bookType: "xlsx",
+      // type: "application/octet-stream",
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "Report table.xlsx");
   };

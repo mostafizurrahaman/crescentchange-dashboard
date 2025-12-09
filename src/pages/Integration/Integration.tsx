@@ -19,7 +19,7 @@ const Integration = () => {
   console.log(bankData?.data);
   const handleAddBankModal = async () => {
     try {
-      const res = await addBankAccount().unwrap();
+      const res = await addBankAccount({}).unwrap();
       message.success(res?.message);
     } catch (error) {
       message.error("Bank Not Added");

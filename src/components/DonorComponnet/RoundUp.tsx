@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Modal, Select, Tooltip } from "antd";
@@ -177,8 +178,9 @@ const RoundUp = ({ tab }: ITabProps) => {
     // Export the file as Excel (.xlsx)
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const file = new Blob([excelBuffer], {
-      bookType: "xlsx",
-      type: "application/octet-stream",
+      // bookType: "xlsx",
+      // type: "application/octet-stream",
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "donations.xlsx");
   };
