@@ -1,13 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DatePicker, Form, Input, Modal, Pagination, Select } from "antd";
-import { FC, useState } from "react";
+import {
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Pagination,
+  Select,
+} from "antd";
+import { FC, useRef, useState } from "react";
 import setting from "../../assets/images/Settings.png";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 import {
   useGetDepositStatsQuery,
   useGetOrgAllDepositsQuery,
 } from "../../redux/features/depositApi/depositApi";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface DepositData {
   key: string;
@@ -28,7 +38,6 @@ const Deposits: FC = () => {
   const [sort, setSort] = useState("");
 
   const { data: depositStats } = useGetDepositStatsQuery("");
-  // console.log("depositStats", depositStats?.data);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const { data: depositData } = useGetOrgAllDepositsQuery({
@@ -39,7 +48,28 @@ const Deposits: FC = () => {
     page,
     limit,
   });
-  console.log("depositData", depositData?.data);
+
+  const printRef = useRef();
+
+  const handleDownLoadPdf = async () => {
+    if (!printRef.current) return;
+    try {
+      const canvas = await html2canvas(printRef.current, {
+        scale: 2,
+        useCORS: true,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("deposit.pdf");
+    } catch (error) {
+      message.error("Failed to download pdf");
+    }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -152,15 +182,21 @@ const Deposits: FC = () => {
 
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {depositData?.data.map((item) => (
+        {depositData?.data.map((item: any) => (
           <div
+            ref={printRef}
             key={item.key}
             className="bg-white p-6 rounded-xl shadow-sm border flex flex-col gap-4"
           >
             <div className="flex justify-between items-center gap-2 border-b pb-6">
-              <h2 className="text-2xl font-semibold">{item.requestedAmount} {item?.currency}</h2>
-              <div className="bg-purple-500 h-10 w-10 rounded-full flex justify-center items-center">
-                <HiOutlineArrowNarrowDown className="h-5 w-5 text-white" />
+              <h2 className="text-2xl font-semibold">
+                {item.requestedAmount} {item?.currency}
+              </h2>
+              <div className="bg-purple-500 h-10 w-10 rounded-full flex justify-center items-center curesor-pointer">
+                <HiOutlineArrowNarrowDown
+                  onClick={handleDownLoadPdf}
+                  className="h-5 w-5 text-white "
+                />
               </div>
             </div>
             <h1 className="text-xl font-lg">Summery</h1>
