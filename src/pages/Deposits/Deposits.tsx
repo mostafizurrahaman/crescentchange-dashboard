@@ -16,19 +16,19 @@ import {
   useGetDepositStatsQuery,
   useGetMyBalanceQuery,
   useGetOrgAllDepositsQuery,
+  usePayoutRequestMutation,
 } from "../../redux/features/depositApi/depositApi";
 import jsPDF from "jspdf";
 
-
-
 const Deposits: FC = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(2);
   const [status, setStatus] = useState("pending");
   const [payoutMethod, setPayoutMethod] = useState("stripe_connect");
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const printRef = useRef();
   const [form] = Form.useForm();
   const { data: depositStats } = useGetDepositStatsQuery("");
   const { data: depositData } = useGetOrgAllDepositsQuery({
@@ -39,10 +39,8 @@ const Deposits: FC = () => {
     page,
     limit,
   });
-
-  const {data:getMyBalance} = useGetMyBalanceQuery("");
-console.log(getMyBalance?.data?.availableBalance);
-  const printRef = useRef();
+  console.log(depositData);
+  const { data: getMyBalance } = useGetMyBalanceQuery("");
 
   const handleDownLoadPdf = (item: any) => {
     try {
@@ -136,25 +134,24 @@ console.log(getMyBalance?.data?.availableBalance);
   const showModal = () => {
     setIsModalOpen(true);
   };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-const handlefilterChange = (selectedKeys: any, confirm: any, dataIndex: any) => {
-  confirm();
-  setSearchTerm(selectedKeys[0]);
-};
-
-
+  const [payoutRequest] = usePayoutRequestMutation();
   const onFinish = (values: any) => {
-    console.log(values);
-    // hit API here
+    try {
+      const data = {
+        amount: Number(values.withdrawAmount),
+        scheduledDate: values.payoutDate,
+      };
+      const res = payoutRequest(data).unwrap();
+      message.success("Payout Requested Successfully");
+      setIsModalOpen(false);
+      form.resetFields();
+    } catch (error) {
+      message.error("Payout Request Failed");
+    }
   };
 
   const handleCancel = () => setIsModalOpen(false);
 
-  
   return (
     <div className="">
       <div>
@@ -192,15 +189,15 @@ const handlefilterChange = (selectedKeys: any, confirm: any, dataIndex: any) => 
       <div className="flex justify-between items-center mb-5 mt-8">
         <h1 className="text-xl md:text-2xl font-semibold">Deposit</h1>
         <Select
-    value={payoutMethod}
-    className="w-[150px]"
-    onChange={(v) => setPayoutMethod(v)}
-  >
-    <Select.Option value="paypal">PayPal</Select.Option>
-    <Select.Option value="credit_card">Credit Card</Select.Option>
-    <Select.Option value="bank_transfer">Bank Transfer</Select.Option>
-    <Select.Option value="stripe_connect">Stripe Connect</Select.Option>
-  </Select>
+          value={payoutMethod}
+          className="w-[150px]"
+          onChange={(v) => setPayoutMethod(v)}
+        >
+          <Select.Option value="paypal">PayPal</Select.Option>
+          <Select.Option value="credit_card">Credit Card</Select.Option>
+          <Select.Option value="bank_transfer">Bank Transfer</Select.Option>
+          <Select.Option value="stripe_connect">Stripe Connect</Select.Option>
+        </Select>
       </div>
 
       {/* Cards */}
@@ -273,13 +270,18 @@ const handlefilterChange = (selectedKeys: any, confirm: any, dataIndex: any) => 
 
       {/* Pagination */}
       <div className="my-10 flex justify-end">
-        <Pagination />
+        <Pagination
+          current={page}
+          total={depositData?.meta?.total}
+          pageSize={limit}
+          onChange={(newPage) => setPage(newPage)}
+        />
       </div>
 
       <Modal
         title="Adjust Payout Schedule"
         open={isModalOpen}
-        onOk={() => form.submit()} 
+        onOk={() => form.submit()}
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -293,7 +295,6 @@ const handlefilterChange = (selectedKeys: any, confirm: any, dataIndex: any) => 
 
           <Form.Item label="Available Balance">
             <Input value={getMyBalance?.data?.lifetimeEarnings} disabled />
-        
           </Form.Item>
 
           <Form.Item

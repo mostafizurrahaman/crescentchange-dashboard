@@ -21,6 +21,13 @@ const DepositApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    payoutRequest: builder.mutation({
+      query: (data) => ({
+        url: `/payout/request`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -28,4 +35,5 @@ export const {
   useGetDepositStatsQuery,
   useGetOrgAllDepositsQuery,
   useGetMyBalanceQuery,
+  usePayoutRequestMutation,
 } = DepositApi;
