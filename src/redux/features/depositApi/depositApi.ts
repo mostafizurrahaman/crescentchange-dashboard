@@ -8,7 +8,15 @@ const DepositApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getOrgAllDeposits: builder.query({
+      query: ({ status, payoutMethod, searchTerm, sort, page, limit }) => ({
+        url: `/payout?status=${status}&payoutMethod=${payoutMethod}&searchTerm=${searchTerm}&sort=${sort}&page=${page}&limit=${limit}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetDepositStatsQuery } = DepositApi;
+export const { useGetDepositStatsQuery, useGetOrgAllDepositsQuery } =
+  DepositApi;

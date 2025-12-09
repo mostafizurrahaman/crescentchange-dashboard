@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DatePicker, Pagination, Select } from "antd";
-import { FC } from "react";
+import { DatePicker, Form, Input, Modal, Pagination, Select } from "antd";
+import { FC, useState } from "react";
 import setting from "../../assets/images/Settings.png";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
-import { useGetDepositStatsQuery } from "../../redux/features/depositApi/depositApi";
+import {
+  useGetDepositStatsQuery,
+  useGetOrgAllDepositsQuery,
+} from "../../redux/features/depositApi/depositApi";
+
 interface DepositData {
   key: string;
   amount: string;
@@ -15,8 +20,43 @@ interface DepositData {
 }
 
 const Deposits: FC = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [status, setStatus] = useState("pending");
+  const [payoutMethod, setPayoutMethod] = useState("stripe_connect");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sort, setSort] = useState("");
+
   const { data: depositStats } = useGetDepositStatsQuery("");
-  console.log("depositStats", depositStats?.data);
+  // console.log("depositStats", depositStats?.data);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form] = Form.useForm();
+  const { data: depositData } = useGetOrgAllDepositsQuery({
+    status,
+    payoutMethod,
+    searchTerm,
+    sort,
+    page,
+    limit,
+  });
+  console.log("depositData", depositData?.data);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const [availableBalance] = useState(5000); // dynamic from api
+
+  const onFinish = (values: any) => {
+    console.log(values);
+    // hit API here
+  };
+
+  const handleCancel = () => setIsModalOpen(false);
 
   const data: DepositData[] = [
     {
@@ -70,15 +110,16 @@ const Deposits: FC = () => {
           <h1 className="text-lg font-medium">Total Deposits</h1>
           <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-3xl text-sm text-gray-900 border hover:bg-blue-100">
             <img src={setting} alt="" />
-            <p> Adjust Payout Schedule</p>
-            <DatePicker className=" " style={{ width: 50 }} />
+            <button onClick={showModal}> Adjust Payout Schedule</button>
+            {/* <DatePicker className=" " style={{ width: 50 }} /> */}
           </div>
         </div>
         <div className="flex justify-between items-center mt-12">
           <div className="flex justify-start items-end gap-1 mt-10 mb-6">
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
-              <span className="text-gray-400">$</span>{depositStats?.data?.totalDeposits}
+              <span className="text-gray-400">$</span>
+              {depositStats?.data?.totalDeposits}
             </h1>
             {/* <p className="text-green-500">
               8.2% <span className="text-gray-400"> vs last month</span>
@@ -111,13 +152,13 @@ const Deposits: FC = () => {
 
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data.map((item) => (
+        {depositData?.data.map((item) => (
           <div
             key={item.key}
             className="bg-white p-6 rounded-xl shadow-sm border flex flex-col gap-4"
           >
             <div className="flex justify-between items-center gap-2 border-b pb-6">
-              <h2 className="text-2xl font-semibold">{item.amount}</h2>
+              <h2 className="text-2xl font-semibold">{item.requestedAmount} {item?.currency}</h2>
               <div className="bg-purple-500 h-10 w-10 rounded-full flex justify-center items-center">
                 <HiOutlineArrowNarrowDown className="h-5 w-5 text-white" />
               </div>
@@ -130,7 +171,7 @@ const Deposits: FC = () => {
               </div>
               <div className="flex justify-between">
                 <p>Transfer via</p>
-                <p>{item.method}</p>
+                <p>{item.payoutMethod}</p>
               </div>
               <div className="flex justify-between border-b pb-6">
                 <p>Status</p>
@@ -138,7 +179,7 @@ const Deposits: FC = () => {
                   className={`px-3 py-1 rounded-md text-white ${
                     item.status === "Successful"
                       ? "bg-green-500"
-                      : item.status === "Pending"
+                      : item.status === "pending"
                       ? "bg-yellow-500"
                       : "bg-red-500"
                   }`}
@@ -148,11 +189,11 @@ const Deposits: FC = () => {
               </div>
               <div className="flex justify-between pt-6">
                 <p>Timestamp</p>
-                <p>{item.timestamp}</p>
+                <p>{item.createdAt}</p>
               </div>
               <div className="flex justify-between">
-                <p>Transaction ID</p>
-                <p>{item.transactionId}</p>
+                <p>Payout Number </p>
+                <p>{item.payoutNumber}</p>
               </div>
             </div>
           </div>
@@ -163,6 +204,43 @@ const Deposits: FC = () => {
       <div className="my-10 flex justify-end">
         <Pagination />
       </div>
+
+      <Modal
+        title="Adjust Payout Schedule"
+        open={isModalOpen}
+        onOk={() => form.submit()} // submit form when OK clicked
+        onCancel={handleCancel}
+      >
+        <Form form={form} layout="vertical" onFinish={onFinish}>
+          {/* Date Picker Field */}
+          <Form.Item
+            label="Select Payout Date"
+            name="payoutDate"
+            rules={[{ required: true, message: "Please select a payout date" }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+
+          {/* Available balance - Read only */}
+          <Form.Item label="Available Balance">
+            <Input value={availableBalance} disabled />
+            {/* OR if static ↓ */}
+            {/* <Input value="৳ 5,000" disabled /> */}
+          </Form.Item>
+
+          {/* Withdraw Amount Field */}
+          <Form.Item
+            label="Amount to Withdraw"
+            name="withdrawAmount"
+            rules={[
+              { required: true, message: "Enter withdrawal amount" },
+              { pattern: /^\d+$/, message: "Amount must be a number" },
+            ]}
+          >
+            <Input placeholder="Enter amount" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
