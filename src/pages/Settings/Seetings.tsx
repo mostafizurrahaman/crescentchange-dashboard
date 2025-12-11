@@ -101,12 +101,12 @@ export default function Settings() {
       <div className="mb-10">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-semibold mb-3">Team Access</h2>
-          <button
+          {/* <button
             onClick={() => setShowInviteModal(true)}
             className="bg-white px-3 py-1 rounded-3xl border"
           >
             Invite a new member
-          </button>
+          </button> */}
         </div>
         <p className="text-gray-500 mb-5">
           Manage your team and assign roles to manage your organization.
