@@ -27,7 +27,7 @@ const Reports = () => {
   const { Option } = Select;
   const onSearch = (value: string) => {
     setSearchTerm(value);
-    setCurrentPage(1); // Reset page
+    setCurrentPage(1); 
   };
 
   const { data: statsData } = useGetDonationStatsQuery({

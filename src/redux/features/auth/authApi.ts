@@ -16,7 +16,18 @@ const AuthApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    boardMessageApi: builder.query({
+      query: () => ({
+        url: "/board-member",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useSignUpApiMutation , useLoginApiMutation} = AuthApi;
+export const {
+  useSignUpApiMutation,
+  useLoginApiMutation,
+  useBoardMessageApiQuery,
+} = AuthApi;

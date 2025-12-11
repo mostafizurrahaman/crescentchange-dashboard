@@ -9,6 +9,7 @@ import {
 } from "react-icons/ai";
 import { Modal, Input, Select, Button } from "antd";
 import Swal from "sweetalert2"; // 👈 Install with: npm install sweetalert2
+import { useBoardMessageApiQuery } from "../../redux/features/auth/authApi";
 
 type Role = "Admin" | "Editor" | "Manager";
 
@@ -36,7 +37,8 @@ const teamMembers = [
 export default function Settings() {
   const [members, setMembers] = useState(teamMembers);
   const [twoFA, setTwoFA] = useState(false);
-
+  const { data: boardMemberData } = useBoardMessageApiQuery(null);
+  
   // Dropdown open state
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
