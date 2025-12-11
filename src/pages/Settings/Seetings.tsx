@@ -1,53 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { CgMoreVertical } from "react-icons/cg";
-import { FaEdit, FaTrash } from "react-icons/fa";
+
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
   AiOutlineMail,
 } from "react-icons/ai";
-import { Modal, Input, Select, Button } from "antd";
-import Swal from "sweetalert2"; // 👈 Install with: npm install sweetalert2
-import { useBoardMessageApiQuery } from "../../redux/features/auth/authApi";
+import { Modal, Input, Select, Button, message } from "antd";
+
+import {
+  useBoardMessageApiQuery,
+  useChnageBoardMemebrStatusApiMutation,
+} from "../../redux/features/auth/authApi";
 
 type Role = "Admin" | "Editor" | "Manager";
 
-const teamMembers = [
-  {
-    name: "John Bills",
-    email: "billsjohn09@gmail.com",
-    status: "Active",
-    role: "Admin",
-  },
-  {
-    name: "Billy Clark",
-    email: "clark999@gmail.com",
-    status: "Pending",
-    role: "Editor",
-  },
-  {
-    name: "Anna K.",
-    email: "annakazama54@gmail.com",
-    status: "Active",
-    role: "Manager",
-  },
-];
-
 export default function Settings() {
-  const [members, setMembers] = useState(teamMembers);
   const [twoFA, setTwoFA] = useState(false);
-  const { data: boardMemberData } = useBoardMessageApiQuery(null);
-
-  // Dropdown open state
+  const { data: boardMemberData, refetch } = useBoardMessageApiQuery(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-
-  // Modal states
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-
-  // Password state
   const [passwords, setPasswords] = useState({
     current: "",
     new: "",
@@ -58,28 +32,24 @@ export default function Settings() {
     new: false,
     confirm: false,
   });
-
-  // Invite state
   const [invite, setInvite] = useState({ email: "", role: "Manager" as Role });
-
-  // Edit state
   const [editingMember, setEditingMember] = useState<any>(null);
 
-  const handleRemove = (email: string) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "This member will be removed from the team.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, remove",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setMembers((prev) => prev.filter((m) => m.email !== email));
-        Swal.fire("Removed!", "The member has been removed.", "success");
-      }
-    });
-  };
+  // const handleRemove = (email: string) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "This member will be removed from the team.",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes, remove",
+  //     cancelButtonText: "Cancel",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       setMembers((prev) => prev.filter((m) => m.email !== email));
+  //       Swal.fire("Removed!", "The member has been removed.", "success");
+  //     }
+  //   });
+  // };
 
   const handlePasswordChange = () => {
     if (passwords.new !== passwords.confirm) {
@@ -95,11 +65,30 @@ export default function Settings() {
     setShowInviteModal(false);
   };
 
-  const handleEditSave = () => {
-    setMembers((prev) =>
-      prev.map((m) => (m.email === editingMember.email ? editingMember : m))
-    );
-    setShowEditModal(false);
+
+  const [chnageBoardMemebrStatusApi] = useChnageBoardMemebrStatusApiMutation();
+  const handleUpdateStatus = async (id: string) => {
+    try {
+      const member = boardMemberData?.data?.find(
+        (item: any) => item._id === id
+      );
+
+      if (!member) {
+        console.error("Member not found!");
+        return;
+      }
+
+      const updatedStatus = member.status === "active" ? "inactive" : "active";
+
+      const res = await chnageBoardMemebrStatusApi({
+        _id: id,
+        data: { status: updatedStatus },
+      }).unwrap();
+      message.success(res?.message);
+      refetch();
+    } catch (error) {
+      console.error("Status update failed:", error);
+    }
   };
 
   return (
@@ -181,6 +170,7 @@ export default function Settings() {
               <div className="flex justify-between items-center gap-3 mt-3">
                 <p>Status: </p>
                 <button
+                  onClick={() => handleUpdateStatus(member._id)}
                   className={`${
                     member.status === "active"
                       ? "text-green-600"
@@ -258,9 +248,9 @@ export default function Settings() {
 
             <div className="flex justify-end gap-3">
               <Button onClick={() => setShowEditModal(false)}>Cancel</Button>
-              <Button type="primary" onClick={handleEditSave}>
+              {/* <Button type="primary" onClick={handleEditSave}>
                 Save Changes
-              </Button>
+              </Button> */}
             </div>
           </>
         )}

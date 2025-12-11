@@ -23,6 +23,13 @@ const AuthApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    chnageBoardMemebrStatusApi: builder.mutation({
+      query: ({ data, _id }) => ({
+        url: `/board-member/${_id}/status`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -30,4 +37,5 @@ export const {
   useSignUpApiMutation,
   useLoginApiMutation,
   useBoardMessageApiQuery,
+  useChnageBoardMemebrStatusApiMutation,
 } = AuthApi;
