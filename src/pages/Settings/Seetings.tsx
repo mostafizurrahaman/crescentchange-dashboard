@@ -38,7 +38,7 @@ export default function Settings() {
   const [members, setMembers] = useState(teamMembers);
   const [twoFA, setTwoFA] = useState(false);
   const { data: boardMemberData } = useBoardMessageApiQuery(null);
-  
+
   // Dropdown open state
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
@@ -124,15 +124,23 @@ export default function Settings() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {members.map((member) => (
+          {boardMemberData?.data?.map((member: any) => (
             <div
-              key={member.email}
+              key={member._id}
               className="bg-white p-6 rounded-3xl border relative"
             >
               <div className="flex justify-between items-center gap-2 border-b pb-6">
                 <div>
-                  <p className="font-semibold text-lg mb-2">{member.name}</p>
-                  <p className="text-gray-500 text-sm">{member.email}</p>
+                  <p className="font-semibold text-lg mb-2">
+                    {member.boardMemberName}
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Email: {member.boardMemberEmail}
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    {" "}
+                    Phone No: {member.boardMemberPhoneNumber}
+                  </p>
                 </div>
                 <div className="relative">
                   <button
@@ -142,10 +150,10 @@ export default function Settings() {
                       )
                     }
                   >
-                    <CgMoreVertical className="cursor-pointer text-gray-500" />
+                    {/* <CgMoreVertical className="cursor-pointer text-gray-500" /> */}
                   </button>
 
-                  {openMenu === member.email && (
+                  {/* {openMenu === member.email && (
                     <div className="absolute right-0 mt-2 w-28 bg-white border rounded shadow z-10">
                       <button
                         onClick={() => {
@@ -167,27 +175,27 @@ export default function Settings() {
                         <FaTrash size={14} /> Remove
                       </button>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="flex justify-between items-center gap-3 mt-3">
                 <p>Status: </p>
-                <p
+                <button
                   className={`${
-                    member.status === "Active"
+                    member.status === "active"
                       ? "text-green-600"
                       : "text-yellow-600"
-                  } font-medium`}
+                  } font-medium px-2 py-1 rounded-md bg-neutral-300`}
                 >
                   {member.status}
-                </p>
+                </button>
               </div>
-              <div className="flex justify-between items-center gap-3 mt-3">
+              {/* <div className="flex justify-between items-center gap-3 mt-3">
                 <p>Role: </p>
                 <p className="inline-block bg-black text-white text-xs px-2 py-1 rounded">
                   {member.role}
                 </p>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
