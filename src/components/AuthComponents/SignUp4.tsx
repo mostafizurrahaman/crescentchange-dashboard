@@ -1,71 +1,73 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { Button, ConfigProvider, Form, Input, Upload } from "antd";
+import { Button, ConfigProvider, Form, Input, message, Upload } from "antd";
 import { FaPhoneAlt, FaVoicemail } from "react-icons/fa";
 import img from "../../assets/images/login.png";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { UploadOutlined } from "@ant-design/icons";
+import { useSignUpMutation } from "../../redux/features/auth/authApi";
 
 const STEPS = [
   { path: "/auth/signUp1", label: "Account" },
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Compliance" },
-  { path: "/auth/signUp4", label: "Board Member" }, // <-- this page
-  // { path: "/auth/signUp5", label: "Review" },
-  // { path: "/auth/signUp6", label: "Done" }, // uncomment if you have a 6th step
+  { path: "/auth/signUp4", label: "Board Member" },
 ];
 
 const SignUp4: React.FC = () => {
   const location = useLocation();
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
-  if (currentIdx === -1) currentIdx = total - 1; // default to last if not matched
+  if (currentIdx === -1) currentIdx = total - 1;
   const current = currentIdx + 1;
-  // Figure out current step from the route
-  // const total = STEPS.length;
-  // let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
-  // if (currentIdx === -1) currentIdx = 0;
-  // const current = currentIdx + 1; // 1-based
-  // const isLast = current >= total;
-  // const nextPath = !isLast
-  //   ? STEPS[currentIdx + 1].path
-  //   : STEPS[currentIdx].path;
-
   const organization = JSON.parse(localStorage.getItem("organization") ?? "{}");
-
   const organization2 = JSON.parse(
     localStorage.getItem("organization2") ?? "{}"
   );
-
   const compliance = JSON.parse(localStorage.getItem("compliance") ?? "{}");
+  const [SignUp] = useSignUpMutation();
 
-  console.log(organization, organization2, compliance);
   const onFinish = (values: any) => {
+    const fileList = values.drivingLicense;
+
+    if (!fileList || fileList.length === 0) {
+      console.error("No document uploaded");
+      return;
+    }
+
+    const file: File = fileList[0].originFileObj;
     const data = {
-    name: organization.name ?? "",
-    email: organization.email ?? "",
-    password: organization.password ?? "",
+      name: organization.name ?? "",
+      email: organization.email ?? "",
+      password: organization.password ?? "",
 
-    serviceType: organization2.serviceType ?? "",
-    address: organization2.address ?? "",
-    state: organization2.state ?? "",
-    postalCode: organization2.postalCode ?? "",
-    phoneNumber: organization2.phoneNumber ?? "",
-    website: organization2.website ?? "",
+      serviceType: organization2.serviceType ?? "",
+      address: organization2.address ?? "",
+      state: organization2.state ?? "",
+      postalCode: organization2.postalCode ?? "",
+      phoneNumber: organization2.phoneNumber ?? "",
+      website: organization2.website ?? "",
 
-    tfnOrAbnNumber: compliance.tfnOrAbnNumber ?? "",
-    acncNumber:
-      compliance.acncNumber ?? compliance["acncNumber "] ?? "",
-    zakatLicenseHolderNumber:
-      compliance.zakatLicenseHolderNumber ?? "",
+      tfnOrAbnNumber: compliance.tfnOrAbnNumber ?? "",
+      acncNumber: compliance.acncNumber ?? compliance["acncNumber "] ?? "",
+      zakatLicenseHolderNumber: compliance.zakatLicenseHolderNumber ?? "",
 
-    boardMemberName: values.boardMemberName ?? "",
-    boardMemberEmail: values.boardMemberEmail ?? "",
-    boardMemberPhoneNumber: values.boardMemberPhoneNumber ?? "",
-  };
+      boardMemberName: values.boardMemberName ?? "",
+      boardMemberEmail: values.boardMemberEmail ?? "",
+      boardMemberPhoneNumber: values.boardMemberPhoneNumber ?? "",
+    };
 
-  console.log("FINAL PAYLOAD:", data);
+    console.log("FINAL PAYLOAD:", data);
+    try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(data));
+      formData.append("drivingLicense", file);
+      const res = SignUp(formData).unwrap();
+      message.success(res?.message);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="h-screen flex">
@@ -166,6 +168,16 @@ const SignUp4: React.FC = () => {
 
                 <Form.Item
                   name="drivingLicense"
+                  valuePropName="fileList"
+                  getValueFromEvent={(e) => {
+                    if (Array.isArray(e)) {
+                      return e;
+                    }
+                    return e?.fileList;
+                  }}
+                  rules={[
+                    { required: true, message: "Please upload your document" },
+                  ]}
                   label={
                     <p className="text-lg text-neutral-500">
                       Upload Government Issued Document (Driver’s License / ID)
@@ -176,8 +188,7 @@ const SignUp4: React.FC = () => {
                     multiple={false}
                     maxCount={1}
                     accept=".jpg,.jpeg,.png,.pdf"
-                    // Prevent automatic upload; you can handle the file in onFinish or a custom handler.
-                    beforeUpload={() => false}
+                    beforeUpload={() => false} // prevent auto upload
                   >
                     <Button
                       icon={<UploadOutlined />}
@@ -195,21 +206,6 @@ const SignUp4: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item>
-                  {/* {!isLast ? (
-                
-                      <button className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black">
-                        Save &amp; Continue
-                      </button>
-              
-                  ) : (
-                    <button
-                      className="text-center p-2 font-bold bg-btnPrimary w-full py-2 rounded-md shadow-lg hover:text-black"
-                      type="submit"
-                    >
-                      Finish
-                    </button>
-                  )} */}
-                  {/* <Link to="/auth/login"> */}
                   <button
                     className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black"
                     type="submit"

@@ -1,3 +1,4 @@
+import SignUp from "../../../pages/Auth/SignUp/SignUp";
 import { baseApi } from "../../api/baseApi";
 
 const AuthApi = baseApi.injectEndpoints({
@@ -30,6 +31,15 @@ const AuthApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    // sign Up:
+    SignUp: builder.mutation({
+      query: (data) => ({
+        url: "/auth/organization-signup",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -38,4 +48,5 @@ export const {
   useLoginApiMutation,
   useBoardMessageApiQuery,
   useChnageBoardMemebrStatusApiMutation,
+  useSignUpMutation,
 } = AuthApi;
