@@ -3,7 +3,7 @@ import React from "react";
 import { Button, ConfigProvider, Form, Input, message, Upload } from "antd";
 import { FaPhoneAlt, FaVoicemail } from "react-icons/fa";
 import img from "../../assets/images/login.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { UploadOutlined } from "@ant-design/icons";
 import { useSignUpMutation } from "../../redux/features/auth/authApi";
@@ -17,6 +17,7 @@ const STEPS = [
 
 const SignUp4: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
   if (currentIdx === -1) currentIdx = total - 1;
@@ -63,8 +64,9 @@ const SignUp4: React.FC = () => {
       const formData = new FormData();
       formData.append("data", JSON.stringify(data));
       formData.append("drivingLicense", file);
-      const res = SignUp(formData).unwrap();
-      message.success(res?.message);
+      SignUp(formData).unwrap();
+      message.success("Account created successfully");
+      navigate("/auth/verifyOtp");
     } catch (error) {
       console.log(error);
     }

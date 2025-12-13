@@ -52,13 +52,17 @@ export const router = createBrowserRouter([
     element: <ForgatePassword />,
   },
   {
-    path: "/auth/varification",
+    path: "/auth/verifyOtp",
     element: <VarificationComponent />,
   },
   {
     path: "/auth/confirm-password",
     element: <ConfirmPassword />,
   },
+  // {
+  //   path: "/auth/confirm-password",
+  //   element: <ConfirmPassword />,
+  // },
   {
     path: "/",
     element: <RootLayout />,

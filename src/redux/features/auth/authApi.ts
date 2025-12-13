@@ -1,4 +1,3 @@
-import SignUp from "../../../pages/Auth/SignUp/SignUp";
 import { baseApi } from "../../api/baseApi";
 
 const AuthApi = baseApi.injectEndpoints({
@@ -40,6 +39,13 @@ const AuthApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    verifyOtp: builder.mutation({
+      query: (data) => ({
+        url: "/auth/verify-signup-otp",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -49,4 +55,5 @@ export const {
   useBoardMessageApiQuery,
   useChnageBoardMemebrStatusApiMutation,
   useSignUpMutation,
+  useVerifyOtpMutation,
 } = AuthApi;

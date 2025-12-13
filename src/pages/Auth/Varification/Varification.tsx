@@ -3,13 +3,30 @@ import logo from "../../../assets/images/logo.png";
 import OTPInput from "react-otp-input";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useVerifyOtpMutation } from "../../../redux/features/auth/authApi";
+import { message } from "antd";
 
 const VerificationComponent = () => {
+  const organization = JSON.parse(localStorage.getItem("organization") ?? "{}");
   const [otp, setOtp] = useState("");
   const nevigate = useNavigate();
+  const [verifyOtp] = useVerifyOtpMutation();
   const handleVerifyOtp = () => {
-    console.log("Verifying OTP:", otp);
-    nevigate("/auth/confirm-password");
+    // nevigate("/auth/confirm-password");
+    const data = {
+      email: organization.email ?? "",
+      otp: otp,
+    };
+    verifyOtp(data)
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        message.success(res?.message);
+        nevigate("/auth/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleResendOtp = () => {
