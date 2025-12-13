@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { ConfigProvider, Form, Input, Select } from "antd";
 import { FaPhoneAlt, FaGlobe } from "react-icons/fa";
 import img from "../../assets/images/login.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { IoLocation } from "react-icons/io5";
 
@@ -12,22 +12,18 @@ const STEPS = [
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Branding" },
   { path: "/auth/signUp4", label: "Bank" },
-  // { path: "/auth/signUp5", label: "Review" },
-  // { path: "/auth/signUp6", label: "Done" }, // uncomment if you have 6th step
+
 ];
 
 const SignUp2: React.FC = () => {
   const [active, setActive] = useState("Charity");
   const location = useLocation();
   const nevigate = useNavigate();
-  const values1 = location.state;
-  // console.log(values1);
 
-  // figure out which step we're on based on current route
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
   if (currentIdx === -1) currentIdx = 0;
-  const current = currentIdx + 1; // 1-based
+  const current = currentIdx + 1; 
   const isLast = current >= total;
   const nextPath = !isLast
     ? STEPS[currentIdx + 1].path

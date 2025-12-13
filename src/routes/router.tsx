@@ -21,6 +21,7 @@ import Seetings from "../pages/Settings/Seetings";
 import RootLayout from "../components/layouts/RootLayout";
 import Integration from "../pages/Integration/Integration";
 import Reports from "../pages/Reports/Reports";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -63,24 +64,30 @@ export const router = createBrowserRouter([
   //   path: "/auth/confirm-password",
   //   element: <ConfirmPassword />,
   // },
+  // private routes
   {
-    path: "/",
-    element: <RootLayout />,
-    // element: <MainLayout />,
+    element: <PrivateRoute></PrivateRoute>,
     children: [
-      { path: "/", element: <Analytics />, index: true },
-      { path: "/analytics", element: <Analytics /> },
-      { path: "donors", element: <Donors /> },
-      { path: "deposits", element: <Deposits /> },
-      { path: "integrations", element: <Integration /> },
-      { path: "reports", element: <Reports /> },
-      { path: "deposits", element: <Deposits /> },
-      { path: "subscription", element: <Subscriptions /> },
-      { path: "profile", element: <Profile /> },
-      { path: "edit-profile", element: <EditProfile /> },
-      { path: "access", element: <AccessTab /> },
-      { path: "causes", element: <Envlopes /> },
-      { path: "settings", element: <Seetings /> },
+      {
+        path: "/",
+        element: <RootLayout />,
+        // element: <MainLayout />,
+        children: [
+          { path: "/", element: <Analytics />, index: true },
+          { path: "/analytics", element: <Analytics /> },
+          { path: "donors", element: <Donors /> },
+          { path: "deposits", element: <Deposits /> },
+          { path: "integrations", element: <Integration /> },
+          { path: "reports", element: <Reports /> },
+          { path: "deposits", element: <Deposits /> },
+          { path: "subscription", element: <Subscriptions /> },
+          { path: "profile", element: <Profile /> },
+          { path: "edit-profile", element: <EditProfile /> },
+          { path: "access", element: <AccessTab /> },
+          { path: "causes", element: <Envlopes /> },
+          { path: "settings", element: <Seetings /> },
+        ],
+      },
     ],
   },
 ]);
