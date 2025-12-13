@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import building from "../../assets/images/Building.png";
 import { MdLockOutline } from "react-icons/md";
@@ -20,7 +21,7 @@ const STEPS = [
 
 const SignUp1: React.FC = () => {
   const location = useLocation();
-  const onFinish = () => {};
+  const navigate = useNavigate();
 
   // figure out which step we're on based on current route
   const total = STEPS.length;
@@ -28,7 +29,13 @@ const SignUp1: React.FC = () => {
   if (currentIdx === -1) currentIdx = 0;
   const current = currentIdx + 1; // 1-based
   const isLast = current >= total;
-  const nextPath = !isLast ? STEPS[currentIdx + 1].path : STEPS[currentIdx].path;
+  const nextPath = !isLast
+    ? STEPS[currentIdx + 1].path
+    : STEPS[currentIdx].path;
+  const onFinish = (values: any) => {
+    console.log("Received values of form:", values);
+    navigate(nextPath, { state: values });
+  };
 
   return (
     <div className="h-screen flex p-2">
@@ -68,12 +75,14 @@ const SignUp1: React.FC = () => {
               </div>
 
               <Form.Item
-                name="org-name"
+                name="name"
                 label={<p className="text-lg">Organisation Name</p>}
               >
                 <Input
                   required
-                  prefix={<img src={building} alt="" className="mr-2 h-5 w-5" />}
+                  prefix={
+                    <img src={building} alt="" className="mr-2 h-5 w-5" />
+                  }
                   placeholder="Enter Name"
                   style={{
                     padding: "8px",
@@ -85,7 +94,7 @@ const SignUp1: React.FC = () => {
               </Form.Item>
 
               <Form.Item
-                name="email-address"
+                name="email"
                 label={<p className="text-lg">Email Address</p>}
               >
                 <Input
@@ -121,11 +130,9 @@ const SignUp1: React.FC = () => {
 
               <Form.Item>
                 {!isLast ? (
-                  <Link to={nextPath}>
-                    <button className="bg-btnPrimary w-full py-4 rounded-md shadow-lg text-lg font-medium hover:text-black">
-                      Continue
-                    </button>
-                  </Link>
+                  <button className="bg-btnPrimary w-full py-4 rounded-md shadow-lg text-lg font-medium hover:text-black">
+                    Continue
+                  </button>
                 ) : (
                   <button
                     type="submit"

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { ConfigProvider, Form, Input, Select } from "antd";
 import { FaPhoneAlt, FaGlobe } from "react-icons/fa";
 import img from "../../assets/images/login.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { IoLocation } from "react-icons/io5";
 
@@ -18,8 +19,9 @@ const STEPS = [
 const SignUp2: React.FC = () => {
   const [active, setActive] = useState("Charity");
   const location = useLocation();
-
-  const onFinish = () => {};
+  const nevigate = useNavigate();
+  const values1 = location.state;
+  // console.log(values1);
 
   // figure out which step we're on based on current route
   const total = STEPS.length;
@@ -30,7 +32,11 @@ const SignUp2: React.FC = () => {
   const nextPath = !isLast
     ? STEPS[currentIdx + 1].path
     : STEPS[currentIdx].path;
-
+  const onFinish = (values: any) => {
+    // console.log("values:", values);
+    localStorage.setItem("organization", JSON.stringify(values));
+    nevigate(nextPath, { state: values });
+  };
   return (
     <div className="h-screen flex p-2">
       <div className="bg-white flex flex-col justify-center items-center w-full md:w-1/2 relative">
@@ -78,7 +84,7 @@ const SignUp2: React.FC = () => {
                 }}
               >
                 <Form.Item
-                  name="service-type"
+                  name="serviceType"
                   label={<p className="text-lg ">Service Type</p>}
                 >
                   <Select
@@ -98,7 +104,7 @@ const SignUp2: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item
-                  name="organisation-address"
+                  name="address"
                   label={<p className="text-lg ">Organisation Address</p>}
                 >
                   <Input
@@ -132,7 +138,7 @@ const SignUp2: React.FC = () => {
                   </Form.Item>
 
                   <Form.Item
-                    name="zip-code"
+                    name="postalCode"
                     label={<p className="text-lg ">Postal Code</p>}
                   >
                     <Input
@@ -149,7 +155,7 @@ const SignUp2: React.FC = () => {
                 </div>
 
                 <Form.Item
-                  name="organization-website"
+                  name="website"
                   label={
                     <p className="text-lg text-neutral-500">
                       Organization Website
@@ -171,7 +177,7 @@ const SignUp2: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item
-                  name="contact-phone"
+                  name="phoneNumber"
                   label={<p className="text-lg ">Contact Phone Number</p>}
                 >
                   <Input
@@ -191,14 +197,9 @@ const SignUp2: React.FC = () => {
 
                 <Form.Item>
                   {!isLast ? (
-                    <Link to={nextPath}>
-                      <button
-                        className="text-center font-bold bg-btnPrimary w-full py-3 rounded-md shadow-lg hover:text-black"
-                        type="button"
-                      >
-                        Save &amp; Continue
-                      </button>
-                    </Link>
+                    <button className="text-center font-bold bg-btnPrimary w-full py-3 rounded-md shadow-lg hover:text-black">
+                      Save &amp; Continue
+                    </button>
                   ) : (
                     <button
                       className="text-center font-bold bg-btnPrimary w-full py-3 rounded-md shadow-lg hover:text-black"
@@ -216,7 +217,11 @@ const SignUp2: React.FC = () => {
 
       {/* Right section - Image */}
       <div className="w-full md:w-1/2 p-2">
-        <img src={img} alt="sign-up" className="w-full h-full object-cover rounded-r-md" />
+        <img
+          src={img}
+          alt="sign-up"
+          className="w-full h-full object-cover rounded-r-md"
+        />
       </div>
     </div>
   );
