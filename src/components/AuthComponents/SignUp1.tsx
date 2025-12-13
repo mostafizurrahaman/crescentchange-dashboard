@@ -14,8 +14,8 @@ const STEPS = [
   { path: "/auth/signUp1", label: "Account" },
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Branding" },
-  { path: "/auth/signUp4", label: "Bank" },
-  { path: "/auth/signUp5", label: "Review" },
+  { path: "/auth/signUp4", label: "Bank" }
+  // { path: "/auth/signUp5", label: "Review" },
   // { path: "/auth/signUp6", label: "Done" },
 ];
 
@@ -35,6 +35,7 @@ const SignUp1: React.FC = () => {
   const onFinish = (values: any) => {
     console.log("Received values of form:", values);
     navigate(nextPath, { state: values });
+    localStorage.setItem("organization", JSON.stringify(values));
   };
 
   return (

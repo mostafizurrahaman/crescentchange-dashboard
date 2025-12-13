@@ -12,7 +12,7 @@ const STEPS = [
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Branding" },
   { path: "/auth/signUp4", label: "Bank" },
-  { path: "/auth/signUp5", label: "Review" },
+  // { path: "/auth/signUp5", label: "Review" },
   // { path: "/auth/signUp6", label: "Done" }, // uncomment if you have 6th step
 ];
 
@@ -34,7 +34,7 @@ const SignUp2: React.FC = () => {
     : STEPS[currentIdx].path;
   const onFinish = (values: any) => {
     // console.log("values:", values);
-    localStorage.setItem("organization", JSON.stringify(values));
+    localStorage.setItem("organization2", JSON.stringify(values));
     nevigate(nextPath, { state: values });
   };
   return (

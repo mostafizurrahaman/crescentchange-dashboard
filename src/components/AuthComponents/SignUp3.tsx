@@ -1,7 +1,7 @@
 import React from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 
 const STEPS = [
@@ -9,13 +9,13 @@ const STEPS = [
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Compliance" }, // <-- this page
   { path: "/auth/signUp4", label: "Bank" },
-  { path: "/auth/signUp5", label: "Review" },
+  // { path: "/auth/signUp5", label: "Review" },
   // { path: "/auth/signUp6", label: "Done" }, // uncomment if you have a 6th step
 ];
 
 const SignUp3: React.FC = () => {
   const location = useLocation();
-  const onFinish = () => {};
+  const nevigate = useNavigate();
 
   // Determine current step from the route
   const total = STEPS.length;
@@ -23,8 +23,14 @@ const SignUp3: React.FC = () => {
   if (currentIdx === -1) currentIdx = 0;
   const current = currentIdx + 1; // 1-based
   const isLast = current >= total;
-  const nextPath = !isLast ? STEPS[currentIdx + 1].path : STEPS[currentIdx].path;
-
+  const nextPath = !isLast
+    ? STEPS[currentIdx + 1].path
+    : STEPS[currentIdx].path;
+  const onFinish = (values: any) => {
+    console.log("Received values of form:", values);
+    localStorage.setItem("compliance", JSON.stringify(values));
+    nevigate(nextPath, { state: values });
+  };
   return (
     <div className="h-screen flex">
       <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2 relative">
@@ -57,45 +63,47 @@ const SignUp3: React.FC = () => {
                   {/* Segmented step progress */}
                   <Stepper total={total} current={current} />
 
-                  <p className="mt-4 mb-6">Step {current}/{total}</p>
+                  <p className="mt-4 mb-6">
+                    Step {current}/{total}
+                  </p>
                 </div>
 
                 <Form.Item
-                  name="tfn_abn"
+                  name="tfnOrAbnNumber"
                   label={<p className="text-md">TFN/ABN</p>}
                 >
                   <Input
                     required
                     className="text-md"
                     placeholder="62 123 456 789"
-                       style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  name="acnc"
+                  name="acncNumber "
                   label={<p className="text-md">ACNC Registration Number</p>}
                 >
                   <Input
                     required
                     className="text-md"
                     placeholder="ACNC-987654"
-                      style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  name="zakat_license"
+                  name="zakatLicenseHolderNumber"
                   label={
                     <p className="text-md">
                       Zakat License Holder Number (Optional)
@@ -105,30 +113,22 @@ const SignUp3: React.FC = () => {
                   <Input
                     className="text-md"
                     placeholder="ZL-45678"
-                      style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item>
                   {!isLast ? (
-                    <Link to={nextPath}>
-                      <button
-                        className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black"
-                        type="button"
-                      >
-                        Continue
-                      </button>
-                    </Link>
+                    <button className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black">
+                      Continue
+                    </button>
                   ) : (
-                    <button
-                      className="text-center p-2 font-bold bg-btnPrimary w-full py-2 rounded-md shadow-lg hover:text-black"
-                      type="submit"
-                    >
+                    <button className="text-center p-2 font-bold bg-btnPrimary w-full py-2 rounded-md shadow-lg hover:text-black">
                       Finish
                     </button>
                   )}

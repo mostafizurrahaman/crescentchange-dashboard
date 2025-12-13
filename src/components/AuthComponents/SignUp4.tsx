@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Button, ConfigProvider, Form, Input, Upload } from "antd";
 import { FaPhoneAlt, FaVoicemail } from "react-icons/fa";
@@ -11,22 +12,61 @@ const STEPS = [
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Compliance" },
   { path: "/auth/signUp4", label: "Board Member" }, // <-- this page
-  { path: "/auth/signUp5", label: "Review" },
+  // { path: "/auth/signUp5", label: "Review" },
   // { path: "/auth/signUp6", label: "Done" }, // uncomment if you have a 6th step
 ];
 
 const SignUp4: React.FC = () => {
-  const onFinish = () => {};
   const location = useLocation();
-
-  // Figure out current step from the route
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
-  if (currentIdx === -1) currentIdx = 0;
-  const current = currentIdx + 1; // 1-based
-  const isLast = current >= total;
-  const nextPath = !isLast ? STEPS[currentIdx + 1].path : STEPS[currentIdx].path;
+  if (currentIdx === -1) currentIdx = total - 1; // default to last if not matched
+  const current = currentIdx + 1;
+  // Figure out current step from the route
+  // const total = STEPS.length;
+  // let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
+  // if (currentIdx === -1) currentIdx = 0;
+  // const current = currentIdx + 1; // 1-based
+  // const isLast = current >= total;
+  // const nextPath = !isLast
+  //   ? STEPS[currentIdx + 1].path
+  //   : STEPS[currentIdx].path;
 
+  const organization = JSON.parse(localStorage.getItem("organization") ?? "{}");
+
+  const organization2 = JSON.parse(
+    localStorage.getItem("organization2") ?? "{}"
+  );
+
+  const compliance = JSON.parse(localStorage.getItem("compliance") ?? "{}");
+
+  console.log(organization, organization2, compliance);
+  const onFinish = (values: any) => {
+    const data = {
+    name: organization.name ?? "",
+    email: organization.email ?? "",
+    password: organization.password ?? "",
+
+    serviceType: organization2.serviceType ?? "",
+    address: organization2.address ?? "",
+    state: organization2.state ?? "",
+    postalCode: organization2.postalCode ?? "",
+    phoneNumber: organization2.phoneNumber ?? "",
+    website: organization2.website ?? "",
+
+    tfnOrAbnNumber: compliance.tfnOrAbnNumber ?? "",
+    acncNumber:
+      compliance.acncNumber ?? compliance["acncNumber "] ?? "",
+    zakatLicenseHolderNumber:
+      compliance.zakatLicenseHolderNumber ?? "",
+
+    boardMemberName: values.boardMemberName ?? "",
+    boardMemberEmail: values.boardMemberEmail ?? "",
+    boardMemberPhoneNumber: values.boardMemberPhoneNumber ?? "",
+  };
+
+  console.log("FINAL PAYLOAD:", data);
+  };
   return (
     <div className="h-screen flex">
       {/* Left section - Form */}
@@ -60,29 +100,33 @@ const SignUp4: React.FC = () => {
                   {/* Segmented step progress */}
                   <Stepper total={total} current={current} />
 
-                  <p className="mt-4">Step {current}/{total}</p>
+                  <p className="mt-4">
+                    Step {current}/{total}
+                  </p>
                 </div>
 
                 <Form.Item
-                  name="name"
+                  name="boardMemberName"
                   label={<p className="text-lg text-neutral-500">Full Name</p>}
                 >
                   <Input
                     required
                     className="text-neutral-500"
                     placeholder="Full Name"
-                       style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  name="emailaddress"
-                  label={<p className="text-lg text-neutral-500">Email Address</p>}
+                  name="boardMemberEmail"
+                  label={
+                    <p className="text-lg text-neutral-500">Email Address</p>
+                  }
                 >
                   <Input
                     required
@@ -90,18 +134,20 @@ const SignUp4: React.FC = () => {
                     className="text-neutral-500"
                     prefix={<FaVoicemail className="mr-2" />}
                     placeholder="Enter Email Address"
-                       style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  name="contact-phone"
-                  label={<p className="text-lg text-neutral-500">Contact Phone</p>}
+                  name="boardMemberPhoneNumber"
+                  label={
+                    <p className="text-lg text-neutral-500">Contact Phone</p>
+                  }
                 >
                   <Input
                     required
@@ -109,17 +155,17 @@ const SignUp4: React.FC = () => {
                     className="text-neutral-500"
                     prefix={<FaPhoneAlt className="mr-2" />}
                     placeholder="+61 0 1234 5678"
-                       style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      width: "100%",
+                      height: "52px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  name="gov-id"
+                  name="drivingLicense"
                   label={
                     <p className="text-lg text-neutral-500">
                       Upload Government Issued Document (Driver’s License / ID)
@@ -136,12 +182,12 @@ const SignUp4: React.FC = () => {
                     <Button
                       icon={<UploadOutlined />}
                       className="text-neutral-500"
-                         style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                      style={{
+                        padding: "8px",
+                        borderRadius: "8px",
+                        width: "100%",
+                        height: "52px",
+                      }}
                     >
                       Click to Upload
                     </Button>
@@ -149,15 +195,12 @@ const SignUp4: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item>
-                  {!isLast ? (
-                    <Link to={nextPath}>
-                      <button
-                        className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black"
-                        type="button"
-                      >
+                  {/* {!isLast ? (
+                
+                      <button className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black">
                         Save &amp; Continue
                       </button>
-                    </Link>
+              
                   ) : (
                     <button
                       className="text-center p-2 font-bold bg-btnPrimary w-full py-2 rounded-md shadow-lg hover:text-black"
@@ -165,7 +208,15 @@ const SignUp4: React.FC = () => {
                     >
                       Finish
                     </button>
-                  )}
+                  )} */}
+                  {/* <Link to="/auth/login"> */}
+                  <button
+                    className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black"
+                    type="submit"
+                  >
+                    Finish
+                  </button>
+                  {/* </Link> */}
                 </Form.Item>
               </Form>
             </ConfigProvider>
