@@ -30,8 +30,8 @@ const RootLayout = () => {
 
   return (
     <div className="">
-      <div className={`flex-1 flex flex-col ${isMobile ? "pl-0" : "pl-64"}`}>
-        <div className="h-20 bg-primary flex justify-between  items-center px-2 md:px-20 gap-2 border-b ">
+      <div className={`flex-1 flex flex-col  ${isMobile ? "pl-0" : "pl-0"}`}>
+        <div className="h-20 bg-primary flex justify-between  items-center px-2 md:px-20 gap-2 border-b sticky top-0 z-30 flex-shrink-0">
           {isMobile && (
             <GiHamburgerMenu
               onClick={toggleDrawer}
@@ -93,7 +93,7 @@ const RootLayout = () => {
           },
         }}
       >
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-screen">
           {isMobile ? (
             <Drawer
               title="Menu"
@@ -107,11 +107,15 @@ const RootLayout = () => {
               <Sidebar onClose={closeDrawer} collapsed={false} />
             </Drawer>
           ) : (
-            <div className="w-64 fixed top-0 left-0 h-screen border-r ">
+            <div className="w-64 fixed top-0 left-0 h-[80vh] border-r pt-20 fixed">
               <Sidebar collapsed={false} />
             </div>
           )}
-          <div className={`flex-1 bg-[#f7f7f7] overflow-auto min-h-screen pl-72 ${isMobile ? "p-4" : "p-10"}`}>
+          <div
+            className={`flex-1 bg-[#f7f7f7] overflow-auto min-h-[80vh] pl-72 ${
+              isMobile ? "p-4" : "p-10"
+            }`}
+          >
             <Outlet />
           </div>
         </div>

@@ -60,10 +60,7 @@ export const router = createBrowserRouter([
     path: "/auth/confirm-password",
     element: <ConfirmPassword />,
   },
-  // {
-  //   path: "/auth/confirm-password",
-  //   element: <ConfirmPassword />,
-  // },
+
   // private routes
   {
     element: <PrivateRoute></PrivateRoute>,
@@ -71,7 +68,6 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <RootLayout />,
-        // element: <MainLayout />,
         children: [
           { path: "/", element: <Analytics />, index: true },
           { path: "/analytics", element: <Analytics /> },
