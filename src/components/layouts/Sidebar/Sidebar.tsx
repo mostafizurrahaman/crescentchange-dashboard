@@ -75,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed}) => {
 
   return (
     // <div className="fixed top-0 left-0 bottom-0 bg-[#f7f7f7]">
-    <div className="bg-primary h-full border border-l">
+    <div className="bg-primary h-full ">
       <Sider
         className="h-auto w-[300px] bg-[#f7f7f7]"
         width={250}
