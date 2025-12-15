@@ -30,7 +30,7 @@ const RootLayout = () => {
 
   return (
     <div className="">
-      <div className={`flex-1 flex flex-col  ${isMobile ? "pl-0" : "pl-0"}`}>
+      <div className={`flex-1 flex flex-col sticky top-0 left-0 z-30 ${isMobile ? "pl-0" : "pl-0"}`}>
         <div className="h-20 bg-primary flex justify-between  items-center px-2 md:px-20 gap-2 border-b sticky top-0 z-30 flex-shrink-0">
           {isMobile && (
             <GiHamburgerMenu
@@ -107,7 +107,7 @@ const RootLayout = () => {
               <Sidebar onClose={closeDrawer} collapsed={false} />
             </Drawer>
           ) : (
-            <div className="w-64 fixed top-0 left-0 h-[80vh] border-r pt-20 fixed">
+            <div className="w-64  top-0 left-0 h-[80vh] border-r pt-20 fixed">
               <Sidebar collapsed={false} />
             </div>
           )}
