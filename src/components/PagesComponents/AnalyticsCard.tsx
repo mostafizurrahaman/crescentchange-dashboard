@@ -1,4 +1,4 @@
-import { BsArrowUpRight } from "react-icons/bs";
+// import { BsArrowUpRight } from "react-icons/bs";
 
 
 interface TopCause {
@@ -90,7 +90,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
           </div>
         </div>
 
-        <BsArrowUpRight className="h-5 w-5 cursor-pointer" />
+        {/* <BsArrowUpRight className="h-5 w-5 cursor-pointer" /> */}
       </div>
 
       <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3">

@@ -23,7 +23,6 @@ interface ITopDonor {
   isIncrease: boolean;
   lastDonationDate: string;
   lastDonationAmount: number;
-  
 }
 
 interface ITopDonors {
@@ -50,62 +49,81 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
       <div className="bg-white rounded-3xl p-6 border my-3">
         <h1 className="text-2xl font-medium mb-2">Top 05 Donors</h1>
         <p className="text-gray-400 mb-6">Sorted by total donations</p>
-        {topDonors?.map((item) => (
-          <div
-            key={item.donor._id}
-            className="flex justify-between items-center gap-2 mb-4"
-          >
-            <div className="flex justify-start items-center gap-2">
-              <img
-                src={item.donor.image || user}
-                alt={item.donor.name}
-                className="w-8 h-8 rounded-full"
-              />
-              <div>
-                <h1>{item.donor.name}</h1>
-                <p className="text-gray-400">Donations: {item.donationCount}</p>
+        {topDonors?.length > 0 ? (
+          <>
+            {" "}
+            {topDonors?.map((item) => (
+              <div
+                key={item.donor._id}
+                className="flex justify-between items-center gap-2 mb-4"
+              >
+                <div className="flex justify-start items-center gap-2">
+                  <img
+                    src={item.donor.image || user}
+                    alt={item.donor.name}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div>
+                    <h1>{item.donor.name}</h1>
+                    <p className="text-gray-400">
+                      Donations: {item.donationCount}
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <p>${item.totalAmount}</p>
+                  <p
+                    className={`text-${item.isIncrease ? "green" : "red"}-500`}
+                  >
+                    {item.isIncrease ? "+" : "-"}
+                    {item.percentageChange}%
+                  </p>
+                </div>
               </div>
-            </div>
-            <div>
-              <p>${item.totalAmount}</p>
-              <p className={`text-${item.isIncrease ? "green" : "red"}-500`}>
-                {item.isIncrease ? "+" : "-"}
-                {item.percentageChange}%
-              </p>
-            </div>
-          </div>
-        ))}
+            ))}
+          </>
+        ) : (
+          <p className="text-gray-400">No top donors</p>
+        )}
       </div>
       {/* recent donors */}
       <div className="bg-white rounded-3xl p-6 border my-3">
         <div className="flex justify-between items-center ">
           <h1 className="text-2xl font-medium mb-2">Recent donors</h1>
-          <Link to="">
+          <Link to="/donors">
             <button className="text-purple-500 underline ">View All</button>
           </Link>
         </div>
 
-        {recentDonors?.map((item) => (
-          <div
-            key={item?.donor._id}
-            className="flex justify-between items-center gap-2 mb-4"
-          >
-            <div className="flex justify-start items-center gap-2">
-              <img src={user} alt="" />
-              <div>
-                <h1>{item?.donor?.name}</h1>
-                <p className="text-gray-400">{item?.lastDonationDate} </p>
+        {recentDonors?.length > 0 ? (
+          <>
+            {" "}
+            {recentDonors?.map((item) => (
+              <div
+                key={item?.donor._id}
+                className="flex justify-between items-center gap-2 mb-4"
+              >
+                <div className="flex justify-start items-center gap-2">
+                  <img src={user} alt="" />
+                  <div>
+                    <h1>{item?.donor?.name}</h1>
+                    <p className="text-gray-400">{item?.lastDonationDate} </p>
+                  </div>
+                </div>
+                <div>
+                  <p>${item.lastDonationAmount}</p>
+                  <p className="text-gray-400">Last Donation</p>
+                </div>
               </div>
-            </div>
-            <div>
-              <p>${item.lastDonationAmount}</p>
-              <p className="text-gray-400">Last Donation</p>
-            </div>
-          </div>
-        ))}
+            ))}
+          </>
+        ) : (
+          <p className="text-gray-400">No recent donors</p>
+        )}
       </div>
 
       {/* breakdown by causes */}
+      {/* TODO */}
       <div className="bg-white rounded-3xl p-6 border my-3">
         <h1 className="text-xl font-medium">Breakdown by Causes</h1>
         <div className="my-6">
