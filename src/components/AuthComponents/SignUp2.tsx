@@ -89,11 +89,11 @@ const SignUp2: React.FC = () => {
                     value={active}
                     onChange={(value) => setActive(value)}
                     options={[
-                      { label: "Charity", value: "Charity" },
-                      { label: "Mosque", value: "Mosque" },
+                      { label: "Charity", value: "charity" },
+                      { label: "Mosque", value: "mosque" },
                       {
                         label: "Non profit Organization",
-                        value: "Non profit Organization",
+                        value: "non-profit",
                       },
                     ]}
                   />
