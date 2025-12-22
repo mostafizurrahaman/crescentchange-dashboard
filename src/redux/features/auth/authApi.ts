@@ -46,6 +46,14 @@ const AuthApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    // Notification
+    getNotification: builder.query({
+      query: () => ({
+        url: "/notification/me",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -56,4 +64,5 @@ export const {
   useChnageBoardMemebrStatusApiMutation,
   useSignUpMutation,
   useVerifyOtpMutation,
+  useGetNotificationQuery
 } = AuthApi;

@@ -14,7 +14,7 @@ const Notification = () => {
               <p className="text-gray-500">
                 When new donations occur, reward thresholds met, etc.
               </p>
-            </div>
+            </div> 
           </div>
           <Switch></Switch>
         </div>

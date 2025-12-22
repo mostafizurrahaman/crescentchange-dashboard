@@ -22,6 +22,7 @@ import RootLayout from "../components/layouts/RootLayout";
 import Integration from "../pages/Integration/Integration";
 import Reports from "../pages/Reports/Reports";
 import PrivateRoute from "./PrivateRoute";
+import Notification from "../components/SettingsComponents/Notification";
 
 export const router = createBrowserRouter([
   {
@@ -82,6 +83,7 @@ export const router = createBrowserRouter([
           { path: "access", element: <AccessTab /> },
           { path: "causes", element: <Envlopes /> },
           { path: "settings", element: <Seetings /> },
+          { path: "notification", element: <Notification /> },
         ],
       },
     ],

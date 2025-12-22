@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ConfigProvider, Drawer } from "antd";
+import { ConfigProvider, Drawer, Popover } from "antd";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaX } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -11,7 +11,7 @@ import hfl from "../../assets/images/hfl.png";
 import Sidebar from "./Sidebar/Sidebar";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { IMAGE_URL } from "../../redux/utils/baseUrl";
-
+import NotificationPopover from "../AuthComponents/NotificationPopover";
 const RootLayout = () => {
   const [drawer, setDrawer] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -30,7 +30,11 @@ const RootLayout = () => {
 
   return (
     <div className="">
-      <div className={`flex-1 flex flex-col sticky top-0 left-0 z-30 ${isMobile ? "pl-0" : "pl-0"}`}>
+      <div
+        className={`flex-1 flex flex-col sticky top-0 left-0 z-30 ${
+          isMobile ? "pl-0" : "pl-0"
+        }`}
+      >
         <div className="h-20 bg-primary flex justify-between  items-center px-2 md:px-20 gap-2 border-b sticky top-0 z-30 flex-shrink-0">
           {isMobile && (
             <GiHamburgerMenu
@@ -53,14 +57,28 @@ const RootLayout = () => {
             <div className="flex justify-between items-center gap-2  mx-10">
               <div className="relative ">
                 <div className=" flex justify-between items-center gap-5 py-5 ">
-                  <Link to="/notification">
+                  {/* <Link to="/notification">
                     <div className="relative ">
                       <IoIosNotificationsOutline className="h-10 w-10 bg-white  text-black p-1 border rounded-full border-primary " />
                       <span className="bg-red-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
                         1
                       </span>
                     </div>
-                  </Link>
+                  </Link> */}
+                  <Popover
+                    content={<NotificationPopover />}
+                    trigger="click"
+                    placement="bottomRight"
+                    overlayClassName="notification-popover"
+                  >
+                    <div className="relative cursor-pointer">
+                      <IoIosNotificationsOutline className="h-10 w-10 bg-white text-black p-1 border rounded-full border-primary" />
+                      <span className="bg-red-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
+                        1
+                      </span>
+                    </div>
+                  </Popover>
+
                   <Link to="/profile">
                     <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-3xl">
                       <img
