@@ -10,7 +10,6 @@ import brandlogo from "../../assets/images/logo.png";
 import hfl from "../../assets/images/hfl.png";
 import Sidebar from "./Sidebar/Sidebar";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
-import { IMAGE_URL } from "../../redux/utils/baseUrl";
 import NotificationPopover from "../AuthComponents/NotificationPopover";
 import { useGetUnreadNotificationQuery } from "../../redux/features/auth/authApi";
 const RootLayout = () => {
@@ -126,7 +125,7 @@ const RootLayout = () => {
               <Sidebar onClose={closeDrawer} collapsed={false} />
             </Drawer>
           ) : (
-            <div className="w-64  top-0 left-0 h-[80vh] border-r pt-20 fixed">
+            <div className="w-64  top-0 left-0 h-[80vh] border-r pt-32 fixed">
               <Sidebar collapsed={false} />
             </div>
           )}

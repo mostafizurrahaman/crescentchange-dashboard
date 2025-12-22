@@ -1,4 +1,4 @@
-import profile from "../../assets/images/Shape.png";
+import profile from "../../assets/images/alu.png";
 import portfolio from "../../assets/images/Eye Tracking.png";
 import warning from "../../assets/images/Error Circle.png";
 import reports from "../../assets/images/Document Bullet List.png";

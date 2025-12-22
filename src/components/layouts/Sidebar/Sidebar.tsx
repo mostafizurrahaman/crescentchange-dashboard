@@ -112,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed}) => {
             items={menuItems}
           />
 
-          <div className="mt-[400px] px-2">
+          <div className="mt-[300px] px-2">
             <Menu
               mode="inline"
               style={{
