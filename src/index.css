@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Apply to entire app */
+html,
+body {
+  font-family: "Familjen Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* Ant Design override (important) */
+.ant-typography,
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-modal,
+.ant-dropdown,
+.ant-message,
+.ant-tooltip,
+.ant-table {
+  font-family: "Familjen Grotesk", system-ui, sans-serif !important;
+}
