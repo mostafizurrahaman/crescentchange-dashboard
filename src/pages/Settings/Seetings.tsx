@@ -11,6 +11,7 @@ import { Modal, Input, Select, Button, message } from "antd";
 import {
   useBoardMessageApiQuery,
   useChnageBoardMemebrStatusApiMutation,
+  useChnagePasswordMutation,
 } from "../../redux/features/auth/authApi";
 
 type Role = "Admin" | "Editor" | "Manager";
@@ -50,12 +51,18 @@ export default function Settings() {
   //     }
   //   });
   // };
-
-  const handlePasswordChange = () => {
+  const [chnagePassword] = useChnagePasswordMutation();
+  const handlePasswordChange = async () => {
     if (passwords.new !== passwords.confirm) {
       alert("Passwords do not match!");
       return;
     }
+    const data = {
+      oldPassword: passwords.current,
+      newPassword: passwords.new,
+    };
+    const res = await chnagePassword(data).unwrap();
+    message.success(res?.message);
     console.log("Submit new password:", passwords);
     setShowPasswordModal(false);
   };
@@ -64,7 +71,6 @@ export default function Settings() {
     console.log("Invite sent:", invite);
     setShowInviteModal(false);
   };
-
 
   const [chnageBoardMemebrStatusApi] = useChnageBoardMemebrStatusApiMutation();
   const handleUpdateStatus = async (id: string) => {
@@ -127,7 +133,6 @@ export default function Settings() {
                     Email: {member.boardMemberEmail}
                   </p>
                   <p className="text-gray-500 text-sm">
-                    {" "}
                     Phone No: {member.boardMemberPhoneNumber}
                   </p>
                 </div>
@@ -255,73 +260,62 @@ export default function Settings() {
           </>
         )}
       </Modal>
-      {/* Update Password */}{" "}
+      {/* Update Password */}
       <div className="bg-white rounded-xl shadow p-4 mb-6 flex justify-between items-center">
-        {" "}
         <div>
-          {" "}
-          <h3 className="font-medium">Update your password</h3>{" "}
+          <h3 className="font-medium">Update your password</h3>
           <p className="text-sm text-gray-500">
-            {" "}
-            Change or update your password. Forgot your password?{" "}
+            Change or update your password. Forgot your password?
             <a href="#" className="text-blue-600 underline">
-              {" "}
-              Click here{" "}
-            </a>{" "}
-            to reset it.{" "}
-          </p>{" "}
-        </div>{" "}
+              Click here
+            </a>
+            to reset it.
+          </p>
+        </div>
         <button
           onClick={() => setShowPasswordModal(true)}
           className="text-xl cursor-pointer"
         >
-          {" "}
-          ↗{" "}
-        </button>{" "}
-      </div>{" "}
-      {/* Two-Factor Authentication */}{" "}
+          ↗
+        </button>
+      </div>
+      {/* Two-Factor Authentication */}
       <div className="bg-white rounded-xl shadow p-4 flex justify-between items-center">
-        {" "}
         <div>
-          {" "}
-          <h3 className="font-medium">Two-Factor Authentication</h3>{" "}
+          <h3 className="font-medium">Two-Factor Authentication</h3>
           <p className="text-sm text-gray-500">
-            {" "}
-            Two-Factor Authentication is {twoFA ? "on" : "off"}.{" "}
+            Two-Factor Authentication is {twoFA ? "on" : "off"}.
             {twoFA
               ? "Your account is more secure."
-              : "Turn it on for stronger security."}{" "}
-          </p>{" "}
-        </div>{" "}
+              : "Turn it on for stronger security."}
+          </p>
+        </div>
         <label className="inline-flex items-center cursor-pointer">
-          {" "}
           <input
             type="checkbox"
             checked={twoFA}
             onChange={() => setTwoFA(!twoFA)}
             className="sr-only peer"
-          />{" "}
-          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />{" "}
-        </label>{" "}
+          />
+          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+        </label>
       </div>
+      {/* Password Modal  */}
       <Modal
         title="Update your Password"
         open={showPasswordModal}
         onCancel={() => setShowPasswordModal(false)}
         footer={null}
       >
-        {" "}
         {["current", "new", "confirm"].map((field) => (
           <div className="mb-4 relative" key={field}>
-            {" "}
             <label className="block text-sm mb-1">
-              {" "}
               {field === "current"
                 ? "Enter Current Password"
                 : field === "new"
                 ? "Enter New Password"
-                : "Confirm New Password"}{" "}
-            </label>{" "}
+                : "Confirm New Password"}
+            </label>
             <Input
               type={showPw[field as keyof typeof showPw] ? "text" : "password"}
               value={passwords[field as keyof typeof passwords]}
@@ -351,37 +345,31 @@ export default function Settings() {
                   />
                 )
               }
-            />{" "}
+            />
           </div>
-        ))}{" "}
+        ))}
         <p className="text-xs text-gray-500 mb-4">
-          {" "}
           Your Password must contain at least 8 characters, 1 uppercase letter,
-          1 number, and 1 special character.{" "}
-        </p>{" "}
+          1 number, and 1 special character.
+        </p>
         <div className="flex justify-end gap-3">
-          {" "}
           <Button onClick={() => setShowPasswordModal(false)}>
-            {" "}
-            Discard Changes{" "}
-          </Button>{" "}
+            Discard Changes
+          </Button>
           <Button type="primary" onClick={handlePasswordChange}>
-            {" "}
-            Save Changes{" "}
-          </Button>{" "}
-        </div>{" "}
-      </Modal>{" "}
-      {/* Invite Modal */}{" "}
+            Save Changes
+          </Button>
+        </div>
+      </Modal>
+      {/* Invite Modal */}
       <Modal
         title="Invite Your Team Member"
         open={showInviteModal}
         onCancel={() => setShowInviteModal(false)}
         footer={null}
       >
-        {" "}
         <div className="mb-4 relative">
-          {" "}
-          <label className="block text-sm mb-1">Email</label>{" "}
+          <label className="block text-sm mb-1">Email</label>
           <Input
             type="email"
             value={invite.email}
@@ -389,11 +377,10 @@ export default function Settings() {
               setInvite((i) => ({ ...i, email: e.target.value }))
             }
             prefix={<AiOutlineMail />}
-          />{" "}
-        </div>{" "}
+          />
+        </div>
         <div className="mb-6">
-          {" "}
-          <label className="block text-sm mb-1">Role</label>{" "}
+          <label className="block text-sm mb-1">Role</label>
           <Select
             value={invite.role}
             onChange={(value) =>
@@ -401,20 +388,17 @@ export default function Settings() {
             }
             className="w-full"
           >
-            {" "}
-            <Select.Option value="Admin">Admin</Select.Option>{" "}
-            <Select.Option value="Editor">Editor</Select.Option>{" "}
-            <Select.Option value="Manager">Manager</Select.Option>{" "}
-          </Select>{" "}
-        </div>{" "}
+            <Select.Option value="Admin">Admin</Select.Option>
+            <Select.Option value="Editor">Editor</Select.Option>
+            <Select.Option value="Manager">Manager</Select.Option>
+          </Select>
+        </div>
         <div className="flex justify-end gap-3">
-          {" "}
-          <Button onClick={() => setShowInviteModal(false)}>Cancel</Button>{" "}
+          <Button onClick={() => setShowInviteModal(false)}>Cancel</Button>
           <Button type="primary" onClick={handleInvite}>
-            {" "}
-            Invite{" "}
-          </Button>{" "}
-        </div>{" "}
+            Invite
+          </Button>
+        </div>
       </Modal>
     </div>
   );

@@ -46,6 +46,13 @@ const AuthApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    chnagePassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/change-password",
+      method: "PATCH",
+        body: data,
+      }),
+    }),
 
     // Notification
     getNotification: builder.query({
@@ -70,6 +77,7 @@ export const {
   useChnageBoardMemebrStatusApiMutation,
   useSignUpMutation,
   useVerifyOtpMutation,
+  useChnagePasswordMutation,
   useGetNotificationQuery,
-  useNotificationMarkASReadMutation
+  useNotificationMarkASReadMutation,
 } = AuthApi;
