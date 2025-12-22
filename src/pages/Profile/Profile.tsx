@@ -48,7 +48,6 @@ import digital from "../../assets/images/💻.png";
 import mental from "../../assets/images/🧠.png";
 import qurban from "../../assets/images/🐑.png";
 import women from "../../assets/images/👩_👧.png";
-import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const Profile = () => {
   const [selectedYear] = useState(dayjs().year());

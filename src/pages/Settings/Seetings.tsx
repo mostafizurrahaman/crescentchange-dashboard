@@ -13,11 +13,11 @@ import {
   useChnageBoardMemebrStatusApiMutation,
   useChnagePasswordMutation,
 } from "../../redux/features/auth/authApi";
+import { useSetUpTwoFAMutation } from "../../redux/features/twoFA/twoFA";
 
 type Role = "Admin" | "Editor" | "Manager";
 
 export default function Settings() {
-  const [twoFA, setTwoFA] = useState(false);
   const { data: boardMemberData, refetch } = useBoardMessageApiQuery(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -36,21 +36,6 @@ export default function Settings() {
   const [invite, setInvite] = useState({ email: "", role: "Manager" as Role });
   const [editingMember, setEditingMember] = useState<any>(null);
 
-  // const handleRemove = (email: string) => {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "This member will be removed from the team.",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonText: "Yes, remove",
-  //     cancelButtonText: "Cancel",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       setMembers((prev) => prev.filter((m) => m.email !== email));
-  //       Swal.fire("Removed!", "The member has been removed.", "success");
-  //     }
-  //   });
-  // };
   const [chnagePassword] = useChnagePasswordMutation();
   const handlePasswordChange = async () => {
     if (passwords.new !== passwords.confirm) {
@@ -94,6 +79,30 @@ export default function Settings() {
       refetch();
     } catch (error) {
       console.error("Status update failed:", error);
+    }
+  };
+  // 2 factor Auth:
+  const [twoFA, setTwoFA] = useState(false);
+  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
+  const [twoFASecret, setTwoFASecret] = useState<string | null>(null);
+
+  const [setUpTwoFA] = useSetUpTwoFAMutation();
+
+  const handleSetUpTwoFA = async () => {
+    try {
+      const res = await setUpTwoFA({}).unwrap();
+
+      setQrCodeUrl(res?.data?.qrCodeUrl);
+      setTwoFASecret(res?.data?.secret);
+
+      setShow2FAModal(true);
+      setTwoFA(true);
+
+      message.success(res?.message || "2FA setup initiated");
+    } catch (error) {
+      console.error("2FA setup failed:", error);
+      message.error("Failed to setup 2FA");
     }
   };
 
@@ -294,7 +303,15 @@ export default function Settings() {
           <input
             type="checkbox"
             checked={twoFA}
-            onChange={() => setTwoFA(!twoFA)}
+            onChange={(e) => {
+              const checked = e.target.checked;
+
+              if (checked && !twoFA) {
+                handleSetUpTwoFA(); // 🔥 start setup
+              } else {
+                setTwoFA(false); // optional: disable flow later
+              }
+            }}
             className="sr-only peer"
           />
           <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
@@ -398,6 +415,43 @@ export default function Settings() {
           <Button type="primary" onClick={handleInvite}>
             Invite
           </Button>
+        </div>
+      </Modal>
+
+      {/* Show QR Code for 2FA */}
+      <Modal
+        title="Set up Two-Factor Authentication"
+        open={show2FAModal}
+        onCancel={() => setShow2FAModal(false)}
+        footer={[
+          <Button
+            key="close"
+            type="primary"
+            onClick={() => setShow2FAModal(false)}
+          >
+            I’ve scanned the QR
+          </Button>,
+        ]}
+      >
+        <div className="text-center">
+          <p className="mb-4 text-gray-600">
+            Scan this QR code using Google Authenticator or any 2FA app.
+          </p>
+
+          {qrCodeUrl && (
+            <img
+              src={qrCodeUrl}
+              alt="2FA QR Code"
+              className="mx-auto mb-4 w-48 h-48"
+            />
+          )}
+
+          {twoFASecret && (
+            <div className="bg-gray-100 p-3 rounded-md text-sm">
+              <p className="font-medium mb-1">Manual setup key:</p>
+              <p className="break-all font-mono">{twoFASecret}</p>
+            </div>
+          )}
         </div>
       </Modal>
     </div>
