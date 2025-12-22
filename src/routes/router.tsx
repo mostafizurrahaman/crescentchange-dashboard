@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
           { path: "access", element: <AccessTab /> },
           { path: "causes", element: <Envlopes /> },
           { path: "settings", element: <Seetings /> },
-          { path: "notification", element: <Notification /> },
+          { path: "notifications", element: <Notification /> },
         ],
       },
     ],

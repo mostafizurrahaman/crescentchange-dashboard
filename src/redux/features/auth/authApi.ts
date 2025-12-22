@@ -54,6 +54,12 @@ const AuthApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    notificationMarkASRead: builder.mutation({
+      query: (_id) => ({
+        url: `/notification/mark-notification/${_id}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -64,5 +70,6 @@ export const {
   useChnageBoardMemebrStatusApiMutation,
   useSignUpMutation,
   useVerifyOtpMutation,
-  useGetNotificationQuery
+  useGetNotificationQuery,
+  useNotificationMarkASReadMutation
 } = AuthApi;

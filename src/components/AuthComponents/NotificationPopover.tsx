@@ -5,6 +5,7 @@ import { useGetNotificationQuery } from "../../redux/features/auth/authApi";
 import { TbBrandStripe } from "react-icons/tb";
 import { FaCheckCircle } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import { Link } from "react-router-dom";
 const NotificationPopover = () => {
   const { data: notificationData, isLoading } = useGetNotificationQuery({});
   const notificationTypeMap = {
@@ -87,7 +88,9 @@ const NotificationPopover = () => {
 
                 {notifications.length > 0 && (
                   <p className="text-center text-sm text-gray-500 cursor-pointer">
+                    <Link to="notifications">
                     View all
+                    </Link>
                   </p>
                 )}
               </div>
