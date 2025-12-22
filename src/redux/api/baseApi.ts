@@ -12,7 +12,7 @@ interface ApiError {
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   // credentials: "include",
-  prepareHeaders: (headers, ) => {
+  prepareHeaders: (headers) => {
     const token = localStorage.getItem("token");
     // const token = (getState() as RootState).auth.token;
     // console.log("Token being sent:", token);
@@ -51,6 +51,6 @@ const baseQueryWithRefreshToken: typeof baseQuery = async (
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: [],
+  tagTypes: ["notification"],
   endpoints: () => ({}),
 });

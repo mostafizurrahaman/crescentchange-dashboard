@@ -49,7 +49,7 @@ const AuthApi = baseApi.injectEndpoints({
     chnagePassword: builder.mutation({
       query: (data) => ({
         url: "/auth/change-password",
-      method: "PATCH",
+        method: "PATCH",
         body: data,
       }),
     }),
@@ -67,6 +67,14 @@ const AuthApi = baseApi.injectEndpoints({
         method: "PATCH",
       }),
     }),
+
+    getUnreadNotification: builder.query({
+      query: () => ({
+        url: "/notification/unseen-notification-count",
+        method: "GET",
+      }),
+      providesTags: ["notification"],
+    }),
   }),
 });
 
@@ -80,4 +88,5 @@ export const {
   useChnagePasswordMutation,
   useGetNotificationQuery,
   useNotificationMarkASReadMutation,
+  useGetUnreadNotificationQuery,
 } = AuthApi;

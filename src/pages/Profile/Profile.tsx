@@ -6,7 +6,7 @@ import hfl from "../../assets/images/Profile Logo.png";
 import tick from "../../assets/images/Checkmark.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
-import {  Modal, Select } from "antd";
+import { Modal, Select } from "antd";
 import {
   XAxis,
   YAxis,
@@ -154,13 +154,13 @@ const Profile = () => {
       </div>
       <div className="my-6 relative">
         <img
-          src={`${IMAGE_URL}${OrgProfile?.coverImage}`}
+          src={`${OrgProfile?.coverImage}`}
           alt=""
           className="w-full h-80  rounded-3xl"
         />
         <div className="absolute ml-28 top-60">
           <img
-            src={`${IMAGE_URL}${OrgProfile?.logoImage}`}
+            src={`${OrgProfile?.logoImage}`}
             alt=""
             className="h-40 w-40 rounded-full"
           />
@@ -330,15 +330,15 @@ const Profile = () => {
           {/* Cover + Logo */}
           <div className="relative">
             <img
-              src={profile}
-              alt="cover"
-              className="w-full h-48 object-cover"
+              src={`${OrgProfile?.coverImage}`}
+              alt=""
+              className="w-full h-80  rounded-3xl"
             />
             <div className="absolute -bottom-10 left-5">
               <img
-                src={hfl}
-                alt="logo"
-                className="h-24 w-24 rounded-full border-4 border-white shadow-md"
+                src={`${OrgProfile?.logoImage}`}
+                alt=""
+                className="h-40 w-40 rounded-full"
               />
             </div>
           </div>

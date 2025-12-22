@@ -12,13 +12,14 @@ import Sidebar from "./Sidebar/Sidebar";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { IMAGE_URL } from "../../redux/utils/baseUrl";
 import NotificationPopover from "../AuthComponents/NotificationPopover";
+import { useGetUnreadNotificationQuery } from "../../redux/features/auth/authApi";
 const RootLayout = () => {
   const [drawer, setDrawer] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { data: orgData } = useGetAllProfileQuery(null);
   const toggleDrawer = () => setDrawer(!drawer);
   const closeDrawer = () => setDrawer(false);
-
+  const { data: unreadNotification } = useGetUnreadNotificationQuery(null);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -74,7 +75,7 @@ const RootLayout = () => {
                     <div className="relative cursor-pointer">
                       <IoIosNotificationsOutline className="h-10 w-10 bg-white text-black p-1 border rounded-full border-primary" />
                       <span className="bg-red-500 h-5 w-5 rounded-full flex justify-center items-center absolute top-0 right-0 text-white text-xs">
-                        1
+                        {unreadNotification?.data}
                       </span>
                     </div>
                   </Popover>
@@ -82,7 +83,7 @@ const RootLayout = () => {
                   <Link to="/profile">
                     <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-3xl">
                       <img
-                        src={`${IMAGE_URL}${orgData?.data?.logoImage}` || hfl}
+                        src={`${orgData?.data?.logoImage}` || hfl}
                         alt=""
                         className="w-10 h-10 rounded-full border border-primary"
                       />
