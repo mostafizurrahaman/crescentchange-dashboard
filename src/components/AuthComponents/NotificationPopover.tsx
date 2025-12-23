@@ -6,9 +6,29 @@ import { TbBrandStripe } from "react-icons/tb";
 import { FaCheckCircle } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import { Link } from "react-router-dom";
+type NotificationType =
+  | "new_donation_received"
+  | "payout_completed"
+  | "payout_failed"
+  | "stripe_restricted";
+interface Notification {
+  _id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  createdAt: string;
+  isSeen: boolean;
+}
+
 const NotificationPopover = () => {
   const { data: notificationData, isLoading } = useGetNotificationQuery({});
-  const notificationTypeMap = {
+
+  type NotificationConfig = {
+    icon: JSX.Element;
+    bg: string;
+  };
+
+  const notificationTypeMap: Record<NotificationType, NotificationConfig> = {
     new_donation_received: {
       icon: <IoHeart className="text-red-500" />,
       bg: "bg-red-100",
@@ -26,6 +46,7 @@ const NotificationPopover = () => {
       bg: "bg-indigo-100",
     },
   };
+
   const formatTime = (date: string) => {
     return new Date(date).toLocaleString(undefined, {
       hour: "2-digit",
@@ -36,8 +57,8 @@ const NotificationPopover = () => {
   };
 
   console.log("notificationData", notificationData?.data?.data);
-  const notifications = notificationData?.data?.data || [];
-  
+  const notifications: Notification[] = notificationData?.data?.data || [];
+
   const visibleNotifications = notifications.slice(0, 2);
   return (
     <div className="w-[360px]">
@@ -57,7 +78,7 @@ const NotificationPopover = () => {
                   <p className="text-center text-gray-400">No notifications</p>
                 )}
 
-                {visibleNotifications.map((item: any) => {
+                {visibleNotifications.map((item) => {
                   const config = notificationTypeMap[item.type];
 
                   return (
@@ -88,9 +109,7 @@ const NotificationPopover = () => {
 
                 {notifications.length > 0 && (
                   <p className="text-center text-sm text-gray-500 cursor-pointer">
-                    <Link to="notifications">
-                    View all
-                    </Link>
+                    <Link to="notifications">View all</Link>
                   </p>
                 )}
               </div>

@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import profile from "../../assets/images/profile.png";
-import hfl from "../../assets/images/Profile Logo.png";
+
 import tick from "../../assets/images/Checkmark.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
