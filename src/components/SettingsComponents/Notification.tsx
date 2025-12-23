@@ -11,7 +11,19 @@ import { FaCheckCircle } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import { useState, useEffect } from "react";
 import { message } from "antd";
-
+type NotificationType =
+  | "new_donation_received"
+  | "payout_completed"
+  | "payout_failed"
+  | "stripe_restricted";
+interface Notification {
+  _id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  createdAt: string;
+  isSeen: boolean;
+}
 const notificationTypeMap = {
   new_donation_received: {
     icon: <IoHeart className="text-red-500" />,
@@ -42,9 +54,9 @@ const formatTime = (date: string) =>
 
 const Notification = () => {
   const { data: notificationData, isLoading } = useGetNotificationQuery({});
-  const notifications = notificationData?.data?.data || [];
+  const notifications: Notification[] = notificationData?.data?.data || [];
   const [notificationMarkASRead] = useNotificationMarkASReadMutation();
-  const [localNotifications, setLocalNotifications] = useState<any[]>([]);
+  const [localNotifications, setLocalNotifications] = useState<Notification[]>([]);
 
   // Sync local state with API data
   useEffect(() => {
