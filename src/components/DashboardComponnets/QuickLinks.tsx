@@ -12,7 +12,7 @@ const QuickLinks = () => {
       id: 1,
       img: profile,
       title: "Manage Profile",
-      Link: "/profile",
+      link:"/edit-profile",
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ const QuickLinks = () => {
       id: 3,
       img: warning,
       title: "Manage Causes",
-      Link: "/profile",
+      link: "/edit-profile",
     },
     {
       id: 4,
@@ -42,6 +42,7 @@ const QuickLinks = () => {
       id: 6,
       img: tickets,
       title: "Receipts",
+      link: "/reports",
     },
   ];
 

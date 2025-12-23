@@ -13,7 +13,6 @@ import {
   useEditOrgLogoMutation,
   useGetAllProfileQuery,
 } from "../../redux/features/profileApi/profileApi";
-import { IMAGE_URL } from "../../redux/utils/baseUrl";
 
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -105,7 +104,7 @@ const EditProfile = () => {
         <div className="mt-10">
           <div className="my-5 w-full relative">
             <img
-              src={previewImage || `${IMAGE_URL}${orgData?.data?.coverImage}`}
+              src={previewImage || `${orgData?.data?.coverImage}`}
               alt="Cover"
               className="w-full h-80 rounded-2xl"
             />
@@ -133,7 +132,7 @@ const EditProfile = () => {
 
           <div className="relative -top-28 left-24">
             <img
-              src={previewLogo || `${IMAGE_URL}${orgData?.data?.logoImage}`}
+              src={previewLogo || `${orgData?.data?.logoImage}`}
               alt="Logo"
               className="h-40 w-40 rounded-full"
             />

@@ -265,7 +265,7 @@ const Profile = () => {
                 <h1 className="text-2xl font-bold my-3">Raised Causes</h1>
                 <p className="text-gray-400">Sorted by total donations</p>
               </div>
-              <Link to="">
+              <Link to="/edit-profile">
                 <button className="text-purple-500 underline">View All</button>
               </Link>
             </div>
