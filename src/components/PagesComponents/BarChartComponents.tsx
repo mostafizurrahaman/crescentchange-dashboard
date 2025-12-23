@@ -11,15 +11,17 @@ import {
 import { DatePicker } from "antd";
 import { useState } from "react";
 import { useGetTrendsQuery } from "../../redux/features/dashboardApi/dashboardApi";
-
+import moment from "moment";
 const BarChartComponents = () => {
   const [year, setYear] = useState(new Date().getFullYear());
 
-  const { data: trendsData } = useGetTrendsQuery({ year });
+  const { data: trendsData } = useGetTrendsQuery(year);
+  console.log("trendsData", trendsData?.data);
+  console.log("year", year);
 
   // Convert API response → Recharts format
   const chartData =
-    trendsData?.data?.map((item:any) => ({
+    trendsData?.data?.map((item: any) => ({
       name: item.month,
       value: item.totalAmount,
     })) || [];
@@ -34,8 +36,11 @@ const BarChartComponents = () => {
 
         <DatePicker
           picker="year"
-          onChange={( dateString) => {
-            setYear(Number(dateString));
+          value={moment(year, "YYYY")}
+          onChange={(date) => {
+            if (date) {
+              setYear(date.year());
+            }
           }}
           placeholder="Select Year"
         />
@@ -54,7 +59,6 @@ const BarChartComponents = () => {
             }}
             itemStyle={{ color: "#000000" }}
             labelStyle={{ color: "#000000" }}
-            
           />
 
           <Bar
