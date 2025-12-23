@@ -95,6 +95,7 @@ export default function Settings() {
   const [twoFA, setTwoFA] = useState<boolean>(() => {
     return localStorage.getItem("twoFAEnabled") === "true" ? true : false;
   });
+  const [previousTwoFA, setPreviousTwoFA] = useState(twoFA);
   useEffect(() => {
     localStorage.setItem("twoFAEnabled", twoFA.toString());
   }, [twoFA]);
@@ -111,7 +112,6 @@ export default function Settings() {
       setTwoFASecret(res?.data?.secret);
 
       setShowEnable2FAModal(true);
-      // setTwoFA(true);
 
       message.success(res?.message || "2FA setup initiated");
     } catch (error) {
@@ -141,6 +141,16 @@ export default function Settings() {
       console.error("2FA disable failed:", error);
       message.error("Failed to disable 2FA");
     }
+  };
+  const openDisable2FAModal = () => {
+    setPreviousTwoFA(twoFA); // Save the current 2FA state before opening the modal
+    setShowDisable2FAModal(true);
+  };
+
+  // Function to handle modal cancel action
+  const handleCancelDisableModal = () => {
+    setShowDisable2FAModal(false);
+    setTwoFA(previousTwoFA); // Restore previous 2FA state if the modal is canceled
   };
   return (
     <div>
@@ -345,7 +355,7 @@ export default function Settings() {
               if (checked) {
                 handleSetUpTwoFA();
               } else {
-                setShowDisable2FAModal(true);
+                openDisable2FAModal(); // Open the modal for disabling
               }
               setTwoFA(checked);
             }}
@@ -505,9 +515,9 @@ export default function Settings() {
       <Modal
         title="Enter 2FA Code to Disable"
         open={showDisable2FAModal}
-        onCancel={() => setShowDisable2FAModal(false)}
+        onCancel={() => handleCancelDisableModal}
         footer={[
-          <Button key="cancel" onClick={() => setShowDisable2FAModal(false)}>
+          <Button key="cancel" onClick={() => handleCancelDisableModal}>
             Cancel
           </Button>,
           <Button

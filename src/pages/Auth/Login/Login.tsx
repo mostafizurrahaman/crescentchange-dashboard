@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Checkbox, ConfigProvider, Form, Input, message, Spin } from "antd";
 import img from "../../../assets/images/login.png";
@@ -14,7 +15,7 @@ interface login {
 
 const Login = () => {
   const [form] = Form.useForm();
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
   const [loginApi, { isLoading }] = useLoginApiMutation();
   const onFinish = async (values: login) => {
     const data = {
@@ -24,18 +25,31 @@ const Login = () => {
 
     try {
       const res = await loginApi(data).unwrap();
+      // console.log("Access token:", res?.data?.accessToken);
+      // console.log("Token in localStorage before navigate:", localStorage.getItem("token"));
+
+      // Check if 2FA is required
       if (res?.data?.twoFactorRequired) {
-        message.info(res?.data?.message);
+        message.info(
+          res?.data?.message || "Two-factor authentication required"
+        );
         localStorage.setItem("pending2FAEmail", res?.data.email);
-        nevigate("/auth/verify2FA");
+        navigate("/auth/verify2FA"); // Fixed typo
         return;
       }
+
+      // If 2FA not required, store token and redirect
+      if (res?.data?.accessToken) {
+        localStorage.setItem("token", res?.data.accessToken);
+        message.success(res?.message || "Login successful");
+        navigate("/"); // Fixed typo
+      } else {
+        message.error("No access token returned from server");
+      }
+
       form.resetFields();
-      localStorage.setItem("token", res?.data?.accessToken);
-      message.success(res?.message);
-      nevigate("/");
-    } catch (error) {
-      // message.error(error?.data.message);
+    } catch (error: any) {
+      message.error(error?.data?.message || "Login failed");
     }
   };
 
