@@ -42,7 +42,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
   const recentDonors = data?.data?.recentDonors;
   const TotalDonationAmount = data?.data?.breakDownByCause;
 
-  console.log(TotalDonationAmount);
+  console.log("breakDownByCause", data?.data?.breakDownByCause?.categories);
 
   return (
     <div>
@@ -133,12 +133,36 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
             {TotalDonationAmount?.totalDonationAmount}
           </h1>
         </div>
-        <div className="flex justify-between items-center gap-1">
+        {/* <div className="flex justify-between items-center gap-1">
           <div className="bg-pink-200 h-12 w-[60%] rounded-2xl"></div>
           <div className="bg-blue-200 h-12 w-[20%] rounded-2xl"></div>
           <div className="bg-yellow-200 h-12 w-[20%] rounded-2xl"></div>
-        </div>
-        <div className="grid grid-cols-3 gap-5 mt-6">
+        </div> */}
+        {data?.data?.breakDownByCause?.categories?.map((category: any) => {
+          // Sort the causes by totalDonationAmount descending and take top 3
+          const topCauses = category.causes
+            ?.sort(
+              (a: any, b: any) => b.totalDonationAmount - a.totalDonationAmount
+            )
+            .slice(0, 3);
+
+          return (
+            <div key={category._id} className="mb-4">
+              <h2 className="font-bold mb-2">{category.category}</h2>
+              {topCauses?.map((cause: any) => (
+                <div
+                  key={cause.causeId}
+                  className="flex justify-between items-center gap-1"
+                >
+                  <span>{cause.causeName}</span>
+                  <span>${cause.totalDonationAmount.toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+
+        {/* <div className="grid grid-cols-3 gap-5 mt-6">
           <div>
             <div className="flex justify-start items-center gap-1">
               <div className="h-2 w-2 bg-pink-200"></div>
@@ -166,7 +190,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
               <span className="text-gray-400">$</span> 40,0000
             </h1>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

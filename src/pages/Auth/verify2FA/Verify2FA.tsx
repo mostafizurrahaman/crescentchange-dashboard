@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 const Verify2FA = () => {
   const [twoFACode, setTwoFACode] = useState(""); // For the 2FA code input
-  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null); // QR code URL
-  const [twoFASecret, setTwoFASecret] = useState<string | null>(null); // Secret key
-  const [twoFA, setTwoFA] = useState(false); // Whether 2FA is enabled
+  const [qrCodeUrl] = useState<string | null>(null); // QR code URL
+  const [twoFASecret] = useState<string | null>(null); // Secret key
+  const [, setTwoFA] = useState(false); // Whether 2FA is enabled
 
   const [verifyCodeAndEnavble2FA] = useVerifyCodeAndEnavble2FAMutation(); // Mutation for verifying code
   const navigate = useNavigate();
