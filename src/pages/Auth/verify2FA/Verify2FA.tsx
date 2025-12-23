@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-import { useSetUpTwoFAMutation, useVerifyCodeAndEnavble2FAMutation } from "../../../redux/features/twoFA/twoFA";
+import {
+  useSetUpTwoFAMutation,
+  useVerifyCodeAndEnavble2FAMutation,
+} from "../../../redux/features/twoFA/twoFA";
 import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Verify2FA = () => {
-  const [twoFA, setTwoFA] = useState(false);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
-  const [twoFASecret, setTwoFASecret] = useState<string | null>(null);
-  const [twoFACode, setTwoFACode] = useState("");
+  const [twoFACode, setTwoFACode] = useState(""); // For the 2FA code input
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null); // QR code URL
+  const [twoFASecret, setTwoFASecret] = useState<string | null>(null); // Secret key
+  const [twoFA, setTwoFA] = useState(false); // Whether 2FA is enabled
 
-  const [setUpTwoFA] = useSetUpTwoFAMutation();
-  const [verifyCodeAndEnavble2FA] = useVerifyCodeAndEnavble2FAMutation();
-
+  const [setUpTwoFA] = useSetUpTwoFAMutation(); // Mutation for setting up 2FA
+  const [verifyCodeAndEnavble2FA] = useVerifyCodeAndEnavble2FAMutation(); // Mutation for verifying code
+  const navigate = useNavigate();
+  // Setup 2FA function
   const handleSetUpTwoFA = async () => {
     try {
       const res = await setUpTwoFA({}).unwrap();
@@ -24,11 +29,14 @@ const Verify2FA = () => {
     }
   };
 
+  // Verify 2FA code
   const handleVerifyCodeAndEnable2FA = async (token: string) => {
     try {
       const res = await verifyCodeAndEnavble2FA({ token }).unwrap();
       message.success(res?.message || "2FA enabled successfully");
-      setTwoFA(true);
+      setTwoFA(true); // Mark 2FA as enabled
+      // Redirect user to the appropriate page after successful verification (e.g., dashboard)
+      navigate("/");
     } catch (error) {
       console.error("2FA verification failed:", error);
       message.error("Invalid or expired 2FA code");
@@ -42,16 +50,14 @@ const Verify2FA = () => {
           Set up Two-Factor Authentication
         </h1>
 
-        {!qrCodeUrl && (
+        {!qrCodeUrl ? (
           <button
             onClick={handleSetUpTwoFA}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-200"
           >
             Start Setup
           </button>
-        )}
-
-        {qrCodeUrl && (
+        ) : (
           <div className="flex flex-col items-center">
             <p className="mb-4 text-gray-600 text-center">
               Scan this QR code using Google Authenticator or any 2FA app.
