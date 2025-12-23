@@ -23,6 +23,7 @@ import Integration from "../pages/Integration/Integration";
 import Reports from "../pages/Reports/Reports";
 import PrivateRoute from "./PrivateRoute";
 import Notification from "../components/SettingsComponents/Notification";
+import Verify2FA from "../pages/Auth/verify2FA/Verify2FA";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
   {
     path: "/auth/login",
     element: <Login />,
+  },
+  {
+    path: "/auth/verify2FA",
+    element: <Verify2FA />,
   },
   {
     path: "/auth/forgate-password",

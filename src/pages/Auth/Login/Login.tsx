@@ -24,9 +24,15 @@ const Login = () => {
 
     try {
       const res = await loginApi(data).unwrap();
-      message.success(res?.message);
+      if (res?.data?.twoFactorRequired) {
+        message.info(res?.data?.message);
+        localStorage.setItem("pending2FAEmail", res?.data.email);
+        nevigate("/auth/verify2FA");
+        return;
+      }
       form.resetFields();
       localStorage.setItem("token", res?.data?.accessToken);
+      message.success(res?.message);
       nevigate("/");
     } catch (error) {
       // message.error(error?.data.message);

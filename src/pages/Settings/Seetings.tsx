@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   AiOutlineEye,
@@ -85,11 +85,19 @@ export default function Settings() {
     }
   };
   // 2 factor Auth:
-  const [twoFA, setTwoFA] = useState(false);
+  const [twoFA, setTwoFA] = useState<boolean>(() => {
+    // Check localStorage for saved 2FA status, default to false if not found
+    return localStorage.getItem("twoFAEnabled") === "true" ? true : false;
+  });
+  useEffect(() => {
+    // Save the 2FA status to localStorage
+    localStorage.setItem("twoFAEnabled", twoFA.toString());
+  }, [twoFA]); // This effect will run when `twoFA` changes
+
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [twoFASecret, setTwoFASecret] = useState<string | null>(null);
-const [twoFACode, setTwoFACode] = useState("");
+  const [twoFACode, setTwoFACode] = useState("");
 
   const [setUpTwoFA] = useSetUpTwoFAMutation();
   const [verifyCodeAndEnavble2FA] = useVerifyCodeAndEnavble2FAMutation();
@@ -102,7 +110,7 @@ const [twoFACode, setTwoFACode] = useState("");
       setTwoFASecret(res?.data?.secret);
 
       setShow2FAModal(true);
-      setTwoFA(true);
+      // setTwoFA(true);
 
       message.success(res?.message || "2FA setup initiated");
     } catch (error) {
@@ -110,18 +118,17 @@ const [twoFACode, setTwoFACode] = useState("");
       message.error("Failed to setup 2FA");
     }
   };
-const handleVerifyCodeAndEnable2FA = async (token: string) => {
-  try {
-    const res = await verifyCodeAndEnavble2FA({ token }).unwrap();
-    message.success(res?.message || "2FA enabled successfully");
-    setShow2FAModal(false);
-    setTwoFA(true);
-  } catch (error) {
-    console.error("2FA verification failed:", error);
-    message.error("Invalid or expired 2FA code");
-  }
-};
-
+  const handleVerifyCodeAndEnable2FA = async (token: string) => {
+    try {
+      const res = await verifyCodeAndEnavble2FA({ token }).unwrap();
+      message.success(res?.message || "2FA enabled successfully");
+      setShow2FAModal(false);
+      setTwoFA(true);
+    } catch (error) {
+      console.error("2FA verification failed:", error);
+      message.error("Invalid or expired 2FA code");
+    }
+  };
 
   return (
     <div>
@@ -436,53 +443,52 @@ const handleVerifyCodeAndEnable2FA = async (token: string) => {
       </Modal>
 
       {/* Show QR Code for 2FA */}
-   <Modal
-  title="Set up Two-Factor Authentication"
-  open={show2FAModal}
-  onCancel={() => setShow2FAModal(false)}
-  footer={[
-    <button
-      key="submit"
-      className="text-xl px-4 py-2 border cursor-pointer"
-      disabled={!twoFACode}
-      onClick={() => handleVerifyCodeAndEnable2FA(twoFACode)}
-    >
-      Verify & Enable
-    </button>,
-  ]}
->
-  <div className="text-center">
-    <p className="mb-4 text-gray-600">
-      Scan this QR code using Google Authenticator or any 2FA app.
-    </p>
+      <Modal
+        title="Set up Two-Factor Authentication"
+        open={show2FAModal}
+        onCancel={() => setShow2FAModal(false)}
+        footer={[
+          <button
+            key="submit"
+            className="text-xl px-4 py-2 border cursor-pointer"
+            disabled={!twoFACode}
+            onClick={() => handleVerifyCodeAndEnable2FA(twoFACode)}
+          >
+            Verify & Enable
+          </button>,
+        ]}
+      >
+        <div className="text-center">
+          <p className="mb-4 text-gray-600">
+            Scan this QR code using Google Authenticator or any 2FA app.
+          </p>
 
-    {qrCodeUrl && (
-      <img
-        src={qrCodeUrl}
-        alt="2FA QR Code"
-        className="mx-auto mb-4 w-48 h-48"
-      />
-    )}
+          {qrCodeUrl && (
+            <img
+              src={qrCodeUrl}
+              alt="2FA QR Code"
+              className="mx-auto mb-4 w-48 h-48"
+            />
+          )}
 
-    {twoFASecret && (
-      <div className="bg-gray-100 p-3 rounded-md text-sm mb-4">
-        <p className="font-medium mb-1">Manual setup key:</p>
-        <p className="break-all font-mono">{twoFASecret}</p>
-      </div>
-    )}
+          {twoFASecret && (
+            <div className="bg-gray-100 p-3 rounded-md text-sm mb-4">
+              <p className="font-medium mb-1">Manual setup key:</p>
+              <p className="break-all font-mono">{twoFASecret}</p>
+            </div>
+          )}
 
-    {/* 2FA Code Input */}
-    <input
-      type="text"
-      placeholder="Enter 6-digit code"
-      value={twoFACode}
-      onChange={(e) => setTwoFACode(e.target.value)}
-      className="w-full border px-3 py-2 rounded-md text-center tracking-widest"
-      maxLength={6}
-    />
-  </div>
-</Modal>
-
+          {/* 2FA Code Input */}
+          <input
+            type="text"
+            placeholder="Enter 6-digit code"
+            value={twoFACode}
+            onChange={(e) => setTwoFACode(e.target.value)}
+            className="w-full border px-3 py-2 rounded-md text-center tracking-widest"
+            maxLength={6}
+          />
+        </div>
+      </Modal>
     </div>
   );
 }
