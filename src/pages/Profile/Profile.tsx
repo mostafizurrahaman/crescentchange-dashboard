@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
 import tick from "../../assets/images/Checkmark.png";
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
@@ -77,11 +76,11 @@ const Profile = () => {
   const { data: chartData, isLoading: isChartLoading } = useGetCauseStatsQuery(
     {
       orgId,
-      causeId: selectedCauseId || undefined,
+      causeId: selectedCauseId ? selectedCauseId : null,
       year: selectedYear,
     },
     {
-      skip: !orgId,
+      skip: !orgId || !selectedYear || !selectedCauseId,
     }
   );
 
