@@ -220,18 +220,18 @@ const AllDonor = ({ tab }: ITabProps) => {
               {" "}
               <span className="text-gray-400">$</span>{" "}
               {statsData?.data?.averageDonationPerUser?.value}
-              <span className="text-sm text-gray-400"> per user</span>{" "}
+              <span className="text-sm text-gray-400 ml-1"> per user</span>{" "}
             </h1>
           </div>
           <div className="bg-[#f7f4f9] p-6 rounded-3xl">
             <p className="text-lg font-medium">Total Donors</p>
             <h1 className="text-2xl text-gray-400 font-medium mt-10">
               {" "}
-              <span className="text-black">
+               <span className="text-black"> 
                 {statsData?.data?.totalDonors?.value}
-              </span>
-              <span className="text-sm text-green-500">
-                {statsData?.data?.totalDonors?.percentageChange} %
+              </span> 
+              <span className="text-sm text-green-500 ml-1">
+             {" "}  { statsData?.data?.totalDonors?.percentageChange} %
               </span>{" "}
             </h1>
           </div>

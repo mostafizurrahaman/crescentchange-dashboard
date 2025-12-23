@@ -3,33 +3,24 @@ import img1 from "../../assets/images/image 415.png";
 import img2 from "../../assets/images/slack.png";
 import img3 from "../../assets/images/image 417.png";
 import img4 from "../../assets/images/Logo (1).png";
-import img5 from "../../assets/images/stripe.png";
-import { message, Modal, Switch } from "antd";
+
+import { Modal, Switch } from "antd";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { useState } from "react";
 import {
-  useAddBankAccountMutation,
   useGetStripeAccountStatusQuery,
 } from "../../redux/features/integrationApi/integrationApi";
 
 const Integration = () => {
   const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
-  const [addBankAccount] = useAddBankAccountMutation();
   const { data: bankData } = useGetStripeAccountStatusQuery(null);
   console.log(bankData?.data);
-  const handleAddBankModal = async () => {
-    try {
-      const res = await addBankAccount({}).unwrap();
-      message.success(res?.message);
-    } catch (error) {
-      message.error("Bank Not Added");
-    }
-  };
+
 
   const handleOk = () => setIsAddBankModalOpen(false);
   return (
     <div>
-      <div className="flex justify-between items-center gap-5">
+      {/* <div className="flex justify-between items-center gap-5">
         <div>
           <h1 className="text-3xl font-bold mb-4">Integrations</h1>
           <p className="text-lg text-gray-600 mb-4">
@@ -42,8 +33,8 @@ const Integration = () => {
         >
           Add Bank
         </button>
-      </div>
-      <div className="w-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 p-6 rounded-3xl border border-gray-200">
+      </div> */}
+      {/* <div className="w-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 p-6 rounded-3xl border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-3">
             <img
@@ -53,13 +44,13 @@ const Integration = () => {
             />
             <h2 className="text-lg font-semibold">Stripe Connect</h2>
           </div>
-          {/* <HiOutlineArrowNarrowRight className="h-6 w-6 text-gray-500 hover:text-black transition-all" /> */}
+    
         </div>
 
-        {/* Status & Data */}
+   
         <div className="border-y py-5">
           <div className="flex flex-col gap-3">
-            {/* Has Account */}
+        
             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
               <span className="text-gray-600 font-medium">Has Account</span>
               <span
@@ -74,7 +65,7 @@ const Integration = () => {
               </span>
             </div>
 
-            {/* Active */}
+         
             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
               <span className="text-gray-600 font-medium">isActive</span>
               <span
@@ -89,7 +80,7 @@ const Integration = () => {
               </span>
             </div>
 
-            {/* Submitted */}
+       
             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
               <span className="text-gray-600 font-medium">
                 detailsSubmitted
@@ -106,7 +97,7 @@ const Integration = () => {
               </span>
             </div>
 
-            {/* Payouts */}
+          
             <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-xl border">
               <span className="text-gray-600 font-medium">payoutsEnabled</span>
               <span
@@ -123,14 +114,8 @@ const Integration = () => {
           </div>
         </div>
 
-        {/* Footer */}
-        {/* <div className="flex justify-between items-center mt-5">
-          <button className="px-4 py-2 rounded-xl font-medium text-white bg-blue-600 hover:bg-blue-700 transition-all">
-            {true ? "View Dashboard" : "Connect"}
-          </button>
-          <Switch defaultChecked={true} />
-        </div> */}
-      </div>
+      
+      </div> */}
 
       {/* Add Bank Section End */}
       <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3 justify-between items-center">

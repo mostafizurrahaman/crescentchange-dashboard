@@ -6,7 +6,7 @@ interface AnalyticsCardProps {
 
 const DashboardChart:React.FC<AnalyticsCardProps> = () => {
   return (
-    <div className="bg-white h-[50vh] rounded-3xl border ">
+    <div className="bg-white h-[52vh] rounded-3xl border ">
           <BarChartComponents />
       {/* <div className=" w-[30%]">
         <Envlope />

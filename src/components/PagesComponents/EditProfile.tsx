@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
 import editUser from "../../assets/images/Icons.png";
 import donor from "../../assets/images/donor.png";
+import { LiaStripeS } from "react-icons/lia";
 import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
 import AccessTab from "../ProfileComponents/AccessTab";
@@ -13,6 +14,7 @@ import {
   useEditOrgLogoMutation,
   useGetAllProfileQuery,
 } from "../../redux/features/profileApi/profileApi";
+import StripeConnect from "../ProfileComponents/StripeConnect/StripeConnect";
 
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
@@ -20,9 +22,9 @@ const EditProfile = () => {
   const [logo, setLogo] = useState<File | null>(null);
   const [coverEditMode] = useState(false);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"profile" | "access" | "causes">(
-    "profile"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "profile" | "access" | "causes" | "Stripe_Connect"
+  >("profile");
   const { data: orgData } = useGetAllProfileQuery(null);
 
   const [editOrgCoverImage] = useEditOrgCoverImageMutation();
@@ -183,8 +185,21 @@ const EditProfile = () => {
               }`}
             >
               <div className=" flex justify-center items-center gap-2">
-                <img src={deposit} alt="" />
+                <img src={deposit} alt="" className="" />
                 <p> causes</p>
+              </div>
+            </div>
+            <div
+              onClick={() => setActiveTab("Stripe_Connect")}
+              className={`px-10 py-4 rounded-3xl ${
+                activeTab === "Stripe_Connect"
+                  ? "bg-[#ebe9ec] text-black"
+                  : "bg-white"
+              }`}
+            >
+              <div className=" flex justify-center items-center gap-2">
+                <LiaStripeS />
+                <p> Stripe Connect</p>
               </div>
             </div>
           </div>
@@ -196,6 +211,7 @@ const EditProfile = () => {
             {activeTab === "causes" && (
               <EditCauses orgId={orgData?.data?._id} />
             )}
+            {activeTab === "Stripe_Connect" && <StripeConnect />}
           </div>
         </div>
       </div>

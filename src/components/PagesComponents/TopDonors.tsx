@@ -107,7 +107,16 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                   <img src={user} alt="" />
                   <div>
                     <h1>{item?.donor?.name}</h1>
-                    <p className="text-gray-400">{item?.lastDonationDate} </p>
+                    <p className="text-gray-400">
+                      {new Date(item?.lastDonationDate).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
+                    </p>
                   </div>
                 </div>
                 <div>

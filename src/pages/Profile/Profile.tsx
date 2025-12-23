@@ -171,7 +171,17 @@ const Profile = () => {
 
         <p className="text-gray-400">
           Established since:{" "}
-          <span className="text-black">{OrgProfile?.dateOfEstablishment}</span>
+          <span className="text-black">
+            {" "}
+            {new Date(OrgProfile?.dateOfEstablishment).toLocaleDateString(
+              "en-US",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }
+            )}
+          </span>
         </p>
       </div>
 
@@ -345,7 +355,15 @@ const Profile = () => {
             <p className="text-gray-500">
               Established:{" "}
               <span className="text-black">
-                {OrgProfile?.dateOfEstablishment}
+                {" "}
+                {new Date(OrgProfile?.dateOfEstablishment).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}
               </span>
             </p>
           </div>
@@ -433,7 +451,9 @@ const Profile = () => {
           <div className="p-5 my-6 bg-white border rounded-3xl">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Raised Causes</h2>
-              <button className="text-purple-500 underline">View All</button>
+              <Link to="/edit-profile">
+                <button className="text-purple-500 underline">View All</button>
+              </Link>
             </div>
 
             {causeData?.data?.map((c: any) => {
