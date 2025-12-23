@@ -8,7 +8,15 @@ const TowFactorAuthApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
+    verifyCodeAndEnavble2FA: builder.mutation({
+      query: (data) => ({
+        url: `/auth/2fa/enable`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useSetUpTwoFAMutation } = TowFactorAuthApi;
+export const { useSetUpTwoFAMutation, useVerifyCodeAndEnavble2FAMutation } =
+  TowFactorAuthApi;

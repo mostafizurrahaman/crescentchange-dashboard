@@ -7,10 +7,10 @@ const Donors = () => {
   const [activeTab, setActiveTab] = useState("All Donors");
   const tabValueMap: Record<
     string,
-    "all" | "round-up" | "recurring" | "one-time"
+    "all" | "roundup" | "recurring" | "one-time"
   > = {
     "All Donors": "all",
-    "Round Up": "round-up",
+    "Round Up": "roundup",
     Recurring: "recurring",
     "One Time": "one-time",
   };
@@ -67,7 +67,7 @@ const Donors = () => {
       {/* Conditional Components */}
       {activeTab === "All Donors" && <AllDonor tab={tabValueMap[activeTab]} />}
       {activeTab === "Round Up" && <RoundUp tab={tabValueMap[activeTab]} />}
-      {activeTab === "Recurring" && <Recurring  tab={tabValueMap[activeTab]}/>}
+      {activeTab === "Recurring" && <Recurring tab={tabValueMap[activeTab]} />}
       {activeTab === "One Time" && <OneTime tab={tabValueMap[activeTab]} />}
     </div>
   );

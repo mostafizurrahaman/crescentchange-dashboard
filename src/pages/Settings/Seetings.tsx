@@ -13,7 +13,10 @@ import {
   useChnageBoardMemebrStatusApiMutation,
   useChnagePasswordMutation,
 } from "../../redux/features/auth/authApi";
-import { useSetUpTwoFAMutation } from "../../redux/features/twoFA/twoFA";
+import {
+  useSetUpTwoFAMutation,
+  useVerifyCodeAndEnavble2FAMutation,
+} from "../../redux/features/twoFA/twoFA";
 
 type Role = "Admin" | "Editor" | "Manager";
 
@@ -86,8 +89,10 @@ export default function Settings() {
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [twoFASecret, setTwoFASecret] = useState<string | null>(null);
+const [twoFACode, setTwoFACode] = useState("");
 
   const [setUpTwoFA] = useSetUpTwoFAMutation();
+  const [verifyCodeAndEnavble2FA] = useVerifyCodeAndEnavble2FAMutation();
 
   const handleSetUpTwoFA = async () => {
     try {
@@ -105,6 +110,18 @@ export default function Settings() {
       message.error("Failed to setup 2FA");
     }
   };
+const handleVerifyCodeAndEnable2FA = async (token: string) => {
+  try {
+    const res = await verifyCodeAndEnavble2FA({ token }).unwrap();
+    message.success(res?.message || "2FA enabled successfully");
+    setShow2FAModal(false);
+    setTwoFA(true);
+  } catch (error) {
+    console.error("2FA verification failed:", error);
+    message.error("Invalid or expired 2FA code");
+  }
+};
+
 
   return (
     <div>
@@ -419,41 +436,53 @@ export default function Settings() {
       </Modal>
 
       {/* Show QR Code for 2FA */}
-      <Modal
-        title="Set up Two-Factor Authentication"
-        open={show2FAModal}
-        onCancel={() => setShow2FAModal(false)}
-        footer={[
-          <Button
-            key="close"
-            type="primary"
-            onClick={() => setShow2FAModal(false)}
-          >
-            I’ve scanned the QR
-          </Button>,
-        ]}
-      >
-        <div className="text-center">
-          <p className="mb-4 text-gray-600">
-            Scan this QR code using Google Authenticator or any 2FA app.
-          </p>
+   <Modal
+  title="Set up Two-Factor Authentication"
+  open={show2FAModal}
+  onCancel={() => setShow2FAModal(false)}
+  footer={[
+    <button
+      key="submit"
+      className="text-xl px-4 py-2 border cursor-pointer"
+      disabled={!twoFACode}
+      onClick={() => handleVerifyCodeAndEnable2FA(twoFACode)}
+    >
+      Verify & Enable
+    </button>,
+  ]}
+>
+  <div className="text-center">
+    <p className="mb-4 text-gray-600">
+      Scan this QR code using Google Authenticator or any 2FA app.
+    </p>
 
-          {qrCodeUrl && (
-            <img
-              src={qrCodeUrl}
-              alt="2FA QR Code"
-              className="mx-auto mb-4 w-48 h-48"
-            />
-          )}
+    {qrCodeUrl && (
+      <img
+        src={qrCodeUrl}
+        alt="2FA QR Code"
+        className="mx-auto mb-4 w-48 h-48"
+      />
+    )}
 
-          {twoFASecret && (
-            <div className="bg-gray-100 p-3 rounded-md text-sm">
-              <p className="font-medium mb-1">Manual setup key:</p>
-              <p className="break-all font-mono">{twoFASecret}</p>
-            </div>
-          )}
-        </div>
-      </Modal>
+    {twoFASecret && (
+      <div className="bg-gray-100 p-3 rounded-md text-sm mb-4">
+        <p className="font-medium mb-1">Manual setup key:</p>
+        <p className="break-all font-mono">{twoFASecret}</p>
+      </div>
+    )}
+
+    {/* 2FA Code Input */}
+    <input
+      type="text"
+      placeholder="Enter 6-digit code"
+      value={twoFACode}
+      onChange={(e) => setTwoFACode(e.target.value)}
+      className="w-full border px-3 py-2 rounded-md text-center tracking-widest"
+      maxLength={6}
+    />
+  </div>
+</Modal>
+
     </div>
   );
 }
