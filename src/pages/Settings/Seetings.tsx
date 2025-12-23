@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 
@@ -14,6 +15,7 @@ import {
   useChnagePasswordMutation,
 } from "../../redux/features/auth/authApi";
 import {
+  useDisableTwoFAMutation,
   useSetUpTwoFAMutation,
   useVerifyCodeAndEnavble2FAMutation,
 } from "../../redux/features/twoFA/twoFA";
@@ -85,22 +87,21 @@ export default function Settings() {
     }
   };
   // 2 factor Auth:
-  const [twoFA, setTwoFA] = useState<boolean>(() => {
-    // Check localStorage for saved 2FA status, default to false if not found
-    return localStorage.getItem("twoFAEnabled") === "true" ? true : false;
-  });
-  useEffect(() => {
-    // Save the 2FA status to localStorage
-    localStorage.setItem("twoFAEnabled", twoFA.toString());
-  }, [twoFA]); // This effect will run when `twoFA` changes
-
-  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [showEnable2FAModal, setShowEnable2FAModal] = useState(false); // Modal for enabling 2FA
+  const [showDisable2FAModal, setShowDisable2FAModal] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [twoFASecret, setTwoFASecret] = useState<string | null>(null);
   const [twoFACode, setTwoFACode] = useState("");
+  const [twoFA, setTwoFA] = useState<boolean>(() => {
+    return localStorage.getItem("twoFAEnabled") === "true" ? true : false;
+  });
+  useEffect(() => {
+    localStorage.setItem("twoFAEnabled", twoFA.toString());
+  }, [twoFA]);
 
   const [setUpTwoFA] = useSetUpTwoFAMutation();
   const [verifyCodeAndEnavble2FA] = useVerifyCodeAndEnavble2FAMutation();
+  const [disableTwoFA] = useDisableTwoFAMutation();
 
   const handleSetUpTwoFA = async () => {
     try {
@@ -109,7 +110,7 @@ export default function Settings() {
       setQrCodeUrl(res?.data?.qrCodeUrl);
       setTwoFASecret(res?.data?.secret);
 
-      setShow2FAModal(true);
+      setShowEnable2FAModal(true);
       // setTwoFA(true);
 
       message.success(res?.message || "2FA setup initiated");
@@ -122,7 +123,7 @@ export default function Settings() {
     try {
       const res = await verifyCodeAndEnavble2FA({ token }).unwrap();
       message.success(res?.message || "2FA enabled successfully");
-      setShow2FAModal(false);
+      setShowEnable2FAModal(false);
       setTwoFA(true);
     } catch (error) {
       console.error("2FA verification failed:", error);
@@ -130,6 +131,17 @@ export default function Settings() {
     }
   };
 
+  const handleDisable2FA = async (token: string) => {
+    try {
+      const res = await disableTwoFA({ token }).unwrap();
+      message.success(res?.message || "2FA disabled successfully");
+      setShowDisable2FAModal(false);
+      setTwoFA(false);
+    } catch (error) {
+      console.error("2FA disable failed:", error);
+      message.error("Failed to disable 2FA");
+    }
+  };
   return (
     <div>
       <h1 className="text-2xl md:text-3xl font-semibold mb-2">Settings</h1>
@@ -319,22 +331,23 @@ export default function Settings() {
           <p className="text-sm text-gray-500">
             Two-Factor Authentication is {twoFA ? "on" : "off"}.
             {twoFA
-              ? "Your account is more secure."
-              : "Turn it on for stronger security."}
+              ? " Your account is more secure."
+              : " Turn it on for stronger security."}
           </p>
         </div>
+
         <label className="inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
             checked={twoFA}
             onChange={(e) => {
               const checked = e.target.checked;
-
-              if (checked && !twoFA) {
-                handleSetUpTwoFA(); // 🔥 start setup
+              if (checked) {
+                handleSetUpTwoFA();
               } else {
-                setTwoFA(false); // optional: disable flow later
+                setShowDisable2FAModal(true);
               }
+              setTwoFA(checked);
             }}
             className="sr-only peer"
           />
@@ -445,8 +458,8 @@ export default function Settings() {
       {/* Show QR Code for 2FA */}
       <Modal
         title="Set up Two-Factor Authentication"
-        open={show2FAModal}
-        onCancel={() => setShow2FAModal(false)}
+        open={showEnable2FAModal}
+        onCancel={() => setShowEnable2FAModal(false)}
         footer={[
           <button
             key="submit"
@@ -479,6 +492,38 @@ export default function Settings() {
           )}
 
           {/* 2FA Code Input */}
+          <input
+            type="text"
+            placeholder="Enter 6-digit code"
+            value={twoFACode}
+            onChange={(e) => setTwoFACode(e.target.value)}
+            className="w-full border px-3 py-2 rounded-md text-center tracking-widest"
+            maxLength={6}
+          />
+        </div>
+      </Modal>
+      <Modal
+        title="Enter 2FA Code to Disable"
+        open={showDisable2FAModal}
+        onCancel={() => setShowDisable2FAModal(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setShowDisable2FAModal(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="disable"
+            disabled={!twoFACode}
+            onClick={() => handleDisable2FA(twoFACode)}
+          >
+            Disable 2FA
+          </Button>,
+        ]}
+      >
+        <div className="text-center">
+          <p className="mb-4 text-gray-600">
+            Please enter the 6-digit code from your authenticator app to disable
+            2FA.
+          </p>
           <input
             type="text"
             placeholder="Enter 6-digit code"
