@@ -45,7 +45,7 @@ const AllDonor = ({ tab }: ITabProps) => {
     filter: "this_month",
     donationType: tab,
   });
-  console.log("data", donorData?.data);
+  // console.log("data", donorData?.data);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
     setIsOpen(true);
@@ -95,21 +95,21 @@ const AllDonor = ({ tab }: ITabProps) => {
       key: "donationType",
       render: (donationType: string) => {
         return (
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             {donationType === "round-up" && (
-              <div className="flex items-center gap-2 bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-2 px-3 py-1 text-blue-600 bg-blue-100 rounded-full">
                 <img src={roundup} alt="Round Up" className="w-4 h-4" />
                 <span>Round Up</span>
               </div>
             )}
             {donationType === "recurring" && (
-              <div className="flex items-center gap-2 bg-green-100 text-green-600 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-2 px-3 py-1 text-green-600 bg-green-100 rounded-full">
                 <img src={recurring} alt="Round Up" className="w-4 h-4" />
                 <span>Recurring</span>
               </div>
             )}
             {donationType === "one-time" && (
-              <div className="flex items-center gap-2 bg-pink-100 text-pink-600 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-2 px-3 py-1 text-pink-600 bg-pink-100 rounded-full">
                 <img src={oneTime} alt="Round Up" className="w-4 h-4" />
                 <span>One Time</span>
               </div>
@@ -140,7 +140,7 @@ const AllDonor = ({ tab }: ITabProps) => {
       title: "Action",
       key: "action",
       render: (record: any) => (
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           <button onClick={() => handleViewClick(record)}>
             <FaEye className="text-blue-500"></FaEye>
           </button>
@@ -181,10 +181,10 @@ const AllDonor = ({ tab }: ITabProps) => {
   };
   return (
     <div className="">
-      <div className="bg-white border rounded-3xl p-6">
-        <div className="flex justify-between items-center mb-5">
+      <div className="p-6 bg-white border rounded-3xl">
+        <div className="flex items-center justify-between mb-5">
           <div>
-            <p className=" text-xl font-medium">Total Donation</p>
+            <p className="text-xl font-medium ">Total Donation</p>
             <p className="text-neutral-400">
               {statsData?.data?.totalDonatedAmount?.isIncrease === true
                 ? "+"
@@ -202,8 +202,8 @@ const AllDonor = ({ tab }: ITabProps) => {
             </Select>
           </div> */}
         </div>
-        <div className="flex justify-start items-end gap-1 mt-10 mb-6">
-          <h1 className="text-3xl md:text-5xl font-bold">
+        <div className="flex items-end justify-start gap-1 mt-10 mb-6">
+          <h1 className="text-3xl font-bold md:text-5xl">
             {" "}
             <span className="text-gray-400">$</span>{" "}
             {statsData?.data?.totalDonatedAmount?.value}
@@ -213,24 +213,24 @@ const AllDonor = ({ tab }: ITabProps) => {
             <span className="text-gray-400"> vs last month</span>
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-6  ">
+        <div className="grid grid-cols-2 gap-6 ">
           <div className="bg-[#f7f4f9] p-6 rounded-3xl">
             <p className="text-lg font-medium">Avg Donation</p>
-            <h1 className="text-2xl font-medium mt-10">
+            <h1 className="mt-10 text-2xl font-medium">
               {" "}
               <span className="text-gray-400">$</span>{" "}
               {statsData?.data?.averageDonationPerUser?.value}
-              <span className="text-sm text-gray-400 ml-1"> per user</span>{" "}
+              <span className="ml-1 text-sm text-gray-400"> per user</span>{" "}
             </h1>
           </div>
           <div className="bg-[#f7f4f9] p-6 rounded-3xl">
             <p className="text-lg font-medium">Total Donors</p>
-            <h1 className="text-2xl text-gray-400 font-medium mt-10">
+            <h1 className="mt-10 text-2xl font-medium text-gray-400">
               {" "}
                <span className="text-black"> 
                 {statsData?.data?.totalDonors?.value}
               </span> 
-              <span className="text-sm text-green-500 ml-1">
+              <span className="ml-1 text-sm text-green-500">
              {" "}  { statsData?.data?.totalDonors?.percentageChange} %
               </span>{" "}
             </h1>
@@ -238,8 +238,8 @@ const AllDonor = ({ tab }: ITabProps) => {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-3xl border my-6">
-        <div className="flex justify-between items-center gap-5">
+      <div className="p-6 my-6 bg-white border rounded-3xl">
+        <div className="flex items-center justify-between gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
 
           <div className="flex items-center gap-3">
@@ -271,7 +271,7 @@ const AllDonor = ({ tab }: ITabProps) => {
             {/* TODO */}
 
             {/* <div className="mt-4 md:mt-0">
-              <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
+              <button className="px-3 py-2 text-sm text-gray-700 border rounded-md">
                 Monthly
               </button>
             </div> */}
@@ -281,7 +281,7 @@ const AllDonor = ({ tab }: ITabProps) => {
                 type="text"
                 icon={<DownloadOutlined />}
                 onClick={exportToExcel}
-                className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+                className="flex items-center gap-2 px-4 py-2 text-white transition duration-300 ease-in-out transform rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 hover:shadow-lg hover:scale-105 focus:outline-none"
               >
                 <span className="text-lg font-medium">Export</span>
               </Button>
@@ -302,7 +302,7 @@ const AllDonor = ({ tab }: ITabProps) => {
           footer={null}
         >
           <div>
-            <h3 className="border-b mb-2 ">Donor Info:</h3>
+            <h3 className="mb-2 border-b ">Donor Info:</h3>
             <p>
               <strong>Name:</strong> {selectedDonation?.donor?.name}
             </p>
@@ -310,7 +310,7 @@ const AllDonor = ({ tab }: ITabProps) => {
               <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
             </p>
 
-            <h3 className="border-b mb-2 ">Donation Info:</h3>
+            <h3 className="mb-2 border-b ">Donation Info:</h3>
             <p>
               <strong>Type:</strong> {selectedDonation?.donationType}
             </p>
@@ -322,12 +322,12 @@ const AllDonor = ({ tab }: ITabProps) => {
               {selectedDonation?.specialMessage || "-"}
             </p>
 
-            <h3 className="border-b mb-2 ">Cause:</h3>
+            <h3 className="mb-2 border-b ">Cause:</h3>
             <p>
               <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
             </p>
 
-            <h3 className="border-b mb-2 ">Receipt:</h3>
+            <h3 className="mb-2 border-b ">Receipt:</h3>
             {selectedDonation?.receiptId && (
               <div>
                 <p className="mb-5">
