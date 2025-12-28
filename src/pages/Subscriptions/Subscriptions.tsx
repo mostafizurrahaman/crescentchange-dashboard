@@ -1,6 +1,7 @@
 import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
 import star from "../../assets/images/Star Emphasis.png";
+import { useGetSubscriptionMeQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
 
 interface DepositData {
   title: string;
@@ -17,6 +18,10 @@ interface DepositData {
 }
 
 const Subscriptions = () => {
+  const { data: subscriptionMeData } = useGetSubscriptionMeQuery();
+  const activeSubscription =
+    subscriptionMeData?.data?.status === "active" ? subscriptionMeData?.data : null;
+
   const data: DepositData[] = [
     {
       key: "1",
@@ -73,6 +78,59 @@ const Subscriptions = () => {
           Overview of your active subscriptions.
         </p>
       </div>
+
+      {activeSubscription ? (
+        <div className="mb-6 rounded-3xl border bg-white p-6">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
+                <img src={star} alt="" className="h-6 w-6" />
+              </div>
+              <div>
+                <p className="text-xl font-semibold">Current Subscription</p>
+                <p className="text-sm text-gray-500">Active</p>
+              </div>
+            </div>
+
+            <span className="rounded-3xl bg-green-500 px-3 py-1 text-sm font-semibold text-white">
+              {activeSubscription.planType}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 border-t pt-4 md:grid-cols-2">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Current period start</p>
+              <p className="font-medium">
+                {new Date(activeSubscription.currentPeriodStart).toLocaleString()}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Current period end</p>
+              <p className="font-medium">
+                {new Date(activeSubscription.currentPeriodEnd).toLocaleString()}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Cancel at period end</p>
+              <p className="font-medium">
+                {activeSubscription.cancelAtPeriodEnd ? "Yes" : "No"}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Subscription ID</p>
+              <p className="truncate font-medium">{activeSubscription.stripeSubscriptionId}</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mb-6 rounded-3xl border bg-white p-6">
+          <p className="text-lg font-semibold">No active subscription</p>
+          <p className="mt-1 text-gray-500">
+            When you purchase a subscription, details will appear here.
+          </p>
+        </div>
+      )}
+
       <SubscriptionCard />
 
       <h1 className="text-xl md:text-3xl font-semibold my-3">

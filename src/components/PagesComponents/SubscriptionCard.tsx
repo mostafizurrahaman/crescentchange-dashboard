@@ -10,12 +10,12 @@ const SubscriptionCard: React.FC = () => {
   const [createSession, { isLoading: isCreatingSession }] =
     useCreateSubscriptionSessionMutation();
 
-  const activePlanType = subscriptionMeData?.data?.status === "active"
+  const hasActiveSubscription = subscriptionMeData?.data?.status === "active";
+  const activePlanType = hasActiveSubscription
     ? subscriptionMeData?.data?.planType
     : undefined;
   const isFocusActive = activePlanType === "monthly";
   const isFreedomActive = activePlanType === "yearly";
-  const isTrialActive = activePlanType === "trial";
 
   const startCheckout = async (planType: "monthly" | "yearly") => {
     const res = await createSession({ planType }).unwrap();
@@ -26,52 +26,7 @@ const SubscriptionCard: React.FC = () => {
   };
 
   return (
-    <div className="grid items-start justify-between grid-cols-1 gap-4 my-5 md:grid-cols-3">
-      {/* Trial */}
-      <div className="p-6 bg-white rounded-3xl ">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-100">
-            <img src={star} alt="" className="w-5 h-5" />
-          </div>
-          <p className="text-2xl font-semibold">Trial Plan</p>
-          {isTrialActive ? (
-            <button
-              className="px-2 py-1 text-white bg-green-500 rounded-3xl"
-              aria-label="Current plan"
-            >
-              Active Plan
-            </button>
-          ) : null}
-        </div>
-
-        <div className="h-40 my-6 space-y-2">
-          <h1 className="text-4xl font-bold">
-            <span className="text-gray-400"> $</span>
-            0 <span className="text-sm font-thin text-gray-600">/ month</span>
-          </h1>
-
-          <ul className="text-lg text-gray-500 list-decimal">
-            <li className="flex items-center gap-2">
-              <HiCheckBadge className="w-4 h-4" /> Basic donor analytics
-            </li>
-            <li className="flex items-center gap-2">
-              <HiCheckBadge className="w-4 h-4" /> Org profile page
-            </li>
-            <li className="flex items-center gap-2">
-              <HiCheckBadge className="w-4 h-4" />
-              Track recurring donations
-            </li>
-          </ul>
-        </div>
-
-        <button
-          className="w-full py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
-          disabled={isTrialActive}
-        >
-          {isTrialActive ? "Current Plan" : "Get Started"}
-        </button>
-      </div>
-
+    <div className="grid items-start justify-between grid-cols-1 gap-4 my-5 md:grid-cols-2">
       {/* Focus */}
       <div className="p-6 bg-white rounded-3xl">
         <div className="flex items-center gap-3 mb-6">
@@ -122,13 +77,15 @@ const SubscriptionCard: React.FC = () => {
           <button
             className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
             onClick={() => startCheckout("monthly")}
-            disabled={isCreatingSession}
+            disabled={isCreatingSession || hasActiveSubscription}
           >
             {isCreatingSession ? (
               <>
                 <HiArrowPath className="w-4 h-4 animate-spin" />
                 Processing...
               </>
+            ) : hasActiveSubscription ? (
+              "Active subscription"
             ) : (
               "Upgrade"
             )}
@@ -186,13 +143,15 @@ const SubscriptionCard: React.FC = () => {
           <button
             className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
             onClick={() => startCheckout("yearly")}
-            disabled={isCreatingSession}
+            disabled={isCreatingSession || hasActiveSubscription}
           >
             {isCreatingSession ? (
               <>
                 <HiArrowPath className="w-4 h-4 animate-spin" />
                 Processing...
               </>
+            ) : hasActiveSubscription ? (
+              "Active subscription"
             ) : (
               "Upgrade"
             )}

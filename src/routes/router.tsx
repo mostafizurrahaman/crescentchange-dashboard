@@ -24,6 +24,8 @@ import Reports from "../pages/Reports/Reports";
 import PrivateRoute from "./PrivateRoute";
 import Notification from "../components/SettingsComponents/Notification";
 import Verify2FA from "../pages/Auth/verify2FA/Verify2FA";
+import SubscriptionSuccess from "../pages/Subscriptions/SubscriptionSuccess";
+import SubscriptionCancel from "../pages/Subscriptions/SubscriptionCancel";
 
 export const router = createBrowserRouter([
   {
@@ -83,6 +85,8 @@ export const router = createBrowserRouter([
           { path: "reports", element: <Reports /> },
           { path: "deposits", element: <Deposits /> },
           { path: "subscription", element: <Subscriptions /> },
+          { path: "subscription/success", element: <SubscriptionSuccess /> },
+          { path: "subscription/cancel", element: <SubscriptionCancel /> },
           { path: "profile", element: <Profile /> },
           { path: "edit-profile", element: <EditProfile /> },
           { path: "access", element: <AccessTab /> },
