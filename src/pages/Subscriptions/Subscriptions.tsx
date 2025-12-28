@@ -8,6 +8,10 @@ const Subscriptions = () => {
   const { data: subscriptionMeData } = useGetSubscriptionMeQuery();
   const activeSubscription =
     subscriptionMeData?.data?.status === "active" ? subscriptionMeData?.data : null;
+  const isCanceling = Boolean(activeSubscription?.cancelAtPeriodEnd);
+  const cancelAt = activeSubscription?.currentPeriodEnd
+    ? new Date(activeSubscription.currentPeriodEnd).toLocaleDateString()
+    : undefined;
 
   const { data: billingHistoryData } = useGetBillingHistoryQuery();
   const billingHistory = billingHistoryData?.data ?? [];
@@ -31,11 +35,17 @@ const Subscriptions = () => {
               </div>
               <div>
                 <p className="text-xl font-semibold">Current Subscription</p>
-                <p className="text-sm text-gray-500">Active</p>
+                <p className="text-sm text-gray-500">
+                  {isCanceling ? "Canceling" : "Active"}
+                </p>
               </div>
             </div>
 
-            <span className="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-3xl">
+            <span
+              className={`px-3 py-1 text-sm font-semibold text-white rounded-3xl ${
+                isCanceling ? "bg-yellow-500" : "bg-green-500"
+              }`}
+            >
               {activeSubscription.planType}
             </span>
           </div>
@@ -53,6 +63,12 @@ const Subscriptions = () => {
                 {new Date(activeSubscription.currentPeriodEnd).toLocaleString()}
               </p>
             </div>
+            {isCanceling && cancelAt ? (
+              <div className="flex items-center justify-between gap-4 md:col-span-2">
+                <p className="text-gray-500">Will cancel on</p>
+                <p className="font-medium">{cancelAt}</p>
+              </div>
+            ) : null}
             <div className="flex items-center justify-between gap-4">
               <p className="text-gray-500">Cancel at period end</p>
               <p className="font-medium">

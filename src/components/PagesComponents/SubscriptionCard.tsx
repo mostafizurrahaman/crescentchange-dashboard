@@ -15,11 +15,17 @@ const SubscriptionCard: React.FC = () => {
     useCancelSubscriptionMutation();
 
   const hasActiveSubscription = subscriptionMeData?.data?.status === "active";
+  const isCancelAtPeriodEnd = Boolean(
+    hasActiveSubscription && subscriptionMeData?.data?.cancelAtPeriodEnd
+  );
   const activePlanType = hasActiveSubscription
     ? subscriptionMeData?.data?.planType
     : undefined;
   const isFocusActive = activePlanType === "monthly";
   const isFreedomActive = activePlanType === "yearly";
+  const cancelAt = subscriptionMeData?.data?.currentPeriodEnd
+    ? new Date(subscriptionMeData.data.currentPeriodEnd).toLocaleDateString()
+    : undefined;
 
   const startCheckout = async (planType: "monthly" | "yearly") => {
     const res = await createSession({ planType }).unwrap();
@@ -49,10 +55,12 @@ const SubscriptionCard: React.FC = () => {
           <p className="text-2xl font-semibold">Focus Plan</p>
           {isFocusActive ? (
             <button
-              className="px-2 py-1 text-white bg-green-500 rounded-3xl"
+              className={`px-2 py-1 text-white rounded-3xl ${
+                isCancelAtPeriodEnd ? "bg-yellow-500" : "bg-green-500"
+              }`}
               aria-label="Current plan"
             >
-              Active Plan
+              {isCancelAtPeriodEnd ? "Canceling" : "Active Plan"}
             </button>
           ) : null}
         </div>
@@ -83,20 +91,29 @@ const SubscriptionCard: React.FC = () => {
         </div>
 
         {isFocusActive ? (
-          <button
-            className="flex items-center justify-center w-full gap-2 py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl disabled:opacity-60"
-            onClick={handleCancelSubscription}
-            disabled={isCancelingSubscription}
-          >
-            {isCancelingSubscription ? (
-              <>
-                <HiArrowPath className="w-4 h-4 animate-spin" />
-                Canceling...
-              </>
-            ) : (
-              "Cancel Subscription"
-            )}
-          </button>
+          <div>
+            <button
+              className="flex items-center justify-center w-full gap-2 py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl disabled:opacity-60"
+              onClick={handleCancelSubscription}
+              disabled={isCancelingSubscription || isCancelAtPeriodEnd}
+            >
+              {isCancelingSubscription ? (
+                <>
+                  <HiArrowPath className="w-4 h-4 animate-spin" />
+                  Canceling...
+                </>
+              ) : isCancelAtPeriodEnd ? (
+                "Cancel scheduled"
+              ) : (
+                "Cancel Subscription"
+              )}
+            </button>
+            {isCancelAtPeriodEnd && cancelAt ? (
+              <p className="mt-2 text-sm text-center text-gray-500">
+                Will cancel on: {cancelAt}
+              </p>
+            ) : null}
+          </div>
         ) : (
           <button
             className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
@@ -126,10 +143,12 @@ const SubscriptionCard: React.FC = () => {
           <p className="text-2xl font-semibold">Freedom Plan</p>
           {isFreedomActive ? (
             <button
-              className="px-2 py-1 text-white bg-green-500 rounded-3xl"
+              className={`px-2 py-1 text-white rounded-3xl ${
+                isCancelAtPeriodEnd ? "bg-yellow-500" : "bg-green-500"
+              }`}
               aria-label="Current plan"
             >
-              Active Plan
+              {isCancelAtPeriodEnd ? "Canceling" : "Active Plan"}
             </button>
           ) : null}
         </div>
@@ -160,20 +179,29 @@ const SubscriptionCard: React.FC = () => {
         </div>
 
         {isFreedomActive ? (
-          <button
-            className="flex items-center justify-center w-full gap-2 py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl disabled:opacity-60"
-            onClick={handleCancelSubscription}
-            disabled={isCancelingSubscription}
-          >
-            {isCancelingSubscription ? (
-              <>
-                <HiArrowPath className="w-4 h-4 animate-spin" />
-                Canceling...
-              </>
-            ) : (
-              "Cancel Subscription"
-            )}
-          </button>
+          <div>
+            <button
+              className="flex items-center justify-center w-full gap-2 py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl disabled:opacity-60"
+              onClick={handleCancelSubscription}
+              disabled={isCancelingSubscription || isCancelAtPeriodEnd}
+            >
+              {isCancelingSubscription ? (
+                <>
+                  <HiArrowPath className="w-4 h-4 animate-spin" />
+                  Canceling...
+                </>
+              ) : isCancelAtPeriodEnd ? (
+                "Cancel scheduled"
+              ) : (
+                "Cancel Subscription"
+              )}
+            </button>
+            {isCancelAtPeriodEnd && cancelAt ? (
+              <p className="mt-2 text-sm text-center text-gray-500">
+                Will cancel on: {cancelAt}
+              </p>
+            ) : null}
+          </div>
         ) : (
           <button
             className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
