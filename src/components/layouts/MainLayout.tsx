@@ -43,7 +43,7 @@ const MainLayout = () => {
               collapsed ? "w-20" : "w-[250px]"
             } bg-yellow-500 transition-all duration-200`}
           >
-            <Sidebar collapsed={collapsed} />
+            <Sidebar />
           </aside>
 
           {/* Content */}

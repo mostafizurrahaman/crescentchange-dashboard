@@ -134,11 +134,11 @@ const RootLayout = () => {
               width="80%"
               closeIcon={<FaX className="text-black" />}
             >
-              <Sidebar onClose={closeDrawer} collapsed={false} />
+              <Sidebar onClose={closeDrawer} />
             </Drawer>
           ) : (
             <div className="fixed bottom-0 left-0 w-64 top-20">
-              <Sidebar collapsed={false} />
+              <Sidebar />
             </div>
           )}
           <div

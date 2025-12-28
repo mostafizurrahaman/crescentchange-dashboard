@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ConfigProvider, Layout, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 
@@ -15,11 +14,10 @@ import report from "../../../assets/images/reports.png";
 const { Sider } = Layout;
 
 interface SidebarProps {
-  collapsed: boolean;
   onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
+const Sidebar: React.FC<SidebarProps> = () => {
   const location = useLocation().pathname.split("/")[1];
 
   const menuItems = [

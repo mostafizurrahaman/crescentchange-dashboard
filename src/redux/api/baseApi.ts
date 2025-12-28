@@ -51,6 +51,6 @@ const baseQueryWithRefreshToken: typeof baseQuery = async (
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["notification", "subscription"],
+  tagTypes: ["notification", "subscription", "billingHistory"],
   endpoints: () => ({}),
 });
