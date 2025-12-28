@@ -63,6 +63,12 @@ export interface BillingHistoryResponse {
   data: BillingHistoryItem[];
 }
 
+export interface CancelSubscriptionResponse {
+  success?: boolean;
+  message?: string;
+  data?: unknown;
+}
+
 const SubscriptionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSubscriptionMe: builder.query<SubscriptionMeResponse, void>({
@@ -81,6 +87,14 @@ const SubscriptionApi = baseApi.injectEndpoints({
       providesTags: ["billingHistory"],
     }),
 
+    cancelSubscription: builder.mutation<CancelSubscriptionResponse, void>({
+      query: () => ({
+        url: "/subscription/cancel",
+        method: "POST",
+      }),
+      invalidatesTags: ["subscription", "billingHistory"],
+    }),
+
     createSubscriptionSession: builder.mutation<CreateSessionResponse, CreateSessionRequest>({
       query: (body) => ({
         url: "/subscription/create-session",
@@ -95,5 +109,6 @@ const SubscriptionApi = baseApi.injectEndpoints({
 export const {
   useGetSubscriptionMeQuery,
   useGetBillingHistoryQuery,
+  useCancelSubscriptionMutation,
   useCreateSubscriptionSessionMutation,
 } = SubscriptionApi;

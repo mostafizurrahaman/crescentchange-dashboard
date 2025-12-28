@@ -1,7 +1,9 @@
 import star from "../../assets/images/Star Emphasis.png";
 import { HiCheckBadge, HiArrowPath } from "react-icons/hi2";
+import { message } from "antd";
 import {
   useCreateSubscriptionSessionMutation,
+  useCancelSubscriptionMutation,
   useGetSubscriptionMeQuery,
 } from "../../redux/features/subscriptionApi/subscriptionApi";
 
@@ -9,6 +11,8 @@ const SubscriptionCard: React.FC = () => {
   const { data: subscriptionMeData } = useGetSubscriptionMeQuery();
   const [createSession, { isLoading: isCreatingSession }] =
     useCreateSubscriptionSessionMutation();
+  const [cancelSubscription, { isLoading: isCancelingSubscription }] =
+    useCancelSubscriptionMutation();
 
   const hasActiveSubscription = subscriptionMeData?.data?.status === "active";
   const activePlanType = hasActiveSubscription
@@ -22,6 +26,15 @@ const SubscriptionCard: React.FC = () => {
     const url = res?.data?.url ?? res?.url;
     if (url) {
       window.location.href = url;
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      const res = await cancelSubscription().unwrap();
+      message.success(res?.message ?? "Subscription canceled");
+    } catch {
+      message.error("Failed to cancel subscription");
     }
   };
 
@@ -70,8 +83,19 @@ const SubscriptionCard: React.FC = () => {
         </div>
 
         {isFocusActive ? (
-          <button className="w-full py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl">
-            Cancel Subscription
+          <button
+            className="flex items-center justify-center w-full gap-2 py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl disabled:opacity-60"
+            onClick={handleCancelSubscription}
+            disabled={isCancelingSubscription}
+          >
+            {isCancelingSubscription ? (
+              <>
+                <HiArrowPath className="w-4 h-4 animate-spin" />
+                Canceling...
+              </>
+            ) : (
+              "Cancel Subscription"
+            )}
           </button>
         ) : (
           <button
@@ -136,8 +160,19 @@ const SubscriptionCard: React.FC = () => {
         </div>
 
         {isFreedomActive ? (
-          <button className="w-full py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl">
-            Cancel Subscription
+          <button
+            className="flex items-center justify-center w-full gap-2 py-4 font-bold text-purple-500 border-2 border-purple-500 rounded-3xl disabled:opacity-60"
+            onClick={handleCancelSubscription}
+            disabled={isCancelingSubscription}
+          >
+            {isCancelingSubscription ? (
+              <>
+                <HiArrowPath className="w-4 h-4 animate-spin" />
+                Canceling...
+              </>
+            ) : (
+              "Cancel Subscription"
+            )}
           </button>
         ) : (
           <button
