@@ -54,6 +54,35 @@ const AuthApi = baseApi.injectEndpoints({
       }),
     }),
 
+    forgotPassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    verifyForgotPasswordOtp: builder.mutation({
+      query: (data) => ({
+        url: "/auth/verify-forgot-password-otp",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    resendForgotPasswordOtp: builder.mutation({
+      query: (data) => ({
+        url: "/auth/send-forgot-password-otp-again",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     // Notification
     getNotification: builder.query({
       query: () => ({
@@ -86,6 +115,10 @@ export const {
   useSignUpMutation,
   useVerifyOtpMutation,
   useChnagePasswordMutation,
+  useForgotPasswordMutation,
+  useVerifyForgotPasswordOtpMutation,
+  useResendForgotPasswordOtpMutation,
+  useResetPasswordMutation,
   useGetNotificationQuery,
   useNotificationMarkASReadMutation,
   useGetUnreadNotificationQuery,
