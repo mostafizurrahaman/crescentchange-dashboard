@@ -5,8 +5,8 @@ import logo from "../../../assets/images/logo.png";
 const ForgatePassword = () => {
   const onFinish = () => {};
   return (
-    <div className="h-screen flex p-2">
-      <div className="bg-white flex flex-col justify-center items-center w-full md:w-1/2">
+    <div className="flex h-screen p-2">
+      <div className="flex flex-col items-center justify-center w-full bg-white md:w-1/2">
         <img src={logo} alt="Logo" className="absolute top-5 right-5 left-10" />
         <div className=" w-[400px] ">
           <ConfigProvider
@@ -29,16 +29,16 @@ const ForgatePassword = () => {
               className=""
             >
               <div className="mb-4 text-center ">
-                <h2 className="  text-xl md:text-2xl  lg:text-3xl font-bold">
+                <h2 className="text-xl font-bold  md:text-2xl lg:text-3xl">
                   Reset your password
                 </h2>
-                <p className="text-gray-600 mt-3 mb-6">
+                <p className="mt-3 mb-6 text-gray-600">
                   We’ll send you a code on your registered email.
                 </p>
               </div>
               <Form.Item
                 name="email"
-                label={<p className=" text-md ">Enter your registered email</p>}
+                label={<p className=" text-md">Enter your registered email</p>}
                 style={{}}
               >
                 <Input
@@ -56,9 +56,9 @@ const ForgatePassword = () => {
          
 
               <Form.Item className="">
-                <Link to="/auth/varification">
+                <Link to="/auth/verifyOtp">
                   <button
-                    className="text-center w-full py-4 text-lg bg-btnPrimary text-black px-8 rounded-md shadow-lg"
+                    className="w-full px-8 py-4 text-lg text-center text-black rounded-md shadow-lg bg-btnPrimary"
                     type="submit"
                   >
                     Send
@@ -69,7 +69,7 @@ const ForgatePassword = () => {
           </ConfigProvider>
         </div>
       </div>
-      <div className="flex justify-end items-end">
+      <div className="flex items-end justify-end">
         <img src={img} alt="sign-up" className="w-full h-screen" />
       </div>
     </div>
