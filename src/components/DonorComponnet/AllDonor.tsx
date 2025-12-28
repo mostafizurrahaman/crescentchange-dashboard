@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Modal, Select, Tooltip } from "antd";
 import { Table } from "antd";
@@ -10,11 +10,13 @@ import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { FaEye } from "react-icons/fa";
-import { IoIosRefresh } from "react-icons/io";
 import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
+import { FiChevronDown } from "react-icons/fi";
+import { HiFunnel } from "react-icons/hi2";
+import { HiCalendarDays } from "react-icons/hi2";
 interface ITabProps {
   tab: string;
 }
@@ -50,7 +52,6 @@ const AllDonor = ({ tab }: ITabProps) => {
     setSelectedDonation(record);
     setIsOpen(true);
   };
-  const { Search } = Input;
   const { Option } = Select;
   // Handle search
   const onSearch = (value: string) => {
@@ -140,12 +141,14 @@ const AllDonor = ({ tab }: ITabProps) => {
       title: "Action",
       key: "action",
       render: (record: any) => (
-        <div className="flex items-center justify-center gap-2">
-          <button onClick={() => handleViewClick(record)}>
-            <FaEye className="text-blue-500"></FaEye>
-          </button>
-          <button>
-            <IoIosRefresh className="text-green-500" />
+        <div className="flex items-center justify-center">
+          <button
+            type="button"
+            onClick={() => handleViewClick(record)}
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5"
+            aria-label="View"
+          >
+            <FaEye className="w-5 h-5" />
           </button>
         </div>
       ),
@@ -242,30 +245,49 @@ const AllDonor = ({ tab }: ITabProps) => {
         <div className="flex items-center justify-between gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
 
-          <div className="flex items-center gap-3">
-            <div className="mt-4 md:mt-0">
-              <Search
-                placeholder="input search text"
-                onSearch={onSearch}
-                enterButton
+          <div className="flex flex-col items-stretch gap-3 md:flex-row md:items-center">
+            <div className="w-full md:w-[260px]">
+              <Input
+                placeholder="Search"
                 allowClear
+                size="large"
+                prefix={<SearchOutlined className="text-black/50" />}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onPressEnter={(e) => onSearch((e.target as HTMLInputElement).value)}
+                className="h-10 rounded-full border border-black/10 bg-[#f6f6f6] px-3 [&_.ant-input]:!bg-transparent [&_.ant-input]:!text-[15px] [&_.ant-input-affix-wrapper]:!bg-transparent [&_.ant-input-affix-wrapper]:!border-0 [&_.ant-input-affix-wrapper]:!shadow-none [&_.ant-input-search-icon]:!text-black/60"
               />
             </div>
 
-            <div className="mt-4 md:mt-0">
-              <Select
-                value={status}
-                onChange={handleStatusChange}
-                placeholder={"Filter by status"}
-                style={{ width: 150 }}
+            <div className="w-full md:w-auto">
+              <div className="flex items-center h-10 gap-2 px-4 bg-white border rounded-full border-black/10">
+                <HiFunnel className="w-4 h-4 text-black/60" />
+                <Select
+                  value={status}
+                  onChange={handleStatusChange}
+                  placeholder={"Filter"}
+                  variant="borderless"
+                  size="large"
+                  className="min-w-[130px] [&_.ant-select-selector]:!p-0"
+                >
+                  <Option value="processing">Processing</Option>
+                  <Option value="completed">Completed</Option>
+                  <Option value="failed">Failed</Option>
+                  <Option value="refunded">Fefunded</Option>
+                  <Option value="canceled">Canceled</Option>
+                  <Option value="refunding">Refunding</Option>
+                </Select>
+              </div>
+            </div>
+
+            <div className="w-full md:w-auto">
+              <button
+                type="button"
+                className="flex h-10 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-[15px] font-medium text-black transition duration-200 hover:bg-black/5 md:w-auto"
               >
-                <Option value="processing">Processing</Option>
-                <Option value="completed">Completed</Option>
-                <Option value="failed">Failed</Option>
-                <Option value="refunded">Fefunded</Option>
-                <Option value="canceled">Canceled</Option>
-                <Option value="refunding">Refunding</Option>
-              </Select>
+                <HiCalendarDays className="w-4 h-4 text-black/60" />
+                Monthly
+              </button>
             </div>
 
             {/* TODO */}
@@ -281,9 +303,10 @@ const AllDonor = ({ tab }: ITabProps) => {
                 type="text"
                 icon={<DownloadOutlined />}
                 onClick={exportToExcel}
-                className="flex items-center gap-2 px-4 py-2 text-white transition duration-300 ease-in-out transform rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 hover:shadow-lg hover:scale-105 focus:outline-none"
+                className="flex items-center justify-center h-10 gap-2 px-5 text-black transition duration-200 bg-white border rounded-full border-black/10 hover:bg-black/5 focus:outline-none"
               >
-                <span className="text-lg font-medium">Export</span>
+                <span className="text-[15px] font-medium">Export</span>
+                <FiChevronDown className="w-4 h-4 text-black/70" />
               </Button>
             </Tooltip>
           </div>
