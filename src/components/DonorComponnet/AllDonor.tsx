@@ -1,4 +1,3 @@
- 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Modal, Select, Tooltip } from "antd";
 import { Table } from "antd";
@@ -126,10 +125,16 @@ const AllDonor = ({ tab }: ITabProps) => {
       key: "specialMessage",
     },
     {
-      title: "Amount",
+      title: "Donated Amount",
       dataIndex: "amount",
       key: "amount",
       render: (amount: any) => `$${amount.toFixed(2)}`,
+    },
+    {
+      title: "Net Amount",
+      dataIndex: "netAmount",
+      key: "netAmount",
+      render: (netAmount: any) => `$${netAmount.toFixed(2)}`,
     },
     {
       title: "Status",
@@ -230,11 +235,12 @@ const AllDonor = ({ tab }: ITabProps) => {
             <p className="text-lg font-medium">Total Donors</p>
             <h1 className="mt-10 text-2xl font-medium text-gray-400">
               {" "}
-               <span className="text-black"> 
+              <span className="text-black">
                 {statsData?.data?.totalDonors?.value}
-              </span> 
+              </span>
               <span className="ml-1 text-sm text-green-500">
-             {" "}  { statsData?.data?.totalDonors?.percentageChange} %
+                {" "}
+                {statsData?.data?.totalDonors?.percentageChange} %
               </span>{" "}
             </h1>
           </div>
@@ -254,7 +260,9 @@ const AllDonor = ({ tab }: ITabProps) => {
                 prefix={<SearchOutlined className="text-black/50" />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onPressEnter={(e) => onSearch((e.target as HTMLInputElement).value)}
+                onPressEnter={(e) =>
+                  onSearch((e.target as HTMLInputElement).value)
+                }
                 className="h-10 rounded-full border border-black/10 bg-[#f6f6f6] px-3 [&_.ant-input]:!bg-transparent [&_.ant-input]:!text-[15px] [&_.ant-input-affix-wrapper]:!bg-transparent [&_.ant-input-affix-wrapper]:!border-0 [&_.ant-input-affix-wrapper]:!shadow-none [&_.ant-input-search-icon]:!text-black/60"
               />
             </div>
@@ -319,13 +327,14 @@ const AllDonor = ({ tab }: ITabProps) => {
         />
 
         <Modal
-          title="Donor Details"
+          title="Donation Details"
           open={isOpen}
           onCancel={() => setIsOpen(false)}
           footer={null}
         >
-          <div>
-            <h3 className="mb-2 border-b ">Donor Info:</h3>
+          <div className="space-y-4">
+            {/* Donor Info */}
+            <h3 className="border-b font-semibold">Donor Information</h3>
             <p>
               <strong>Name:</strong> {selectedDonation?.donor?.name}
             </p>
@@ -333,38 +342,64 @@ const AllDonor = ({ tab }: ITabProps) => {
               <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
             </p>
 
-            <h3 className="mb-2 border-b ">Donation Info:</h3>
+            {/* Donation Info */}
+            <h3 className="border-b font-semibold">Donation Information</h3>
             <p>
               <strong>Type:</strong> {selectedDonation?.donationType}
             </p>
             <p>
-              <strong>Amount:</strong> ${selectedDonation?.amount.toFixed(2)}
+              <strong>Currency:</strong> {selectedDonation?.currency}
+            </p>
+            <p>
+              <strong>Total Amount Paid:</strong> $
+              {selectedDonation?.totalAmount.toFixed(2)}
             </p>
             <p>
               <strong>Message:</strong>{" "}
               {selectedDonation?.specialMessage || "-"}
             </p>
 
-            <h3 className="mb-2 border-b ">Cause:</h3>
-            <p>
-              <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
+            {/* Fee Breakdown */}
+            <h3 className="border-b font-semibold">Fee Breakdown</h3>
+            <p>Platform Fee: ${selectedDonation?.platformFee.toFixed(2)}</p>
+            <p>GST on Platform Fee: ${selectedDonation?.gstOnFee.toFixed(2)}</p>
+            <p>Stripe Fee: ${selectedDonation?.stripeFee.toFixed(2)}</p>
+            <p className="font-semibold">
+              Total Fees: $
+              {(
+                selectedDonation.platformFee +
+                selectedDonation.gstOnFee +
+                selectedDonation.stripeFee
+              ).toFixed(2)}
             </p>
 
-            <h3 className="mb-2 border-b ">Receipt:</h3>
+            {/* Net Amount */}
+            <h3 className="border-b font-semibold">Net Amount</h3>
+            <p className="text-green-600 font-semibold">
+              ${selectedDonation?.netAmount.toFixed(2)} received by organization
+            </p>
+
+            {/* Cause */}
+            <h3 className="border-b font-semibold">Cause</h3>
+            <p>{selectedDonation?.cause?.name || "No Cause"}</p>
+
+            {/* Receipt */}
             {selectedDonation?.receiptId && (
-              <div>
-                <p className="mb-5">
-                  <strong>Receipt Number:</strong>{" "}
-                  {selectedDonation?.receiptId.receiptNumber}
+              <>
+                <h3 className="border-b font-semibold">Receipt</h3>
+                <p>
+                  <strong>Receipt No:</strong>{" "}
+                  {selectedDonation.receiptId.receiptNumber}
                 </p>
                 <a
-                  href={selectedDonation?.receiptId.pdfUrl}
+                  href={selectedDonation.receiptId.pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-blue-600 underline"
                 >
-                  <strong>Download Receipt</strong>
+                  Download Receipt (PDF)
                 </a>
-              </div>
+              </>
             )}
           </div>
         </Modal>
