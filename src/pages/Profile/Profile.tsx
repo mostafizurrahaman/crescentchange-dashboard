@@ -25,26 +25,26 @@ import {
   useGetRaisedCausedQuery,
 } from "../../redux/features/profileApi/profileApi";
 
-import water from "../../assets/images/water.png";
-import food from "../../assets/images/🍽️.png";
-import education from "../../assets/images/📚 (1).png";
-import youth from "../../assets/images/🧑_🤝_🧑.png";
-import orphans from "../../assets/images/🧸.png";
-import Quran from "../../assets/images/📖.png";
-import health from "../../assets/images/🏥.png";
-import emergency from "../../assets/images/🚨.png";
-import shelter from "../../assets/images/🏠.png";
-import mosque from "../../assets/images/🕌.png";
-import zakat from "../../assets/images/💰.png";
-import sadaqah from "../../assets/images/🤲.png";
-import ramadan from "../../assets/images/🌙.png";
-import fitrah from "../../assets/images/🥖.png";
-import admin from "../../assets/images/🗂️.png";
-import refugee from "../../assets/images/🧳.png";
-import digital from "../../assets/images/💻.png";
-import mental from "../../assets/images/🧠.png";
-import qurban from "../../assets/images/🐑.png";
-import women from "../../assets/images/👩_👧.png";
+// import water from "../../assets/images/water.png";
+// import food from "../../assets/images/🍽️.png";
+// import education from "../../assets/images/📚 (1).png";
+// import youth from "../../assets/images/🧑_🤝_🧑.png";
+// import orphans from "../../assets/images/🧸.png";
+// import Quran from "../../assets/images/📖.png";
+// import health from "../../assets/images/🏥.png";
+// import emergency from "../../assets/images/🚨.png";
+// import shelter from "../../assets/images/🏠.png";
+// import mosque from "../../assets/images/🕌.png";
+// import zakat from "../../assets/images/💰.png";
+// import sadaqah from "../../assets/images/🤲.png";
+// import ramadan from "../../assets/images/🌙.png";
+// import fitrah from "../../assets/images/🥖.png";
+// import admin from "../../assets/images/🗂️.png";
+// import refugee from "../../assets/images/🧳.png";
+// import digital from "../../assets/images/💻.png";
+// import mental from "../../assets/images/🧠.png";
+// import qurban from "../../assets/images/🐑.png";
+// import women from "../../assets/images/👩_👧.png";
 import world from "../../assets/images/🌍.png";
 
 const Profile = () => {
@@ -103,27 +103,49 @@ const Profile = () => {
     );
   }
 
+  // const causeList = [
+  //   { cause: "water", icon: water },
+  //   { cause: "education", icon: education },
+  //   { cause: "food", icon: food },
+  //   { cause: "youth", icon: youth },
+  //   { cause: "orphans", icon: orphans },
+  //   { cause: "quran_education", icon: Quran },
+  //   { cause: "health_medical", icon: health },
+  //   { cause: "emergency_relief", icon: emergency },
+  //   { cause: "shelter_housing", icon: shelter },
+  //   { cause: "mosque_utilities", icon: mosque },
+  //   { cause: "zakat", icon: zakat },
+  //   { cause: "sadaqah", icon: sadaqah },
+  //   { cause: "ramadan", icon: ramadan },
+  //   { cause: "qurban", icon: qurban },
+  //   { cause: "fitrah", icon: fitrah },
+  //   { cause: "admin_operational", icon: admin },
+  //   { cause: "refugees", icon: refugee },
+  //   { cause: "digital_dawah", icon: digital },
+  //   { cause: "women_families", icon: women },
+  //   { cause: "mental_health", icon: mental },
+  // ];
   const causeList = [
-    { cause: "water", icon: water },
-    { cause: "education", icon: education },
-    { cause: "food", icon: food },
-    { cause: "youth", icon: youth },
-    { cause: "orphans", icon: orphans },
-    { cause: "quran_education", icon: Quran },
-    { cause: "health_medical", icon: health },
-    { cause: "emergency_relief", icon: emergency },
-    { cause: "shelter_housing", icon: shelter },
-    { cause: "mosque_utilities", icon: mosque },
-    { cause: "zakat", icon: zakat },
-    { cause: "sadaqah", icon: sadaqah },
-    { cause: "ramadan", icon: ramadan },
-    { cause: "qurban", icon: qurban },
-    { cause: "fitrah", icon: fitrah },
-    { cause: "admin_operational", icon: admin },
-    { cause: "refugees", icon: refugee },
-    { cause: "digital_dawah", icon: digital },
-    { cause: "women_families", icon: women },
-    { cause: "mental_health", icon: mental },
+    { cause: "water", icon: "💧" },
+    { cause: "education", icon: "📚" },
+    { cause: "food", icon: "🍽️" },
+    { cause: "youth", icon: "🧑‍🤝‍🧑" },
+    { cause: "orphans", icon: "🧸" },
+    { cause: "quran_education", icon: "📖" },
+    { cause: "health_medical", icon: "🏥" },
+    { cause: "emergency_relief", icon: "🚨" },
+    { cause: "shelter_housing", icon: "🏠" },
+    { cause: "mosque_utilities", icon: "🕌" },
+    { cause: "zakat", icon: "💰" },
+    { cause: "sadaqah", icon: "🤲" },
+    { cause: "ramadan", icon: "🌙" },
+    { cause: "qurban", icon: "🐑" },
+    { cause: "fitrah", icon: "🥖 " },
+    { cause: "admin_operational", icon: "🗂️" },
+    { cause: "refugees", icon: "🗂️" },
+    { cause: "digital_dawah", icon: "💻" },
+    { cause: "women_families", icon: "👩‍👧" },
+    { cause: "mental_health", icon: "🧠" },
   ];
 
   return (
@@ -295,11 +317,12 @@ const Profile = () => {
                   <div className="flex gap-2">
                     <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
                       {matchedCausedData && (
-                        <img
-                          src={matchedCausedData?.icon}
-                          alt={data.name}
-                          className="h-10 w-10"
-                        />
+                        // <img
+                        //   src={matchedCausedData?.icon}
+                        //   alt={data.name}
+                        //   className="h-10 w-10"
+                        // />
+                        <h1 className=" text-4xl">{matchedCausedData?.icon}</h1>
                       )}
                     </div>
                     <div>
@@ -331,7 +354,6 @@ const Profile = () => {
         footer={null}
         centered
         width={400}
- 
         className="rounded-3xl my-10 "
       >
         <h1 className="text-2xl font-bold mb-8">Preview</h1>
@@ -476,9 +498,10 @@ const Profile = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center">
-                      {iconMatch && (
+                      {/* {iconMatch && (
                         <img src={iconMatch.icon} className="h-8 w-8" />
-                      )}
+                      )} */}
+                      <p className="h-8 w-8 bg-red-500">{iconMatch?.icon}</p>
                     </div>
                     <div>
                       <p className="font-medium text-[16px]">{c.name}</p>

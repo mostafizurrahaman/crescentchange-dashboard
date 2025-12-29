@@ -5,26 +5,26 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Modal, Button, Form, Input, Select } from "antd";
 import { FaPen, FaTrash } from "react-icons/fa";
 
-import water from "../../assets/images/water.png";
-import food from "../../assets/images/🍽️.png";
-import education from "../../assets/images/📚 (1).png";
-import youth from "../../assets/images/🧑_🤝_🧑.png";
-import orphans from "../../assets/images/🧸.png";
-import Quran from "../../assets/images/📖.png";
-import health from "../../assets/images/🏥.png";
-import emergency from "../../assets/images/🚨.png";
-import shelter from "../../assets/images/🏠.png";
-import mosque from "../../assets/images/🕌.png";
-import zakat from "../../assets/images/💰.png";
-import sadaqah from "../../assets/images/🤲.png";
-import ramadan from "../../assets/images/🌙.png";
-import fitrah from "../../assets/images/🥖.png";
-import admin from "../../assets/images/🗂️.png";
-import refugee from "../../assets/images/🧳.png";
-import digital from "../../assets/images/💻.png";
-import mental from "../../assets/images/🧠.png";
-import qurban from "../../assets/images/🐑.png";
-import women from "../../assets/images/👩_👧.png";
+// import water from "../../assets/images/water.png";
+// import food from "../../assets/images/🍽️.png";
+// import education from "../../assets/images/📚 (1).png";
+// import youth from "../../assets/images/🧑_🤝_🧑.png";
+// import orphans from "../../assets/images/🧸.png";
+// import Quran from "../../assets/images/📖.png";
+// import health from "../../assets/images/🏥.png";
+// import emergency from "../../assets/images/🚨.png";
+// import shelter from "../../assets/images/🏠.png";
+// import mosque from "../../assets/images/🕌.png";
+// import zakat from "../../assets/images/💰.png";
+// import sadaqah from "../../assets/images/🤲.png";
+// import ramadan from "../../assets/images/🌙.png";
+// import fitrah from "../../assets/images/🥖.png";
+// import admin from "../../assets/images/🗂️.png";
+// import refugee from "../../assets/images/🧳.png";
+// import digital from "../../assets/images/💻.png";
+// import mental from "../../assets/images/🧠.png";
+// import qurban from "../../assets/images/🐑.png";
+// import women from "../../assets/images/👩_👧.png";
 
 import {
   useCreateCauseMutation,
@@ -49,26 +49,26 @@ const EditCauses = ({ orgId }: any) => {
 
   /** CATEGORY OPTIONS */
   const causeCategory = [
-    { value: "water", label: "Water", icon: water },
-    { value: "education", label: "Education", icon: education },
-    { value: "food", label: "Food", icon: food },
-    { value: "youth", label: "Youth", icon: youth },
-    { value: "orphans", label: "Orphans", icon: orphans },
-    { value: "quran_education", label: "Quran Education", icon: Quran },
-    { value: "health_medical", label: "Health Medical", icon: health },
-    { value: "emergency_relief", label: "Emergency Relief", icon: emergency },
-    { value: "shelter_housing", label: "Shelter Housing", icon: shelter },
-    { value: "mosque_utilities", label: "Mosque Utilities", icon: mosque },
-    { value: "zakat", label: "Zakat", icon: zakat },
-    { value: "sadaqah", label: "Sadaqah", icon: sadaqah },
-    { value: "ramadan", label: "Ramadan", icon: ramadan },
-    { value: "qurban", label: "Qurban", icon: qurban },
-    { value: "fitrah", label: "Fitrah", icon: fitrah },
-    { value: "admin_operational", label: "Admin Operational", icon: admin },
-    { value: "refugees", label: "Refugees", icon: refugee },
-    { value: "digital_dawah", label: "Digital Dawah", icon: digital },
-    { value: "women_families", label: "Women Families", icon: women },
-    { value: "mental_health", label: "Mental Health", icon: mental },
+    { value: "water", label: "Water", icon: "💧" },
+    { value: "education", label: "Education", icon: "📚" },
+    { value: "food", label: "Food", icon: "🍽️" },
+    { value: "youth", label: "Youth", icon: "🧑‍🤝‍🧑" },
+    { value: "orphans", label: "Orphans", icon: "🧸" },
+    { value: "quran_education", label: "Quran Education", icon: "📖" },
+    { value: "health_medical", label: "Health Medical", icon: "🏥" },
+    { value: "emergency_relief", label: "Emergency Relief", icon: "🚨" },
+    { value: "shelter_housing", label: "Shelter Housing", icon: "🏠" },
+    { value: "mosque_utilities", label: "Mosque Utilities", icon: "🕌" },
+    { value: "zakat", label: "Zakat", icon: "💰" },
+    { value: "sadaqah", label: "Sadaqah", icon: "🤲" },
+    { value: "ramadan", label: "Ramadan", icon: "🌙" },
+    { value: "qurban", label: "Qurban", icon: "🐑" },
+    { value: "fitrah", label: "Fitrah", icon: "🥖" },
+    { value: "admin_operational", label: "Admin Operational", icon: "🗂️" },
+    { value: "refugees", label: "Refugees", icon: "🧳" },
+    { value: "digital_dawah", label: "Digital Dawah", icon: "💻" },
+    { value: "women_families", label: "Women Families", icon: "👩‍👧" },
+    { value: "mental_health", label: "Mental Health", icon: "🧠" },
   ];
 
   /** CREATE */
@@ -129,7 +129,8 @@ const EditCauses = ({ orgId }: any) => {
               className="p-4 bg-white border rounded-3xl flex justify-between mb-2"
             >
               <div className="flex gap-3">
-                <img src={match?.icon} className="h-12 w-12 rounded-full" />
+                {/* <img src={match?.icon} className="h-12 w-12 rounded-full" /> */}
+                <h1 className="text-4xl">{match?.icon}</h1>
                 <div>
                   <h2 className="font-semibold">{d.name}</h2>
                   <p className="text-gray-500 text-sm">{d.description}</p>
@@ -181,7 +182,9 @@ const EditCauses = ({ orgId }: any) => {
               {causeCategory.map((c) => (
                 <Select.Option key={c.value} value={c.value}>
                   <div className="flex items-center gap-2">
-                    <img src={c.icon} className="h-5" /> {c.label}
+                    {/* <img src={c.icon} className="h-5" /> {c.label} */}
+                    <p>{c.icon}</p>
+                    {c.label}
                   </div>
                 </Select.Option>
               ))}
