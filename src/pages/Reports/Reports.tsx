@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Button, Modal,  Select, Tooltip } from "antd";
@@ -6,15 +6,17 @@ import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { Table } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { FaEye } from "react-icons/fa";
-import { IoIosRefresh } from "react-icons/io";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+import { FiChevronDown } from "react-icons/fi";
+import { HiFunnel } from "react-icons/hi2";
+import { HiCalendarDays } from "react-icons/hi2";
 const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
@@ -23,7 +25,6 @@ const Reports = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
-  const { Search } = Input;
   const { Option } = Select;
   const onSearch = (value: string) => {
     setSearchTerm(value);
@@ -85,21 +86,21 @@ const Reports = () => {
       key: "donationType",
       render: (donationType: string) => {
         return (
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             {donationType === "round-up" && (
-              <div className="flex items-center gap-2 bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-2 px-3 py-1 text-blue-600 bg-blue-100 rounded-full">
                 <img src={roundup} alt="Round Up" className="w-4 h-4" />
                 <span>Round Up</span>
               </div>
             )}
             {donationType === "recurring" && (
-              <div className="flex items-center gap-2 bg-green-100 text-green-600 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-2 px-3 py-1 text-green-600 bg-green-100 rounded-full">
                 <img src={recurring} alt="Round Up" className="w-4 h-4" />
                 <span>Recurring</span>
               </div>
             )}
             {donationType === "one-time" && (
-              <div className="flex items-center gap-2 bg-pink-100 text-pink-600 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-2 px-3 py-1 text-pink-600 bg-pink-100 rounded-full">
                 <img src={oneTime} alt="Round Up" className="w-4 h-4" />
                 <span>One Time</span>
               </div>
@@ -130,12 +131,14 @@ const Reports = () => {
       title: "Action",
       key: "action",
       render: (record: any) => (
-        <div className="flex justify-center items-center gap-2">
-          <button onClick={() => handleViewClick(record)}>
-            <FaEye className="text-blue-500"></FaEye>
-          </button>
-          <button>
-            <IoIosRefresh className="text-green-500" />
+        <div className="flex items-center justify-center">
+          <button
+            type="button"
+            onClick={() => handleViewClick(record)}
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5"
+            aria-label="View"
+          >
+            <FaEye className="h-5 w-5" />
           </button>
         </div>
       ),
@@ -194,14 +197,14 @@ const Reports = () => {
   };
   return (
     <div>
-      <div className="flex justify-between items-center gap-5">
+      <div className="flex items-center justify-between gap-5">
         <div>
-          <h1 className="text-3xl font-bold mb-4">Reports</h1>
-          <p className="text-lg text-gray-600 mb-4">
+          <h1 className="mb-4 text-3xl font-bold">Reports</h1>
+          <p className="mb-4 text-lg text-gray-600">
             Generate, track, and export your donation insights.
           </p>
         </div>
-        {/* <div className="flex justify-start items-center gap-5 mb-5">
+        {/* <div className="flex items-center justify-start gap-5 mb-5">
           {["All Donors", "Export"].map((tab) => (
             <button
               key={tab}
@@ -219,18 +222,19 @@ const Reports = () => {
             type="text"
             icon={<DownloadOutlined />}
             onClick={allDataExport}
-            className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            className="flex h-10 items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-black transition duration-200 hover:bg-black/5 focus:outline-none"
           >
-            <span className="text-lg font-medium">Export</span>
+            <span className="text-[15px] font-medium">Export</span>
+            <FiChevronDown className="h-4 w-4 text-black/70" />
           </Button>
         </Tooltip>
       </div>
 
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-3 justify-center  items-center gap-3">
-          <div className="bg-white p-6 rounded-3xl border">
+        <div className="grid items-center justify-center grid-cols-1 gap-3 md:grid-cols-3">
+          <div className="p-6 bg-white border rounded-3xl">
             <p className="text-lg font-medium">Total Donations</p>
-            <h1 className="text-2xl font-medium mt-10">
+            <h1 className="mt-10 text-2xl font-medium">
               <p className="text-neutral-400">
                 {statsData?.data?.totalDonatedAmount?.isIncrease === true
                   ? "+"
@@ -240,9 +244,9 @@ const Reports = () => {
               </p>
             </h1>
           </div>
-          <div className="bg-white p-6 rounded-3xl border">
+          <div className="p-6 bg-white border rounded-3xl">
             <p className="text-lg font-medium">Total Donors</p>
-            <h1 className="text-2xl text-gray-400 font-medium mt-10">
+            <h1 className="mt-10 text-2xl font-medium text-gray-400">
               {" "}
               <span className="text-black">
                 {statsData?.data?.totalDonors?.value}
@@ -252,9 +256,9 @@ const Reports = () => {
               </span>{" "}
             </h1>
           </div>
-          <div className="bg-white p-6 rounded-3xl border">
+          <div className="p-6 bg-white border rounded-3xl">
             <p className="text-lg font-medium">Avg. Donation</p>
-            <h1 className="text-2xl font-medium mt-10">
+            <h1 className="mt-10 text-2xl font-medium">
               {" "}
               <span className="text-gray-400">$</span>{" "}
               {statsData?.data?.averageDonationPerUser?.value}
@@ -262,37 +266,58 @@ const Reports = () => {
             </h1>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-3xl border my-6">
-          <div className="flex justify-between items-center gap-5">
-            <h1 className="text-xl font-medium">Donation History</h1>
+        <div className="p-6 my-6 bg-white border rounded-3xl">
+          <div className="flex items-center justify-between gap-5">
+            <h1 className="text-xl font-medium">Report History</h1>
 
-            <div className="flex items-center gap-3">
-              <div className="mt-4 md:mt-0">
-                <Search
-                  placeholder="input search text"
-                  onSearch={onSearch}
-                  enterButton
+            <div className="flex flex-col items-stretch gap-3 md:flex-row md:items-center">
+              <div className="w-full md:w-[260px]">
+                <Input
+                  placeholder="Search"
                   allowClear
+                  size="large"
+                  prefix={<SearchOutlined className="text-black/50" />}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onPressEnter={(e) =>
+                    onSearch((e.target as HTMLInputElement).value)
+                  }
+                  className="h-10 rounded-full border border-black/10 bg-[#f6f6f6] px-3 [&_.ant-input]:!bg-transparent [&_.ant-input]:!text-[15px] [&_.ant-input-affix-wrapper]:!bg-transparent [&_.ant-input-affix-wrapper]:!border-0 [&_.ant-input-affix-wrapper]:!shadow-none [&_.ant-input-search-icon]:!text-black/60"
                 />
               </div>
 
-              <div className="mt-4 md:mt-0">
-                <Select
-                  value={status}
-                  onChange={handleStatusChange}
-                  placeholder={"Filter by status"}
-                  style={{ width: 150 }}
+              <div className="w-full md:w-auto">
+                <div className="flex h-10 items-center gap-2 rounded-full border border-black/10 bg-white px-4">
+                  <HiFunnel className="h-4 w-4 text-black/60" />
+                  <Select
+                    value={status}
+                    onChange={handleStatusChange}
+                    placeholder={"Filter"}
+                    variant="borderless"
+                    size="large"
+                    className="min-w-[130px] [&_.ant-select-selector]:!p-0"
+                  >
+                    <Option value="processing">Processing</Option>
+                    <Option value="completed">Completed</Option>
+                    <Option value="failed">Failed</Option>
+                    <Option value="refunded">Refunded</Option>
+                    <Option value="canceled">Canceled</Option>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="w-full md:w-auto">
+                <button
+                  type="button"
+                  className="flex h-10 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-[15px] font-medium text-black transition duration-200 hover:bg-black/5 md:w-auto"
                 >
-                  <Option value="processing">Processing</Option>
-                  <Option value="completed">Completed</Option>
-                  <Option value="failed">Failed</Option>
-                  <Option value="refunded">Refunded</Option>
-                  <Option value="canceled">Canceled</Option>
-                </Select>
+                  <HiCalendarDays className="h-4 w-4 text-black/60" />
+                  Monthly
+                </button>
               </div>
 
               {/* <div className="mt-4 md:mt-0">
-                <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
+                <button className="px-3 py-2 text-sm text-gray-700 border rounded-md">
                   Monthly
                 </button>
               </div> */}
@@ -302,9 +327,10 @@ const Reports = () => {
                   type="text"
                   icon={<DownloadOutlined />}
                   onClick={exportToExcel}
-                  className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+                  className="flex h-10 items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-black transition duration-200 hover:bg-black/5 focus:outline-none"
                 >
-                  <span className="text-lg font-medium">Export</span>
+                  <span className="text-[15px] font-medium">Export</span>
+                  <FiChevronDown className="h-4 w-4 text-black/70" />
                 </Button>
               </Tooltip>
             </div>
@@ -323,7 +349,7 @@ const Reports = () => {
             footer={null}
           >
             <div>
-              <h3 className="border-b mb-2 ">Donor Info:</h3>
+              <h3 className="mb-2 border-b ">Donor Info:</h3>
               <p>
                 <strong>Name:</strong> {selectedDonation?.donor?.name}
               </p>
@@ -331,7 +357,7 @@ const Reports = () => {
                 <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
               </p>
 
-              <h3 className="border-b mb-2 ">Donation Info:</h3>
+              <h3 className="mb-2 border-b ">Donation Info:</h3>
               <p>
                 <strong>Type:</strong> {selectedDonation?.donationType}
               </p>
@@ -343,12 +369,12 @@ const Reports = () => {
                 {selectedDonation?.specialMessage || "-"}
               </p>
 
-              <h3 className="border-b mb-2 ">Cause:</h3>
+              <h3 className="mb-2 border-b ">Cause:</h3>
               <p>
                 <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
               </p>
 
-              <h3 className="border-b mb-2 ">Receipt:</h3>
+              <h3 className="mb-2 border-b ">Receipt:</h3>
               {selectedDonation?.receiptId && (
                 <div>
                   <p className="mb-5">

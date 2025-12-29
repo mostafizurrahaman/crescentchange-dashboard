@@ -1,144 +1,191 @@
 import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
 import star from "../../assets/images/Star Emphasis.png";
-
-interface DepositData {
-  title: string;
-  key: string;
-  date: string;
-  amount: string;
-  donor: string; 
-  method: string;
-  card: string;
-  status?: string;
-  transectionId: string;
-  deposit: string; 
-  transferVia: string;
-}
+import { useGetSubscriptionMeQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
+import { useGetBillingHistoryQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
 
 const Subscriptions = () => {
-  const data: DepositData[] = [
-    {
-      key: "1",
-      title: "Foundation Plan",
-      date: "Thursday, 31st of June",
-      donor: "John Doe",
-      amount: "$500",
-      method: "Credit Card",
-      card: "**** 521456",
-      status: "Successful",
-      transectionId: "TXN001",
-      deposit: "Direct",
-      transferVia: "Stripe",
-    },
-    {
-      key: "2",
-      title: "Focus Plan",
-      date: "Wednesday, 30th of June",
-      donor: "Jane Smith",
-      amount: "$250",
-      method: "PayPal",
-      card: "**** 874512",
-      status: "Pending",
-      transectionId: "TXN002",
-      deposit: "Escrow",
-      transferVia: "PayPal",
-    },
-    {
-      key: "3",
-      title: "Freedom Plan",
-      date: "Tuesday, 29th of June",
-      donor: "Michael Johnson",
-      amount: "$1000",
-      method: "Bank Transfer",
-      card: "**** 963258",
-      status: "Failed",
-      transectionId: "TXN003",
-      deposit: "Direct",
-      transferVia: "Wire",
-    },
-  ];
+  const { data: subscriptionMeData } = useGetSubscriptionMeQuery();
+  const activeSubscription =
+    subscriptionMeData?.data?.status === "active" ? subscriptionMeData?.data : null;
+  const isCanceling = Boolean(activeSubscription?.cancelAtPeriodEnd);
+  const cancelAt = activeSubscription?.currentPeriodEnd
+    ? new Date(activeSubscription.currentPeriodEnd).toLocaleDateString()
+    : undefined;
 
-
-
-
-
+  const { data: billingHistoryData } = useGetBillingHistoryQuery();
+  const billingHistory = billingHistoryData?.data ?? [];
   return (
     <div>
       <div className="w-full">
-        <h1 className="text-xl md:text-3xl font-semibold my-3">
+        <h1 className="my-3 text-xl font-semibold md:text-3xl">
           Subscriptions
         </h1>
-        <p className="text-gray-500 mb-10">
+        <p className="mb-10 text-gray-500">
           Overview of your active subscriptions.
         </p>
       </div>
-      <SubscriptionCard />
 
-      <h1 className="text-xl md:text-3xl font-semibold my-3">
-        Subscriptions History
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2  gap-5">
-        {data.map((item) => (
-          <div
-            key={item.key}
-            className="bg-white p-5 rounded-xl shadow-md border "
-          >
-            <div className="flex justify-between items-center mb-5 pb-5 border-b">
-              <div className="flex justify-start items-center gap-5">
-                <h1 className="text-xl md:text-2xl  font-semibold flex justify-center items-center gap-2">
-             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100">
-            <img src={star} alt="" className="h-5 w-5" />
-          </div>
-                  {item.title}
-                </h1>
+      {activeSubscription ? (
+        <div className="p-6 mb-6 bg-white border rounded-3xl">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-100">
+                <img src={star} alt="" className="w-6 h-6" />
               </div>
-              <LiaArrowDownSolid className="bg-purple-500 text-white p-1 rounded-full h-8 w-8" />
-            </div>
-            <div className="text-lg border-b pb-6">
-              <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Deposited to:</p>
-                <p>{item.date}</p>
-              </div>
-
-              <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Status:</p>
-                <p>{item.amount}</p>
-              </div>
-              <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Status</p>
-                <p
-                  className={`${
-                    item.status === "Successful"
-                      ? "bg-green-500 text-white px-2 py-1 rounded-3xl text-sm"
-                      : ""
-                  } ${
-                    item.status === "Failed"
-                      ? "bg-red-500 text-white px-2 py-1 rounded-3xl text-sm"
-                      : ""
-                  } ${
-                    item.status === "Pending"
-                      ? "bg-yellow-500 text-white px-2 py-1 rounded-3xl text-sm"
-                      : ""
-                  }`}
-                >
-                  {item.status}
+              <div>
+                <p className="text-xl font-semibold">Current Subscription</p>
+                <p className="text-sm text-gray-500">
+                  {isCanceling ? "Canceling" : "Active"}
                 </p>
               </div>
             </div>
-            <div className="pt-6">
-              <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Timestamp:</p>
-                <p>{item.date}</p>
+
+            <span
+              className={`px-3 py-1 text-sm font-semibold text-white rounded-3xl ${
+                isCanceling ? "bg-yellow-500" : "bg-green-500"
+              }`}
+            >
+              {activeSubscription.planType}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 pt-4 border-t md:grid-cols-2">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Current period start</p>
+              <p className="font-medium">
+                {new Date(activeSubscription.currentPeriodStart).toLocaleString()}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Current period end</p>
+              <p className="font-medium">
+                {new Date(activeSubscription.currentPeriodEnd).toLocaleString()}
+              </p>
+            </div>
+            {isCanceling && cancelAt ? (
+              <div className="flex items-center justify-between gap-4 md:col-span-2">
+                <p className="text-gray-500">Will cancel on</p>
+                <p className="font-medium">{cancelAt}</p>
               </div>
-              <div className="flex justify-between items-center gap-5 mb-3">
-                <p className="text-gray-500">Transaction ID:</p>
-                <p>{item.amount}</p>
-              </div>
+            ) : null}
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Cancel at period end</p>
+              <p className="font-medium">
+                {activeSubscription.cancelAtPeriodEnd ? "Yes" : "No"}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-gray-500">Subscription ID</p>
+              <p className="font-medium truncate">{activeSubscription.stripeSubscriptionId}</p>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="p-6 mb-6 bg-white border rounded-3xl">
+          <p className="text-lg font-semibold">No active subscription</p>
+          <p className="mt-1 text-gray-500">
+            When you purchase a subscription, details will appear here.
+          </p>
+        </div>
+      )}
+
+      <SubscriptionCard />
+
+      <h1 className="my-3 text-xl font-semibold md:text-3xl">
+        Subscriptions History
+      </h1>
+
+      {billingHistory.length ? (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {billingHistory.map((item) => (
+            <div
+              key={item._id}
+              className="p-5 bg-white border shadow-md rounded-xl"
+            >
+              <div className="flex items-center justify-between pb-5 mb-5 border-b">
+                <div className="flex items-center justify-start gap-5">
+                  <h1 className="flex items-center justify-center gap-2 text-xl font-semibold md:text-2xl">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-100">
+                      <img src={star} alt="" className="w-5 h-5" />
+                    </div>
+                    {item.planType}
+                  </h1>
+                </div>
+
+                {item.invoiceUrl ? (
+                  <a
+                    href={item.invoiceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-center w-8 h-8 p-1 text-white bg-purple-500 rounded-full"
+                    aria-label="Open invoice"
+                  >
+                    <LiaArrowDownSolid />
+                  </a>
+                ) : (
+                  <div className="flex items-center justify-center w-8 h-8 p-1 text-white bg-purple-500 rounded-full opacity-60">
+                    <LiaArrowDownSolid />
+                  </div>
+                )}
+              </div>
+
+              <div className="pb-6 text-lg border-b">
+                <div className="flex items-center justify-between gap-5 mb-3">
+                  <p className="text-gray-500">Transaction date:</p>
+                  <p>{new Date(item.transactionDate).toLocaleString()}</p>
+                </div>
+
+                <div className="flex items-center justify-between gap-5 mb-3">
+                  <p className="text-gray-500">Amount:</p>
+                  <p>
+                    ${item.amount} {item.currency?.toUpperCase()}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between gap-5 mb-3">
+                  <p className="text-gray-500">Status</p>
+                  <p
+                    className={`${
+                      item.status === "succeeded"
+                        ? "bg-green-500 text-white px-2 py-1 rounded-3xl text-sm"
+                        : ""
+                    } ${
+                      item.status === "failed"
+                        ? "bg-red-500 text-white px-2 py-1 rounded-3xl text-sm"
+                        : ""
+                    } ${
+                      item.status === "pending"
+                        ? "bg-yellow-500 text-white px-2 py-1 rounded-3xl text-sm"
+                        : ""
+                    }`}
+                  >
+                    {item.status}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <div className="flex items-center justify-between gap-5 mb-3">
+                  <p className="text-gray-500">Timestamp:</p>
+                  <p>{new Date(item.createdAt).toLocaleString()}</p>
+                </div>
+                <div className="flex items-center justify-between gap-5 mb-3">
+                  <p className="text-gray-500">Invoice ID:</p>
+                  <p className="truncate">{item.stripeInvoiceId}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="p-6 bg-white border rounded-3xl">
+          <p className="text-lg font-semibold">No billing history</p>
+          <p className="mt-1 text-gray-500">
+            When billing occurs, history will appear here.
+          </p>
+        </div>
+      )}
 
    
     </div>

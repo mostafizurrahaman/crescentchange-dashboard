@@ -1,5 +1,6 @@
 import { Button, Layout, theme } from 'antd';
 import { RxHamburgerMenu } from "react-icons/rx";
+import { IoMdSettings } from "react-icons/io";
 import img from "../../../assets/images/user.png";
 import { Link } from 'react-router-dom';
 
@@ -33,7 +34,19 @@ const MainHeader: React.FC<MainHeaderProps> = ({ setCollapsed, collapsed }) => {
                             height: 64,
                         }}
                     />
-                    <div className=' '>
+                    <div className='flex items-center gap-3'>
+                        <Link to="/settings">
+                            <Button
+                                type="text"
+                                icon={<IoMdSettings className=' text-white w-7 h-7 ' />}
+                                className=' text-white '
+                                style={{
+                                    fontSize: '16px',
+                                    width: 56,
+                                    height: 64,
+                                }}
+                            />
+                        </Link>
                         <Link to="/profile">
                             <img src={img} alt="user" className=' w-10 h-10 my-3' />
                         </Link>

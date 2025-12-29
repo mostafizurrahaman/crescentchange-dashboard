@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ConfigProvider, Layout, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 
@@ -15,11 +14,10 @@ import report from "../../../assets/images/reports.png";
 const { Sider } = Layout;
 
 interface SidebarProps {
-  collapsed: boolean;
   onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed}) => {
+const Sidebar: React.FC<SidebarProps> = () => {
   const location = useLocation().pathname.split("/")[1];
 
   const menuItems = [
@@ -74,15 +72,11 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed}) => {
   ];
 
   return (
-    // <div className="fixed top-0 left-0 bottom-0 bg-[#f7f7f7]">
-    <div className="bg-primary h-full ">
+    <div className="h-full bg-[#f7f7f7] border-r border-black/5">
       <Sider
-        className="h-auto w-[300px] bg-[#f7f7f7]"
+        className="h-full w-[300px] bg-[#f7f7f7]"
         width={250}
-        collapsedWidth={80}
         trigger={null}
-        collapsible
-        collapsed={collapsed}
       >
         {/* <div className="flex items-center justify-center ">
           <img src={logo} alt="" className="my-10 " />
@@ -92,35 +86,42 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed}) => {
           theme={{
             components: {
               Menu: {
-                itemBg: "rgb(47,84,235)",
-                itemColor: "rgb(0, 0, 0)",
-                itemHoverBg: "#d1ff43",
-                itemSelectedBg: "#d1ff43",
-                itemSelectedColor: "rgb(0,0,0)",
+                itemBg: "transparent",
+                itemColor: "rgba(0,0,0,0.8)",
+                itemHoverBg: "rgba(255,255,255,0.75)",
+                itemSelectedBg: "#d8f77c",
+                itemSelectedColor: "rgba(0,0,0,0.9)",
+                itemBorderRadius: 12,
+                itemHeight: 44,
+                iconSize: 18,
               },
             },
           }}
         >
-          <Menu
-            mode="inline"
-            className="px-2"
-            selectedKeys={[location]}
-            style={{
-              backgroundColor: "#f7f7f7",
-              color: "black",
-            }}
-            items={menuItems}
-          />
-
-          <div className="mt-[300px] px-2">
+          <div className="flex flex-col h-full">
             <Menu
               mode="inline"
+              className="px-3 pt-3"
+              selectedKeys={[location]}
               style={{
                 backgroundColor: "#f7f7f7",
                 color: "black",
+                borderInlineEnd: 0,
               }}
-              items={bottomMenuItems}
+              items={menuItems}
             />
+
+            <div className="px-3 pb-6 mt-auto">
+              <Menu
+                mode="inline"
+                style={{
+                  backgroundColor: "#f7f7f7",
+                  color: "black",
+                  borderInlineEnd: 0,
+                }}
+                items={bottomMenuItems}
+              />
+            </div>
           </div>
         </ConfigProvider>
       </Sider>

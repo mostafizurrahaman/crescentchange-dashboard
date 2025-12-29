@@ -29,30 +29,29 @@ const MainLayout = () => {
           </Content>
         </Layout>
       </Layout> */}
-     <div className="min-h-screen bg-red-200 flex flex-col">
-  {/* Header */}
-  <header className="h-20 bg-green-200 w-full">
-    <MainHeader setCollapsed={setCollapsed} collapsed={collapsed} />
-  </header>
+      <div className="flex flex-col min-h-screen bg-red-200">
+        {/* Header */}
+        <header className="w-full h-20 bg-green-200">
+          <MainHeader setCollapsed={setCollapsed} collapsed={collapsed} />
+        </header>
 
-  {/* Sidebar + Content (under header) */}
-  <div className="flex flex-1">
-    {/* Sidebar */}
-    <aside
-      className={`${
-        collapsed ? "w-20" : "w-[250px]"
-      } bg-yellow-500 transition-all duration-200`}
-    >
-      <Sidebar collapsed={collapsed} />
-    </aside>
+        {/* Sidebar + Content (under header) */}
+        <div className="flex flex-1">
+          {/* Sidebar */}
+          <aside
+            className={`${
+              collapsed ? "w-20" : "w-[250px]"
+            } bg-yellow-500 transition-all duration-200`}
+          >
+            <Sidebar />
+          </aside>
 
-    {/* Content */}
-    <main className="flex-1 bg-gray-50 p-5">
-      <Outlet />
-    </main>
-  </div>
-</div>
-
+          {/* Content */}
+          <main className="flex-1 p-5 bg-gray-50">
+            <Outlet />
+          </main>
+        </div>
+      </div>
     </div>
   );
 };
