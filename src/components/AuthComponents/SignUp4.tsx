@@ -66,7 +66,8 @@ const SignUp4: React.FC = () => {
       formData.append("drivingLicense", file);
       SignUp(formData).unwrap();
       message.success("Account created successfully");
-      navigate("/auth/verifyOtp");
+      navigate("/auth/verifyOtpforSignUp" );
+      
     } catch (error) {
       console.log(error);
     }

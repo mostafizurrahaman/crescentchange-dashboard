@@ -26,6 +26,7 @@ import Notification from "../components/SettingsComponents/Notification";
 import Verify2FA from "../pages/Auth/verify2FA/Verify2FA";
 import SubscriptionSuccess from "../pages/Subscriptions/SubscriptionSuccess";
 import SubscriptionCancel from "../pages/Subscriptions/SubscriptionCancel";
+import VerifyOtpForSignUp from "../pages/Auth/verifyOtpForSignUp/verifyOtpForSignUp";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
   {
     path: "/auth/forgate-password",
     element: <ForgatePassword />,
+  },
+  {
+    path: "/auth/verifyOtpforSignUp",
+    element: <VerifyOtpForSignUp />,
   },
   {
     path: "/auth/verifyOtp",

@@ -50,7 +50,7 @@ const VerificationComponent = () => {
     const token = localStorage.getItem("forgotPasswordToken") ?? "";
     if (!token) {
       message.error("Please request OTP again");
-      nevigate("/auth/forgot-password");
+      // nevigate("/auth/forgot-password");
       return;
     }
 
@@ -78,8 +78,8 @@ const VerificationComponent = () => {
             Enter Verification Code
           </h1>
           <p className="text-center text-gray-500">
-            We’ve sent a verification code to{" "}
-            <span className="text-black">userofficialemail@gmail.com</span>
+            We’ve sent a verification code to your email
+            {/* <span className="text-black">{}</span> */}
           </p>
           <p className="py-3 font-medium">Enter your verification code</p>
           <div className="flex items-center justify-center pt-2 pb-7">

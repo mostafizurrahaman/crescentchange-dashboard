@@ -46,6 +46,13 @@ const AuthApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    resendSignUpOtp: builder.mutation({
+      query: (data) => ({
+        url: "/auth/send-signup-otp-again",
+        method: "POST",
+        body: data,
+      }),
+    }),
     chnagePassword: builder.mutation({
       query: (data) => ({
         url: "/auth/change-password",
@@ -122,4 +129,5 @@ export const {
   useGetNotificationQuery,
   useNotificationMarkASReadMutation,
   useGetUnreadNotificationQuery,
+  useResendSignUpOtpMutation
 } = AuthApi;
