@@ -367,9 +367,9 @@ const AllDonor = ({ tab }: ITabProps) => {
             <p className="font-semibold">
               Total Fees: $
               {(
-                selectedDonation.platformFee +
-                selectedDonation.gstOnFee +
-                selectedDonation.stripeFee
+                selectedDonation?.platformFee +
+                selectedDonation?.gstOnFee +
+                selectedDonation?.stripeFee
               ).toFixed(2)}
             </p>
 

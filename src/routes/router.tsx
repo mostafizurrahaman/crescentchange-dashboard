@@ -27,6 +27,7 @@ import SubscriptionSuccess from "../pages/Subscriptions/SubscriptionSuccess";
 import SubscriptionCancel from "../pages/Subscriptions/SubscriptionCancel";
 import VerifyOtpForSignUp from "../pages/Auth/verifyOtpForSignUp/VerifyOtpForSignUp";
 import Cancel from "../pages/Cancel/Cancel";
+import Success from "../pages/Success/Success";
 
 export const router = createBrowserRouter([
   {
@@ -98,7 +99,8 @@ export const router = createBrowserRouter([
           { path: "causes", element: <Envlopes /> },
           { path: "settings", element: <Seetings /> },
           { path: "notifications", element: <Notification /> },
-          { path: "/success", element: <Cancel /> },
+          { path: "/success", element: <Success /> },
+          { path: "/cancel", element: <Cancel /> },
         ],
       },
     ],
