@@ -3,7 +3,6 @@ import Profile from "../pages/Profile/Profile";
 import Analytics from "../pages/Analytics/Analytics";
 import Donors from "../pages/Donors/Donors";
 import Deposits from "../pages/Deposits/Deposits";
-// import MainLayout from "../components/layouts/MainLayout";
 import SignUp1 from "../components/AuthComponents/SignUp1";
 import SignUp2 from "../components/AuthComponents/SignUp2";
 import SignUp3 from "../components/AuthComponents/SignUp3";
@@ -26,7 +25,7 @@ import Notification from "../components/SettingsComponents/Notification";
 import Verify2FA from "../pages/Auth/verify2FA/Verify2FA";
 import SubscriptionSuccess from "../pages/Subscriptions/SubscriptionSuccess";
 import SubscriptionCancel from "../pages/Subscriptions/SubscriptionCancel";
-import VerifyOtpForSignUp from "../pages/Auth/verifyOtpForSignUp/verifyOtpForSignUp";
+import VerifyOtpForSignUp from "../pages/Auth/verifyOtpForSignUp/VerifyOtpForSignUp";
 
 export const router = createBrowserRouter([
   {

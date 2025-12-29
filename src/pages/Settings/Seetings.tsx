@@ -153,7 +153,7 @@ export default function Settings() {
     setTwoFA(previousTwoFA); // Restore previous 2FA state if the modal is canceled
   };
 
-  const hnadleDiscard = (p0: {
+  const hnadleDiscard = (_p0: {
     // reset passwords
     current: string;
     new: string;

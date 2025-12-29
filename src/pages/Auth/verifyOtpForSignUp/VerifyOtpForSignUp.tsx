@@ -4,13 +4,9 @@ import logo from "../../../assets/images/logo.png";
 import OTPInput from "react-otp-input";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  
-  useResendSignUpOtpMutation,
 
-  useVerifyOtpMutation,
-} from "../../../redux/features/auth/authApi";
 import { message } from "antd";
+import { useResendSignUpOtpMutation, useVerifyOtpMutation } from "../../../redux/features/auth/authApi";
 
 const VerifyOtpForSignUp = () => {
   const [otp, setOtp] = useState("");
