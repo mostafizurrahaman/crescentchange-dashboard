@@ -152,6 +152,13 @@ export default function Settings() {
     setShowDisable2FAModal(false);
     setTwoFA(previousTwoFA); // Restore previous 2FA state if the modal is canceled
   };
+
+  const hnadleDiscard = () => {
+    setShowPasswordModal(false);
+    setShowInviteModal(false);
+    setShowEditModal(false);
+  };
+
   return (
     <div>
       <h1 className="text-2xl md:text-3xl font-semibold mb-2">Settings</h1>
@@ -320,11 +327,8 @@ export default function Settings() {
         <div>
           <h3 className="font-medium">Update your password</h3>
           <p className="text-sm text-gray-500">
-            Change or update your password. Forgot your password?
-            <a href="#" className="text-blue-600 underline">
-              Click here
-            </a>
-            to reset it.
+            Change or update your password. Forgot your password? Click here to
+            reset it.
           </p>
         </div>
         <button
@@ -417,7 +421,16 @@ export default function Settings() {
           1 number, and 1 special character.
         </p>
         <div className="flex justify-end gap-3">
-          <Button onClick={() => setShowPasswordModal(false)}>
+          <Button
+            onClick={() =>
+              hnadleDiscard({
+                // reset passwords
+                current: "",
+                new: "",
+                confirm: "",
+              })
+            }
+          >
             Discard Changes
           </Button>
           <Button type="primary" onClick={handlePasswordChange}>
