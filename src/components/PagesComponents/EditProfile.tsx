@@ -108,7 +108,7 @@ const EditProfile = () => {
             <img
               src={previewImage || `${orgData?.data?.coverImage}`}
               alt="Cover"
-              className="w-full h-80 rounded-2xl"
+              className="w-full h-80 object-cover object-top rounded-2xl"
             />
             {/* Edit the cober image with thge api */}
 

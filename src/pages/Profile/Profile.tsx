@@ -45,6 +45,7 @@ import digital from "../../assets/images/💻.png";
 import mental from "../../assets/images/🧠.png";
 import qurban from "../../assets/images/🐑.png";
 import women from "../../assets/images/👩_👧.png";
+import world from "../../assets/images/🌍.png";
 
 const Profile = () => {
   const [selectedYear] = useState(dayjs().year());
@@ -152,7 +153,7 @@ const Profile = () => {
         <img
           src={`${OrgProfile?.coverImage}`}
           alt=""
-          className="w-full h-80  rounded-3xl"
+          className="w-full h-80 object-cover object-top rounded-3xl"
         />
         <div className="absolute ml-28 top-60">
           <img
@@ -329,30 +330,36 @@ const Profile = () => {
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         centered
-        width={800}
-        className="rounded-3xl my-10"
+        width={400}
+ 
+        className="rounded-3xl my-10 "
       >
+        <h1 className="text-2xl font-bold mb-8">Preview</h1>
         <div className="rounded-2xl overflow-hidden">
           {/* Cover + Logo */}
           <div className="relative">
             <img
               src={`${OrgProfile?.coverImage}`}
               alt=""
-              className="w-full h-80  rounded-3xl"
+              className="w-full h-40  object-fill rounded-3xl"
             />
             <div className="absolute -bottom-10 left-5">
               <img
                 src={`${OrgProfile?.logoImage}`}
                 alt=""
-                className="h-40 w-40 rounded-full"
+                className="h-20 w-20 rounded-full"
               />
             </div>
           </div>
 
           {/* PROFILE SECTION */}
-          <div className="flex flex-col md:flex-row justify-between items-center mt-12 px-3">
-            <h1 className="text-2xl font-bold">{OrgProfile?.name}</h1>
-            <p className="text-gray-500">
+          <div className="flex flex-col md:flex-row justify-between items-center mt-12 ">
+            <div className="flex justify-start items-center gap-5">
+              <h1 className="text-xl font-bold">{OrgProfile?.name}</h1>
+              <img src={tick} alt="" />
+            </div>
+
+            {/* <p className="text-gray-500">
               Established:{" "}
               <span className="text-black">
                 {" "}
@@ -365,14 +372,16 @@ const Profile = () => {
                   }
                 )}
               </span>
-            </p>
+            </p> */}
           </div>
-
+          <div className="text-gray-800 font-medium border rounded-full w-fit px-2 text-center flex justify-center items-center gap-2 my-3">
+            <img src={world} alt="" />
+            <p className="text-gray-400"> {OrgProfile?.address}</p>
+          </div>
+          <p className="my-2">{OrgProfile?.aboutUs}</p>
           {/* ABOUT + CONTACT */}
           <div className="p-5 mt-5 bg-white border rounded-3xl">
             <p className="text-gray-400">About</p>
-            <p className="my-2">{OrgProfile?.aboutUs}</p>
-
             <p className="text-gray-400 mt-4">Connect & Contact</p>
 
             <div className="flex items-center gap-2 mt-2">
@@ -400,7 +409,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <p className="text-gray-400">Address</p>
               <div className="flex items-center gap-2 mt-2">
                 <TfiLocationPin />
@@ -408,7 +417,7 @@ const Profile = () => {
                   {OrgProfile?.address}
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* CAUSES ANALYTICS */}
