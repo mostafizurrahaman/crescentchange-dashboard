@@ -26,6 +26,7 @@ import Verify2FA from "../pages/Auth/verify2FA/Verify2FA";
 import SubscriptionSuccess from "../pages/Subscriptions/SubscriptionSuccess";
 import SubscriptionCancel from "../pages/Subscriptions/SubscriptionCancel";
 import VerifyOtpForSignUp from "../pages/Auth/verifyOtpForSignUp/VerifyOtpForSignUp";
+import Cancel from "../pages/Cancel/Cancel";
 
 export const router = createBrowserRouter([
   {
@@ -97,6 +98,7 @@ export const router = createBrowserRouter([
           { path: "causes", element: <Envlopes /> },
           { path: "settings", element: <Seetings /> },
           { path: "notifications", element: <Notification /> },
+          { path: "/success", element: <Cancel /> },
         ],
       },
     ],

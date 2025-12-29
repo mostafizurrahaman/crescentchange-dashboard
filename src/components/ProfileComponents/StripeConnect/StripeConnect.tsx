@@ -9,10 +9,14 @@ import img5 from "../../../assets/images/stripe.png";
 const StripeConnect = () => {
   const [addBankAccount] = useAddBankAccountMutation();
   const { data: bankData } = useGetStripeAccountStatusQuery(null);
-  console.log(bankData?.data);
+  // console.log(bankData?.data);
+
   const handleAddBankModal = async () => {
     try {
       const res = await addBankAccount({}).unwrap();
+      console.log("url", res.data.onboardingUrl);
+      window.location.href = res.data.onboardingUrl;
+
       message.success(res?.message);
     } catch (error: any) {
       message.error("Bank Not Added");
