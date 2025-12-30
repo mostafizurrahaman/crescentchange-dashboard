@@ -13,7 +13,7 @@ import { FC, useRef, useState } from "react";
 import setting from "../../assets/images/Settings.png";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 import {
-  useGetDepositStatsQuery,
+  // useGetDepositStatsQuery,
   useGetMyBalanceQuery,
   useGetOrgAllDepositsQuery,
   usePayoutRequestMutation,
@@ -28,10 +28,10 @@ const Deposits: FC = () => {
   const [searchTerm] = useState("");
   const [sort] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-const printRef = useRef<HTMLDivElement>(null);
+  const printRef = useRef<HTMLDivElement>(null);
 
   const [form] = Form.useForm();
-  const { data: depositStats } = useGetDepositStatsQuery("");
+  // const { data: depositStats } = useGetDepositStatsQuery("");
   const { data: depositData } = useGetOrgAllDepositsQuery({
     status,
     payoutMethod,
@@ -175,7 +175,8 @@ const printRef = useRef<HTMLDivElement>(null);
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
               <span className="text-gray-400">$</span>
-              {depositStats?.data?.totalDeposits}
+              {getMyBalance?.data?.availableBalance} /{" "}
+              <span className="text-gray-400 text-2xl">{getMyBalance?.data?.pendingBalance}</span>
             </h1>
             {/* <p className="text-green-500">
               8.2% <span className="text-gray-400"> vs last month</span>
