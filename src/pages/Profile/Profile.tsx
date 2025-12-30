@@ -363,7 +363,7 @@ const Profile = () => {
             <img
               src={`${OrgProfile?.coverImage}`}
               alt=""
-              className="w-full h-40  object-fill rounded-3xl"
+              className="w-full h-auto rounded-3xl"
             />
             <div className="absolute -bottom-10 left-5">
               <img
@@ -501,7 +501,7 @@ const Profile = () => {
                       {/* {iconMatch && (
                         <img src={iconMatch.icon} className="h-8 w-8" />
                       )} */}
-                      <p className="h-8 w-8 bg-red-500">{iconMatch?.icon}</p>
+                      <p className="text-3xl ">{iconMatch?.icon}</p>
                     </div>
                     <div>
                       <p className="font-medium text-[16px]">{c.name}</p>
