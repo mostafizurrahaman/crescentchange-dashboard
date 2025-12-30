@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import star from "../../assets/images/Star Emphasis.png";
 import { HiCheckBadge, HiArrowPath } from "react-icons/hi2";
 import { message } from "antd";
@@ -6,10 +8,14 @@ import {
   useCancelSubscriptionMutation,
   useGetSubscriptionMeQuery,
 } from "../../redux/features/subscriptionApi/subscriptionApi";
+import { useState } from "react";
 
 const SubscriptionCard: React.FC = () => {
+  const [loadingPlan, setLoadingPlan] = useState<"monthly" | "yearly" | null>(
+    null
+  );
   const { data: subscriptionMeData } = useGetSubscriptionMeQuery();
-  const [createSession, { isLoading: isCreatingSession }] =
+  const [createSession] =
     useCreateSubscriptionSessionMutation();
   const [cancelSubscription, { isLoading: isCancelingSubscription }] =
     useCancelSubscriptionMutation();
@@ -27,11 +33,26 @@ const SubscriptionCard: React.FC = () => {
     ? new Date(subscriptionMeData.data.currentPeriodEnd).toLocaleDateString()
     : undefined;
 
+  // const startCheckout = async (planType: "monthly" | "yearly") => {
+  //   const res = await createSession({ planType }).unwrap();
+  //   const url = res?.data?.url ?? res?.url;
+  //   if (url) {
+  //     window.location.href = url;
+  //   }
+  // };
   const startCheckout = async (planType: "monthly" | "yearly") => {
-    const res = await createSession({ planType }).unwrap();
-    const url = res?.data?.url ?? res?.url;
-    if (url) {
-      window.location.href = url;
+    try {
+      setLoadingPlan(planType);
+      const res = await createSession({ planType }).unwrap();
+      const url = res?.data?.url ?? res?.url;
+
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error: any) {
+      message.error("Failed to start checkout");
+    } finally {
+      setLoadingPlan(null);
     }
   };
 
@@ -118,9 +139,9 @@ const SubscriptionCard: React.FC = () => {
           <button
             className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
             onClick={() => startCheckout("monthly")}
-            disabled={isCreatingSession || hasActiveSubscription}
+            disabled={loadingPlan === "monthly" || hasActiveSubscription}
           >
-            {isCreatingSession ? (
+            {loadingPlan === "monthly" ? (
               <>
                 <HiArrowPath className="w-4 h-4 animate-spin" />
                 Processing...
@@ -156,7 +177,8 @@ const SubscriptionCard: React.FC = () => {
         <div className="my-6 space-y-2">
           <h1 className="text-4xl font-bold">
             <span className="text-gray-400"> $</span>
-            120 <span className="text-sm font-thin text-gray-600">/ 6 months</span>
+            120{" "}
+            <span className="text-sm font-thin text-gray-600">/ 6 months</span>
           </h1>
 
           <ul className="text-lg text-gray-500 list-decimal">
@@ -206,9 +228,9 @@ const SubscriptionCard: React.FC = () => {
           <button
             className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
             onClick={() => startCheckout("yearly")}
-            disabled={isCreatingSession || hasActiveSubscription}
+            disabled={loadingPlan === "yearly" || hasActiveSubscription}
           >
-            {isCreatingSession ? (
+            {loadingPlan === "yearly" ? (
               <>
                 <HiArrowPath className="w-4 h-4 animate-spin" />
                 Processing...
