@@ -143,14 +143,14 @@ export default function Settings() {
     }
   };
   const openDisable2FAModal = () => {
-    setPreviousTwoFA(twoFA); // Save the current 2FA state before opening the modal
+    setPreviousTwoFA(twoFA);
     setShowDisable2FAModal(true);
   };
 
   // Function to handle modal cancel action
   const handleCancelDisableModal = () => {
     setShowDisable2FAModal(false);
-    setTwoFA(previousTwoFA); // Restore previous 2FA state if the modal is canceled
+    setTwoFA(previousTwoFA);
   };
 
   const hnadleDiscard = (_p0: {
@@ -531,9 +531,9 @@ export default function Settings() {
       <Modal
         title="Enter 2FA Code to Disable"
         open={showDisable2FAModal}
-        onCancel={() => handleCancelDisableModal}
+        onCancel={handleCancelDisableModal}
         footer={[
-          <Button key="cancel" onClick={() => handleCancelDisableModal}>
+          <Button key="cancel" onClick={handleCancelDisableModal}>
             Cancel
           </Button>,
           <Button
