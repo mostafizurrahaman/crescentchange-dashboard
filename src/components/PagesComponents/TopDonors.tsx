@@ -142,18 +142,22 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
             {TotalDonationAmount?.totalDonationAmount}
           </h1>
         </div>
-        {/* <div className="flex justify-between items-center gap-1">
-          <div className="bg-pink-200 h-12 w-[60%] rounded-2xl"></div>
-          <div className="bg-blue-200 h-12 w-[20%] rounded-2xl"></div>
-          <div className="bg-yellow-200 h-12 w-[20%] rounded-2xl"></div>
-        </div> */}
-        {data?.data?.breakDownByCause?.categories?.map((category: any) => {
-          // Sort the causes by totalDonationAmount descending and take top 3
+
+        {/* {data?.data?.breakDownByCause?.categories?.map((category: any) => {
           const topCauses = category.causes
             ?.sort(
               (a: any, b: any) => b.totalDonationAmount - a.totalDonationAmount
             )
-            .slice(0, 3);
+            .slice(0, 3); */}
+        {data?.data?.breakDownByCause?.categories?.map((category: any) => {
+          const topCauses = category.causes
+            ? [...category.causes]
+                .sort(
+                  (a: any, b: any) =>
+                    b.totalDonationAmount - a.totalDonationAmount
+                )
+                .slice(0, 3)
+            : [];
 
           return (
             <div key={category._id} className="mb-4">
