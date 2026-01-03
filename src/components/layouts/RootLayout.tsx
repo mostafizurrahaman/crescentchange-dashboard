@@ -66,14 +66,6 @@ const RootLayout = () => {
               </Link>
 
               <div className="relative">
-                {/* <Link to="/notification">
-                    <div className="relative ">
-                      <IoIosNotificationsOutline className="w-10 h-10 p-1 text-black bg-white border rounded-full border-primary " />
-                      <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full">
-                        1
-                      </span>
-                    </div>
-                  </Link> */}
                 <Popover
                   content={<NotificationPopover />}
                   trigger="click"
