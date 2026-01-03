@@ -84,23 +84,23 @@ const Login = () => {
                   className=""
                   form={form}
                 >
-                  <div className="mb-4 text-center">
-                    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+                  <div className="mb-8 text-center">
+                    <h2 className="text-xl md:text-[30px] font-bold mb-3">
                       Welcome Back!
                     </h2>
-                    <p className="text-neutral-400 lg:text-lg">
-                      Sign in to access the Super Admin Dashboard.
+                    <p className="text-neutral-400 lg:text-[14px">
+                      Sign in to manage everything.
                     </p>
                   </div>
                   <Form.Item
                     name="email"
-                    label={<p className="text-lg ">Email Address</p>}
+                    label={<p className="text-[14px]">Email</p>}
                   >
                     <Input
                       required
                       className=""
                       prefix={<AiOutlineMail className="mr-2 h-5 w-5" />}
-                      placeholder="mailto:admin@crescentchange.org"
+                      placeholder="Enter Email Address"
                       style={{
                         padding: "8px",
                         borderRadius: "8px",
@@ -117,7 +117,7 @@ const Login = () => {
                       required
                       className=""
                       prefix={<MdLockOutline className="mr-2 h-5 w-5" />}
-                      placeholder="Enter Your Password"
+                      placeholder="********"
                       style={{
                         padding: "8px",
                         borderRadius: "8px",
@@ -135,6 +135,7 @@ const Login = () => {
                             colorPrimary: "rgb(209,255,67)",
                             colorPrimaryBorder: "rgb(209,255,67)",
                             colorPrimaryHover: "rgb(209,255,67)",
+                            colorWhite: "rgb(0,0,0)",
                           },
                         },
                       }}
