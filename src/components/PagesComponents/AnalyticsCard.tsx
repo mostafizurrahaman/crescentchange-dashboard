@@ -1,6 +1,5 @@
 // import { BsArrowUpRight } from "react-icons/bs";
 
-
 interface TopCause {
   _id: string;
   name: string;
@@ -58,11 +57,11 @@ interface AnalyticsCardProps {
 //   };
 // }
 
-const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
+const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ data }) => {
   const stats = data?.data;
 
   return (
-    <div className="bg-white border rounded-3xl p-6">
+    <div className="bg-white border rounded-3xl px-6">
       <div className="flex justify-between items-start gap-5 my-5">
         <div>
           <h1 className="text-3xl font-bold">Total Donated</h1>
@@ -71,9 +70,11 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
             {stats?.totalDonatedAmount?.value} from last month
           </p>
 
-          <div className="flex justify-start items-end gap-2">
+          <div className="flex justify-start items-end">
             <p className="text-3xl md:text-5xl font-bold text-gray-400">
-              $ <span className="text-black">{stats?.totalDonatedAmount?.value}</span>
+              <span className="text-black">
+                ${stats?.totalDonatedAmount?.value}
+              </span>
             </p>
             <p className="text-gray-400">
               <span
@@ -83,8 +84,8 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
                     : "text-red-500"
                 }
               >
-                {stats?.totalDonatedAmount?.percentageChange}%
-              </span>{" "}
+                &nbsp;{stats?.totalDonatedAmount?.percentageChange}%
+              </span>
               vs last month
             </p>
           </div>
@@ -94,7 +95,6 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
       </div>
 
       <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3">
-        
         <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
           <h1 className="text-xl font-medium mb-12">Avg. Donation</h1>
 
@@ -107,7 +107,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({  data }) => {
           </div>
         </div>
 
-        <div className="bg-[#f7f2fa] px-6 py-8 rounded-3xl">
+        <div className="bg-[#f7f2fa] p-6 rounded-3xl">
           <h1 className="text-xl font-medium mb-12">Total Donors</h1>
 
           <div className="flex items-end gap-2">

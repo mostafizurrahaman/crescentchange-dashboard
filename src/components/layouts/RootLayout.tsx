@@ -6,7 +6,6 @@ import { FaX } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { IoMdSettings } from "react-icons/io";
-import { FiChevronDown } from "react-icons/fi";
 import brandlogo from "../../assets/images/logo.png";
 import hfl from "../../assets/images/hfl.png";
 import Sidebar from "./Sidebar/Sidebar";
@@ -102,7 +101,6 @@ const RootLayout = () => {
                   <p className="text-sm font-medium text-black/80">
                     {orgData?.data?.name}
                   </p>
-                  <FiChevronDown className="w-4 h-4 text-black/50" />
                 </div>
               </Link>
             </div>
