@@ -16,6 +16,8 @@ const VerificationComponent = () => {
     useVerifyForgotPasswordOtpMutation();
   const [resendForgotPasswordOtp, { isLoading: isResending }] =
     useResendForgotPasswordOtpMutation();
+  const emailForUi =
+    localStorage.getItem("forgotPasswordEmail") ?? "userofficialemail@gmail.com";
 
   const handleVerifyOtp = async () => {
     const email = localStorage.getItem("forgotPasswordEmail") ?? "";
@@ -29,7 +31,7 @@ const VerificationComponent = () => {
 
     try {
       const res = await verifyForgotPasswordOtp({ token, otp }).unwrap();
-      const resetPasswordToken = res?.data?.resetPasswordToken;
+      const resetPasswordToken = res?.data?.resetPasswordToken; 
 
       if (resetPasswordToken) {
         localStorage.setItem("resetPasswordToken", resetPasswordToken);
@@ -69,47 +71,64 @@ const VerificationComponent = () => {
   };
 
   return (
-    <div className="flex h-screen p-2">
-      <div className="flex flex-col items-center justify-center w-full bg-white md:w-1/2">
-        <img src={logo} alt="Logo" className="absolute top-5 right-5 left-10" />
+    <div className="flex min-h-screen p-2 bg-white md:h-screen">
+      <div className="flex flex-col items-center mt-32 w-full px-6 py-10 md:px-16 md:w-1/2">
+        <img src={logo} alt="Logo" className="absolute top-5 left-6 md:left-16" />
 
-        <div className="">
-          <h1 className="py-5 text-3xl font-bold text-center">
+        <div className="w-full max-w-md">
+          <h1 className="text-3xl font-bold font-familjen text-center text-black md:text-4xl">
             Enter Verification Code
           </h1>
-          <p className="text-center text-gray-500">
-            We’ve sent a verification code to your email
-            {/* <span className="text-black">{}</span> */}
+
+          <p className="mt-2 text-center text-gray-500 text-base">
+            We’ve sent a verification code to{" "}
+            <span className="font-medium text-black underline">
+              {emailForUi}
+            </span>
           </p>
-          <p className="py-3 font-medium">Enter your verification code</p>
-          <div className="flex items-center justify-center pt-2 pb-7">
+
+          <p className="mt-8 mb-3 font-medium text-black text-md">
+            Enter your verification code
+          </p>
+
+          <div className="flex items-center justify-center">
             <OTPInput
               value={otp}
               onChange={setOtp}
               numInputs={6}
-              renderSeparator={<span className="lg:w-10"> </span>}
-              renderInput={(props) => (
-                <input
-                  {...props}
-                  className="h-12 mx-1 text-xl text-black border border-gray-300 rounded-md md:w-8 focus:outline-none focus:border-blue-400"
-                />
-              )}
+              renderSeparator={<span className="w-8" />}
+              renderInput={(props) => {
+                const { style, ...rest } =
+                  props as React.InputHTMLAttributes<HTMLInputElement>;
+
+                return (
+                  <input
+                    {...rest}
+                    style={{
+                      ...style,
+                      width: "48px",
+                      height: "48px",
+                    }}
+                    className="text-base font-medium text-center text-black border border-gray-200 rounded-xl focus:outline-none focus:border-black"
+                  />
+                );
+              }}
             />
           </div>
 
           <button
             onClick={handleVerifyOtp}
-            className="w-full p-3 text-xl font-bold text-center text-black rounded-md bg-btnPrimary disabled:opacity-60"
+            className="w-full py-4 mt-6 text-lg font-semibold text-center text-black rounded-xl bg-btnPrimary disabled:opacity-60"
             disabled={isVerifying}
           >
             {isVerifying ? "Verifying..." : "Verify"}
           </button>
 
-          <p className="pt-5 text-center">
+          <p className="pt-5 text-sm text-center text-gray-500">
             Didn’t receive the code?
             <span
               onClick={handleResendOtp}
-              className={`pl-2 underline cursor-pointer ${
+              className={`pl-2 font-medium underline cursor-pointer text-black ${
                 isResending ? "opacity-60 pointer-events-none" : ""
               }`}
             >
@@ -119,8 +138,8 @@ const VerificationComponent = () => {
         </div>
       </div>
 
-      <div className="w-full md:w-1/2">
-        <img src={img} alt="sign-up" className="w-full h-full" />
+      <div className="hidden w-full h-full md:block md:w-1/2">
+        <img src={img} alt="sign-up" className="object-cover w-full h-full rounded-r-3xl" />
       </div>
     </div>
   );

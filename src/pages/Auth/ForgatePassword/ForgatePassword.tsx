@@ -27,10 +27,10 @@ const ForgatePassword = () => {
     }
   };
   return (
-    <div className="flex h-screen p-2">
-      <div className="flex flex-col items-center justify-center w-full bg-white md:w-1/2">
-        <img src={logo} alt="Logo" className="absolute top-5 right-5 left-10" />
-        <div className=" w-[400px] ">
+    <div className="flex min-h-screen p-2 bg-white md:h-screen">
+      <div className="flex flex-col items-center mt-32 w-full px-6 py-10 md:px-16 md:w-1/2">
+        <img src={logo} alt="Logo" className="absolute top-5 left-6 md:left-16" />
+        <div className="w-full max-w-md">
           <ConfigProvider
             theme={{
               components: {
@@ -50,18 +50,17 @@ const ForgatePassword = () => {
               layout="vertical"
               className=""
             >
-              <div className="mb-4 text-center ">
-                <h2 className="text-xl font-bold md:text-2xl lg:text-3xl">
+              <div className="mb-8 text-center">
+                <h2 className="text-3xl font-bold font-familjen md:text-4xl">
                   Reset your password
                 </h2>
-                <p className="mt-3 mb-6 text-gray-600">
+                <p className="mt-3 text-base text-gray-500">
                   We’ll send you a code on your registered email.
                 </p>
               </div>
               <Form.Item
                 name="email"
-                label={<p className=" text-md">Enter your registered email</p>}
-                style={{}}
+                label={<p className="text-sm font-medium text-gray-700 md:text-base">Enter your registered email</p>}
               >
                 <Input
                   required
@@ -79,7 +78,7 @@ const ForgatePassword = () => {
 
               <Form.Item className="">
                 <button
-                  className="w-full px-8 py-4 text-lg text-center text-black rounded-md shadow-lg bg-btnPrimary disabled:opacity-60"
+                  className="w-full px-8 py-4 text-lg font-semibold text-center text-black rounded-xl bg-btnPrimary disabled:opacity-60"
                   type="submit"
                   disabled={isLoading}
                 >
@@ -90,8 +89,8 @@ const ForgatePassword = () => {
           </ConfigProvider>
         </div>
       </div>
-      <div className="flex items-end justify-end">
-        <img src={img} alt="sign-up" className="w-full h-screen" />
+      <div className="hidden w-full h-full md:block md:w-1/2">
+        <img src={img} alt="sign-up" className="object-cover w-full h-full rounded-r-3xl" />
       </div>
     </div>
   );

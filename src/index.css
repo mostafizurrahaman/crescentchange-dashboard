@@ -4,8 +4,13 @@
 /* Apply to entire app */
 html,
 body {
-  font-family: "Familjen Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif !important;
+}
+
+#root {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 /* Ant Design override (important) */
@@ -18,5 +23,5 @@ body {
 .ant-message,
 .ant-tooltip,
 .ant-table {
-  font-family: "Familjen Grotesk", system-ui, sans-serif !important;
+  font-family: "Inter", system-ui, sans-serif !important;
 }
