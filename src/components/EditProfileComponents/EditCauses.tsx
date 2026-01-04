@@ -74,10 +74,10 @@ const EditCauses = ({ orgId }: any) => {
   const initializeModal = () => {
     const educationCategory = causeCategory.find(c => c.value === "education");
     setSelectedCategory(educationCategory);
-    form.setFieldsValue({
-      category: educationCategory?.value,
-      description: "Our students need notebooks, pencils, and basic materials for the semester"
-    });
+    // form.setFieldsValue({
+    //   category: educationCategory?.value,
+    //   description: "Our students need notebooks, pencils, and basic materials for the semester"
+    // });
     setCauseName("");
     setShowCategoryDropdown(false);
   };
@@ -203,10 +203,10 @@ const EditCauses = ({ orgId }: any) => {
               Cause Subject
             </label>
             <div className="relative">
-              <div className="flex items-center border border-gray-300 rounded-lg p-3 bg-white">
+              <div className="flex items-center border border-gray-300 rounded-lg bg-white">
                 {/* Icon and Category Dropdown */}
                 <div
-                  className="flex items-center cursor-pointer hover:bg-gray-50 px-2 py-1 rounded"
+                  className="flex items-center cursor-pointer bg-gray-100 px-2 py-1 rounded"
                   onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
                 >
                   <span className="text-2xl mr-2">
@@ -216,7 +216,7 @@ const EditCauses = ({ orgId }: any) => {
                 </div>
 
                 {/* Divider */}
-                <div className="h-6 w-px bg-gray-300 mx-2"></div>
+                <div className="h-6 w-px  mx-2"></div>
 
                 {/* Name Input */}
                 <Form.Item
@@ -274,7 +274,7 @@ const EditCauses = ({ orgId }: any) => {
             >
               <Input.TextArea
                 rows={4}
-                defaultValue="Our students need notebooks, pencils, and basic materials for the semester"
+                placeholder="Our students need notebooks, pencils, and basic materials for the semester"
                 className="border border-gray-300 rounded-lg p-3"
               />
             </Form.Item>
