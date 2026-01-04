@@ -156,12 +156,12 @@ const Deposits: FC = () => {
   return (
     <div className="">
       <div>
-        <h1 className="text-3xl font-bold mb-4">Deposit</h1>
+        <h1 className="font-familjen text-4xl font-bold mb-4">Deposit</h1>
         <p className="text-lg text-gray-600 mb-4">
           See how your supporters are giving and where your impact is growing.
         </p>
       </div>
-      <div className="bg-white border rounded-3xl p-6">
+      <div className="bg-white border rounded-[32px] p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-lg font-medium">Total Deposits</h1>
           <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-3xl text-sm text-gray-900 border hover:bg-blue-100">
@@ -285,6 +285,7 @@ const Deposits: FC = () => {
         open={isModalOpen}
         onOk={() => form.submit()}
         onCancel={handleCancel}
+        centered
       >
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item

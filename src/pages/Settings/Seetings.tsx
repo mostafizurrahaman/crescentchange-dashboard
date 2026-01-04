@@ -7,7 +7,7 @@ import {
   AiOutlineEyeInvisible,
   AiOutlineMail,
 } from "react-icons/ai";
-import { Modal, Input, Select, Button, message } from "antd";
+import { Modal, Input, Select, Button, message, ConfigProvider } from "antd";
 
 import {
   useBoardMessageApiQuery,
@@ -241,11 +241,10 @@ export default function Settings() {
                 <p>Status: </p>
                 <button
                   onClick={() => handleUpdateStatus(member._id)}
-                  className={`${
-                    member.status === "active"
-                      ? "text-green-600"
-                      : "text-yellow-600"
-                  } font-medium px-2 py-1 rounded-md bg-neutral-300`}
+                  className={`${member.status === "active"
+                    ? "text-green-600"
+                    : "text-yellow-600"
+                    } font-medium px-2 py-1 rounded-md bg-neutral-300`}
                 >
                   {member.status}
                 </button>
@@ -326,7 +325,7 @@ export default function Settings() {
         )}
       </Modal>
       {/* Update Password */}
-      <div className="bg-white rounded-xl shadow p-4 mb-6 flex justify-between items-center">
+      <div className="max-w-screen-sm bg-white rounded-[32px] shadow p-6 mb-6 flex justify-between items-center">
         <div>
           <h3 className="font-medium">Update your password</h3>
           <p className="text-sm text-gray-500">
@@ -342,7 +341,7 @@ export default function Settings() {
         </button>
       </div>
       {/* Two-Factor Authentication */}
-      <div className="bg-white rounded-xl shadow p-4 flex justify-between items-center">
+      <div className="max-w-screen-sm bg-white rounded-[32px] shadow p-6 flex justify-between items-center">
         <div>
           <h3 className="font-medium">Two-Factor Authentication</h3>
           <p className="text-sm text-gray-500">
@@ -368,79 +367,120 @@ export default function Settings() {
             }}
             className="sr-only peer"
           />
-          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-black relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
         </label>
       </div>
       {/* Password Modal  */}
-      <Modal
-        title="Update your Password"
-        open={showPasswordModal}
-        onCancel={() => setShowPasswordModal(false)}
-        footer={null}
-      >
-        {["current", "new", "confirm"].map((field) => (
-          <div className="mb-4 relative" key={field}>
-            <label className="block text-sm mb-1">
-              {field === "current"
-                ? "Enter Current Password"
-                : field === "new"
-                ? "Enter New Password"
-                : "Confirm New Password"}
-            </label>
-            <Input
-              type={showPw[field as keyof typeof showPw] ? "text" : "password"}
-              value={passwords[field as keyof typeof passwords]}
-              onChange={(e) =>
-                setPasswords((p) => ({ ...p, [field]: e.target.value }))
-              }
-              suffix={
-                showPw[field as keyof typeof showPw] ? (
-                  <AiOutlineEyeInvisible
-                    className="cursor-pointer"
-                    onClick={() =>
-                      setShowPw((p) => ({
-                        ...p,
-                        [field]: !p[field as keyof typeof p],
-                      }))
-                    }
-                  />
-                ) : (
-                  <AiOutlineEye
-                    className="cursor-pointer"
-                    onClick={() =>
-                      setShowPw((p) => ({
-                        ...p,
-                        [field]: !p[field as keyof typeof p],
-                      }))
-                    }
-                  />
-                )
-              }
-            />
-          </div>
-        ))}
-        <p className="text-xs text-gray-500 mb-4">
-          Your Password must contain at least 8 characters, 1 uppercase letter,
-          1 number, and 1 special character.
-        </p>
-        <div className="flex justify-end gap-3">
-          <Button
-            onClick={() =>
-              hnadleDiscard({
-                // reset passwords
-                current: "",
-                new: "",
-                confirm: "",
-              })
+      <ConfigProvider
+        theme={{
+          components: {
+
+            Input: {
+              borderRadius: 5,
+            },
+            Modal: {
+              borderRadius: 32,
             }
-          >
-            Discard Changes
-          </Button>
-          <Button type="primary" onClick={handlePasswordChange}>
-            Save Changes
-          </Button>
-        </div>
-      </Modal>
+          },
+        }}
+      >
+        <Modal
+          open={showPasswordModal}
+          onCancel={() => setShowPasswordModal(false)}
+          footer={null}
+          centered
+          width={560}
+
+          className="password-modal rounded-[32px]"
+          title={
+            <h2 className="font-familjen text-2xl font-semibold ">
+              Update your Password
+            </h2>
+          }
+        >
+
+          {["current", "new", "confirm"].map((field) => (
+            <div className="mb-5 relative" key={field}>
+              <label className="block text-sm text-gray-700 mb-1">
+                {field === "current"
+                  ? "Enter Current Password"
+                  : field === "new"
+                    ? "Enter New Password"
+                    : "Confirm New Password"}
+              </label>
+
+              <Input
+
+                type={showPw[field as keyof typeof showPw] ? "text" : "password"}
+                value={passwords[field as keyof typeof passwords]}
+                onChange={(e) =>
+                  setPasswords((p) => ({ ...p, [field]: e.target.value }))
+                }
+                className="rounded-lg h-[52px] px-4 py-3"
+                placeholder="******"
+                suffix={
+                  showPw[field as keyof typeof showPw] ? (
+                    <AiOutlineEyeInvisible
+                      className="cursor-pointer text-gray-500 hover:text-gray-700"
+                      onClick={() =>
+                        setShowPw((p) => ({
+                          ...p,
+                          [field]: !p[field as keyof typeof p],
+                        }))
+                      }
+                    />
+                  ) : (
+                    <AiOutlineEye
+                      className="cursor-pointer text-gray-500 hover:text-gray-700"
+                      onClick={() =>
+                        setShowPw((p) => ({
+                          ...p,
+                          [field]: !p[field as keyof typeof p],
+                        }))
+                      }
+                    />
+                  )
+                }
+              />
+
+            </div>
+
+          ))}
+
+          <p className="text-xs text-gray-500 mb-6 flex items-start gap-1">
+            <span>ⓘ</span>
+            <span>
+              Your Password must contain at least 8 characters, 1 uppercase letter,
+              1 number, and 1 special character.
+            </span>
+          </p>
+
+          <div className="flex justify-end items-center gap-3 mt-6">
+            <Button
+              onClick={() =>
+                hnadleDiscard({
+                  current: "",
+                  new: "",
+                  confirm: "",
+                })
+              }
+              className="py-2 px-6 rounded-full bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200 font-medium"
+            >
+              Discard Changes
+            </Button>
+
+            <Button
+              htmlType="submit"
+              onClick={handlePasswordChange}
+              className="py-2 px-6 rounded-full bg-black text-white border border-black hover:bg-gray-800 font-medium"
+            >
+              Save Changes
+            </Button>
+          </div>
+
+        </Modal>
+      </ConfigProvider>
+
       {/* Invite Modal */}
       <Modal
         title="Invite Your Team Member"

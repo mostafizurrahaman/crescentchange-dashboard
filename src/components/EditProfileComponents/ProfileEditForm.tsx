@@ -6,8 +6,16 @@ import {
   Input,
   Button,
   message,
+  Switch,
 } from "antd";
-import { FiCalendar, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from "react-icons/fi";
+import {
+  FiCalendar,
+  FiGlobe,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+  FiUser,
+} from "react-icons/fi";
 import { useEditOrgDetailsMutation } from "../../redux/features/profileApi/profileApi";
 import dayjs from "dayjs";
 
@@ -79,9 +87,31 @@ const ProfileEditForm = () => {
           components: {
             Form: { borderRadius: 0 },
             Input: { borderRadius: 12 },
+            Switch: {
+              colorPrimary: "rgb(0,0,0)",
+              colorPrimaryBorder: "rgb(0,0,0)",
+              colorPrimaryHover: "rgb(0,0,0)",
+            },
+            Button:{
+              colorPrimary: "rgb(0,0,0)",
+              colorPrimaryBorder: "rgb(0,0,0)",
+              colorInfoActive: "rgb(0,0,0)",
+              colorPrimaryHover: "rgb(0,0,0)",
+              
+            }
           },
         }}
       >
+        <div className="flex justify-end pr-10">
+          <h1 className="text-end">
+            Profile visiblity:{" "}
+            <span className="pl-2">
+              {" "}
+              <Switch></Switch>
+            </span>
+          </h1>
+        </div>
+
         <Form
           form={form}
           name="contact"
@@ -119,7 +149,13 @@ const ProfileEditForm = () => {
               style={{ flex: 1 }}
             >
               <DatePicker
-                style={{ width: "100%", height: 56, borderRadius: 14, background: "#ffffff", border: "1px solid #e5e7eb" }}
+                style={{
+                  width: "100%",
+                  height: 56,
+                  borderRadius: 14,
+                  background: "#ffffff",
+                  border: "1px solid #e5e7eb",
+                }}
                 placeholder="01 July 2018"
                 suffixIcon={<FiCalendar className="text-black/60" />}
               />
@@ -246,7 +282,7 @@ const ProfileEditForm = () => {
             <Button
               onClick={handleDiscard}
               type="default"
-              className="h-11 px-5 rounded-3xl bg-white border border-gray-300 text-[15px] font-medium shadow-none"
+              className="py-6 px-5 rounded-full bg-white border border-gray-300 text-[15px] font-medium "
             >
               Discard Changes
             </Button>
@@ -255,7 +291,7 @@ const ProfileEditForm = () => {
               htmlType="submit"
               type="default"
               loading={isLoading}
-              className="h-10 px-5 rounded-3xl bg-[#D1FF43] border border-gray-300 text-[15px] font-semibold text-black shadow-none"
+              className="py-6 px-5 rounded-full bg-neutral-900  text-white border border-gray-300 text-[15px] font-semibold "
             >
               Save Changes
             </Button>

@@ -15,7 +15,7 @@ import {
 } from "../../redux/features/profileApi/profileApi";
 import StripeConnect from "../ProfileComponents/StripeConnect/StripeConnect";
 
-const EditProfile = () => {
+const  EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
@@ -71,7 +71,7 @@ const EditProfile = () => {
         {/* header */}
         <div>
           <div className="flex justify-between items-center gap-5">
-            <h1 className="text-4xl font-semibold mb-4">Edit Information</h1>
+            <h1 className="font-familjen text-4xl font-semibold mb-4">Edit Information</h1>
             {/* <div className="flex justify-start items-center gap-3">
               <button
                 onClick={() => setActive("discard")}
@@ -96,13 +96,13 @@ const EditProfile = () => {
               </button>
             </div> */}
           </div>
-          <p className="text-lg text-gray-600 mb-6">
-            Manage how your organisation appears to donors.
+          <p className="text-[16px] text-gray-600 mb-6">
+          Manage how your organisation appears to donors.
           </p>
         </div>
 
         {/* profile cover */}
-        <div className="mt-10">
+        <div className="">
           <div className="my-5 w-full relative">
             <img
               src={previewImage || `${orgData?.data?.coverImage}`}
@@ -152,7 +152,7 @@ const EditProfile = () => {
         </div>
 
         {/* outlet */}
-        <div className="w-full flex justify-between items-start gap-5 border-r">
+        <div className="w-full flex justify-between items-start gap-5 border-r -mt-28">
           {/* Sidebar */}
           <div className="w-full md:w-[20%] border-r flex flex-col gap-3 px-6 min-h-screen">
             <div
@@ -219,3 +219,4 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+ 

@@ -1,22 +1,26 @@
- 
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Button, Modal,  Select, Tooltip } from "antd";
+import { Button, Modal, Select, Tooltip } from "antd";
 import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { Table } from "antd";
-import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
+import { DownloadOutlined, ReloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { FaEye } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
 import { FiChevronDown } from "react-icons/fi";
 import { HiFunnel } from "react-icons/hi2";
 import { HiCalendarDays } from "react-icons/hi2";
+import { IoIosRefresh } from "react-icons/io";
+
+import level from "../../assets/images/Layer_1.png"
+
 const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
@@ -28,7 +32,7 @@ const Reports = () => {
   const { Option } = Select;
   const onSearch = (value: string) => {
     setSearchTerm(value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const { data: statsData } = useGetDonationStatsQuery({
@@ -37,7 +41,7 @@ const Reports = () => {
   });
   const { data: profileData } = useGetAllProfileQuery(null);
   const organizationId = profileData?.data?._id;
-  const { data: donorData} = useGetAllDonorsQuery(
+  const { data: donorData } = useGetAllDonorsQuery(
     {
       page: currentPage,
       limit: pageSize,
@@ -61,12 +65,29 @@ const Reports = () => {
     setStatus(value);
     setCurrentPage(1); // Reset page
   };
+  const [resendReceipt] = useResendReceiptMutation();
+  const handleResendRecipt = async (record: any) => {
+    const selectedId = record?._id;
+    if (selectedId) {
+      await resendReceipt(selectedId).unwrap();
+    }
+
+    console.log("Receipt resent for donation:", selectedId);
+  }
   const columns = [
     {
       title: "Name",
       dataIndex: "donor",
       key: "name",
-      render: (donor: any) => donor?.name || "-",
+      render: (donor: any, record: any) => {
+        return <div className="flex justify-start items-center gap-2">
+          <img src={donor?.image || ""} alt="Donor" className="w-8 h-8 rounded-full object-cover" />
+          <div>
+            <p className="font-medium">{donor?.name || "-"}</p>
+            <p className="text-gray-500">Since {record?.donationDate ? new Date(record.donationDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "-"}</p>
+          </div>
+        </div>;
+      },
     },
     {
       title: "Email Address",
@@ -77,8 +98,26 @@ const Reports = () => {
     {
       title: "Date & Time",
       dataIndex: "donationDate",
-      key: "dateTime",
-      render: (date: string) => new Date(date).toLocaleString(),
+      key: "donationDate",
+      render: (donationDate: string) => {
+        const date = new Date(donationDate);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+        const formattedTime = date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+        return (
+          <div>
+            <div>{formattedDate}</div>
+            <div className="text-gray-500">{formattedTime}</div>
+          </div>
+        );
+      },
     },
     {
       title: "Donation Type",
@@ -109,17 +148,23 @@ const Reports = () => {
         );
       },
     },
-
     {
       title: "Donation Message",
       dataIndex: "specialMessage",
       key: "specialMessage",
+      render: (specialMessage: string) => specialMessage || "-",
     },
     {
-      title: "Amount",
+      title: "Donated Amount",
       dataIndex: "amount",
       key: "amount",
       render: (amount: any) => `$${amount.toFixed(2)}`,
+    },
+    {
+      title: "Net Amount",
+      dataIndex: "netAmount",
+      key: "netAmount",
+      render: (netAmount: any) => `$${netAmount.toFixed(2)}`,
     },
     {
       title: "Status",
@@ -131,14 +176,17 @@ const Reports = () => {
       title: "Action",
       key: "action",
       render: (record: any) => (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2">
           <button
             type="button"
             onClick={() => handleViewClick(record)}
             className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5"
             aria-label="View"
           >
-            <FaEye className="h-5 w-5" />
+            <FaEye className="w-5 h-5" />
+          </button>
+          <button onClick={() => handleResendRecipt(record)} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5">
+            <IoIosRefresh className="text-nutral-500" />
           </button>
         </div>
       ),
@@ -162,7 +210,7 @@ const Reports = () => {
     const file = new Blob([excelBuffer], {
       // bookType: "xlsx",
       // type: "application/octet-stream",
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "Reports.xlsx");
   };
@@ -191,7 +239,7 @@ const Reports = () => {
     const file = new Blob([excelBuffer], {
       // bookType: "xlsx",
       // type: "application/octet-stream",
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "Report table.xlsx");
   };
@@ -199,7 +247,7 @@ const Reports = () => {
     <div>
       <div className="flex items-center justify-between gap-5">
         <div>
-          <h1 className="mb-4 text-3xl font-bold">Reports</h1>
+          <h1 className="font-familjen mb-4 text-4xl font-bold">Reports</h1>
           <p className="mb-4 text-lg text-gray-600">
             Generate, track, and export your donation insights.
           </p>
@@ -232,38 +280,51 @@ const Reports = () => {
 
       <div>
         <div className="grid items-center justify-center grid-cols-1 gap-3 md:grid-cols-3">
-          <div className="p-6 bg-white border rounded-3xl">
+          <div className="p-6 bg-white border rounded-3xl h-[192px]">
             <p className="text-lg font-medium">Total Donations</p>
-            <h1 className="mt-10 text-2xl font-medium">
-              <p className="text-neutral-400">
+            <div className="flex items-end justify-start gap-1 mt-10 mb-6">
+              <h1 className="text-3xl font-bold md:text-5xl">
+                {" "}
+                <span className="text-gray-400">$</span>{" "}
+                {statsData?.data?.totalDonatedAmount?.value}
+              </h1>
+              <p className="text-green-500">
                 {statsData?.data?.totalDonatedAmount?.isIncrease === true
                   ? "+"
                   : "-"}
-                ${statsData?.data?.totalDonatedAmount?.percentageChange} % from
-                last month
+                {statsData?.data?.totalDonatedAmount?.percentageChange}%{" "}
+                <span className="text-gray-400"> vs last month</span>
               </p>
-            </h1>
+            </div>
           </div>
-          <div className="p-6 bg-white border rounded-3xl">
+          <div className="p-6 bg-white border rounded-3xl h-[192px]">
             <p className="text-lg font-medium">Total Donors</p>
-            <h1 className="mt-10 text-2xl font-medium text-gray-400">
-              {" "}
-              <span className="text-black">
-                {statsData?.data?.totalDonors?.value}
-              </span>
-              <span className="text-sm text-green-500">
-                {statsData?.data?.totalDonors?.percentageChange} %
-              </span>{" "}
-            </h1>
+            <div className="flex items-end justify-start gap-1 mt-10 mb-6">
+              <h1 className="text-3xl font-bold md:text-5xl text-gray-400">
+                {" "}
+                <span className="text-black">
+                  {statsData?.data?.totalDonors?.value}
+                </span>
+                <span className="ml-1 text-sm text-green-500">
+                  {" "}
+                  {statsData?.data?.totalDonors?.isIncrease === true
+                    ? "+"
+                    : "-"}
+                  {statsData?.data?.totalDonors?.percentageChange} %
+                </span>{" "}
+              </h1>
+            </div>
           </div>
-          <div className="p-6 bg-white border rounded-3xl">
+          <div className="p-6 bg-white border rounded-3xl h-[192px]">
             <p className="text-lg font-medium">Avg. Donation</p>
-            <h1 className="mt-10 text-2xl font-medium">
-              {" "}
-              <span className="text-gray-400">$</span>{" "}
-              {statsData?.data?.averageDonationPerUser?.value}
-              <span className="text-sm text-gray-400"> per user</span>{" "}
-            </h1>
+            <div className="flex items-end justify-start gap-1 mt-10 mb-6">
+              <h1 className="text-3xl font-bold md:text-5xl">
+                {" "}
+                <span className="text-gray-400">$</span>{" "}
+                {statsData?.data?.averageDonationPerUser?.value}
+                <span className="ml-1 text-sm text-gray-400"> per user</span>{" "}
+              </h1>
+            </div>
           </div>
         </div>
         <div className="p-6 my-6 bg-white border rounded-3xl">
@@ -343,53 +404,90 @@ const Reports = () => {
           />
 
           <Modal
-            title="Donor Details"
             open={isOpen}
             onCancel={() => setIsOpen(false)}
             footer={null}
+            centered
+            width={520}
+       
           >
-            <div>
-              <h3 className="mb-2 border-b ">Donor Info:</h3>
-              <p>
-                <strong>Name:</strong> {selectedDonation?.donor?.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
-              </p>
+            <div className="flex flex-col items-center text-center">
+              {/* Success Icon */}
+              <div className="mb-4">
+               <img src={level} alt="" />
+              </div>
 
-              <h3 className="mb-2 border-b ">Donation Info:</h3>
-              <p>
-                <strong>Type:</strong> {selectedDonation?.donationType}
-              </p>
-              <p>
-                <strong>Amount:</strong> ${selectedDonation?.amount.toFixed(2)}
-              </p>
-              <p>
-                <strong>Message:</strong>{" "}
-                {selectedDonation?.specialMessage || "-"}
-              </p>
+              {/* Title */}
+              <h2 className="text-xl font-semibold mb-6">Summary</h2>
 
-              <h3 className="mb-2 border-b ">Cause:</h3>
-              <p>
-                <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
-              </p>
-
-              <h3 className="mb-2 border-b ">Receipt:</h3>
-              {selectedDonation?.receiptId && (
-                <div>
-                  <p className="mb-5">
-                    <strong>Receipt Number:</strong>{" "}
-                    {selectedDonation?.receiptId.receiptNumber}
-                  </p>
-                  <a
-                    href={selectedDonation?.receiptId.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <strong>Download Receipt</strong>
-                  </a>
+              {/* Summary Rows */}
+              <div className="w-full text-sm space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Amount donated:</span>
+                  <span className="font-medium">
+                    ${selectedDonation?.amount?.toFixed(2)}
+                  </span>
                 </div>
-              )}
+
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Organization:</span>
+                  <span className="font-medium">
+                    {selectedDonation?.cause?.name || "No Cause"}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Donation Type:</span>
+                  <span className="font-medium">
+                    {selectedDonation?.donationType}
+                  </span>
+                </div>
+
+                <div className="pt-2 flex flex-col justify-start items-start space-y-1">
+                  <p className="text-gray-500 mb-1">Special message:</p>
+                  <p className=" text-gray-800 font-bold">
+                    "{selectedDonation?.specialMessage || "-"}"
+                  </p>
+                </div>
+
+                <div className="border-t pt-3 flex justify-between">
+                  <span className="text-gray-500">Timestamp:</span>
+                  <span className="font-medium">
+                    {new Date(selectedDonation?.donationDate).toLocaleString()}
+                  </span>
+                </div>
+
+                {selectedDonation?.receiptId && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Transaction ID:</span>
+                    <span className="font-medium">
+                      {selectedDonation?.receiptId.receiptNumber}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 mt-8 w-full">
+                <button
+                  onClick={() => handleResendRecipt(selectedDonation)}
+                  className="flex-1 border rounded-lg py-2 text-sm font-medium hover:bg-gray-50 flex items-center justify-center gap-2"
+                >
+                  <ReloadOutlined />
+                  Resend Receipt
+                </button>
+
+                <a
+                  href={selectedDonation?.receiptId?.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="flex-1 bg-black text-white rounded-lg py-2 text-sm font-medium flex items-center justify-center gap-2 hover:bg-gray-800"
+                >
+                  <DownloadOutlined />
+                  Save receipt
+                </a>
+              </div>
             </div>
           </Modal>
         </div>

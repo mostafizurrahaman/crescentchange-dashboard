@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Modal, Select, Tooltip } from "antd";
+import { Button, Modal, Select, Pagination, Tooltip, ConfigProvider } from "antd";
 import { Table } from "antd";
 import { Input } from "antd";
 import { useEffect, useState } from "react";
@@ -9,19 +9,20 @@ import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { FaEye } from "react-icons/fa";
-import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { FiChevronDown } from "react-icons/fi";
 import { HiFunnel } from "react-icons/hi2";
 import { HiCalendarDays } from "react-icons/hi2";
+import { IoIosRefresh } from "react-icons/io";
 interface ITabProps {
   tab: string;
 }
 const AllDonor = ({ tab }: ITabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +47,10 @@ const AllDonor = ({ tab }: ITabProps) => {
     filter: "this_month",
     donationType: tab,
   });
-  // console.log("data", donorData?.data);
+
+  const [resendReceipt] = useResendReceiptMutation();
+
+  console.log("data", donorData);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
     setIsOpen(true);
@@ -69,13 +73,29 @@ const AllDonor = ({ tab }: ITabProps) => {
   }, [searchTerm, status, currentPage]);
 
   const data = donorData?.data;
+  const handleResendRecipt = async (record: any) => {
+    const selectedId = record?._id;
+    if (selectedId) {
+      await resendReceipt(selectedId).unwrap();
+    }
+
+    console.log("Receipt resent for donation:", selectedId);
+  }
 
   const columns = [
     {
       title: "Name",
       dataIndex: "donor",
       key: "name",
-      render: (donor: any) => donor?.name || "-",
+      render: (donor: any, record: any) => {
+        return <div className="flex justify-start items-center gap-2">
+          <img src={donor?.image || ""} alt="Donor" className="w-8 h-8 rounded-full object-cover" />
+          <div>
+            <p className="font-medium">{donor?.name || "-"}</p>
+            <p className="text-gray-500">Since {record?.donationDate ? new Date(record.donationDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "-"}</p>
+          </div>
+        </div>;
+      },
     },
     {
       title: "Email Address",
@@ -86,8 +106,26 @@ const AllDonor = ({ tab }: ITabProps) => {
     {
       title: "Date & Time",
       dataIndex: "donationDate",
-      key: "dateTime",
-      render: (date: string) => new Date(date).toLocaleString(),
+      key: "donationDate",
+      render: (donationDate: string) => {
+        const date = new Date(donationDate);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+        const formattedTime = date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+        return (
+          <div>
+            <div>{formattedDate}</div>
+            <div className="text-gray-500">{formattedTime}</div>
+          </div>
+        );
+      },
     },
     {
       title: "Donation Type",
@@ -118,11 +156,11 @@ const AllDonor = ({ tab }: ITabProps) => {
         );
       },
     },
-
     {
       title: "Donation Message",
       dataIndex: "specialMessage",
       key: "specialMessage",
+      render: (specialMessage: string) => specialMessage || "-",
     },
     {
       title: "Donated Amount",
@@ -146,7 +184,7 @@ const AllDonor = ({ tab }: ITabProps) => {
       title: "Action",
       key: "action",
       render: (record: any) => (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2">
           <button
             type="button"
             onClick={() => handleViewClick(record)}
@@ -154,6 +192,9 @@ const AllDonor = ({ tab }: ITabProps) => {
             aria-label="View"
           >
             <FaEye className="w-5 h-5" />
+          </button>
+          <button onClick={() => handleResendRecipt(record)} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5">
+            <IoIosRefresh className="text-nutral-500" />
           </button>
         </div>
       ),
@@ -189,7 +230,7 @@ const AllDonor = ({ tab }: ITabProps) => {
   };
   return (
     <div className="">
-      <div className="p-6 bg-white border rounded-3xl">
+      <div className="p-6 bg-white border rounded-[32px]">
         <div className="flex items-center justify-between mb-5">
           <div>
             <p className="text-xl font-medium ">Total Donation</p>
@@ -247,7 +288,7 @@ const AllDonor = ({ tab }: ITabProps) => {
         </div>
       </div>
 
-      <div className="p-6 my-6 bg-white border rounded-3xl">
+      <div className="p-6 my-6 bg-white border rounded-[32px]">
         <div className="flex items-center justify-between gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
 
@@ -322,9 +363,59 @@ const AllDonor = ({ tab }: ITabProps) => {
         <Table
           columns={columns}
           dataSource={data}
-          pagination={{ pageSize: 5 }}
+          pagination={false}
           style={{ marginTop: 20 }}
         />
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between mt-6">
+          <div className="text-sm text-gray-600">
+            Showing {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, donorData?.meta?.total || 0)} from {donorData?.meta?.total || 0}
+          </div>
+          <ConfigProvider
+            theme={{
+              components: {
+                "Pagination": {
+                  "colorPrimaryBorder": "rgb(fffff)",
+                  "colorPrimaryHover": "rgb(ffffff)",
+                  "controlOutline": "rgb(fffff)",
+                  "colorPrimary": "rgb(ffffff)"
+                }
+              }
+            }}
+          >
+            <Pagination
+              current={currentPage}
+              total={donorData?.meta?.total || 0}
+              pageSize={pageSize}
+              onChange={(page, size) => {
+                setCurrentPage(page);
+                setPageSize(size);
+              }}
+              showSizeChanger
+              pageSizeOptions={[10, 20, 50, 100]}
+              className="flex items-center gap-1"
+              itemRender={(current, type, element) => {
+                if (type === 'page' && current === currentPage) {
+                  return (
+                    <div className="w-8 h-8 rounded-full bg-black text-white font-medium flex items-center justify-center">
+                      {current}
+                    </div>
+                  );
+                }
+                if (type === 'prev' || type === 'next') {
+                  return (
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center">
+                      {type === 'prev' ? '<' : '>'}
+                    </div>
+                  );
+                }
+                return element;
+              }}
+
+            />
+          </ConfigProvider>
+        </div>
 
         <Modal
           title="Donation Details"
@@ -404,6 +495,8 @@ const AllDonor = ({ tab }: ITabProps) => {
           </div>
         </Modal>
       </div>
+
+
     </div>
   );
 };
