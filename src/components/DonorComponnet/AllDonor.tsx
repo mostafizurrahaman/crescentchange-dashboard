@@ -230,7 +230,7 @@ const AllDonor = ({ tab }: ITabProps) => {
   };
   return (
     <div className="">
-      <div className="p-6 bg-white border rounded-3xl">
+      <div className="p-6 bg-white border rounded-[32px]">
         <div className="flex items-center justify-between mb-5">
           <div>
             <p className="text-xl font-medium ">Total Donation</p>
@@ -288,7 +288,7 @@ const AllDonor = ({ tab }: ITabProps) => {
         </div>
       </div>
 
-      <div className="p-6 my-6 bg-white border rounded-3xl">
+      <div className="p-6 my-6 bg-white border rounded-[32px]">
         <div className="flex items-center justify-between gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
 

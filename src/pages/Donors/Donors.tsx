@@ -41,7 +41,7 @@ const Donors = () => {
     <div>
       <div className="flex justify-between items-center gap-5">
         <div>
-          <h1 className="text-xl md:text-3xl font-semibold my-3">
+          <h1 className="font-familjen text-xl md:text-3xl font-semibold my-3">
             {tabContent[activeTab].title}
           </h1>
           <p className="text-gray-500 mb-10">

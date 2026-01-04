@@ -195,7 +195,7 @@ const Recurring = ({ tab }: ITabProps) => {
   };
   return (
     <div className="">
-      <div className="bg-white border rounded-3xl p-6">
+      <div className="bg-white border rounded-[32px] p-6">
         <div className="flex justify-between items-center mb-5">
           <div>
             <p className=" text-xl font-medium">Total Donation</p>
