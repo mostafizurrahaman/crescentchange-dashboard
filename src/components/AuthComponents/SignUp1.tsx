@@ -8,14 +8,14 @@ import building from "../../assets/images/Building.png";
 import { MdLockOutline } from "react-icons/md";
 import { AiOutlineMail } from "react-icons/ai";
 
-// Define your step routes here, in order.
+// Define your step routes here, in order. 
 // Add a 6th step if you have one.
 const STEPS = [
   { path: "/auth/signUp1", label: "Account" },
   { path: "/auth/signUp2", label: "Organization" },
-  { path: "/auth/signUp3", label: "Branding" },
-  { path: "/auth/signUp4", label: "Bank" }
-  // { path: "/auth/signUp5", label: "Review" },
+  { path: "/auth/signUp3", label: "Compliance" },
+  { path: "/auth/signUp4", label: "Board Member" },
+  { path: "/auth/signUp5", label: "Payment" },
   // { path: "/auth/signUp6", label: "Done" },
 ];
 
@@ -40,10 +40,10 @@ const SignUp1: React.FC = () => {
 
   return (
     <div className="h-screen flex p-2">
-      <div className="bg-white flex flex-col justify-center items-center w-full md:w-1/2 relative">
-        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+      <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+      <div className="bg-white flex flex-col mt-32 items-center w-full md:w-1/2 relative">
 
-        <div className="w-full max-w-sm mt-20">
+        <div className="w-full max-w-lg">
           <ConfigProvider
             theme={{
               components: {
@@ -58,86 +58,82 @@ const SignUp1: React.FC = () => {
               onFinish={onFinish}
               layout="vertical"
             >
-              <div className="text-center">
-                <h2 className="text-2xl font-bold mb-4">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-familjen font-bold mb-3 text-black">
                   Let's Setup Your Account
                 </h2>
-                <p className="text-neutral-600 text-lg mb-6">
+                <p className="text-neutral-500 text-base mb-6">
                   Start your journey. Empower your cause. Accept donations
                   easily.
                 </p>
 
                 {/* Segmented step progress */}
                 <Stepper total={total} current={current} />
-
-                <p className="mt-4 mb-6">
-                  Step {current}/{total}
-                </p>
               </div>
 
               <Form.Item
                 name="name"
-                label={<p className="text-lg">Organisation Name</p>}
+                label={<p className="text-base font-medium text-black/80">Organisation Name</p>}
               >
                 <Input
                   required
                   prefix={
-                    <img src={building} alt="" className="mr-2 h-5 w-5" />
+                    <img src={building} alt="" className="mr-3 h-5 w-5 opacity-70" />
                   }
                   placeholder="Enter Name"
                   style={{
                     padding: "8px",
-                    borderRadius: "8px",
+                    borderRadius: "12px",
                     width: "100%",
-                    height: "52px",
+                    height: "56px",
                   }}
                 />
               </Form.Item>
 
               <Form.Item
                 name="email"
-                label={<p className="text-lg">Email Address</p>}
+                label={<p className="text-base font-medium text-black/80">Email</p>}
               >
                 <Input
                   required
                   type="email"
-                  prefix={<AiOutlineMail className="mr-2 h-5 w-5" />}
-                  placeholder="mailto:admin@crescentchange.org"
+                  prefix={<AiOutlineMail className="mr-3 h-5 w-5 text-neutral-400" />}
+                  placeholder="Enter Email Address"
                   style={{
                     padding: "8px",
-                    borderRadius: "8px",
+                    borderRadius: "12px",
                     width: "100%",
-                    height: "52px",
+                    height: "56px",
                   }}
                 />
               </Form.Item>
 
               <Form.Item
                 name="password"
-                label={<p className="text-lg">Password</p>}
+                label={<p className="text-base font-medium text-black/80">Password</p>}
               >
                 <Input.Password
                   required
-                  prefix={<MdLockOutline className="mr-2 h-5 w-5" />}
-                  placeholder="Enter Your Password"
+                  prefix={<MdLockOutline className="mr-3 h-5 w-5 text-neutral-400" />}
+                  placeholder="************"
                   style={{
                     padding: "8px",
-                    borderRadius: "8px",
+                    borderRadius: "12px",
                     width: "100%",
-                    height: "52px",
+                    height: "56px",
                   }}
                 />
               </Form.Item>
 
               <Form.Item>
                 {!isLast ? (
-                  <button className="bg-btnPrimary w-full py-4 rounded-md shadow-lg text-lg font-medium hover:text-black">
+                  <button className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black">
                     Continue
                   </button>
                 ) : (
                   <button
                     type="submit"
-                    className="bg-btnPrimary w-full py-4 rounded-md shadow-lg text-lg font-medium hover:text-black"
+                    className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black"
                   >
                     Finish
                   </button>
@@ -150,7 +146,7 @@ const SignUp1: React.FC = () => {
 
       {/* Right section - Image */}
       <div className="w-full md:w-1/2">
-        <img src={img} alt="sign-up" className="w-full h-full object-cover" />
+        <img src={img} alt="sign-up" className="w-full h-full object-cover rounded-r-2xl" />
       </div>
     </div>
   );
@@ -162,7 +158,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
 
   return (
     <div
-      className="flex items-center gap-3 w-1/2 mx-auto"
+      className="flex items-center gap-2 w-2/5 mx-auto"
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={total}
@@ -174,7 +170,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
         return (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full transition-colors duration-200 ${
+            className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${
               isActive ? "bg-[#a55eea]" : "bg-neutral-200"
             }`}
           />

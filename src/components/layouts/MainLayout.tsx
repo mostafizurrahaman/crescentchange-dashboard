@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
@@ -47,7 +46,7 @@ const MainLayout = () => {
           </aside>
 
           {/* Content */}
-          <main className="flex-1 p-5 bg-gray-50">
+          <main className="flex-1 bg-gray-50">
             <Outlet />
           </main>
         </div>

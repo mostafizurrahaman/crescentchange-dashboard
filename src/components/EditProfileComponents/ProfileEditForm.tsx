@@ -7,7 +7,7 @@ import {
   Button,
   message,
 } from "antd";
-import { useState } from "react";
+import { FiCalendar, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from "react-icons/fi";
 import { useEditOrgDetailsMutation } from "../../redux/features/profileApi/profileApi";
 import dayjs from "dayjs";
 
@@ -39,7 +39,6 @@ type FieldType = {
 const ProfileEditForm = () => {
   const [editOrgDetails, { isLoading }] = useEditOrgDetailsMutation();
   const [form] = Form.useForm<FieldType>();
-  const [active, setActive] = useState<"save" | "discard" | null>(null);
 
   const onFinish = async (values: FieldType) => {
     try {
@@ -62,7 +61,6 @@ const ProfileEditForm = () => {
       message.success("Profile updated successfully!");
       console.log("Updated data:", response);
       form.resetFields();
-      setActive("save");
     } catch (error: any) {
       message.error(error?.data?.message || "Failed to update profile");
       console.error(error);
@@ -71,7 +69,6 @@ const ProfileEditForm = () => {
 
   const handleDiscard = () => {
     form.resetFields();
-    setActive("discard");
     message.info("Changes discarded");
   };
 
@@ -81,7 +78,7 @@ const ProfileEditForm = () => {
         theme={{
           components: {
             Form: { borderRadius: 0 },
-            Input: { borderRadius: 5 },
+            Input: { borderRadius: 12 },
           },
         }}
       >
@@ -91,10 +88,10 @@ const ProfileEditForm = () => {
           initialValues={{ remember: false }}
           onFinish={onFinish}
           layout="vertical"
-          className="px-6"
+          className="px-6 space-y-4"
         >
           {/* Organisation Name and Date */}
-          <div className="flex flex-col md:flex-row gap-2">
+          <div className="flex flex-col md:flex-row gap-4">
             <Form.Item<FieldType>
               name="name"
               label="Organisation Name"
@@ -103,12 +100,16 @@ const ProfileEditForm = () => {
               ]}
               style={{ flex: 1 }}
             >
-              <Input placeholder="Organisation Name" />
+              <Input
+                placeholder="HFL Foundation"
+                prefix={<FiUser className="mr-2 text-black/60" />}
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+              />
             </Form.Item>
 
             <Form.Item<FieldType>
               name="date-of-established"
-              label="Date Of Established"
+              label="Date Established"
               rules={[
                 {
                   required: true,
@@ -118,8 +119,9 @@ const ProfileEditForm = () => {
               style={{ flex: 1 }}
             >
               <DatePicker
-                style={{ width: "100%" }}
-                placeholder="Date Of Established"
+                style={{ width: "100%", height: 56, borderRadius: 14, background: "#ffffff", border: "1px solid #e5e7eb" }}
+                placeholder="01 July 2018"
+                suffixIcon={<FiCalendar className="text-black/60" />}
               />
             </Form.Item>
           </div>
@@ -132,7 +134,11 @@ const ProfileEditForm = () => {
               { required: true, message: "Please enter organisation address" },
             ]}
           >
-            <Input placeholder="Organisation Address" />
+            <Input
+              placeholder="57 Donut Road, Crescent Lane, Sydney, Australia"
+              prefix={<FiMapPin className="mr-2 text-black/60" />}
+              className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+            />
           </Form.Item>
 
           {/* Country, State, Post Code */}
@@ -143,7 +149,10 @@ const ProfileEditForm = () => {
               rules={[{ required: true, message: "Please enter country" }]}
               style={{ flex: 1 }}
             >
-              <Input placeholder="Country" />
+              <Input
+                placeholder="Australia"
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+              />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -152,19 +161,20 @@ const ProfileEditForm = () => {
               rules={[{ required: true, message: "Please enter state" }]}
               style={{ flex: 1 }}
             >
-              <Input placeholder="State" />
+              <Input
+                placeholder="New South Wales"
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+              />
             </Form.Item>
 
             <Form.Item<FieldType>
               name="post-code"
               label="Post code"
               rules={[{ required: true, message: "Please enter post code" }]}
-           
             >
               <Input
-                style={{ padding: "6px" }}
-                className="text-md"
-                placeholder="Post code"
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+                placeholder="5000"
               />
             </Form.Item>
           </div>
@@ -179,7 +189,11 @@ const ProfileEditForm = () => {
               ]}
               style={{ flex: 1 }}
             >
-              <Input placeholder="Mobile" />
+              <Input
+                placeholder="+61 470 292 023"
+                prefix={<FiPhone className="mr-2 text-black/60" />}
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+              />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -191,7 +205,11 @@ const ProfileEditForm = () => {
               ]}
               style={{ flex: 1 }}
             >
-              <Input placeholder="Email" />
+              <Input
+                placeholder="contact@hfl-foundation.org"
+                prefix={<FiMail className="mr-2 text-black/60" />}
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+              />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -200,7 +218,11 @@ const ProfileEditForm = () => {
               rules={[{ required: true, message: "Please enter website" }]}
               style={{ flex: 1 }}
             >
-              <Input placeholder="Website" />
+              <Input
+                placeholder="www.hfl-foundation.org"
+                prefix={<FiGlobe className="mr-2 text-black/60" />}
+                className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
+              />
             </Form.Item>
           </div>
 
@@ -214,7 +236,8 @@ const ProfileEditForm = () => {
           >
             <Input.TextArea
               rows={4}
-              placeholder="Write about your organisation..."
+              placeholder="Hope for Learning Foundation exists to unlock the power of education for underserved communities..."
+              className="rounded-2xl bg-white border border-gray-200 text-[15px]"
             />
           </Form.Item>
 
@@ -222,12 +245,18 @@ const ProfileEditForm = () => {
           <div className="flex justify-start items-center gap-3 mt-4">
             <Button
               onClick={handleDiscard}
-              type={active === "discard" ? "primary" : "default"}
+              type="default"
+              className="h-11 px-5 rounded-3xl bg-white border border-gray-300 text-[15px] font-medium shadow-none"
             >
               Discard Changes
             </Button>
 
-            <Button htmlType="submit" type="primary" loading={isLoading}>
+            <Button
+              htmlType="submit"
+              type="default"
+              loading={isLoading}
+              className="h-10 px-5 rounded-3xl bg-[#D1FF43] border border-gray-300 text-[15px] font-semibold text-black shadow-none"
+            >
               Save Changes
             </Button>
           </div>

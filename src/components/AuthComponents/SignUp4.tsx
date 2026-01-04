@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useState } from "react";
 import { Button, ConfigProvider, Form, Input, message, Upload } from "antd";
-import { FaPhoneAlt, FaVoicemail } from "react-icons/fa";
+import { FiMail, FiPhone, FiUpload } from "react-icons/fi";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
-import { UploadOutlined } from "@ant-design/icons";
 import { useSignUpMutation } from "../../redux/features/auth/authApi";
 
 const STEPS = [
@@ -13,11 +12,13 @@ const STEPS = [
   { path: "/auth/signUp2", label: "Organization" },
   { path: "/auth/signUp3", label: "Compliance" },
   { path: "/auth/signUp4", label: "Board Member" },
+  { path: "/auth/signUp5", label: "Payment" },
 ];
 
 const SignUp4: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [selectedFileName, setSelectedFileName] = useState<string>("driverslicense.pdf");
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
   if (currentIdx === -1) currentIdx = total - 1;
@@ -33,7 +34,7 @@ const SignUp4: React.FC = () => {
     const fileList = values.drivingLicense;
 
     if (!fileList || fileList.length === 0) {
-      console.error("No document uploaded");
+      message.error("Please upload your document");
       return;
     }
 
@@ -59,25 +60,23 @@ const SignUp4: React.FC = () => {
       boardMemberPhoneNumber: values.boardMemberPhoneNumber ?? "",
     };
 
-    console.log("FINAL PAYLOAD:", data);
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify(data));
       formData.append("drivingLicense", file);
       SignUp(formData).unwrap();
       message.success("Account created successfully");
-      navigate("/auth/verifyOtpforSignUp" );
-      
-    } catch (error) {
-      console.log(error);
+      navigate("/auth/verifyOtpforSignUp");
+    } catch {
+      message.error("Something went wrong");
     }
   };
   return (
-    <div className="h-screen flex">
+    <div className="h-screen flex p-2">
       {/* Left section - Form */}
-      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2 relative">
-        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
-        <div className="w-full max-w-sm mt-20">
+      <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+      <div className="bg-white mt-32 flex flex-col items-center w-full md:w-1/2 relative">
+        <div className="w-full max-w-lg">
           <div>
             <ConfigProvider
               theme={{
@@ -94,35 +93,31 @@ const SignUp4: React.FC = () => {
                 layout="vertical"
                 className=""
               >
-                <div className="mb-4 text-center">
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-familjen font-bold mb-3 text-black">
                     Add a Board Member
                   </h2>
-                  <p className="text-neutral-600 lg:text-lg">
+                  <p className="text-neutral-500 text-base">
                     Each organization must have at least one verified member.
                   </p>
 
                   {/* Segmented step progress */}
                   <Stepper total={total} current={current} />
-
-                  <p className="mt-4">
-                    Step {current}/{total}
-                  </p>
                 </div>
 
                 <Form.Item
                   name="boardMemberName"
-                  label={<p className="text-lg text-neutral-500">Full Name</p>}
+                  label={<p className="text-base font-medium text-black/80">Full Name</p>}
                 >
                   <Input
                     required
                     className="text-neutral-500"
-                    placeholder="Full Name"
+                    placeholder="John Doe"
                     style={{
                       padding: "8px",
-                      borderRadius: "8px",
+                      borderRadius: "12px",
                       width: "100%",
-                      height: "52px",
+                      height: "56px",
                     }}
                   />
                 </Form.Item>
@@ -130,20 +125,20 @@ const SignUp4: React.FC = () => {
                 <Form.Item
                   name="boardMemberEmail"
                   label={
-                    <p className="text-lg text-neutral-500">Email Address</p>
+                    <p className="text-base font-medium text-black/80">Email Address</p>
                   }
                 >
                   <Input
                     required
                     type="email"
                     className="text-neutral-500"
-                    prefix={<FaVoicemail className="mr-2" />}
+                    prefix={<FiMail className="mr-3 h-5 w-5 text-black/80" />}
                     placeholder="Enter Email Address"
                     style={{
                       padding: "8px",
-                      borderRadius: "8px",
+                      borderRadius: "12px",
                       width: "100%",
-                      height: "52px",
+                      height: "56px",
                     }}
                   />
                 </Form.Item>
@@ -151,20 +146,20 @@ const SignUp4: React.FC = () => {
                 <Form.Item
                   name="boardMemberPhoneNumber"
                   label={
-                    <p className="text-lg text-neutral-500">Contact Phone</p>
+                    <p className="text-base font-medium text-black/80">Phone Number</p>
                   }
                 >
                   <Input
                     required
                     type="tel"
                     className="text-neutral-500"
-                    prefix={<FaPhoneAlt className="mr-2" />}
-                    placeholder="+61 0 1234 5678"
+                    prefix={<FiPhone className="mr-3 h-5 w-5 text-black/80" />}
+                    placeholder="+61 400 222 333"
                     style={{
                       padding: "8px",
-                      borderRadius: "8px",
+                      borderRadius: "12px",
                       width: "100%",
-                      height: "52px",
+                      height: "56px",
                     }}
                   />
                 </Form.Item>
@@ -182,8 +177,8 @@ const SignUp4: React.FC = () => {
                     { required: true, message: "Please upload your document" },
                   ]}
                   label={
-                    <p className="text-lg text-neutral-500">
-                      Upload Government Issued Document (Driver’s License / ID)
+                    <p className="text-base font-medium text-black/80">
+                      Upload Government Issued Document (Drivers License/ID)
                     </p>
                   }
                 >
@@ -192,28 +187,35 @@ const SignUp4: React.FC = () => {
                     maxCount={1}
                     accept=".jpg,.jpeg,.png,.pdf"
                     beforeUpload={() => false} // prevent auto upload
+                    showUploadList={false}
+                    className="block w-full [&_.ant-upload]:block [&_.ant-upload]:w-full [&_.ant-upload-select]:block [&_.ant-upload-select]:w-full"
+                    style={{ width: "100%" }}
+                    onChange={(info) => {
+                      const file = info.fileList?.[0]?.name;
+                      if (file) setSelectedFileName(file);
+                    }}
                   >
                     <Button
-                      icon={<UploadOutlined />}
-                      className="text-neutral-500"
+                      block
+                      type="default"
+                      className="w-full flex items-center justify-between !border-neutral-200 !bg-white !px-4 text-left"
                       style={{
-                        padding: "8px",
-                        borderRadius: "8px",
-                        width: "100%",
-                        height: "52px",
+                        borderRadius: "12px",
+                        height: "56px",
                       }}
                     >
-                      Click to Upload
+                      <span className="text-neutral-400">{selectedFileName}</span>
+                      <FiUpload className="h-5 w-5 text-black/80" />
                     </Button>
                   </Upload>
                 </Form.Item>
 
                 <Form.Item>
                   <button
-                    className="text-center p-2 font-bold bg-btnPrimary w-full py-4 rounded-md shadow-lg hover:text-black"
+                    className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black"
                     type="submit"
                   >
-                    Finish
+                    Save &amp; Continue
                   </button>
                   {/* </Link> */}
                 </Form.Item>
@@ -225,7 +227,7 @@ const SignUp4: React.FC = () => {
 
       {/* Right section - Image */}
       <div className="w-full md:w-1/2">
-        <img src={img} alt="sign-up" className="w-full h-full object-cover" />
+        <img src={img} alt="sign-up" className="w-full h-full object-cover rounded-r-2xl" />
       </div>
     </div>
   );
@@ -237,7 +239,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
 
   return (
     <div
-      className="flex items-center gap-3 w-1/2 mx-auto"
+      className="flex items-center gap-2 w-2/5 mx-auto mt-4"
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={total}
@@ -249,7 +251,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
         return (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full transition-colors duration-200 ${
+            className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${
               isActive ? "bg-[#a55eea]" : "bg-neutral-200"
             }`}
           />
