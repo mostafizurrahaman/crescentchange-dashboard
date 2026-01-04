@@ -443,9 +443,9 @@ const Reports = () => {
                   </span>
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 flex flex-col justify-start items-start space-y-1">
                   <p className="text-gray-500 mb-1">Special message:</p>
-                  <p className="italic text-gray-800">
+                  <p className=" text-gray-800 font-bold">
                     "{selectedDonation?.specialMessage || "-"}"
                   </p>
                 </div>
