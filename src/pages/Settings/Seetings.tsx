@@ -471,7 +471,7 @@ export default function Settings() {
 
             <Button
               htmlType="submit"
-
+              onClick={handlePasswordChange}
               className="py-2 px-6 rounded-full bg-black text-white border border-black hover:bg-gray-800 font-medium"
             >
               Save Changes
