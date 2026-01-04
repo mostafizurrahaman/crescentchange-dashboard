@@ -326,7 +326,7 @@ export default function Settings() {
         )}
       </Modal>
       {/* Update Password */}
-      <div className="bg-white rounded-xl shadow p-4 mb-6 flex justify-between items-center">
+      <div className="max-w-screen-sm bg-white rounded-[32px] shadow p-6 mb-6 flex justify-between items-center">
         <div>
           <h3 className="font-medium">Update your password</h3>
           <p className="text-sm text-gray-500">
@@ -342,7 +342,7 @@ export default function Settings() {
         </button>
       </div>
       {/* Two-Factor Authentication */}
-      <div className="bg-white rounded-xl shadow p-4 flex justify-between items-center">
+      <div className="max-w-screen-sm bg-white rounded-[32px] shadow p-6 flex justify-between items-center">
         <div>
           <h3 className="font-medium">Two-Factor Authentication</h3>
           <p className="text-sm text-gray-500">
@@ -368,7 +368,7 @@ export default function Settings() {
             }}
             className="sr-only peer"
           />
-          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-black relative after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
         </label>
       </div>
       {/* Password Modal  */}

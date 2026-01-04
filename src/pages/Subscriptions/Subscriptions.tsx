@@ -18,7 +18,7 @@ const Subscriptions = () => {
   return (
     <div>
       <div className="w-full">
-        <h1 className="my-3 text-xl font-semibold md:text-3xl">
+        <h1 className="font-familjen my-3 text-xl font-semibold md:text-3xl">
           Subscriptions
         </h1>
         <p className="mb-10 text-gray-500">
@@ -92,7 +92,7 @@ const Subscriptions = () => {
 
       <SubscriptionCard />
 
-      <h1 className="my-3 text-xl font-semibold md:text-3xl">
+      <h1 className="font-familjen my-3 text-xl font-semibold md:text-3xl">
         Subscriptions History
       </h1>
 

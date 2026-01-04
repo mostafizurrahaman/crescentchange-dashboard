@@ -73,7 +73,7 @@ const SubscriptionCard: React.FC = () => {
           <div className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-100">
             <img src={star} alt="" className="w-5 h-5" />
           </div>
-          <p className="text-2xl font-semibold">Focus Plan</p>
+          <p className=" text-2xl font-semibold">Focus Plan</p>
           {isFocusActive ? (
             <button
               className={`px-2 py-1 text-white rounded-3xl ${
@@ -137,7 +137,7 @@ const SubscriptionCard: React.FC = () => {
           </div>
         ) : (
           <button
-            className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
+            className="flex items-center justify-center w-full gap-2 py-4 text-white bg-[#c08fff] rounded-3xl disabled:opacity-60"
             onClick={() => startCheckout("monthly")}
             disabled={loadingPlan === "monthly" || hasActiveSubscription}
           >
@@ -226,7 +226,7 @@ const SubscriptionCard: React.FC = () => {
           </div>
         ) : (
           <button
-            className="flex items-center justify-center w-full gap-2 py-4 text-white bg-purple-500 rounded-3xl disabled:opacity-60"
+            className="flex items-center justify-center w-full gap-2 py-4 text-white bg-[#c08fff] rounded-[32px] disabled:opacity-60"
             onClick={() => startCheckout("yearly")}
             disabled={loadingPlan === "yearly" || hasActiveSubscription}
           >
