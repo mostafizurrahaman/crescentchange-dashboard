@@ -9,13 +9,14 @@ import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
 import { FaEye } from "react-icons/fa";
-import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { FiChevronDown } from "react-icons/fi";
 import { HiFunnel } from "react-icons/hi2";
 import { HiCalendarDays } from "react-icons/hi2";
+import { IoIosRefresh } from "react-icons/io";
 interface ITabProps {
   tab: string;
 }
@@ -46,6 +47,9 @@ const AllDonor = ({ tab }: ITabProps) => {
     filter: "this_month",
     donationType: tab,
   });
+
+  const [resendReceipt] = useResendReceiptMutation();
+
   // console.log("data", donorData?.data);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
@@ -69,6 +73,14 @@ const AllDonor = ({ tab }: ITabProps) => {
   }, [searchTerm, status, currentPage]);
 
   const data = donorData?.data;
+  const handleResendRecipt = async (record: any) => {
+    const selectedId = record?._id;
+    if (selectedId) {
+      await resendReceipt(selectedId).unwrap();
+    }
+
+    console.log("Receipt resent for donation:", selectedId);
+  }
 
   const columns = [
     {
@@ -146,7 +158,7 @@ const AllDonor = ({ tab }: ITabProps) => {
       title: "Action",
       key: "action",
       render: (record: any) => (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2">
           <button
             type="button"
             onClick={() => handleViewClick(record)}
@@ -154,6 +166,9 @@ const AllDonor = ({ tab }: ITabProps) => {
             aria-label="View"
           >
             <FaEye className="w-5 h-5" />
+          </button>
+          <button onClick={() => handleResendRecipt(record)} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5">
+            <IoIosRefresh className="text-nutral-500" />
           </button>
         </div>
       ),

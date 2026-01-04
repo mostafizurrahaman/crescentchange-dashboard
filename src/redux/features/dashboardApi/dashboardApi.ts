@@ -10,12 +10,19 @@ const DashboardApi = baseApi.injectEndpoints({
       }),
     }),
     getTrends: builder.query({
-      query: (year ) => ({
+      query: (year) => ({
         url: `/donation/analytics/yearly-trends?year=${year}`,
         method: "GET",
       }),
     }),
+    resendReceipt: builder.mutation({
+      query: (receiptId: string) => ({
+        url: `/receipt/${receiptId}/resend-email`,
+        method: "POST",
+      }),
+    }),
   }),
+
 });
 
-export const { useGetDonationStatsQuery, useGetTrendsQuery } = DashboardApi;
+export const { useGetDonationStatsQuery, useGetTrendsQuery, useResendReceiptMutation  } = DashboardApi;

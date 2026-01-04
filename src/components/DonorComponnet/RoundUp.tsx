@@ -16,7 +16,7 @@ import { saveAs } from "file-saver";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
-import { useGetDonationStatsQuery } from "../../redux/features/dashboardApi/dashboardApi";
+import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
 import { FaEye } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
 interface ITabProps {
@@ -31,7 +31,7 @@ const RoundUp = ({ tab }: ITabProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { data: profileData } = useGetAllProfileQuery(null);
-   const organizationId = profileData?.data?._id;
+  const organizationId = profileData?.data?._id;
   const { data: donorData, refetch } = useGetAllDonorsQuery(
     {
       page: currentPage,
@@ -44,6 +44,16 @@ const RoundUp = ({ tab }: ITabProps) => {
     },
     { skip: !organizationId }
   );
+
+  const [resendReceipt] = useResendReceiptMutation();
+  const handleResendRecipt = async (record: any) => {
+    const selectedId = record?._id;
+    if (selectedId) {
+      await resendReceipt(selectedId).unwrap();
+    }
+
+    console.log("Receipt resent for donation:", selectedId);
+  }
 
   const { data: statsData } = useGetDonationStatsQuery({
     filter: "this_month",
@@ -149,8 +159,8 @@ const RoundUp = ({ tab }: ITabProps) => {
           <button onClick={() => handleViewClick(record)}>
             <FaEye className="text-blue-500"></FaEye>
           </button>
-          <button>
-            <IoIosRefresh className="text-green-500" />
+          <button onClick={() => handleResendRecipt(record)} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5">
+            <IoIosRefresh className="text-nutral-500" />
           </button>
         </div>
       ),
@@ -180,7 +190,7 @@ const RoundUp = ({ tab }: ITabProps) => {
     const file = new Blob([excelBuffer], {
       // bookType: "xlsx",
       // type: "application/octet-stream",
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(file, "donations.xlsx");
   };
@@ -308,13 +318,14 @@ const RoundUp = ({ tab }: ITabProps) => {
           style={{ marginTop: 20 }}
         />
         <Modal
-          title="Donor Details"
+          title="Donation Details"
           open={isOpen}
           onCancel={() => setIsOpen(false)}
           footer={null}
         >
-          <div>
-            <h3 className="border-b mb-2 ">Donor Info:</h3>
+          <div className="space-y-4">
+            {/* Donor Info */}
+            <h3 className="border-b font-semibold">Donor Information</h3>
             <p>
               <strong>Name:</strong> {selectedDonation?.donor?.name}
             </p>
@@ -322,38 +333,64 @@ const RoundUp = ({ tab }: ITabProps) => {
               <strong>Email:</strong> {selectedDonation?.donor?.auth?.email}
             </p>
 
-            <h3 className="border-b mb-2 ">Donation Info:</h3>
+            {/* Donation Info */}
+            <h3 className="border-b font-semibold">Donation Information</h3>
             <p>
               <strong>Type:</strong> {selectedDonation?.donationType}
             </p>
             <p>
-              <strong>Amount:</strong> ${selectedDonation?.amount.toFixed(2)}
+              <strong>Currency:</strong> {selectedDonation?.currency}
+            </p>
+            <p>
+              <strong>Total Amount Paid:</strong> $
+              {selectedDonation?.totalAmount.toFixed(2)}
             </p>
             <p>
               <strong>Message:</strong>{" "}
               {selectedDonation?.specialMessage || "-"}
             </p>
 
-            <h3 className="border-b mb-2 ">Cause:</h3>
-            <p>
-              <strong>{selectedDonation?.cause?.name || "No Cause"}</strong>
+            {/* Fee Breakdown */}
+            <h3 className="border-b font-semibold">Fee Breakdown</h3>
+            <p>Platform Fee: ${selectedDonation?.platformFee.toFixed(2)}</p>
+            <p>GST on Platform Fee: ${selectedDonation?.gstOnFee.toFixed(2)}</p>
+            <p>Stripe Fee: ${selectedDonation?.stripeFee.toFixed(2)}</p>
+            <p className="font-semibold">
+              Total Fees: $
+              {(
+                selectedDonation?.platformFee +
+                selectedDonation?.gstOnFee +
+                selectedDonation?.stripeFee
+              ).toFixed(2)}
             </p>
 
-            <h3 className="border-b mb-2 ">Receipt:</h3>
+            {/* Net Amount */}
+            <h3 className="border-b font-semibold">Net Amount</h3>
+            <p className="text-green-600 font-semibold">
+              ${selectedDonation?.netAmount.toFixed(2)} received by organization
+            </p>
+
+            {/* Cause */}
+            <h3 className="border-b font-semibold">Cause</h3>
+            <p>{selectedDonation?.cause?.name || "No Cause"}</p>
+
+            {/* Receipt */}
             {selectedDonation?.receiptId && (
-              <div>
-                <p className="mb-5">
-                  <strong>Receipt Number:</strong>{" "}
-                  {selectedDonation?.receiptId.receiptNumber}
+              <>
+                <h3 className="border-b font-semibold">Receipt</h3>
+                <p>
+                  <strong>Receipt No:</strong>{" "}
+                  {selectedDonation.receiptId.receiptNumber}
                 </p>
                 <a
-                  href={selectedDonation?.receiptId.pdfUrl}
+                  href={selectedDonation.receiptId.pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-blue-600 underline"
                 >
-                  <strong>Download Receipt</strong>
+                  Download Receipt (PDF)
                 </a>
-              </div>
+              </>
             )}
           </div>
         </Modal>
