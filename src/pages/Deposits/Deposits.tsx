@@ -156,7 +156,7 @@ const Deposits: FC = () => {
   return (
     <div className="">
       <div>
-        <h1 className="text-3xl font-bold mb-4">Deposit</h1>
+        <h1 className="font-familjen text-3xl font-bold mb-4">Deposit</h1>
         <p className="text-lg text-gray-600 mb-4">
           See how your supporters are giving and where your impact is growing.
         </p>
