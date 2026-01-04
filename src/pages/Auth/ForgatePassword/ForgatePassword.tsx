@@ -51,7 +51,7 @@ const ForgatePassword = () => {
               className=""
             >
               <div className="mb-4 text-center ">
-                <h2 className="text-xl font-bold md:text-2xl lg:text-3xl">
+                <h2 className="text-xl font-bold md:text-[30px">
                   Reset your password
                 </h2>
                 <p className="mt-3 mb-6 text-gray-600">
@@ -79,7 +79,7 @@ const ForgatePassword = () => {
 
               <Form.Item className="">
                 <button
-                  className="w-full px-8 py-4 text-lg text-center text-black rounded-md shadow-lg bg-btnPrimary disabled:opacity-60"
+                  className="w-full px-8 py-4 text-lg text-center text-black rounded-md  bg-btnPrimary disabled:opacity-60"
                   type="submit"
                   disabled={isLoading}
                 >
