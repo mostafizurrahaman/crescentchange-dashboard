@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Modal, Select, Tooltip } from "antd";
+import { Button, Modal, Select, Pagination, Tooltip, ConfigProvider } from "antd";
 import { Table } from "antd";
 import { Input } from "antd";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ interface ITabProps {
 }
 const AllDonor = ({ tab }: ITabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,7 +50,7 @@ const AllDonor = ({ tab }: ITabProps) => {
 
   const [resendReceipt] = useResendReceiptMutation();
 
-  // console.log("data", donorData?.data);
+  console.log("data", donorData);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
     setIsOpen(true);
@@ -87,7 +87,15 @@ const AllDonor = ({ tab }: ITabProps) => {
       title: "Name",
       dataIndex: "donor",
       key: "name",
-      render: (donor: any) => donor?.name || "-",
+      render: (donor: any, record: any) => {
+        return <div className="flex justify-start items-center gap-2">
+          <img src={donor?.image || ""} alt="Donor" className="w-8 h-8 rounded-full object-cover" />
+          <div>
+            <p className="font-medium">{donor?.name || "-"}</p>
+            <p className="text-gray-500">Since {record?.donationDate ? new Date(record.donationDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : "-"}</p>
+          </div>
+        </div>;
+      },
     },
     {
       title: "Email Address",
@@ -98,8 +106,26 @@ const AllDonor = ({ tab }: ITabProps) => {
     {
       title: "Date & Time",
       dataIndex: "donationDate",
-      key: "dateTime",
-      render: (date: string) => new Date(date).toLocaleString(),
+      key: "donationDate",
+      render: (donationDate: string) => {
+        const date = new Date(donationDate);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+        const formattedTime = date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+        return (
+          <div>
+            <div>{formattedDate}</div>
+            <div className="text-gray-500">{formattedTime}</div>
+          </div>
+        );
+      },
     },
     {
       title: "Donation Type",
@@ -130,11 +156,11 @@ const AllDonor = ({ tab }: ITabProps) => {
         );
       },
     },
-
     {
       title: "Donation Message",
       dataIndex: "specialMessage",
       key: "specialMessage",
+      render: (specialMessage: string) => specialMessage || "-",
     },
     {
       title: "Donated Amount",
@@ -337,9 +363,59 @@ const AllDonor = ({ tab }: ITabProps) => {
         <Table
           columns={columns}
           dataSource={data}
-          pagination={{ pageSize: 5 }}
+          pagination={false}
           style={{ marginTop: 20 }}
         />
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between mt-6">
+          <div className="text-sm text-gray-600">
+            Showing {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, donorData?.meta?.total || 0)} from {donorData?.meta?.total || 0}
+          </div>
+          <ConfigProvider
+            theme={{
+              components: {
+                "Pagination": {
+                  "colorPrimaryBorder": "rgb(fffff)",
+                  "colorPrimaryHover": "rgb(ffffff)",
+                  "controlOutline": "rgb(fffff)",
+                  "colorPrimary": "rgb(ffffff)"
+                }
+              }
+            }}
+          >
+            <Pagination
+              current={currentPage}
+              total={donorData?.meta?.total || 0}
+              pageSize={pageSize}
+              onChange={(page, size) => {
+                setCurrentPage(page);
+                setPageSize(size);
+              }}
+              showSizeChanger
+              pageSizeOptions={[10, 20, 50, 100]}
+              className="flex items-center gap-1"
+              itemRender={(current, type, element) => {
+                if (type === 'page' && current === currentPage) {
+                  return (
+                    <div className="w-8 h-8 rounded-full bg-black text-white font-medium flex items-center justify-center">
+                      {current}
+                    </div>
+                  );
+                }
+                if (type === 'prev' || type === 'next') {
+                  return (
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center">
+                      {type === 'prev' ? '<' : '>'}
+                    </div>
+                  );
+                }
+                return element;
+              }}
+
+            />
+          </ConfigProvider>
+        </div>
 
         <Modal
           title="Donation Details"
@@ -419,6 +495,8 @@ const AllDonor = ({ tab }: ITabProps) => {
           </div>
         </Modal>
       </div>
+
+
     </div>
   );
 };

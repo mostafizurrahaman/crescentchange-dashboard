@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Modal, Select, Tooltip } from "antd";
+import { Button, ConfigProvider, Modal, Pagination, Select, Tooltip } from "antd";
 
 import { Table } from "antd";
 import people from "../../assets/images/People Community.png";
@@ -22,7 +22,7 @@ interface ITabProps {
 }
 const Recurring = ({ tab }: ITabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize,setPageSize] = useState(10);
   const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -312,6 +312,54 @@ const Recurring = ({ tab }: ITabProps) => {
           style={{ marginTop: 20 }}
         />
 
+   <div className="flex items-center justify-between mt-6">
+          <div className="text-sm text-gray-600">
+            Showing {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, donorData?.meta?.total || 0)} from {donorData?.meta?.total || 0}
+          </div>
+          <ConfigProvider
+            theme={{
+              components: {
+                "Pagination": {
+                  "colorPrimaryBorder": "rgb(fffff)",
+                  "colorPrimaryHover": "rgb(ffffff)",
+                  "controlOutline": "rgb(fffff)",
+                  "colorPrimary": "rgb(ffffff)"
+                }
+              }
+            }}
+          >
+            <Pagination
+              current={currentPage}
+              total={donorData?.meta?.total || 0}
+              pageSize={pageSize}
+              onChange={(page, size) => {
+                setCurrentPage(page);
+                setPageSize(size);
+              }}
+              showSizeChanger
+              pageSizeOptions={[10, 20, 50, 100]}
+              className="flex items-center gap-1"
+              itemRender={(current, type, element) => {
+                if (type === 'page' && current === currentPage) {
+                  return (
+                    <div className="w-8 h-8 rounded-full bg-black text-white font-medium flex items-center justify-center">
+                      {current}
+                    </div>
+                  );
+                }
+                if (type === 'prev' || type === 'next') {
+                  return (
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center">
+                      {type === 'prev' ? '<' : '>'}
+                    </div>
+                  );
+                }
+                return element;
+              }}
+
+            />
+          </ConfigProvider>
+        </div>
         <Modal
           title="Donation Details"
           open={isOpen}
