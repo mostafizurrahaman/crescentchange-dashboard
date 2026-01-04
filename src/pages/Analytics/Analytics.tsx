@@ -25,7 +25,7 @@ const Analytics = () => {
     <div className="">
       <div className="flex justify-between items-start gap-5">
         <div className="w-full">
-          <h1 className="text-xl md:text-4xl font-bold font-familjen mb-3">
+          <h1 className="font-familjen text-xl md:text-4xl font-bold  mb-3">
             Your impact at a glance.
           </h1>
           <p className="text-gray-500 mb-10">

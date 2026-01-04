@@ -6,8 +6,16 @@ import {
   Input,
   Button,
   message,
+  Switch,
 } from "antd";
-import { FiCalendar, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from "react-icons/fi";
+import {
+  FiCalendar,
+  FiGlobe,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+  FiUser,
+} from "react-icons/fi";
 import { useEditOrgDetailsMutation } from "../../redux/features/profileApi/profileApi";
 import dayjs from "dayjs";
 
@@ -79,9 +87,24 @@ const ProfileEditForm = () => {
           components: {
             Form: { borderRadius: 0 },
             Input: { borderRadius: 12 },
+            Switch: {
+              colorPrimary: "rgb(0,0,0)",
+              colorPrimaryBorder: "rgb(0,0,0)",
+              colorPrimaryHover: "rgb(0,0,0)",
+            },
           },
         }}
       >
+        <div className="flex justify-end pr-10">
+          <h1 className="text-end">
+            Profile visiblity:{" "}
+            <span className="pl-2">
+              {" "}
+              <Switch></Switch>
+            </span>
+          </h1>
+        </div>
+
         <Form
           form={form}
           name="contact"
@@ -119,7 +142,13 @@ const ProfileEditForm = () => {
               style={{ flex: 1 }}
             >
               <DatePicker
-                style={{ width: "100%", height: 56, borderRadius: 14, background: "#ffffff", border: "1px solid #e5e7eb" }}
+                style={{
+                  width: "100%",
+                  height: 56,
+                  borderRadius: 14,
+                  background: "#ffffff",
+                  border: "1px solid #e5e7eb",
+                }}
                 placeholder="01 July 2018"
                 suffixIcon={<FiCalendar className="text-black/60" />}
               />
