@@ -92,6 +92,13 @@ const ProfileEditForm = () => {
               colorPrimaryBorder: "rgb(0,0,0)",
               colorPrimaryHover: "rgb(0,0,0)",
             },
+            Button:{
+              colorPrimary: "rgb(0,0,0)",
+              colorPrimaryBorder: "rgb(0,0,0)",
+              colorInfoActive: "rgb(0,0,0)",
+              colorPrimaryHover: "rgb(0,0,0)",
+              
+            }
           },
         }}
       >
@@ -275,7 +282,7 @@ const ProfileEditForm = () => {
             <Button
               onClick={handleDiscard}
               type="default"
-              className="h-11 px-5 rounded-3xl bg-white border border-gray-300 text-[15px] font-medium shadow-none"
+              className="py-6 px-5 rounded-full bg-white border border-gray-300 text-[15px] font-medium "
             >
               Discard Changes
             </Button>
@@ -284,7 +291,7 @@ const ProfileEditForm = () => {
               htmlType="submit"
               type="default"
               loading={isLoading}
-              className="h-10 px-5 rounded-3xl bg-[#D1FF43] border border-gray-300 text-[15px] font-semibold text-black shadow-none"
+              className="py-6 px-5 rounded-full bg-neutral-900  text-white border border-gray-300 text-[15px] font-semibold "
             >
               Save Changes
             </Button>
