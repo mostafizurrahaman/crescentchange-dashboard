@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Checkbox, ConfigProvider, Form, Input, message, Spin } from "antd";
+ 
+import { ConfigProvider, Form, Input, message, Spin } from "antd";
 import img from "../../../assets/images/login.png";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
 import { AiOutlineMail } from "react-icons/ai";
 import { MdLockOutline } from "react-icons/md";
 import { useLoginApiMutation } from "../../../redux/features/auth/authApi";
+import { useState } from "react";
 
 interface login {
   email: string;
@@ -16,6 +17,7 @@ interface login {
 const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [rememberPassword, setRememberPassword] = useState(true);
   const [loginApi, { isLoading }] = useLoginApiMutation();
   const onFinish = async (values: login) => {
     const data = {
@@ -54,8 +56,8 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex p-2">
-      <div className="bg-white flex flex-col justify-center items-center w-full md:w-1/2">
+    <div className="flex h-screen p-2">
+      <div className="flex flex-col items-center mt-32 w-full bg-white md:w-1/2">
         <img src={logo} alt="Logo" className="absolute top-5 right-5 left-10" />
         <div className=" w-[400px] ">
           <div>
@@ -72,34 +74,34 @@ const Login = () => {
               }}
             >
               {isLoading ? (
-                <div className="flex justify-center items-center">
-                  <Spin className="h-20 w-20"></Spin>
+                <div className="flex items-center justify-center">
+                  <Spin className="w-20 h-20"></Spin>
                 </div>
               ) : (
                 <Form
                   name="contact"
-                  initialValues={{ remember: false }}
+                  initialValues={{ remember: rememberPassword }}
                   onFinish={onFinish}
                   layout="vertical"
                   className=""
                   form={form}
                 >
-                  <div className="mb-8 text-center">
-                    <h2 className="text-xl md:text-[30px] font-bold mb-3">
+                  <div className="mb-4 text-center">
+                    <h2 className="mb-2 font-familjen text-xl font-bold md:text-2xl lg:text-3xl">
                       Welcome Back!
                     </h2>
-                    <p className="text-neutral-400 lg:text-[14px">
+                    <p className="text-neutral-400 text-base">
                       Sign in to manage everything.
                     </p>
                   </div>
                   <Form.Item
                     name="email"
-                    label={<p className="text-[14px]">Email</p>}
+                    label={<p className="text-lg ">Email</p>}
                   >
                     <Input
                       required
                       className=""
-                      prefix={<AiOutlineMail className="mr-2 h-5 w-5" />}
+                      prefix={<AiOutlineMail className="w-5 h-5 mr-2" />}
                       placeholder="Enter Email Address"
                       style={{
                         padding: "8px",
@@ -116,8 +118,8 @@ const Login = () => {
                     <Input.Password
                       required
                       className=""
-                      prefix={<MdLockOutline className="mr-2 h-5 w-5" />}
-                      placeholder="********"
+                      prefix={<MdLockOutline className="w-5 h-5 mr-2" />}
+                      placeholder="**********"
                       style={{
                         padding: "8px",
                         borderRadius: "8px",
@@ -127,25 +129,40 @@ const Login = () => {
                     />
                   </Form.Item>
                   {/* Forgot password and signup link */}
-                  <div className="flex justify-between items-center font-semibold gap-2 text-md my-6">
-                    <ConfigProvider
-                      theme={{
-                        components: {
-                          Checkbox: {
-                            colorPrimary: "rgb(209,255,67)",
-                            colorPrimaryBorder: "rgb(209,255,67)",
-                            colorPrimaryHover: "rgb(209,255,67)",
-                            colorWhite: "rgb(0,0,0)",
-                          },
-                        },
-                      }}
+                  <div className="flex items-center justify-between gap-2 my-6 font-semibold text-md">
+                    <label
+                      className="inline-flex items-center gap-3 text-base text-black cursor-pointer"
+                      onClick={() => setRememberPassword((prev) => !prev)}
                     >
-                      {" "}
-                      <Checkbox>Remember Password</Checkbox>{" "}
-                    </ConfigProvider>
+                      <input
+                        type="checkbox"
+                        checked={rememberPassword}
+                        onChange={() => setRememberPassword((prev) => !prev)}
+                        className="sr-only"
+                      />
+                      <span
+                        className={`flex h-5 w-5 items-center justify-center rounded-[4px] border-2 border-[#d1ff43] ${
+                          rememberPassword ? "bg-[#d1ff43]" : "bg-white"
+                        }`}
+                      >
+                        {rememberPassword ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            className="w-3 h-3 text-black"
+                          >
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : null}
+                      </span>
+                      Remember Password
+                    </label>
                     <Link
                       to="/auth/forgate-password"
-                      className="text-md underline hover:text-black"
+                      className="underline text-md hover:text-black"
                     >
                       Forgot Password?
                     </Link>
@@ -159,7 +176,7 @@ const Login = () => {
                     </button>
                   </Form.Item>
                   {/* Sign-up redirect */}
-                  <p className="mt-6 text-lg text-center font-semibold">
+                  <p className="mt-6 text-lg font-semibold text-center">
                     Don't have an account?{" "}
                     <Link to="/auth/signUp1" className="text-[#a55eea]">
                       Sign Up

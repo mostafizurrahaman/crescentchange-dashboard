@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+ 
+import React, { useState } from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const STEPS = [
   { path: "/auth/signUp1", label: "Account" },
@@ -16,6 +17,7 @@ const STEPS = [
 
 const SignUp5: React.FC = () => {
   const location = useLocation();
+  const [agree, setAgree] = useState(true);
   const onFinish = () => {};
 
   // Determine current step from the route
@@ -26,11 +28,11 @@ const SignUp5: React.FC = () => {
   // const isLast = current >= total;
 
   return (
-    <div className="h-screen flex">
+    <div className="h-screen flex p-2">
+      <img src={logo} alt="Logo" className="absolute top-5 left-10" />
       {/* Left section - Form */}
-      <div className="bg-white p-10 flex flex-col justify-center items-center w-full md:w-1/2 relative">
-        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
-        <div className="w-full max-w-sm ">
+      <div className="bg-white flex flex-col mt-32 items-center w-full md:w-1/2 relative">
+        <div className="w-full max-w-md">
           <div>
             <ConfigProvider
               theme={{
@@ -45,112 +47,134 @@ const SignUp5: React.FC = () => {
                 initialValues={{ remember: false }}
                 onFinish={onFinish}
                 layout="vertical"
-                className="mt-20"
+                className=""
               >
-                <div className="mb-4 text-center">
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-familjen font-bold mb-3 text-black">
                     Add Payment Method
                   </h2>
-                  <p className="text-neutral-600 lg:text-lg">
+                  <p className="text-neutral-500 text-base">
                     Securely store your card details for payouts.
                   </p>
 
                   {/* Segmented step progress */}
                   <Stepper total={total} current={current} />
-
-                  <p className="mt-4">Step {current}/{total}</p>
                 </div>
 
                 <Form.Item
                   name="card-name"
-                  label={<p className="text-md">Account Holder Name</p>}
+                  label={<p className="text-base font-medium text-black/80">Full Name</p>}
                   rules={[{ required: true, message: "Please enter the name on the account" }]}
                 >
                   <Input
                     autoComplete="cc-name"
-                    placeholder="Name"
-                    className="text-md"
-                   style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    placeholder="Enter Name"
+                    className="text-neutral-500"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "12px",
+                      width: "100%",
+                      height: "56px",
+                    }}
                   />
                 </Form.Item>
 
                 <Form.Item
                   name="card-number"
-                  label={<p className="text-md">Card Number</p>}
+                  label={<p className="text-base font-medium text-black/80">Card Number</p>}
                   rules={[{ required: true, message: "Please enter a valid card number" }]}
                 >
                   <Input
                     inputMode="numeric"
                     autoComplete="cc-number"
-                    placeholder="1234 5678 9012 3456"
+                    placeholder="9252 5836 2947 5988"
                     maxLength={19}
-                    className="text-md"
-                   style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                    className="text-neutral-500"
+                    style={{
+                      padding: "8px",
+                      borderRadius: "12px",
+                      width: "100%",
+                      height: "56px",
+                    }}
                   />
                 </Form.Item>
 
                 <div className="flex justify-between items-center gap-2">
                   <Form.Item
                     name="expiry-date"
-                    label={<p className="text-md">Expiry Date</p>}
+                    label={<p className="text-base font-medium text-black/80">Expiry Date</p>}
                     style={{ width: "50%" }}
                     rules={[{ required: true, message: "Please enter expiry date" }]}
                   >
                     <Input
                       inputMode="numeric"
                       autoComplete="cc-exp"
-                      placeholder="MM/YY"
+                      placeholder="09/27"
                       maxLength={5}
-                      className="text-md"
-                   style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                      className="text-neutral-500"
+                      style={{
+                        padding: "8px",
+                        borderRadius: "12px",
+                        width: "100%",
+                        height: "56px",
+                      }}
                     />
                   </Form.Item>
                   <Form.Item
                     name="cvv"
-                    label={<p className="text-md">CVV</p>}
+                    label={<p className="text-base font-medium text-black/80">CVC</p>}
                     style={{ width: "50%" }}
                     rules={[{ required: true, message: "Please enter CVV" }]}
                   >
-                    <Input
-                      type="password"
+                    <Input.Password
                       inputMode="numeric"
                       autoComplete="cc-csc"
                       placeholder="***"
                       maxLength={4}
-                      className="text-md"
-                   style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "52px",
-                  }}
+                      className="text-neutral-500"
+                      iconRender={(visible) =>
+                        visible ? (
+                          <FiEye className="text-black/50" />
+                        ) : (
+                          <FiEyeOff className="text-black/50" />
+                        )
+                      }
+                      style={{
+                        padding: "8px",
+                        borderRadius: "12px",
+                        width: "100%",
+                        height: "56px",
+                      }}
                     />
                   </Form.Item>
+                </div>
+
+                <div className="mt-2 mb-8">
+                  <label className="flex items-center gap-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={agree}
+                      onChange={(e) => setAgree(e.target.checked)}
+                      className="h-5 w-5 accent-[#C7F64A] rounded-xl focus:outline-none focus:ring-0 focus:ring-offset-0"
+                    />
+                    <span className="text-base text-black">
+                      I agree with the <span className="font-semibold">Terms &amp; Conditions.</span>
+                    </span>
+                  </label>
+                  <p className="mt-3 text-sm text-neutral-500 max-w-md">
+                    By clicking here, I state that I have read and understood the terms and
+                    conditions.
+                  </p>
                 </div>
 
                 <Form.Item>
                   {/* Last step: go to login as you had */}
                   <Link to="/auth/login">
                     <button
-                      className="text-center p-2 text-lg bg-btnPrimary  w-full py-4 rounded-md shadow-lg hover:text-black"
+                      className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black"
                       type="button"
                     >
-                      Continue
+                      Complete Setup
                     </button>
                   </Link>
                 </Form.Item>
@@ -162,7 +186,7 @@ const SignUp5: React.FC = () => {
 
       {/* Right section - Image */}
       <div className="w-full md:w-1/2">
-        <img src={img} alt="sign-up" className="w-full h-full object-cover" />
+        <img src={img} alt="sign-up" className="w-full h-full object-cover rounded-r-2xl" />
       </div>
     </div>
   );
@@ -174,7 +198,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
 
   return (
     <div
-      className="flex items-center gap-3 w-1/2 mx-auto"
+      className="flex items-center gap-2 w-2/5 mx-auto mt-4"
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={total}
@@ -186,7 +210,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
         return (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full transition-colors duration-200 ${
+            className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${
               isActive ? "bg-[#a55eea]" : "bg-neutral-200"
             }`}
           />

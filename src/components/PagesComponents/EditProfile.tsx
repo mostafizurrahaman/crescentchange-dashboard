@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { message, Upload } from "antd";
 import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";

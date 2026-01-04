@@ -15,7 +15,7 @@ import {
   Legend,
 } from "recharts";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { TfiLocationPin } from "react-icons/tfi";
@@ -51,7 +51,9 @@ const Profile = () => {
   const [selectedYear] = useState(dayjs().year());
   const [selectedMonth] = useState(dayjs().month() + 1);
   const [selectedCauseId, setSelectedCauseId] = useState<string | null>(null);
+  const [isCauseDropdownOpen, setIsCauseDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const causeSelectRef = useRef<HTMLDivElement | null>(null);
 
   const fromMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
   const toMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
@@ -91,19 +93,13 @@ const Profile = () => {
       value: item.totalAmount,
     })) || [];
 
+  console.log("Causes analytics chart data", formattedChartData);
+
+  // const causeList = [
   // const data = chartData?.data;
   // console.log("causeData", causeData?.data);
   // console.log("selectedCauseId", selectedCauseId);
-  const isLoading = isProfileLoading || isCauseLoading || isChartLoading;
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-xl font-semibold">Loading...</div>
-      </div>
-    );
-  }
 
-  // const causeList = [
   //   { cause: "water", icon: water },
   //   { cause: "education", icon: education },
   //   { cause: "food", icon: food },
@@ -148,12 +144,48 @@ const Profile = () => {
     { cause: "mental_health", icon: "🧠" },
   ];
 
+  useEffect(() => {
+    if (!selectedCauseId && causeData?.data?.length) {
+      setSelectedCauseId(causeData.data[0].causeId);
+    }
+  }, [causeData, selectedCauseId]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        causeSelectRef.current &&
+        !causeSelectRef.current.contains(event.target as Node)
+      ) {
+        setIsCauseDropdownOpen(false);
+      }
+    };
+
+    if (isCauseDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCauseDropdownOpen]);
+
+  const isLoading = isProfileLoading || isCauseLoading || isChartLoading;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl font-semibold">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center gap-2">
         <div>
-          <h1 className="text-3xl font-bold mb-4">Profile</h1>
-          <p className="text-lg text-gray-600 mb-4">
+          <h1 className="text-xl md:text-4xl font-bold font-familjen mb-3">
+            Profile
+          </h1>
+          <p className="text-gray-500">
             See how your supporters are giving and where your impact is growing.
           </p>
         </div>
@@ -255,37 +287,107 @@ const Profile = () => {
           </div>
           {/* chart */}
           <div className="bg-white p-6 rounded-3xl border">
-            <div
-              style={{ width: "100%", height: 420 }}
-              className="bg-secondary p-4 rounded-lg"
-            >
-              <h1 className="text-2xl font-medium mb-4">Causes Analytics</h1>
+            <div style={{ width: "100%", height: 420 }}>
+              <h1 className="text-2xl font-familjen font-semibold mb-6">
+                Causes Analytics
+              </h1>
 
-              <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-                <Select
-                  placeholder={causeData?.data?.[0]?.name || "Select a Cause"}
-                  style={{ width: 300 }}
-                  value={selectedCauseId}
-                  onChange={setSelectedCauseId}
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                <div
+                  ref={causeSelectRef}
+                  className="relative w-full md:w-[380px]"
                 >
-                  {causeData?.data?.map((cause: any) => (
-                    <Select.Option key={cause.causeId} value={cause.causeId}>
-                      {cause.name}
-                    </Select.Option>
-                  ))}
-                </Select>
+                  <button
+                    type="button"
+                    onClick={() => setIsCauseDropdownOpen((prev) => !prev)}
+                    className="w-full h-12 px-5 pr-10 rounded-2xl bg-[#f7f4fb] text-left flex items-center text-[16px] font-medium text-black/90"
+                  >
+                    {selectedCauseId
+                      ? causeData?.data?.find(
+                          (c: any) => c.causeId === selectedCauseId
+                        )?.name || "Select a Cause"
+                      : causeData?.data?.[0]?.name || "Select a Cause"}
+
+                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-black/80">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M4.5 6L8 9.5L11.5 6"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+
+                  {isCauseDropdownOpen && (
+                    <div className="absolute z-10 mt-2 w-full rounded-2xl bg-white shadow-lg border py-1 max-h-64 overflow-auto">
+                      {causeData?.data?.map((cause: any) => (
+                        <button
+                          key={cause.causeId}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCauseId(cause.causeId);
+                            setIsCauseDropdownOpen(false);
+                          }}
+                          className="w-full px-4 py-2 text-left text-[15px] hover:bg-gray-100"
+                        >
+                          {cause.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={formattedChartData}>
-                  <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                </LineChart>
-              </ResponsiveContainer>
+              {formattedChartData.length > 0 &&
+              formattedChartData.some((item: any) => item.value > 0) ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart
+                    data={formattedChartData}
+                    margin={{ top: 16, right: 24, left: 0, bottom: 16 }}
+                  >
+                    <CartesianGrid stroke="#f1eef5" strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="name"
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fill: "#000", fontSize: 12 }}
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fill: "#000", fontSize: 12 }}
+                      tickFormatter={(v) => `${v / 1000}K`}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        borderRadius: 16,
+                        border: "1px solid #e5e1f0",
+                        padding: "6px 10px",
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#7b42f6"
+                      strokeWidth={3}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-[260px] items-center justify-center text-sm text-neutral-400">
+                  No analytics data available for this cause.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -295,7 +397,9 @@ const Profile = () => {
           <div className="bg-white p-6 rounded-3xl border mt-10">
             <div className="flex justify-between items-start gap-5 ">
               <div>
-                <h1 className="text-2xl font-bold my-3">Raised Causes</h1>
+                <h1 className="text-3xl font-semibold my-3 font-familjen text-black/80">
+                  Raised Causes
+                </h1>
                 <p className="text-gray-400">Sorted by total donations</p>
               </div>
               <Link to="/edit-profile">
@@ -312,7 +416,7 @@ const Profile = () => {
               return (
                 <div
                   key={data._id}
-                  className="flex justify-between items-start gap-5 my-5 "
+                  className="flex justify-between items-start gap-5 my-5"
                 >
                   <div className="flex gap-2">
                     <div className="bg-blue-200 h-14 w-14 rounded-full p-1 flex justify-center items-center">
@@ -346,18 +450,18 @@ const Profile = () => {
       </div>
 
       {/* Modal */}
-
-      {/* Modal */}
       <Modal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         centered
-        width={400}
-        className="rounded-3xl my-10 "
+        width={520}
+        style={{ maxHeight: '85vh', overflow: 'hidden', borderRadius: '22px'}}
+        className="my-10"
       >
-        <h1 className="text-2xl font-bold mb-8">Preview</h1>
-        <div className="rounded-2xl overflow-hidden">
+        <h1 className="text-2xl font-bold mb-4">Preview</h1>
+        <div>
+          <div className="bg-white max-h-[80vh] pb-4 overflow-y-auto">
           {/* Cover + Logo */}
           <div className="relative">
             <img
@@ -396,13 +500,13 @@ const Profile = () => {
               </span>
             </p> */}
           </div>
-          <div className="text-gray-800 font-medium border rounded-full w-fit px-2 text-center flex justify-center items-center gap-2 my-3">
+          <div className="text-gray-800 bg-[#EAF7EB] font-medium border rounded-full w-fit px-2 text-center flex justify-center items-center gap-2 my-3">
             <img src={world} alt="" />
             <p className="text-gray-400"> {OrgProfile?.address}</p>
           </div>
           <p className="my-2">{OrgProfile?.aboutUs}</p>
           {/* ABOUT + CONTACT */}
-          <div className="p-5 mt-5 bg-white border rounded-3xl">
+          <div className="p-5 mt-5 bg-[#EAF7EB] border rounded-3xl">
             <p className="text-gray-400">About</p>
             <p className="text-gray-400 mt-4">Connect & Contact</p>
 
@@ -443,7 +547,7 @@ const Profile = () => {
           </div>
 
           {/* CAUSES ANALYTICS */}
-          <div className="p-5 mt-6 bg-white rounded-3xl border">
+          <div className="p-5 mt-6 bg-white rounded-3xl border" style={{ maxHeight: '500px', overflowY: 'auto' }}>
             <h2 className="text-xl font-semibold mb-3">Cause Analytics</h2>
 
             <Select
@@ -460,21 +564,28 @@ const Profile = () => {
             </Select>
 
             <div className="mt-5">
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={formattedChartData}>
-                  <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#7b42f6"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              {formattedChartData.length > 0 &&
+              formattedChartData.some((item: any) => item.value > 0) ? (
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={formattedChartData}>
+                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#7b42f6"
+                      strokeWidth={2}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-[200px] items-center justify-center text-sm text-neutral-400">
+                  No analytics data available for this cause.
+                </div>
+              )}
             </div>
           </div>
 
@@ -516,6 +627,7 @@ const Profile = () => {
                 </div>
               );
             })}
+          </div>
           </div>
         </div>
       </Modal>

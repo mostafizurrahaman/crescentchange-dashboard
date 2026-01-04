@@ -10,6 +10,10 @@ export default {
         'primary': '#f7f7f7',
         'btnPrimary': '#d1ff43',
       },
+      fontFamily: {
+        inter: ['"Inter"', 'system-ui', 'sans-serif'],
+        familjen: ['"Familjen Grotesk"', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],

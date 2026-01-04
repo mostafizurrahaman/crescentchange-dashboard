@@ -6,7 +6,6 @@ import { FaX } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { IoMdSettings } from "react-icons/io";
-import { FiChevronDown } from "react-icons/fi";
 import brandlogo from "../../assets/images/logo.png";
 import hfl from "../../assets/images/hfl.png";
 import Sidebar from "./Sidebar/Sidebar";
@@ -67,14 +66,6 @@ const RootLayout = () => {
               </Link>
 
               <div className="relative">
-                {/* <Link to="/notification">
-                    <div className="relative ">
-                      <IoIosNotificationsOutline className="w-10 h-10 p-1 text-black bg-white border rounded-full border-primary " />
-                      <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full">
-                        1
-                      </span>
-                    </div>
-                  </Link> */}
                 <Popover
                   content={<NotificationPopover />}
                   trigger="click"
@@ -102,7 +93,6 @@ const RootLayout = () => {
                   <p className="text-sm font-medium text-black/80">
                     {orgData?.data?.name}
                   </p>
-                  <FiChevronDown className="w-4 h-4 text-black/50" />
                 </div>
               </Link>
             </div>

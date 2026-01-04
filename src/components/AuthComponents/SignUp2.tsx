@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { ConfigProvider, Form, Input, Select } from "antd";
-import { FaPhoneAlt, FaGlobe } from "react-icons/fa";
+import { FiGlobe, FiMapPin, FiPhone } from "react-icons/fi";
 import img from "../../assets/images/login.png";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
-import { IoLocation } from "react-icons/io5";
 
 const STEPS = [
   { path: "/auth/signUp1", label: "Account" },
   { path: "/auth/signUp2", label: "Organization" },
-  { path: "/auth/signUp3", label: "Branding" },
-  { path: "/auth/signUp4", label: "Bank" },
-
+  { path: "/auth/signUp3", label: "Compliance" },
+  { path: "/auth/signUp4", label: "Board Member" },
+  { path: "/auth/signUp5", label: "Payment" },
 ];
 
 const SignUp2: React.FC = () => {
@@ -23,7 +22,7 @@ const SignUp2: React.FC = () => {
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
   if (currentIdx === -1) currentIdx = 0;
-  const current = currentIdx + 1; 
+  const current = currentIdx + 1;
   const isLast = current >= total;
   const nextPath = !isLast
     ? STEPS[currentIdx + 1].path
@@ -35,10 +34,9 @@ const SignUp2: React.FC = () => {
   };
   return (
     <div className="h-screen flex p-2">
-      <div className="bg-white flex flex-col justify-center items-center w-full md:w-1/2 relative">
-        <img src={logo} alt="Logo" className="absolute top-5 left-10" />
-
-        <div className="w-full max-w-sm mt-20">
+      <img src={logo} alt="Logo" className="absolute top-5 left-10" />
+      <div className="bg-white flex flex-col mt-24 items-center w-full md:w-1/2 relative">
+        <div className="w-full max-w-md">
           <ConfigProvider
             theme={{
               components: {
@@ -54,38 +52,35 @@ const SignUp2: React.FC = () => {
               layout="vertical"
               className=""
             >
-              <div className="mb-4 text-center">
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-familjen font-bold mb-3 text-black">
                   Organization Details
                 </h2>
-                <p className="text-neutral-600 lg:text-lg">
+                <p className="text-neutral-500 text-base">
                   Tell us a little more about your organization.
                 </p>
 
                 {/* Segmented step progress (thin rounded segments) */}
                 <Stepper total={total} current={current} />
-
-                <p className="mt-4 mb-6">
-                  Step {current}/{total}
-                </p>
               </div>
 
               <ConfigProvider
                 theme={{
                   components: {
                     Select: {
-                      controlHeight: 50,
+                      controlHeight: 56,
+                      borderRadius: 12,
                     },
                   },
                 }}
               >
                 <Form.Item
                   name="serviceType"
-                  label={<p className="text-lg ">Service Type</p>}
+                  label={<p className="text-base font-medium text-black/80">Service Type</p>}
                 >
                   <Select
-                    placeholder="Select a service type"
-                    className="w-full "
+                    placeholder="Service Type"
+                    className="w-full"
                     value={active}
                     onChange={(value) => setActive(value)}
                     options={[
@@ -101,18 +96,18 @@ const SignUp2: React.FC = () => {
 
                 <Form.Item
                   name="address"
-                  label={<p className="text-lg ">Organisation Address</p>}
+                  label={<p className="text-base font-medium text-black/80">Organisation Address</p>}
                 >
                   <Input
                     required
                     className="text-neutral-500"
-                    prefix={<IoLocation className="mr-2 h-5 w-5" />}
+                    prefix={<FiMapPin className="mr-3 h-5 w-5 text-black/80" />}
                     placeholder="Enter Organization Address"
                     style={{
                       padding: "8px",
-                      borderRadius: "8px",
+                      borderRadius: "12px",
                       width: "100%",
-                      height: "52px",
+                      height: "56px",
                     }}
                   />
                 </Form.Item>
@@ -120,10 +115,10 @@ const SignUp2: React.FC = () => {
                 <div className="grid grid-cols-2 gap-6">
                   <Form.Item
                     name="state"
-                    label={<p className="text-lg ">State</p>}
+                    label={<p className="text-base font-medium text-black/80">State</p>}
                   >
                     <Select
-                      placeholder="Select state"
+                      placeholder="New York"
                       className="w-full"
                       defaultValue="New York"
                       options={[
@@ -135,16 +130,16 @@ const SignUp2: React.FC = () => {
 
                   <Form.Item
                     name="postalCode"
-                    label={<p className="text-lg ">Postal Code</p>}
+                    label={<p className="text-base font-medium text-black/80">Postal Code</p>}
                   >
                     <Input
-                      placeholder="Enter Postal Code"
+                      placeholder="23907"
                       className="w-full"
                       style={{
                         padding: "8px",
-                        borderRadius: "8px",
+                        borderRadius: "12px",
                         width: "100%",
-                        height: "52px",
+                        height: "56px",
                       }}
                     />
                   </Form.Item>
@@ -153,7 +148,7 @@ const SignUp2: React.FC = () => {
                 <Form.Item
                   name="website"
                   label={
-                    <p className="text-lg text-neutral-500">
+                    <p className="text-base font-medium text-black/80">
                       Organization Website
                     </p>
                   }
@@ -161,44 +156,44 @@ const SignUp2: React.FC = () => {
                   <Input
                     required
                     className="text-neutral-500"
-                    prefix={<FaGlobe className="mr-2 h-5 w-5" />}
-                    placeholder="www.organizationwebsite.com"
+                    prefix={<FiGlobe className="mr-3 h-5 w-5 text-black/80" />}
+                    placeholder="www.organisationwebsite.com"
                     style={{
                       padding: "8px",
-                      borderRadius: "8px",
+                      borderRadius: "12px",
                       width: "100%",
-                      height: "52px",
+                      height: "56px",
                     }}
                   />
                 </Form.Item>
 
                 <Form.Item
                   name="phoneNumber"
-                  label={<p className="text-lg ">Contact Phone Number</p>}
+                  label={<p className="text-base font-medium text-black/80">Contact Phone Number</p>}
                 >
                   <Input
                     required
                     type="tel"
                     className="text-neutral-500"
-                    prefix={<FaPhoneAlt className="mr-2" />}
+                    prefix={<FiPhone className="mr-3 h-5 w-5 text-black/80" />}
                     placeholder="+61 0 1234 5678"
                     style={{
                       padding: "8px",
-                      borderRadius: "8px",
+                      borderRadius: "12px",
                       width: "100%",
-                      height: "52px",
+                      height: "56px",
                     }}
                   />
                 </Form.Item>
 
                 <Form.Item>
                   {!isLast ? (
-                    <button className="text-center font-bold bg-btnPrimary w-full py-3 rounded-md shadow-lg hover:text-black">
+                    <button className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black">
                       Save &amp; Continue
                     </button>
                   ) : (
                     <button
-                      className="text-center font-bold bg-btnPrimary w-full py-3 rounded-md shadow-lg hover:text-black"
+                      className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black"
                       type="submit"
                     >
                       Finish
@@ -212,11 +207,11 @@ const SignUp2: React.FC = () => {
       </div>
 
       {/* Right section - Image */}
-      <div className="w-full md:w-1/2 p-2">
+      <div className="w-full md:w-1/2">
         <img
           src={img}
           alt="sign-up"
-          className="w-full h-full object-cover rounded-r-md"
+          className="w-full h-full object-cover rounded-r-2xl"
         />
       </div>
     </div>
@@ -229,7 +224,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
 
   return (
     <div
-      className="flex items-center gap-3 w-1/2 mx-auto"
+      className="flex items-center gap-2 w-2/5 mx-auto mt-4"
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={total}
@@ -241,7 +236,7 @@ function Stepper({ total, current }: { total: number; current: number }) {
         return (
           <div
             key={i}
-            className={`h-2 flex-1 rounded-full transition-colors duration-200 ${
+            className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${
               isActive ? "bg-[#a55eea]" : "bg-neutral-200"
             }`}
           />

@@ -23,9 +23,9 @@ const Analytics = () => {
 
   return (
     <div className="">
-      <div className="flex justify-between items-center gap-5">
-        <div className="w-full md:w-[70%]">
-          <h1 className="text-xl md:text-4xl font-semibold my-3">
+      <div className="flex justify-between items-start gap-5">
+        <div className="w-full">
+          <h1 className="text-xl md:text-4xl font-bold font-familjen mb-3">
             Your impact at a glance.
           </h1>
           <p className="text-gray-500 mb-10">
@@ -33,7 +33,7 @@ const Analytics = () => {
             shaping results.
           </p>
         </div>
-        <div className="w-full md:w-[30%] flex justify-start items-center gap-5">
+        <div className="w-full flex justify-end items-start gap-5">
           <button
             className={btnClass("today")}
             onClick={() => setActive("today")}

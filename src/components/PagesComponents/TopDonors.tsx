@@ -132,78 +132,80 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
       </div>
 
       {/* breakdown by causes */}
-      {/* TODO */}
       <div className="bg-white rounded-3xl p-6 border my-3">
-        <h1 className="text-xl font-medium">Breakdown by Causes</h1>
-        <div className="my-6">
-          <p className="text-gray-400">Total Donations</p>
-          <h1 className="text-2xl font-medium">
-            <span className="text-gray-400">$</span>
-            {TotalDonationAmount?.totalDonationAmount}
+        <h1 className="text-xl font-medium mb-4">Breakdown by Causes</h1>
+
+        <div className="mb-6">
+          <p className="text-gray-400 text-sm">Total Donations</p>
+          <h1 className="text-3xl font-semibold">
+            <span className="text-gray-400 align-middle">$</span>
+            <span className="align-middle">
+              {TotalDonationAmount?.totalDonationAmount?.toLocaleString() ?? "0"}
+            </span>
           </h1>
         </div>
 
-        {/* {data?.data?.breakDownByCause?.categories?.map((category: any) => {
-          const topCauses = category.causes
-            ?.sort(
-              (a: any, b: any) => b.totalDonationAmount - a.totalDonationAmount
-            )
-            .slice(0, 3); */}
-        {data?.data?.breakDownByCause?.categories?.map((category: any) => {
-          const topCauses = category.causes
-            ? [...category.causes]
-                .sort(
-                  (a: any, b: any) =>
-                    b.totalDonationAmount - a.totalDonationAmount
-                )
-                .slice(0, 3)
-            : [];
+        {(() => {
+          const categories = data?.data?.breakDownByCause?.categories ?? [];
+          const colors = ["bg-pink-200", "bg-blue-200", "bg-yellow-200"];
+
+          const totals = categories.map((c: any) => c.totalDonationAmount ?? 0);
+          const grandTotal = totals.reduce((sum: number, v: number) => sum + v, 0);
+
+          const topThree = [...categories]
+            .sort((a: any, b: any) => (b.totalDonationAmount ?? 0) - (a.totalDonationAmount ?? 0))
+            .slice(0, 3);
+
+          const segments = topThree.length
+            ? topThree
+            : [
+                { category: "Non-profit", totalDonationAmount: 0 },
+                { category: "Charity", totalDonationAmount: 0 },
+                { category: "Mosque", totalDonationAmount: 0 },
+              ];
 
           return (
-            <div key={category._id} className="mb-4">
-              <h2 className="font-bold mb-2">{category.category}</h2>
-              {topCauses?.map((cause: any) => (
-                <div
-                  key={cause.causeId}
-                  className="flex justify-between items-center gap-1"
-                >
-                  <span>{cause.causeName}</span>
-                  <span>${cause.totalDonationAmount.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-          );
-        })}
+            <>
+              {/* separate rounded pills */}
+              <div className="flex w-full gap-4 mb-6">
+                {segments.map((seg: any, idx: number) => {
+                  const value = seg.totalDonationAmount ?? 0;
+                  const share = grandTotal > 0 ? value / grandTotal : 1 / segments.length;
+                  // base width: 40% for first, 20% for others, scaled by share
+                  const base = idx === 0 ? 0.5 : 0.2;
+                  const widthPercent = Math.max(base * share * 100, 12);
+                  return (
+                    <div
+                      key={seg.category ?? idx}
+                      className={`${colors[idx] ?? "bg-gray-200"} h-16 rounded-3xl`}
+                      style={{ width: `${widthPercent}%` }}
+                    />
+                  );
+                })}
+              </div>
 
-        {/* <div className="grid grid-cols-3 gap-5 mt-6">
-          <div>
-            <div className="flex justify-start items-center gap-1">
-              <div className="h-2 w-2 bg-pink-200"></div>
-              <p>Non-profit</p>
-            </div>
-            <h1 className="text-2xl font-medium">
-              <span className="text-gray-400">$</span> 40,0000
-            </h1>
-          </div>
-          <div>
-            <div className="flex justify-start items-center gap-1">
-              <div className="h-2 w-2 bg-blue-200"></div>
-              <p>Non-profit</p>
-            </div>
-            <h1 className="text-2xl font-medium">
-              <span className="text-gray-400">$</span> 40,0000
-            </h1>
-          </div>
-          <div>
-            <div className="flex justify-start items-center gap-1">
-              <div className="h-2 w-2 bg-yellow-200"></div>
-              <p>Non-profit</p>
-            </div>
-            <h1 className="text-2xl font-medium">
-              <span className="text-gray-400">$</span> 40,0000
-            </h1>
-          </div>
-        </div> */}
+              {/* legend + amounts */}
+              <div className="grid grid-cols-3 gap-5 mt-4">
+                {segments.map((seg: any, idx: number) => (
+                  <div key={seg.category ?? idx}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className={`${colors[idx] ?? "bg-gray-200"} h-2 w-2 rounded-full`}
+                      />
+                      <p className="text-sm text-gray-500">
+                        {seg.category ?? (idx === 0 ? "Non-profit" : idx === 1 ? "Charity" : "Mosque")}
+                      </p>
+                    </div>
+                    <h1 className="text-2xl font-medium">
+                      <span className="text-gray-400">$</span>
+                      {Number(seg.totalDonationAmount ?? 0).toLocaleString()}
+                    </h1>
+                  </div>
+                ))}
+              </div>
+            </>
+          );
+        })()}
       </div>
     </div>
   );
