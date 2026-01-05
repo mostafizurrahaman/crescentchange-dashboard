@@ -27,9 +27,80 @@ const SignUp2: React.FC = () => {
   const [loadingStates, setLoadingStates] = useState(false);
   const location = useLocation();
   const nevigate = useNavigate();
+  const [form] = Form.useForm();
 
   // Google Maps API key - replace with your actual API key
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
+
+  // Handle state change to get postal code from Google Maps
+  const handleStateChange = async (state: string) => {
+    try {
+      // Use Google Geocoding API to get postal code for the state
+      const geocoder = new window.google.maps.Geocoder();
+      
+      geocoder.geocode(
+        { 
+          address: state,
+          componentRestrictions: { country: 'US' }
+        },
+        (results: any, status: any) => {
+          if (status === window.google.maps.GeocoderStatus.OK && results && results.length > 0) {
+            // Extract postal code from the result
+            const addressComponents = results[0].address_components;
+            const postalCodeComponent = addressComponents.find((component: any) => 
+              component.types.includes('postal_code')
+            );
+            
+            if (postalCodeComponent) {
+              // Set the postal code in the form
+              form.setFieldsValue({
+                postalCode: postalCodeComponent.long_name
+              });
+            } else {
+              // If no postal code found, try to get a representative one
+              const representativePostalCode = getRepresentativePostalCode(state);
+              form.setFieldsValue({
+                postalCode: representativePostalCode
+              });
+            }
+          } else {
+            // Fallback to representative postal code
+            const representativePostalCode = getRepresentativePostalCode(state);
+            form.setFieldsValue({
+              postalCode: representativePostalCode
+            });
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error getting postal code:', error);
+      // Fallback to representative postal code
+      const representativePostalCode = getRepresentativePostalCode(state);
+      form.setFieldsValue({
+        postalCode: representativePostalCode
+      });
+    }
+  };
+
+  // Fallback function for representative postal codes
+  const getRepresentativePostalCode = (state: string): string => {
+    const statePostalCodes: { [key: string]: string } = {
+      "Alabama": "36101", "Alaska": "99501", "Arizona": "85001", "Arkansas": "72201",
+      "California": "90001", "Colorado": "80201", "Connecticut": "06101", "Delaware": "19901",
+      "Florida": "32201", "Georgia": "30301", "Hawaii": "96801", "Idaho": "83701",
+      "Illinois": "60601", "Indiana": "46201", "Iowa": "50309", "Kansas": "67201",
+      "Kentucky": "40201", "Louisiana": "70101", "Maine": "04101", "Maryland": "21201",
+      "Massachusetts": "02101", "Michigan": "48201", "Minnesota": "55101", "Mississippi": "39201",
+      "Missouri": "63101", "Montana": "59101", "Nebraska": "68501", "Nevada": "89501",
+      "New Hampshire": "03301", "New Jersey": "07101", "New Mexico": "87501", "New York": "10001",
+      "North Carolina": "27601", "North Dakota": "58501", "Ohio": "43201", "Oklahoma": "73101",
+      "Oregon": "97201", "Pennsylvania": "19101", "Rhode Island": "02901", "South Carolina": "29201",
+      "South Dakota": "57501", "Tennessee": "37201", "Texas": "73301", "Utah": "84101",
+      "Vermont": "05601", "Virginia": "23219", "Washington": "98101", "West Virginia": "25301",
+      "Wisconsin": "53701", "Wyoming": "82001"
+    };
+    return statePostalCodes[state] || "";
+  };
   // console.log("Google Maps API Key:", GOOGLE_MAPS_API_KEY); 
 
   // Load Google Maps script and fetch states
@@ -56,7 +127,7 @@ const SignUp2: React.FC = () => {
     setLoadingStates(true);
     try {
       // Get US states using Google Places Autocomplete
-      const service = new window.google.maps.places.AutocompleteService();
+      // const service = new window.google.maps.places.AutocompleteService();
       
       // Common US states for autocomplete
       const states = [
@@ -108,11 +179,11 @@ const SignUp2: React.FC = () => {
         input: value,
         types: ['(regions)'],
         componentRestrictions: { country: 'us' }
-      }, (predictions, status) => {
+      }, (predictions: any[], status: any) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
           const options = predictions
-            .filter(prediction => prediction.types.includes('administrative_area_level_1'))
-            .map(prediction => ({
+            .filter((prediction: { types: string | string[]; }) => prediction.types.includes('administrative_area_level_1'))
+            .map((prediction: { description: string; }) => ({
               label: prediction.description.split(',')[0],
               value: prediction.description.split(',')[0]
             }));
@@ -158,6 +229,7 @@ const SignUp2: React.FC = () => {
               onFinish={onFinish}
               layout="vertical"
               className=""
+              form={form}
             >
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-familjen font-bold mb-3 text-black">
@@ -231,6 +303,7 @@ const SignUp2: React.FC = () => {
                       loading={loadingStates}
                       filterOption={false}
                       onSearch={handleStateSearch}
+                      onChange={handleStateChange}
                       notFoundContent={loadingStates ? "Loading..." : "No states found"}
                       options={stateOptions}
                     />
