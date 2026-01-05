@@ -31,19 +31,70 @@ const SignUp2: React.FC = () => {
 
   // Google Maps API key - replace with your actual API key
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
+  
+  // Debug logging for production
+  useEffect(() => {
+    console.log("Google Maps API Key exists:", !!GOOGLE_MAPS_API_KEY);
+    console.log("Google Maps API Key length:", GOOGLE_MAPS_API_KEY?.length);
+    console.log("Google Maps loaded:", !!window.google);
+  }, []);
+
+  // State capitals mapping for better postal code accuracy
+  const stateCapitals: { [key: string]: string } = {
+    "Alabama": "Montgomery", "Alaska": "Juneau", "Arizona": "Phoenix", "Arkansas": "Little Rock",
+    "California": "Sacramento", "Colorado": "Denver", "Connecticut": "Hartford", "Delaware": "Dover",
+    "Florida": "Tallahassee", "Georgia": "Atlanta", "Hawaii": "Honolulu", "Idaho": "Boise",
+    "Illinois": "Springfield", "Indiana": "Indianapolis", "Iowa": "Des Moines", "Kansas": "Topeka",
+    "Kentucky": "Frankfort", "Louisiana": "Baton Rouge", "Maine": "Augusta", "Maryland": "Annapolis",
+    "Massachusetts": "Boston", "Michigan": "Lansing", "Minnesota": "Saint Paul", "Mississippi": "Jackson",
+    "Missouri": "Jefferson City", "Montana": "Helena", "Nebraska": "Lincoln", "Nevada": "Carson City",
+    "New Hampshire": "Concord", "New Jersey": "Trenton", "New Mexico": "Santa Fe", "New York": "Albany",
+    "North Carolina": "Raleigh", "North Dakota": "Bismarck", "Ohio": "Columbus", "Oklahoma": "Oklahoma City",
+    "Oregon": "Salem", "Pennsylvania": "Harrisburg", "Rhode Island": "Providence", "South Carolina": "Columbia",
+    "South Dakota": "Pierre", "Tennessee": "Nashville", "Texas": "Austin", "Utah": "Salt Lake City",
+    "Vermont": "Montpelier", "Virginia": "Richmond", "Washington": "Olympia", "West Virginia": "Charleston",
+    "Wisconsin": "Madison", "Wyoming": "Cheyenne"
+  };
 
   // Handle state change to get postal code from Google Maps
   const handleStateChange = async (state: string) => {
+    console.log("State selected:", state);
+    console.log("Google Maps available:", !!window.google);
+    
+    if (!window.google) {
+      console.error("Google Maps not loaded");
+      const representativePostalCode = getRepresentativePostalCode(state);
+      form.setFieldsValue({
+        postalCode: representativePostalCode
+      });
+      return;
+    }
+    
     try {
-      // Use Google Geocoding API to get postal code for the state
+      // Use Google Geocoding API to get postal code for the state capital
       const geocoder = new window.google.maps.Geocoder();
+      const capital = stateCapitals[state];
+      
+      if (!capital) {
+        console.log("No capital found for state, using fallback");
+        const representativePostalCode = getRepresentativePostalCode(state);
+        form.setFieldsValue({
+          postalCode: representativePostalCode
+        });
+        return;
+      }
+      
+      console.log("Geocoding capital:", capital);
       
       geocoder.geocode(
         { 
-          address: state,
+          address: `${capital}, ${state}, USA`,
           componentRestrictions: { country: 'US' }
         },
         (results: any, status: any) => {
+          console.log("Geocoding status:", status);
+          console.log("Geocoding results:", results);
+          
           if (status === window.google.maps.GeocoderStatus.OK && results && results.length > 0) {
             // Extract postal code from the result
             const addressComponents = results[0].address_components;
@@ -56,12 +107,14 @@ const SignUp2: React.FC = () => {
               form.setFieldsValue({
                 postalCode: postalCodeComponent.long_name
               });
+              console.log("Postal code from Google:", postalCodeComponent.long_name);
             } else {
               // If no postal code found, try to get a representative one
               const representativePostalCode = getRepresentativePostalCode(state);
               form.setFieldsValue({
                 postalCode: representativePostalCode
               });
+              console.log("Using fallback postal code:", representativePostalCode);
             }
           } else {
             // Fallback to representative postal code
@@ -69,6 +122,7 @@ const SignUp2: React.FC = () => {
             form.setFieldsValue({
               postalCode: representativePostalCode
             });
+            console.log("Geocoding failed, using fallback:", representativePostalCode);
           }
         }
       );
