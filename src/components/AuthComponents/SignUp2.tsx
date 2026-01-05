@@ -1,10 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ConfigProvider, Form, Input, Select } from "antd";
 import { FiGlobe, FiMapPin, FiPhone } from "react-icons/fi";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+
+// Google Maps TypeScript declarations
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 const STEPS = [
   { path: "/auth/signUp1", label: "Account" },
@@ -16,8 +23,107 @@ const STEPS = [
 
 const SignUp2: React.FC = () => {
   const [active, setActive] = useState("Charity");
+  const [stateOptions, setStateOptions] = useState<{label: string, value: string}[]>([]);
+  const [loadingStates, setLoadingStates] = useState(false);
   const location = useLocation();
   const nevigate = useNavigate();
+
+  // Google Maps API key - replace with your actual API key
+  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
+
+  // Load Google Maps script and fetch states
+  useEffect(() => {
+    const loadGoogleMapsScript = () => {
+      if (window.google) {
+        fetchStates();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.async = true;
+      script.onload = () => {
+        fetchStates();
+      };
+      document.body.appendChild(script);
+    };
+
+    loadGoogleMapsScript();
+  }, []);
+
+  const fetchStates = async () => {
+    setLoadingStates(true);
+    try {
+      // Get US states using Google Places Autocomplete
+      const service = new window.google.maps.places.AutocompleteService();
+      
+      // Common US states for autocomplete
+      const states = [
+        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+        "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
+        "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+        "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
+        "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+        "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+        "West Virginia", "Wisconsin", "Wyoming"
+      ];
+
+      const options = states.map(state => ({
+        label: state,
+        value: state
+      }));
+
+      setStateOptions(options);
+    } catch (error) {
+      console.error('Error fetching states:', error);
+      // Fallback to basic state list
+      const fallbackStates = [
+        { label: "New York", value: "New York" },
+        { label: "California", value: "California" },
+        { label: "Texas", value: "Texas" },
+        { label: "Florida", value: "Florida" },
+        { label: "Illinois", value: "Illinois" }
+      ];
+      setStateOptions(fallbackStates);
+    } finally {
+      setLoadingStates(false);
+    }
+  };
+
+  // Handle state search with Google Places
+  const handleStateSearch = async (value: string) => {
+    if (!value || !window.google) {
+      return;
+    }
+
+    setLoadingStates(true);
+    try {
+      const service = new window.google.maps.places.AutocompleteService();
+      
+      service.getPlacePredictions({
+        input: value,
+        types: ['(regions)'],
+        componentRestrictions: { country: 'us' }
+      }, (predictions, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+          const options = predictions
+            .filter(prediction => prediction.types.includes('administrative_area_level_1'))
+            .map(prediction => ({
+              label: prediction.description.split(',')[0],
+              value: prediction.description.split(',')[0]
+            }));
+          setStateOptions(options);
+        }
+        setLoadingStates(false);
+      });
+    } catch (error) {
+      console.error('Error searching states:', error);
+      setLoadingStates(false);
+    }
+  };
 
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
@@ -118,13 +224,14 @@ const SignUp2: React.FC = () => {
                     label={<p className="text-base font-medium text-black/80">State</p>}
                   >
                     <Select
-                      placeholder="New York"
+                      placeholder="Search or select a state..."
                       className="w-full"
-                      defaultValue="New York"
-                      options={[
-                        { label: "New York", value: "New York" },
-                        { label: "California", value: "California" },
-                      ]}
+                      showSearch
+                      loading={loadingStates}
+                      filterOption={false}
+                      onSearch={handleStateSearch}
+                      notFoundContent={loadingStates ? "Loading..." : "No states found"}
+                      options={stateOptions}
                     />
                   </Form.Item>
 
