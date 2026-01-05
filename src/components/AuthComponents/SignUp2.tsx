@@ -30,6 +30,7 @@ const SignUp2: React.FC = () => {
 
   // Google Maps API key - replace with your actual API key
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
+  // console.log("Google Maps API Key:", GOOGLE_MAPS_API_KEY); 
 
   // Load Google Maps script and fetch states
   useEffect(() => {
