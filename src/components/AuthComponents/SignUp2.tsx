@@ -32,17 +32,12 @@ const SignUp2: React.FC = () => {
   // Google Maps API key - replace with your actual API key
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
   
-  // Debug logging for production
-  // useEffect(() => {
-  //   console.log("Google Maps API Key exists:", !!GOOGLE_MAPS_API_KEY);
-  //   console.log("Google Maps API Key length:", GOOGLE_MAPS_API_KEY?.length);
-  //   console.log("Google Maps loaded:", !!window.google);
-  // }, []);
+
 
   // Handle state change to get postal code from Google Maps
   const handleStateChange = async (state: string) => {
-    console.log("State selected:", state);
-    console.log("Google Maps available:", !!window.google);
+    // console.log("State selected:", state);
+    // console.log("Google Maps available:", !!window.google);
     
     if (!window.google) {
       console.error("Google Maps not loaded");
