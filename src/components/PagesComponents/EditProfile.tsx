@@ -1,5 +1,5 @@
 import { message, Upload } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
 import editUser from "../../assets/images/Icons.png";
 import donor from "../../assets/images/donor.png";
@@ -22,6 +22,7 @@ const EditProfile = () => {
   const [coverEditMode] = useState(false);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [isVideo, setIsVideo] = useState<boolean>(false);
+  const [mediaLoadAttempts, setMediaLoadAttempts] = useState(0);
   const [activeTab, setActiveTab] = useState<
     "profile" | "access" | "causes" | "Stripe_Connect"
   >("profile");
@@ -30,8 +31,62 @@ const EditProfile = () => {
   const [editOrgCoverImage] = useEditOrgCoverImageMutation();
   const [editOrgLogo] = useEditOrgLogoMutation();
 
+  // Media type detection for existing cover image
+  const detectMediaType = (url: string): 'image' | 'video' => {
+    const urlLower = url.toLowerCase();
+    
+    // Check for video indicators in URL
+    if (urlLower.includes('video') || urlLower.includes('mp4') || 
+        urlLower.includes('webm') || urlLower.includes('mov') || 
+        urlLower.includes('avi') || urlLower.includes('ogg')) {
+      return 'video';
+    }
+    
+    // Default to image for most cases
+    return 'image';
+  };
+
+  // Handle media loading errors with automatic fallback
+  const handleMediaError = (currentType: 'image' | 'video') => {
+    console.error(`${currentType} failed to load`);
+    
+    // Only switch types if we haven't tried both types yet
+    if (mediaLoadAttempts < 2) {
+      const newType = currentType === 'image' ? 'video' : 'image';
+      console.log(`Attempting to load as ${newType}`);
+      setIsVideo(newType === 'video');
+      setMediaLoadAttempts(prev => prev + 1);
+    } else {
+      console.error('Both image and video loading attempts failed');
+    }
+  };
+
+  // Detect media type when org data loads
+  useEffect(() => {
+    if (orgData?.data?.coverImage && !previewImage) {
+      const detectedType = detectMediaType(orgData.data.coverImage);
+      setIsVideo(detectedType === 'video');
+      setMediaLoadAttempts(0);
+    }
+  }, [orgData?.data?.coverImage]);
+
   const handleBeforeUpload = (file: File) => {
     const isVideoFile = file.type.startsWith('video/');
+    const isImageFile = file.type.startsWith('image/');
+    
+    // Check file size (5MB limit to prevent 413 errors)
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error('File must be smaller than 5MB!');
+      return false;
+    }
+    
+    // Check file type
+    if (!isVideoFile && !isImageFile) {
+      message.error('You can only upload image or video files!');
+      return false;
+    }
+    
     setIsVideo(isVideoFile);
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
@@ -65,6 +120,21 @@ const EditProfile = () => {
   };
 
   const handleBeforeUploadLogo = (file: File) => {
+    const isImageFile = file.type.startsWith('image/');
+    
+    // Check file size (5MB limit to prevent 413 errors)
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error('Logo must be smaller than 5MB!');
+      return false;
+    }
+    
+    // Check file type (logo should only be image)
+    if (!isImageFile) {
+      message.error('Logo must be an image file!');
+      return false;
+    }
+    
     setLogo(file);
     setPreviewLogo(URL.createObjectURL(file));
 
@@ -96,12 +166,14 @@ const EditProfile = () => {
                 muted
                 loop
                 className="w-full h-80 object-cover object-top rounded-2xl"
+                onError={() => handleMediaError('video')}
               />
             ) : (
               <img
                 src={previewImage || `${orgData?.data?.coverImage}`}
                 alt="Cover"
                 className="w-full h-80 object-cover object-top rounded-2xl"
+                onError={() => handleMediaError('image')}
               />
             )}
 
