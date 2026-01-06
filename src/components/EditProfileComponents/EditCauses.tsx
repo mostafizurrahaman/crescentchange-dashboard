@@ -168,7 +168,7 @@ const EditCauses = ({ orgId }: any) => {
                 </div>
               </div>
 
-              <div className="relative group">
+              <div className="relative group flex items-center">
                 <BsThreeDotsVertical size={20} />
                 <div className="absolute hidden group-hover:block right-0 bg-white border rounded shadow-md">
                   <button
