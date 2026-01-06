@@ -32,64 +32,28 @@ const SignUp2: React.FC = () => {
   // Google Maps API key - replace with your actual API key
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
   
-  // Debug logging for production
-  useEffect(() => {
-    console.log("Google Maps API Key exists:", !!GOOGLE_MAPS_API_KEY);
-    console.log("Google Maps API Key length:", GOOGLE_MAPS_API_KEY?.length);
-    console.log("Google Maps loaded:", !!window.google);
-  }, []);
 
-  // State capitals mapping for better postal code accuracy
-  const stateCapitals: { [key: string]: string } = {
-    "Alabama": "Montgomery", "Alaska": "Juneau", "Arizona": "Phoenix", "Arkansas": "Little Rock",
-    "California": "Sacramento", "Colorado": "Denver", "Connecticut": "Hartford", "Delaware": "Dover",
-    "Florida": "Tallahassee", "Georgia": "Atlanta", "Hawaii": "Honolulu", "Idaho": "Boise",
-    "Illinois": "Springfield", "Indiana": "Indianapolis", "Iowa": "Des Moines", "Kansas": "Topeka",
-    "Kentucky": "Frankfort", "Louisiana": "Baton Rouge", "Maine": "Augusta", "Maryland": "Annapolis",
-    "Massachusetts": "Boston", "Michigan": "Lansing", "Minnesota": "Saint Paul", "Mississippi": "Jackson",
-    "Missouri": "Jefferson City", "Montana": "Helena", "Nebraska": "Lincoln", "Nevada": "Carson City",
-    "New Hampshire": "Concord", "New Jersey": "Trenton", "New Mexico": "Santa Fe", "New York": "Albany",
-    "North Carolina": "Raleigh", "North Dakota": "Bismarck", "Ohio": "Columbus", "Oklahoma": "Oklahoma City",
-    "Oregon": "Salem", "Pennsylvania": "Harrisburg", "Rhode Island": "Providence", "South Carolina": "Columbia",
-    "South Dakota": "Pierre", "Tennessee": "Nashville", "Texas": "Austin", "Utah": "Salt Lake City",
-    "Vermont": "Montpelier", "Virginia": "Richmond", "Washington": "Olympia", "West Virginia": "Charleston",
-    "Wisconsin": "Madison", "Wyoming": "Cheyenne"
-  };
 
   // Handle state change to get postal code from Google Maps
   const handleStateChange = async (state: string) => {
-    console.log("State selected:", state);
-    console.log("Google Maps available:", !!window.google);
+    // console.log("State selected:", state);
+    // console.log("Google Maps available:", !!window.google);
     
     if (!window.google) {
       console.error("Google Maps not loaded");
-      const representativePostalCode = getRepresentativePostalCode(state);
-      form.setFieldsValue({
-        postalCode: representativePostalCode
-      });
       return;
     }
     
     try {
-      // Use Google Geocoding API to get postal code for the state capital
+      // Use Google Geocoding API to get postal code for the selected state/province
       const geocoder = new window.google.maps.Geocoder();
-      const capital = stateCapitals[state];
       
-      if (!capital) {
-        console.log("No capital found for state, using fallback");
-        const representativePostalCode = getRepresentativePostalCode(state);
-        form.setFieldsValue({
-          postalCode: representativePostalCode
-        });
-        return;
-      }
-      
-      console.log("Geocoding capital:", capital);
+      console.log("Geocoding state/province:", state);
       
       geocoder.geocode(
         { 
-          address: `${capital}, ${state}, USA`,
-          componentRestrictions: { country: 'US' }
+          address: state,
+          componentRestrictions: {} // Remove country restriction to allow all countries
         },
         (results: any, status: any) => {
           console.log("Geocoding status:", status);
@@ -109,53 +73,18 @@ const SignUp2: React.FC = () => {
               });
               console.log("Postal code from Google:", postalCodeComponent.long_name);
             } else {
-              // If no postal code found, try to get a representative one
-              const representativePostalCode = getRepresentativePostalCode(state);
-              form.setFieldsValue({
-                postalCode: representativePostalCode
-              });
-              console.log("Using fallback postal code:", representativePostalCode);
+              console.log("No postal code found for this state/province");
+              // Don't set any postal code if not found
             }
           } else {
-            // Fallback to representative postal code
-            const representativePostalCode = getRepresentativePostalCode(state);
-            form.setFieldsValue({
-              postalCode: representativePostalCode
-            });
-            console.log("Geocoding failed, using fallback:", representativePostalCode);
+            console.log("Geocoding failed, no postal code available");
           }
         }
       );
     } catch (error) {
       console.error('Error getting postal code:', error);
-      // Fallback to representative postal code
-      const representativePostalCode = getRepresentativePostalCode(state);
-      form.setFieldsValue({
-        postalCode: representativePostalCode
-      });
     }
   };
-
-  // Fallback function for representative postal codes
-  const getRepresentativePostalCode = (state: string): string => {
-    const statePostalCodes: { [key: string]: string } = {
-      "Alabama": "36101", "Alaska": "99501", "Arizona": "85001", "Arkansas": "72201",
-      "California": "90001", "Colorado": "80201", "Connecticut": "06101", "Delaware": "19901",
-      "Florida": "32201", "Georgia": "30301", "Hawaii": "96801", "Idaho": "83701",
-      "Illinois": "60601", "Indiana": "46201", "Iowa": "50309", "Kansas": "67201",
-      "Kentucky": "40201", "Louisiana": "70101", "Maine": "04101", "Maryland": "21201",
-      "Massachusetts": "02101", "Michigan": "48201", "Minnesota": "55101", "Mississippi": "39201",
-      "Missouri": "63101", "Montana": "59101", "Nebraska": "68501", "Nevada": "89501",
-      "New Hampshire": "03301", "New Jersey": "07101", "New Mexico": "87501", "New York": "10001",
-      "North Carolina": "27601", "North Dakota": "58501", "Ohio": "43201", "Oklahoma": "73101",
-      "Oregon": "97201", "Pennsylvania": "19101", "Rhode Island": "02901", "South Carolina": "29201",
-      "South Dakota": "57501", "Tennessee": "37201", "Texas": "73301", "Utah": "84101",
-      "Vermont": "05601", "Virginia": "23219", "Washington": "98101", "West Virginia": "25301",
-      "Wisconsin": "53701", "Wyoming": "82001"
-    };
-    return statePostalCodes[state] || "";
-  };
-  // console.log("Google Maps API Key:", GOOGLE_MAPS_API_KEY); 
 
   // Load Google Maps script and fetch states
   useEffect(() => {
@@ -180,40 +109,11 @@ const SignUp2: React.FC = () => {
   const fetchStates = async () => {
     setLoadingStates(true);
     try {
-      // Get US states using Google Places Autocomplete
-      // const service = new window.google.maps.places.AutocompleteService();
-      
-      // Common US states for autocomplete
-      const states = [
-        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
-        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
-        "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
-        "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
-        "New Hampshire", "New Jersey", "New Mexico", "New York",
-        "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
-        "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
-        "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
-        "West Virginia", "Wisconsin", "Wyoming"
-      ];
-
-      const options = states.map(state => ({
-        label: state,
-        value: state
-      }));
-
-      setStateOptions(options);
+      // Don't load hardcoded states - rely on Google Maps API for suggestions
+      setStateOptions([]);
     } catch (error) {
-      console.error('Error fetching states:', error);
-      // Fallback to basic state list
-      const fallbackStates = [
-        { label: "New York", value: "New York" },
-        { label: "California", value: "California" },
-        { label: "Texas", value: "Texas" },
-        { label: "Florida", value: "Florida" },
-        { label: "Illinois", value: "Illinois" }
-      ];
-      setStateOptions(fallbackStates);
+      console.error('Error initializing states:', error);
+      setStateOptions([]);
     } finally {
       setLoadingStates(false);
     }
@@ -231,15 +131,19 @@ const SignUp2: React.FC = () => {
       
       service.getPlacePredictions({
         input: value,
-        types: ['(regions)'],
-        componentRestrictions: { country: 'us' }
+        types: ['(regions)'], // Remove country restriction to get all regions
+        // Remove componentRestrictions to allow all countries
       }, (predictions: any[], status: any) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
           const options = predictions
-            .filter((prediction: { types: string | string[]; }) => prediction.types.includes('administrative_area_level_1'))
+            .filter((prediction: { types: string[]; }) => 
+              prediction.types.includes('administrative_area_level_1') || // States/Provinces
+              prediction.types.includes('administrative_area_level_2') || // Some regions
+              prediction.types.includes('locality') // Cities/towns
+            )
             .map((prediction: { description: string; }) => ({
-              label: prediction.description.split(',')[0],
-              value: prediction.description.split(',')[0]
+              label: prediction.description,
+              value: prediction.description
             }));
           setStateOptions(options);
         }

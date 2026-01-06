@@ -73,7 +73,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ data }) => {
           <div className="flex justify-start items-end">
             <p className="text-3xl md:text-5xl font-bold text-gray-400">
               <span className="text-black">
-                ${stats?.totalDonatedAmount?.value}
+               <span className="text-gray-400 mr-1"> $</span>{stats?.totalDonatedAmount?.value}
               </span>
             </p>
             <p className="text-gray-400">

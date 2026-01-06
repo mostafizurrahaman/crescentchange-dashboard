@@ -95,32 +95,7 @@ const Profile = () => {
 
   console.log("Causes analytics chart data", formattedChartData);
 
-  // const causeList = [
-  // const data = chartData?.data;
-  // console.log("causeData", causeData?.data);
-  // console.log("selectedCauseId", selectedCauseId);
-
-  //   { cause: "water", icon: water },
-  //   { cause: "education", icon: education },
-  //   { cause: "food", icon: food },
-  //   { cause: "youth", icon: youth },
-  //   { cause: "orphans", icon: orphans },
-  //   { cause: "quran_education", icon: Quran },
-  //   { cause: "health_medical", icon: health },
-  //   { cause: "emergency_relief", icon: emergency },
-  //   { cause: "shelter_housing", icon: shelter },
-  //   { cause: "mosque_utilities", icon: mosque },
-  //   { cause: "zakat", icon: zakat },
-  //   { cause: "sadaqah", icon: sadaqah },
-  //   { cause: "ramadan", icon: ramadan },
-  //   { cause: "qurban", icon: qurban },
-  //   { cause: "fitrah", icon: fitrah },
-  //   { cause: "admin_operational", icon: admin },
-  //   { cause: "refugees", icon: refugee },
-  //   { cause: "digital_dawah", icon: digital },
-  //   { cause: "women_families", icon: women },
-  //   { cause: "mental_health", icon: mental },
-  // ];
+ 
   const causeList = [
     { cause: "water", icon: "💧" },
     { cause: "education", icon: "📚" },
