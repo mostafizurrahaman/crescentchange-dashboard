@@ -18,6 +18,7 @@ import {
 } from "react-icons/fi";
 import { useEditOrgDetailsMutation } from "../../redux/features/profileApi/profileApi";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 type FieldType = {
   "organisation-name"?: string;
@@ -44,10 +45,33 @@ type FieldType = {
   about?: string;
 };
 
-const ProfileEditForm = () => {
+const ProfileEditForm = ({data}: {data: any}) => {
   const [editOrgDetails, { isLoading }] = useEditOrgDetailsMutation();
   const [form] = Form.useForm<FieldType>();
+  console.log(data);  
 
+  // Prefill form with organization data
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        name: data.name || "",
+        "organisation-address": data.address || "",
+        country: data.country || "",
+        state: data.state || "",
+        "post-code": data.postalCode || "",
+        website: data.website || "",
+        telephone: data.phoneNumber || "",
+        "email-address": data.auth?.email || "",
+        about: data.aboutUs || "",
+        "date-of-established": data.dateOfEstablishment ? dayjs(data.dateOfEstablishment) : null,
+      });
+    }
+  }, [data, form]);  
+
+  const handleProfileVisibilityChange = (checked: boolean) => {
+    // Handle profile visibility change
+    console.log("Profile visibility changed to:", checked);
+  };  
   const onFinish = async (values: FieldType) => {
     try {
       const payload = {
@@ -107,7 +131,10 @@ const ProfileEditForm = () => {
             Profile visiblity:{" "}
             <span className="pl-2">
               {" "}
-              <Switch></Switch>
+              <Switch 
+                checked={data?.isProfileVisible || false}
+                onChange={handleProfileVisibilityChange}
+              />
             </span>
           </h1>
         </div>

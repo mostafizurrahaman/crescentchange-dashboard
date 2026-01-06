@@ -15,12 +15,13 @@ import {
 } from "../../redux/features/profileApi/profileApi";
 import StripeConnect from "../ProfileComponents/StripeConnect/StripeConnect";
 
-const  EditProfile = () => {
+const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
   const [coverEditMode] = useState(false);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+  const [isVideo, setIsVideo] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
     "profile" | "access" | "causes" | "Stripe_Connect"
   >("profile");
@@ -28,23 +29,28 @@ const  EditProfile = () => {
 
   const [editOrgCoverImage] = useEditOrgCoverImageMutation();
   const [editOrgLogo] = useEditOrgLogoMutation();
+
   const handleBeforeUpload = (file: File) => {
+    const isVideoFile = file.type.startsWith('video/');
+    setIsVideo(isVideoFile);
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
     return false;
   };
+
   const handelEditCoverImage = async () => {
-    if (!profilePic) return message.error("Please select an image first!");
+    if (!profilePic) return message.error("Please select an image or video first!");
     try {
       const formData = new FormData();
       formData.append("profileImage", profilePic!);
       await editOrgCoverImage(formData).unwrap();
-      message.success("Cover image updated successfully");
+      message.success(`${isVideo ? 'Cover video' : 'Cover image'} updated successfully`);
     } catch (error) {
-      message.error("Failed to update cover image");
+      message.error(`Failed to update ${isVideo ? 'cover video' : 'cover image'}`);
       console.log(error);
     }
   };
+
   const handelEditLogo = async () => {
     if (!logo) return message.error("Please select an image first!");
     try {
@@ -72,29 +78,7 @@ const  EditProfile = () => {
         <div>
           <div className="flex justify-between items-center gap-5">
             <h1 className="font-familjen text-4xl font-semibold mb-4">Edit Information</h1>
-            {/* <div className="flex justify-start items-center gap-3">
-              <button
-                onClick={() => setActive("discard")}
-                className={`px-4 py-3 rounded-3xl border transition ${
-                  active === "discard"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                }`}
-              >
-                Discard Changes
-              </button>
-
-              <button
-                onClick={() => setActive("save")}
-                className={`px-4 py-3 rounded-3xl border transition ${
-                  active === "save"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                }`}
-              >
-                Save Changes
-              </button>
-            </div> */}
+          
           </div>
           <p className="text-[16px] text-gray-600 mb-6">
           Manage how your organisation appears to donors.
@@ -104,18 +88,29 @@ const  EditProfile = () => {
         {/* profile cover */}
         <div className="">
           <div className="my-5 w-full relative">
-            <img
-              src={previewImage || `${orgData?.data?.coverImage}`}
-              alt="Cover"
-              className="w-full h-80 object-cover object-top rounded-2xl"
-            />
-            {/* Edit the cober image with thge api */}
+            {isVideo && previewImage ? (
+              <video
+                src={previewImage}
+                controls
+                autoPlay
+                muted
+                loop
+                className="w-full h-80 object-cover object-top rounded-2xl"
+              />
+            ) : (
+              <img
+                src={previewImage || `${orgData?.data?.coverImage}`}
+                alt="Cover"
+                className="w-full h-80 object-cover object-top rounded-2xl"
+              />
+            )}
 
             <Upload
               showUploadList={false}
               maxCount={1}
               beforeUpload={handleBeforeUpload}
               onChange={handelEditCoverImage}
+              accept="image/*,video/*"
               className="cursor-pointer absolute top-10 right-20 z-[999]"
             >
               <div className="bg-neutral-200 px-6 py-3 rounded-full flex justify-center items-center gap-2">
@@ -124,7 +119,7 @@ const  EditProfile = () => {
                 ) : (
                   <div className="flex justify-center items-center gap-2">
                     <FaCamera className="h-5 w-5 text-black" />
-                    <p>Change Cover Image</p>
+                    <p>Change Cover</p>
                   </div>
                 )}
               </div>
@@ -205,7 +200,7 @@ const  EditProfile = () => {
 
           {/* Content */}
           <div className="w-full md:w-[80%]">
-            {activeTab === "profile" && <ProfileEditForm />}
+            {activeTab === "profile" && <ProfileEditForm data={orgData?.data}/>}
             {activeTab === "access" && <AccessTab />}
             {activeTab === "causes" && (
               <EditCauses orgId={orgData?.data?._id} />
