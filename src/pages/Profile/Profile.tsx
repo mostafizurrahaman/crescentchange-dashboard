@@ -53,6 +53,8 @@ const Profile = () => {
   const [selectedCauseId, setSelectedCauseId] = useState<string | null>(null);
   const [isCauseDropdownOpen, setIsCauseDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [coverMediaType, setCoverMediaType] = useState<'image' | 'video'>('image');
+  const [mediaLoadAttempts, setMediaLoadAttempts] = useState(0);
   const causeSelectRef = useRef<HTMLDivElement | null>(null);
 
   const fromMonth = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
@@ -63,6 +65,45 @@ const Profile = () => {
   const OrgProfile = profileData?.data;
   const orgId = profileData?.data?._id;
   console.log("orgId", orgId);
+
+  // Simple media type detection based on URL patterns
+  const detectMediaType = (url: string): 'image' | 'video' => {
+    const urlLower = url.toLowerCase();
+    
+    // Check for video indicators in URL
+    if (urlLower.includes('video') || urlLower.includes('mp4') || 
+        urlLower.includes('webm') || urlLower.includes('mov') || 
+        urlLower.includes('avi') || urlLower.includes('ogg')) {
+      return 'video';
+    }
+    
+    // Default to image for most cases
+    return 'image';
+  };
+
+  // Detect media type when profile data loads
+  useEffect(() => {
+    if (OrgProfile?.coverImage) {
+      const detectedType = detectMediaType(OrgProfile.coverImage);
+      setCoverMediaType(detectedType);
+      setMediaLoadAttempts(0);
+    }
+  }, [OrgProfile?.coverImage]);
+
+  // Handle media loading errors with automatic fallback
+  const handleMediaError = (currentType: 'image' | 'video') => {
+    console.error(`${currentType} failed to load`);
+    
+    // Only switch types if we haven't tried both types yet
+    if (mediaLoadAttempts < 2) {
+      const newType = currentType === 'image' ? 'video' : 'image';
+      console.log(`Attempting to load as ${newType}`);
+      setCoverMediaType(newType);
+      setMediaLoadAttempts(prev => prev + 1);
+    } else {
+      console.error('Both image and video loading attempts failed');
+    }
+  };
 
   const { data: causeData, isLoading: isCauseLoading } =
     useGetRaisedCausedQuery(
@@ -179,11 +220,24 @@ const Profile = () => {
         </div>
       </div>
       <div className="my-6 relative">
-        <img
-          src={`${OrgProfile?.coverImage}`}
-          alt=""
-          className="w-full h-80 object-cover object-top rounded-3xl"
-        />
+        {coverMediaType === 'video' ? (
+          <video
+            src={`${OrgProfile?.coverImage}`}
+            controls
+            autoPlay
+            muted
+            loop
+            className="w-full h-80 object-cover object-top rounded-3xl"
+            onError={() => handleMediaError('video')}
+          />
+        ) : (
+          <img
+            src={`${OrgProfile?.coverImage}`}
+            alt=""
+            className="w-full h-80 object-cover object-top rounded-3xl"
+            onError={() => handleMediaError('image')}
+          />
+        )}
         <div className="absolute ml-28 top-60">
           <img
             src={`${OrgProfile?.logoImage}`}
@@ -439,11 +493,24 @@ const Profile = () => {
           <div className="bg-white max-h-[80vh] pb-4 overflow-y-auto">
           {/* Cover + Logo */}
           <div className="relative">
-            <img
-              src={`${OrgProfile?.coverImage}`}
-              alt=""
-              className="w-full h-auto rounded-3xl"
-            />
+            {coverMediaType === 'video' ? (
+              <video
+                src={`${OrgProfile?.coverImage}`}
+                controls
+                autoPlay
+                muted
+                loop
+                className="w-full h-auto rounded-3xl"
+                onError={() => handleMediaError('video')}
+              />
+            ) : (
+              <img
+                src={`${OrgProfile?.coverImage}`}
+                alt=""
+                className="w-full h-auto rounded-3xl"
+                onError={() => handleMediaError('image')}
+              />
+            )}
             <div className="absolute -bottom-10 left-5">
               <img
                 src={`${OrgProfile?.logoImage}`}
