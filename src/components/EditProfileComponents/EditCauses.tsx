@@ -102,7 +102,7 @@ const EditCauses = ({ orgId }: any) => {
       description: v.description,
       organizationId: orgId,
     };
-    console.log("Creating cause with data:", data);
+    // console.log("Creating cause with data:", data);
 
     try {
       await createCause(data);

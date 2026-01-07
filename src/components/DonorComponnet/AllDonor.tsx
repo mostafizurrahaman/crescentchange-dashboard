@@ -50,7 +50,7 @@ const AllDonor = ({ tab }: ITabProps) => {
 
   const [resendReceipt] = useResendReceiptMutation();
 
-  console.log("data", donorData);
+  // console.log("data", donorData);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
     setIsOpen(true);
@@ -79,7 +79,7 @@ const AllDonor = ({ tab }: ITabProps) => {
       await resendReceipt(selectedId).unwrap();
     }
 
-    console.log("Receipt resent for donation:", selectedId);
+    // console.log("Receipt resent for donation:", selectedId);
   }
 
   const columns = [

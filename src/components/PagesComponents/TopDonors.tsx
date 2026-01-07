@@ -42,7 +42,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
   const recentDonors = data?.data?.recentDonors;
   const TotalDonationAmount = data?.data?.breakDownByCause;
 
-  console.log("breakDownByCause", data?.data?.breakDownByCause?.categories);
+  // console.log("breakDownByCause", data?.data?.breakDownByCause?.categories);
 
   return (
     <div>

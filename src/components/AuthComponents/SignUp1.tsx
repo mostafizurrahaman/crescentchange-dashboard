@@ -33,7 +33,7 @@ const SignUp1: React.FC = () => {
     ? STEPS[currentIdx + 1].path
     : STEPS[currentIdx].path;
   const onFinish = (values: any) => {
-    console.log("Received values of form:", values);
+    // console.log("Received values of form:", values);
     navigate(nextPath, { state: values });
     localStorage.setItem("organization", JSON.stringify(values));
   };
