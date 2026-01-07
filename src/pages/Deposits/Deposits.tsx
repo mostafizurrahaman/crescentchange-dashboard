@@ -7,9 +7,9 @@ import {
   message,
   Modal,
   Pagination,
-  Select,
+
 } from "antd";
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import setting from "../../assets/images/Settings.png";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 import {
@@ -24,7 +24,7 @@ const Deposits: FC = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(2);
   const [status] = useState("pending");
-  const [payoutMethod, setPayoutMethod] = useState("stripe_connect");
+  const [payoutMethod] = useState("stripe_connect");
   const [searchTerm] = useState("");
   const [sort] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +42,7 @@ const Deposits: FC = () => {
   });
   // console.log(depositData);
   const { data: getMyBalance } = useGetMyBalanceQuery("");
+  // console.log("getMyBalance", getMyBalance?.data);
   const handleDownLoadPdf = (item: any) => {
     try {
       const pdf = new jsPDF("p", "mm", "a4");
@@ -152,7 +153,13 @@ const Deposits: FC = () => {
   };
 
   const handleCancel = () => setIsModalOpen(false);
-
+  useEffect(() => {
+    if (getMyBalance?.data?.availableBalance !== undefined) {
+      form.setFieldsValue({
+        withdrawAmount: getMyBalance.data.availableBalance,
+      });
+    }
+  }, [getMyBalance, form]);
   return (
     <div className="">
       <div>
@@ -176,7 +183,9 @@ const Deposits: FC = () => {
               {" "}
               <span className="text-gray-400">$</span>
               {getMyBalance?.data?.availableBalance} /{" "}
-              <span className="text-gray-400 text-2xl">{getMyBalance?.data?.pendingBalance}</span>
+              <span className="text-gray-400 text-2xl">
+                {getMyBalance?.data?.pendingBalance}
+              </span>
             </h1>
             {/* <p className="text-green-500">
               8.2% <span className="text-gray-400"> vs last month</span>
@@ -190,7 +199,7 @@ const Deposits: FC = () => {
 
       <div className="flex justify-between items-center mb-5 mt-8">
         <h1 className="text-xl md:text-2xl font-semibold">Deposit</h1>
-        <Select
+        {/* <Select
           value={payoutMethod}
           className="w-[150px]"
           onChange={(v) => setPayoutMethod(v)}
@@ -199,7 +208,7 @@ const Deposits: FC = () => {
           <Select.Option value="credit_card">Credit Card</Select.Option>
           <Select.Option value="bank_transfer">Bank Transfer</Select.Option>
           <Select.Option value="stripe_connect">Stripe Connect</Select.Option>
-        </Select>
+        </Select> */}
       </div>
 
       {/* Cards */}
@@ -303,6 +312,7 @@ const Deposits: FC = () => {
           <Form.Item
             label="Amount to Withdraw"
             name="withdrawAmount"
+          
             rules={[
               { required: true, message: "Enter withdrawal amount" },
               { pattern: /^\d+$/, message: "Amount must be a number" },
