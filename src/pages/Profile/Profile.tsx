@@ -223,11 +223,13 @@ const Profile = () => {
         {coverMediaType === 'video' ? (
           <video
             src={`${OrgProfile?.coverImage}`}
-            controls
+      
             autoPlay
             muted
             loop
-            className="w-full h-80 object-cover object-top rounded-3xl"
+            playsInline
+            preload="auto"
+            className="w-full h-80 object-cover object-top rounded-3xl hide:controls"
             onError={() => handleMediaError('video')}
           />
         ) : (
