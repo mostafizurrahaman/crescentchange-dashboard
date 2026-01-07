@@ -111,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
               items={menuItems}
             />
 
-            <div className="px-3 pb-6 mt-48">
+            <div className="px-3 pb-6 mt-72">
               <Menu
                 mode="inline"
                 style={{
