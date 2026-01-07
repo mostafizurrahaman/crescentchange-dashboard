@@ -64,7 +64,7 @@ const Profile = () => {
     useGetAllProfileQuery(null);
   const OrgProfile = profileData?.data;
   const orgId = profileData?.data?._id;
-  console.log("orgId", orgId);
+  // console.log("orgId", orgId);
 
   // Simple media type detection based on URL patterns
   const detectMediaType = (url: string): 'image' | 'video' => {
@@ -97,7 +97,7 @@ const Profile = () => {
     // Only switch types if we haven't tried both types yet
     if (mediaLoadAttempts < 2) {
       const newType = currentType === 'image' ? 'video' : 'image';
-      console.log(`Attempting to load as ${newType}`);
+      // console.log(`Attempting to load as ${newType}`);
       setCoverMediaType(newType);
       setMediaLoadAttempts(prev => prev + 1);
     } else {
@@ -134,7 +134,7 @@ const Profile = () => {
       value: item.totalAmount,
     })) || [];
 
-  console.log("Causes analytics chart data", formattedChartData);
+  // console.log("Causes analytics chart data", formattedChartData);
 
  
   const causeList = [

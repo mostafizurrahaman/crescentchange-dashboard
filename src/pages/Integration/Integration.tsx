@@ -7,14 +7,14 @@ import img4 from "../../assets/images/Logo (1).png";
 import { Modal, Switch } from "antd";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { useState } from "react";
-import {
-  useGetStripeAccountStatusQuery,
-} from "../../redux/features/integrationApi/integrationApi";
+// import {
+//   useGetStripeAccountStatusQuery,
+// } from "../../redux/features/integrationApi/integrationApi";
 
 const Integration = () => {
   const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
-  const { data: bankData } = useGetStripeAccountStatusQuery(null);
-  console.log(bankData?.data);
+  // const { data: bankData } = useGetStripeAccountStatusQuery(null);
+  // console.log(bankData?.data);
 
 
   const handleOk = () => setIsAddBankModalOpen(false);

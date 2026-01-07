@@ -40,7 +40,7 @@ const Deposits: FC = () => {
     page,
     limit,
   });
-  console.log(depositData);
+  // console.log(depositData);
   const { data: getMyBalance } = useGetMyBalanceQuery("");
   const handleDownLoadPdf = (item: any) => {
     try {

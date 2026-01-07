@@ -48,7 +48,7 @@ const SignUp2: React.FC = () => {
       // Use Google Geocoding API to get postal code for the selected state/province
       const geocoder = new window.google.maps.Geocoder();
       
-      console.log("Geocoding state/province:", state);
+      // console.log("Geocoding state/province:", state);
       
       geocoder.geocode(
         { 
@@ -56,8 +56,8 @@ const SignUp2: React.FC = () => {
           componentRestrictions: {} // Remove country restriction to allow all countries
         },
         (results: any, status: any) => {
-          console.log("Geocoding status:", status);
-          console.log("Geocoding results:", results);
+          // console.log("Geocoding status:", status);
+          // console.log("Geocoding results:", results);
           
           if (status === window.google.maps.GeocoderStatus.OK && results && results.length > 0) {
             // Extract postal code from the result
@@ -71,13 +71,13 @@ const SignUp2: React.FC = () => {
               form.setFieldsValue({
                 postalCode: postalCodeComponent.long_name
               });
-              console.log("Postal code from Google:", postalCodeComponent.long_name);
+              // console.log("Postal code from Google:", postalCodeComponent.long_name);
             } else {
-              console.log("No postal code found for this state/province");
+              // console.log("No postal code found for this state/province");
               // Don't set any postal code if not found
             }
           } else {
-            console.log("Geocoding failed, no postal code available");
+            // console.log("Geocoding failed, no postal code available");
           }
         }
       );

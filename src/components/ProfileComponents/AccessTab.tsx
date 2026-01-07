@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, ConfigProvider, Form, Input, message } from "antd";
 import { useEditTaxDetailsMutation } from "../../redux/features/profileApi/profileApi";
 
@@ -16,7 +17,7 @@ const AccessTab = () => {
         tfnOrAbnNumber: values.tfnOrAbnNumber,
       };
 
-      console.log("Submitting:", data);
+      // console.log("Submitting:", data);
 
       const res = await editTaxDetails(data).unwrap();
       message.success(res?.message || "Updated Successfully");

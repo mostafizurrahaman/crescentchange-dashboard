@@ -49,7 +49,7 @@ const OneTime = ({ tab }: ITabProps) => {
     filter: "this_month",
     donationType: tab,
   });
-  console.log("data", tab, statsData?.data);
+  // console.log("data", tab, statsData?.data);
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
     setIsOpen(true);
@@ -82,7 +82,7 @@ const OneTime = ({ tab }: ITabProps) => {
       await resendReceipt(selectedId).unwrap();
     }
 
-    console.log("Receipt resent for donation:", selectedId);
+    // console.log("Receipt resent for donation:", selectedId);
   }
 
   const columns = [

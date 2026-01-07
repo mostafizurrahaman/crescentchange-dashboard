@@ -53,12 +53,12 @@ export default function Settings() {
     };
     const res = await chnagePassword(data).unwrap();
     message.success(res?.message);
-    console.log("Submit new password:", passwords);
+    // console.log("Submit new password:", passwords);
     setShowPasswordModal(false);
   };
 
   const handleInvite = () => {
-    console.log("Invite sent:", invite);
+    // console.log("Invite sent:", invite);
     setShowInviteModal(false);
   };
 

@@ -305,11 +305,11 @@ const ProfileEditForm = ({ data }: { data: any }) => {
       // Use Google Geocoding API to get postal code for the selected state/province
       const geocoder = new window.google.maps.Geocoder();
       
-      console.log("Geocoding state/province:", state);
+      // console.log("Geocoding state/province:", state);
       
       // Get ISO country code for componentRestrictions
       const countryCode = getCountryCode(selectedCountry);
-      console.log("Country code for geocoding:", countryCode);
+      // console.log("Country code for geocoding:", countryCode);
       
       geocoder.geocode(
         { 
@@ -317,8 +317,8 @@ const ProfileEditForm = ({ data }: { data: any }) => {
           componentRestrictions: countryCode ? { country: countryCode } : {}
         },
         (results: any, status: any) => {
-          console.log("Geocoding status:", status);
-          console.log("Geocoding results:", results);
+          // console.log("Geocoding status:", status);
+          // console.log("Geocoding results:", results);
           
           if (status === window.google.maps.GeocoderStatus.OK && results && results.length > 0) {
             // Extract postal code from the result
@@ -332,12 +332,12 @@ const ProfileEditForm = ({ data }: { data: any }) => {
               form.setFieldsValue({
                 postalCode: postalCodeComponent.long_name
               });
-              console.log("Postal code from Google:", postalCodeComponent.long_name);
+              // console.log("Postal code from Google:", postalCodeComponent.long_name);
             } else {
-              console.log("No postal code found for this state/province");
+              // console.log("No postal code found for this state/province");
             }
           } else {
-            console.log("Geocoding failed, no postal code available");
+            // console.log("Geocoding failed, no postal code available");
           }
         }
       );
@@ -349,21 +349,21 @@ const ProfileEditForm = ({ data }: { data: any }) => {
   // Load Google Maps script and fetch states
   useEffect(() => {
     const loadGoogleMapsScript = () => {
-      console.log("Loading Google Maps script...");
-      console.log("Google Maps already available:", !!window.google);
+      // console.log("Loading Google Maps script...");
+      // console.log("Google Maps already available:", !!window.google);
       
       if (window.google) {
-        console.log("Google Maps already loaded, calling fetchStates");
+        // console.log("Google Maps already loaded, calling fetchStates");
         fetchStates();
         return;
       }
 
-      console.log("Creating Google Maps script element");
+      // console.log("Creating Google Maps script element");
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
       script.onload = () => {
-        console.log("Google Maps script loaded successfully");
+        // console.log("Google Maps script loaded successfully");
         fetchStates();
       };
       script.onerror = (error) => {
@@ -392,25 +392,25 @@ const ProfileEditForm = ({ data }: { data: any }) => {
 
   // Handle country search with Google Places
   const handleCountrySearch = async (value: string) => {
-    console.log("Country search triggered for:", value);
-    console.log("Google Maps available:", !!window.google);
+    // console.log("Country search triggered for:", value);
+    // console.log("Google Maps available:", !!window.google);
     
     if (!value || !window.google) {
-      console.log("Early return - no value or Google Maps not loaded");
+      // console.log("Early return - no value or Google Maps not loaded");
       return;
     }
 
     setLoadingStates(true);
     try {
       const service = new window.google.maps.places.AutocompleteService();
-      console.log("AutocompleteService created:", !!service);
+      // console.log("AutocompleteService created:", !!service);
       
       service.getPlacePredictions({
         input: value,
         types: ['country'],
       }, (predictions: any[], status: any) => {
-        console.log("Country search status:", status);
-        console.log("Country search predictions:", predictions);
+        // console.log("Country search status:", status);
+        // console.log("Country search predictions:", predictions);
         
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
           const options = predictions.map((prediction: { description: string; }) => ({
@@ -418,9 +418,9 @@ const ProfileEditForm = ({ data }: { data: any }) => {
             value: prediction.description
           }));
           setCountryOptions(options);
-          console.log("Country options set:", options.length);
+          // console.log("Country options set:", options.length);
         } else {
-          console.log("Country search failed with status:", status);
+          // console.log("Country search failed with status:", status);
           setCountryOptions([]);
         }
         setLoadingStates(false);
@@ -433,31 +433,31 @@ const ProfileEditForm = ({ data }: { data: any }) => {
 
   // Handle state search with Google Places
   const handleStateSearch = async (value: string) => {
-    console.log("State search triggered for:", value);
-    console.log("Selected country:", selectedCountry);
-    console.log("Google Maps available:", !!window.google);
+    // console.log("State search triggered for:", value);
+    // console.log("Selected country:", selectedCountry);
+    // console.log("Google Maps available:", !!window.google);
     
     if (!value || !window.google) {
-      console.log("Early return - no value or Google Maps not loaded");
+      // console.log("Early return - no value or Google Maps not loaded");
       return;
     }
 
     setLoadingStates(true);
     try {
       const service = new window.google.maps.places.AutocompleteService();
-      console.log("AutocompleteService created:", !!service);
+      // console.log("AutocompleteService created:", !!service);
       
       // Get ISO country code for componentRestrictions
       const countryCode = getCountryCode(selectedCountry);
-      console.log("Country code for restrictions:", countryCode);
+      // console.log("Country code for restrictions:", countryCode);
       
       service.getPlacePredictions({
         input: value,
         types: ['administrative_area_level_1'],
         componentRestrictions: countryCode ? { country: countryCode } : undefined
       }, (predictions: any[], status: any) => {
-        console.log("State search status:", status);
-        console.log("State search predictions:", predictions);
+        // console.log("State search status:", status);
+        // console.log("State search predictions:", predictions);
         
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
           const options = predictions
@@ -471,9 +471,9 @@ const ProfileEditForm = ({ data }: { data: any }) => {
               value: prediction.description
             }));
           setStateOptions(options);
-          console.log("State options set:", options.length);
+          // console.log("State options set:", options.length);
         } else {
-          console.log("State search failed with status:", status);
+          // console.log("State search failed with status:", status);
           setStateOptions([]);
         }
         setLoadingStates(false);
@@ -526,10 +526,10 @@ const ProfileEditForm = ({ data }: { data: any }) => {
           : null,
         address: values["organisation-address"],
       };
-      console.log("Payload:", payload);
-      const response = await editOrgDetails(payload).unwrap();
+      // console.log("Payload:", payload);
+      await editOrgDetails(payload).unwrap();
       message.success("Profile updated successfully!");
-      console.log("Updated data:", response);
+      // console.log("Updated data:", response);
       form.resetFields();
     } catch (error: any) {
       message.error(error?.data?.message || "Failed to update profile");

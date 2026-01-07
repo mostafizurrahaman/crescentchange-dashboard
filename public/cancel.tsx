@@ -8,7 +8,7 @@ const Cancel = () => {
   const handleAddBankModal = async () => {
     try {
       const res = await addBankAccount({}).unwrap();
-      console.log("url", res.data.onboardingUrl);
+      // console.log("url", res.data.onboardingUrl);
       window.location.href = res.data.onboardingUrl;
 
       message.success(res?.message);

@@ -72,7 +72,7 @@ const Reports = () => {
       await resendReceipt(selectedId).unwrap();
     }
 
-    console.log("Receipt resent for donation:", selectedId);
+    // console.log("Receipt resent for donation:", selectedId);
   }
   const columns = [
     {
@@ -193,7 +193,7 @@ const Reports = () => {
     },
   ];
   const allDataExport = () => {
-    console.log(statsData?.data);
+    // console.log(statsData?.data);
     const formattedData = [
       {
         "Total Donation": statsData?.data?.totalDonatedAmount?.percentageChange,
