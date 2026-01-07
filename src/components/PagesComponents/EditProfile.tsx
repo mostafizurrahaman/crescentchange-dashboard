@@ -27,26 +27,27 @@ const EditProfile = () => {
   >("profile");
   const { data: orgData } = useGetAllProfileQuery(null);
 
+  console.log("orgData", orgData?.data?.coverImage);
   const [editOrgCoverImage] = useEditOrgCoverImageMutation();
   const [editOrgLogo] = useEditOrgLogoMutation();
 
   const handleBeforeUpload = (file: File) => {
-    const isVideoFile = file.type.startsWith('video/');
-    const isImageFile = file.type.startsWith('image/');
-    
+    const isVideoFile = file.type.startsWith("video/");
+    const isImageFile = file.type.startsWith("image/");
+
     // Check file size (15MB limit)
     const isLt15M = file.size / 1024 / 1024 < 15;
     if (!isLt15M) {
-      message.error('File must be smaller than 15MB!');
+      message.error("File must be smaller than 15MB!");
       return false;
     }
-    
+
     // Check file type
     if (!isVideoFile && !isImageFile) {
-      message.error('You can only upload image or video files!');
+      message.error("You can only upload image or video files!");
       return false;
     }
-    
+
     setIsVideo(isVideoFile);
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
@@ -54,14 +55,19 @@ const EditProfile = () => {
   };
 
   const handelEditCoverImage = async () => {
-    if (!profilePic) return message.error("Please select an image or video first!");
+    if (!profilePic)
+      return message.error("Please select an image or video first!");
     try {
       const formData = new FormData();
       formData.append("profileImage", profilePic!);
       await editOrgCoverImage(formData).unwrap();
-      message.success(`${isVideo ? 'Cover video' : 'Cover image'} updated successfully`);
+      message.success(
+        `${isVideo ? "Cover video" : "Cover image"} updated successfully`
+      );
     } catch (error) {
-      message.error(`Failed to update ${isVideo ? 'cover video' : 'cover image'}`);
+      message.error(
+        `Failed to update ${isVideo ? "cover video" : "cover image"}`
+      );
       console.log(error);
     }
   };
@@ -80,26 +86,28 @@ const EditProfile = () => {
   };
 
   const handleBeforeUploadLogo = (file: File) => {
-    const isImageFile = file.type.startsWith('image/');
-    
+    const isImageFile = file.type.startsWith("image/");
+
     // Check file size (15MB limit)
     const isLt15M = file.size / 1024 / 1024 < 15;
     if (!isLt15M) {
-      message.error('Logo must be smaller than 15MB!');
+      message.error("Logo must be smaller than 15MB!");
       return false;
     }
-    
+
     // Check file type (logo should only be image)
     if (!isImageFile) {
-      message.error('Logo must be an image file!');
+      message.error("Logo must be an image file!");
       return false;
     }
-    
+
     setLogo(file);
     setPreviewLogo(URL.createObjectURL(file));
 
     return false;
   };
+const coverSrc = previewImage || orgData?.data?.coverImage;
+const showVideo = isVideo;
 
   return (
     <div>
@@ -107,24 +115,25 @@ const EditProfile = () => {
         {/* header */}
         <div>
           <div className="flex justify-between items-center gap-5">
-            <h1 className="font-familjen text-4xl font-semibold mb-4">Edit Information</h1>
-          
+            <h1 className="font-familjen text-4xl font-semibold mb-4">
+              Edit Information
+            </h1>
           </div>
           <p className="text-[16px] text-gray-600 mb-6">
-          Manage how your organisation appears to donors.
+            Manage how your organisation appears to donors.
           </p>
         </div>
 
         {/* profile cover */}
         <div className="">
           <div className="my-5 w-full relative">
-            {isVideo && previewImage ? (
+            {showVideo ? (
               <video
-                src={previewImage}
-                controls
+                src={coverSrc}
                 autoPlay
                 muted
                 loop
+                playsInline
                 className="w-full h-80 object-cover object-top rounded-2xl"
               />
             ) : (
@@ -230,7 +239,9 @@ const EditProfile = () => {
 
           {/* Content */}
           <div className="w-full md:w-[80%]">
-            {activeTab === "profile" && <ProfileEditForm data={orgData?.data}/>}
+            {activeTab === "profile" && (
+              <ProfileEditForm data={orgData?.data} />
+            )}
             {activeTab === "access" && <AccessTab />}
             {activeTab === "causes" && (
               <EditCauses orgId={orgData?.data?._id} />
@@ -244,4 +255,3 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
- 
