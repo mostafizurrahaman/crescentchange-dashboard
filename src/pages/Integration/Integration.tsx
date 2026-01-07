@@ -118,7 +118,7 @@ const Integration = () => {
       </div> */}
 
       {/* Add Bank Section End */}
-      <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3 justify-between items-center">
+      <div className="my-6 grid grid-cols-1 md:grid-cols-3 gap-3 justify-between items-center ">
         <div className="bg-white p-6 border rounded-3xl">
           <div className="flex justify-between items-center gap-3">
             <img src={img1} alt="" />
