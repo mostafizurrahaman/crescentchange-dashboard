@@ -23,7 +23,7 @@ import jsPDF from "jspdf";
 const Deposits: FC = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(2);
-  const [status] = useState("pending");
+  const [status] = useState("");
   const [payoutMethod] = useState("stripe_connect");
   const [searchTerm] = useState("");
   const [sort] = useState("");
@@ -40,7 +40,7 @@ const Deposits: FC = () => {
     page,
     limit,
   });
-  // console.log(depositData);
+  console.log("depositData", depositData?.data);
   const { data: getMyBalance } = useGetMyBalanceQuery("");
   // console.log("getMyBalance", getMyBalance?.data);
   const handleDownLoadPdf = (item: any) => {
@@ -181,7 +181,7 @@ const Deposits: FC = () => {
           <div className="flex justify-start items-end gap-1 mt-10 mb-6">
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
-              <span className="text-gray-400">$</span>
+              <span className="text-gray-400 mr-2">$</span>
               {getMyBalance?.data?.availableBalance} /{" "}
               <span className="text-gray-400 text-2xl">
                 {getMyBalance?.data?.pendingBalance}
@@ -230,21 +230,21 @@ const Deposits: FC = () => {
                 />
               </div>
             </div>
-            <h1 className="text-xl font-lg">Summery</h1>
+            <h1 className="text-xl font-lg">Summary</h1>
             <div className="text-gray-600 space-y-2 text-sm">
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <p>Deposited to</p>
                 <p>{item.organization?.name}</p>
-              </div>
+              </div> */}
               <div className="flex justify-between">
                 <p>Stripe Connect Account Id</p>
                 <p>
-                  {item.organization?.stripeConnectAccountId
-                    ? item.organization?.stripeConnectAccountId.slice(0, 3) +
+                  {item.organizationDetails?.stripeDetails?.stripeAccountId
+                    ? item.organizationDetails?.stripeDetails?.stripeAccountId.slice(0, 3) +
                       "*".repeat(
-                        item.organization?.stripeConnectAccountId.length - 7
+                        item.organizationDetails?.stripeDetails?.stripeAccountId.length - 7
                       ) +
-                      item.organization?.stripeConnectAccountId.slice(-4)
+                      item.organizationDetails?.stripeDetails?.stripeAccountId.slice(-4)
                     : ""}
                 </p>
               </div>
