@@ -14,7 +14,8 @@ import {
   useGetAllProfileQuery,
 } from "../../redux/features/profileApi/profileApi";
 import StripeConnect from "../ProfileComponents/StripeConnect/StripeConnect";
-
+import profile from "../../assets/images/profile.png";
+import profileLogo from "../../assets/images/Profile Logo.png";
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -62,11 +63,11 @@ const EditProfile = () => {
       formData.append("profileImage", profilePic!);
       await editOrgCoverImage(formData).unwrap();
       message.success(
-        `${isVideo ? "Cover video" : "Cover image"} updated successfully`
+        `${isVideo ? "Cover video" : "Cover image"} updated successfully`,
       );
     } catch (error) {
       message.error(
-        `Failed to update ${isVideo ? "cover video" : "cover image"}`
+        `Failed to update ${isVideo ? "cover video" : "cover image"}`,
       );
       console.log(error);
     }
@@ -106,8 +107,8 @@ const EditProfile = () => {
 
     return false;
   };
-const coverSrc = previewImage || orgData?.data?.coverImage;
-const showVideo = isVideo;
+  const coverSrc = previewImage || orgData?.data?.coverImage;
+  const showVideo = isVideo;
 
   return (
     <div>
@@ -136,9 +137,15 @@ const showVideo = isVideo;
                 playsInline
                 className="w-full h-80 object-cover object-top rounded-2xl"
               />
+            ) : previewImage || orgData?.data?.coverImage ? (
+              <img
+                src={previewImage || orgData?.data?.coverImage}
+                alt="Cover"
+                className="w-full h-80 object-cover object-top rounded-2xl"
+              />
             ) : (
               <img
-                src={previewImage || `${orgData?.data?.coverImage}`}
+                src={profile}
                 alt="Cover"
                 className="w-full h-80 object-cover object-top rounded-2xl"
               />
@@ -166,11 +173,20 @@ const showVideo = isVideo;
           </div>
 
           <div className="relative -top-28 left-24">
-            <img
-              src={previewLogo || `${orgData?.data?.logoImage}`}
-              alt="Logo"
-              className="h-40 w-40 rounded-full"
-            />
+            {orgData?.data?.logoImage ? (
+              <img
+                src={previewLogo || `${orgData?.data?.logoImage}`}
+                alt="Logo"
+                className="h-40 w-40 rounded-full"
+              />
+            ) : (
+              <img
+                src={profileLogo}
+                alt="Logo"
+                className="h-40 w-40 rounded-full"
+              />
+            )}
+
             <Upload
               showUploadList={false}
               maxCount={1}

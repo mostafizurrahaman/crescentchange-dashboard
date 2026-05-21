@@ -84,14 +84,18 @@ const RootLayout = () => {
               <Link to="/profile">
                 <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-full border border-black/5 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3f0ff]">
-                    <img
-                      src={`${orgData?.data?.logoImage}` || hfl}
-                      alt=""
-                      className="w-5 h-5"
-                    />
+                    {orgData?.data?.logoImage ? (
+                      <img
+                        src={`${orgData?.data?.logoImage}`}
+                        alt=""
+                        className="w-5 h-5"
+                      />
+                    ) : (
+                      <img src={hfl} alt="" className="w-5 h-5" />
+                    )}
                   </span>
                   <p className="text-sm font-medium text-black/80">
-                    {orgData?.data?.name}
+                    {orgData?.data?.name || "Organization Name"}
                   </p>
                 </div>
               </Link>
