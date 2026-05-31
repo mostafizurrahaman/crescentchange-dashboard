@@ -91,7 +91,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 itemHoverBg: "rgba(255,255,255,0.75)",
                 itemSelectedBg: "#d8f77c",
                 itemSelectedColor: "rgba(0,0,0,0.9)",
-                itemBorderRadius: 12,
+                itemBorderRadius: 24,
                 itemHeight: 44,
                 iconSize: 18,
                 borderRadius: 12,
