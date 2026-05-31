@@ -40,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
       key: "deposits",
       icon: <img src={deposit} alt="Deposits" className="w-5 h-5" />,
       label: <Link to="/deposits">Deposits</Link>,
-    }, 
+    },
     // {
     //   key: "integrations",
     //   icon: <img src={integration} alt="Deposits" className="w-5 h-5" />,
@@ -94,6 +94,9 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 itemBorderRadius: 12,
                 itemHeight: 44,
                 iconSize: 18,
+                borderRadius: 12,
+                borderRadiusLG: 12,
+                fontSize: 16,
               },
             },
           }}
@@ -101,7 +104,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
           <div className="flex flex-col h-full">
             <Menu
               mode="inline"
-              className="px-3 pt-3"
+              className="px-3 pt-3 font-semibold font-familjen"
               selectedKeys={[location]}
               style={{
                 backgroundColor: "#f7f7f7",
@@ -114,6 +117,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
             <div className="px-3 pb-6 mt-72">
               <Menu
                 mode="inline"
+                className="font-semibold font-familjen"
                 style={{
                   backgroundColor: "#f7f7f7",
                   color: "black",

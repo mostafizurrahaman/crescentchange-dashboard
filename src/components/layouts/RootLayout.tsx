@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ConfigProvider, Drawer, Popover } from "antd";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaX } from "react-icons/fa6";
-import { IoIosNotificationsOutline } from "react-icons/io";
+// import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { IoMdSettings } from "react-icons/io";
 import brandlogo from "../../assets/images/logo.png";
@@ -12,6 +12,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import NotificationPopover from "../AuthComponents/NotificationPopover";
 import { useGetUnreadNotificationQuery } from "../../redux/features/auth/authApi";
+import notificatiinImg from "../../assets/images/notification.png";
 const RootLayout = () => {
   const [drawer, setDrawer] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -73,7 +74,8 @@ const RootLayout = () => {
                   overlayClassName="notification-popover"
                 >
                   <div className="relative cursor-pointer h-10 w-10 rounded-full border border-black/5 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)] flex items-center justify-center">
-                    <IoIosNotificationsOutline className="w-5 h-5 text-black/60" />
+                    {/* <IoIosNotificationsOutline className="w-5 h-5 text-black/60" /> */}
+                    <img src={notificatiinImg} alt="notification" />
                     {unreadNotification?.data ? (
                       <span className="bg-red-500 h-2 w-2 rounded-full absolute top-[10px] right-[10px]"></span>
                     ) : null}
@@ -92,7 +94,7 @@ const RootLayout = () => {
                       />
                     ) : (
                       <img src={hfl} alt="" className="w-5 h-5" />
-                    )}
+                    )} 
                   </span>
                   <p className="text-sm font-medium text-black/80">
                     {orgData?.data?.name || "Organization Name"}
