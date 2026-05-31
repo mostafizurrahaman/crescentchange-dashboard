@@ -8,7 +8,7 @@ const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="">
+    <div className="font-familjen font-semibold">
       {/* <Layout>
         <Sidebar collapsed={collapsed}></Sidebar>
         <Layout

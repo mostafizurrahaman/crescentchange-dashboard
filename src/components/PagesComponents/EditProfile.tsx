@@ -211,7 +211,7 @@ const EditProfile = () => {
                 activeTab === "profile" ? "bg-[#ebe9ec] text-black" : "bg-white"
               }`}
             >
-              <div className=" flex justify-center items-center gap-2">
+              <div className=" flex justify-start items-center gap-2">
                 <img src={editUser} alt="" />
                 <p> Edit Profile</p>
               </div>
@@ -222,7 +222,7 @@ const EditProfile = () => {
                 activeTab === "access" ? "bg-[#ebe9ec] text-black" : "bg-white"
               }`}
             >
-              <div className=" flex justify-center items-center gap-2">
+              <div className=" flex justify-start items-center gap-2">
                 <img src={donor} alt="" />
                 <p> Access</p>
               </div>
@@ -233,7 +233,7 @@ const EditProfile = () => {
                 activeTab === "causes" ? "bg-[#ebe9ec] text-black" : "bg-white"
               }`}
             >
-              <div className=" flex justify-center items-center gap-2">
+              <div className=" flex justify-start items-center gap-2">
                 <img src={deposit} alt="" className="" />
                 <p> causes</p>
               </div>
@@ -246,7 +246,7 @@ const EditProfile = () => {
                   : "bg-white"
               }`}
             >
-              <div className=" flex justify-center items-center gap-2">
+              <div className=" flex justify-start items-center gap-2">
                 <LiaStripeS />
                 <p> Stripe Connect</p>
               </div>

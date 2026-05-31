@@ -13,9 +13,8 @@ import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
-import { FiChevronDown } from "react-icons/fi";
 import { HiFunnel } from "react-icons/hi2";
-import { HiCalendarDays } from "react-icons/hi2";
+// import { HiCalendarDays } from "react-icons/hi2";
 import { IoIosRefresh } from "react-icons/io";
 interface ITabProps {
   tab: string;
@@ -329,7 +328,7 @@ const AllDonor = ({ tab }: ITabProps) => {
               </div>
             </div>
 
-            <div className="w-full md:w-auto">
+            {/* <div className="w-full md:w-auto">
               <button
                 type="button"
                 className="flex h-10 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-[15px] font-medium text-black transition duration-200 hover:bg-black/5 md:w-auto"
@@ -337,7 +336,7 @@ const AllDonor = ({ tab }: ITabProps) => {
                 <HiCalendarDays className="w-4 h-4 text-black/60" />
                 Monthly
               </button>
-            </div>
+            </div> */}
 
             {/* TODO */}
 
@@ -355,7 +354,7 @@ const AllDonor = ({ tab }: ITabProps) => {
                 className="flex items-center justify-center h-10 gap-2 px-5 text-black transition duration-200 bg-white border rounded-full border-black/10 hover:bg-black/5 focus:outline-none"
               >
                 <span className="text-[15px] font-medium">Export</span>
-                <FiChevronDown className="w-4 h-4 text-black/70" />
+                {/* <FiChevronDown className="w-4 h-4 text-black/70" /> */}
               </Button>
             </Tooltip>
           </div>

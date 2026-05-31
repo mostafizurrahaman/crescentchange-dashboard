@@ -53,8 +53,8 @@ const Donors = () => {
           {["All Donors", "Round Up", "Recurring", "One Time"].map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 rounded-3xl ${
-                activeTab === tab ? "bg-black text-white" : "bg-white border"
+              className={`px-6 py-3 rounded-3xl  ${
+                activeTab === tab ? "bg-black text-white font-semibold" : "bg-white border"
               }`}
               onClick={() => setActiveTab(tab)}
             >

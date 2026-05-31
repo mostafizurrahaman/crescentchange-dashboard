@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, ConfigProvider, Modal, Pagination, Select, Tooltip } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Modal,
+  Pagination,
+  Select,
+  Tooltip,
+} from "antd";
 
 import { Table } from "antd";
 import people from "../../assets/images/People Community.png";
@@ -11,18 +18,22 @@ import { IoIosRefresh } from "react-icons/io";
 import roundup from "../../assets/images/roundup.png";
 import recurring from "../../assets/images/recurring.png";
 import oneTime from "../../assets/images/one-time.png";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
-import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
+import {
+  useGetDonationStatsQuery,
+  useResendReceiptMutation,
+} from "../../redux/features/dashboardApi/dashboardApi";
+import { HiFunnel } from "react-icons/hi2";
 interface ITabProps {
   tab: string;
 }
 const Recurring = ({ tab }: ITabProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize,setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
   const [sort] = useState("");
   const [status, setStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,7 +51,7 @@ const Recurring = ({ tab }: ITabProps) => {
       sort,
       organizationId,
     },
-    { skip: !organizationId }
+    { skip: !organizationId },
   );
 
   const { data: statsData } = useGetDonationStatsQuery({
@@ -82,7 +93,7 @@ const Recurring = ({ tab }: ITabProps) => {
     }
 
     // console.log("Receipt resent for donation:", selectedId);
-  }
+  };
 
   const columns = [
     {
@@ -158,7 +169,10 @@ const Recurring = ({ tab }: ITabProps) => {
           <button onClick={() => handleViewClick(record)}>
             <FaEye className="text-blue-500"></FaEye>
           </button>
-          <button onClick={() => handleResendRecipt(record)} className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5">
+          <button
+            onClick={() => handleResendRecipt(record)}
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f6f6f6] text-black/70 transition hover:bg-black/5"
+          >
             <IoIosRefresh className="text-nutral-500" />
           </button>
         </div>
@@ -256,7 +270,7 @@ const Recurring = ({ tab }: ITabProps) => {
       </div>
 
       <div className="bg-white p-6 rounded-3xl border my-6">
-        <div className="flex justify-between items-center gap-5">
+        {/* <div className="flex justify-between items-center gap-5">
           <h1 className="text-xl font-medium">Donation History</h1>
 
           <div className="flex items-center gap-3">
@@ -285,13 +299,6 @@ const Recurring = ({ tab }: ITabProps) => {
               </Select>
             </div>
 
-            {/* TODO */}
-
-            {/* <div className="mt-4 md:mt-0">
-              <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
-                Monthly
-              </button>
-            </div> */}
 
             <Tooltip title="Export to Excel" placement="bottom">
               <Button
@@ -299,6 +306,70 @@ const Recurring = ({ tab }: ITabProps) => {
                 icon={<DownloadOutlined />}
                 onClick={exportToExcel}
                 className="flex items-center gap-2 py-2 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+              >
+                <span className="text-lg font-medium">Export</span>
+              </Button>
+            </Tooltip>
+          </div>
+        </div> */}
+        <div className="flex justify-between items-center gap-5">
+          <h1 className="text-xl font-medium">Donation History</h1>
+
+          <div className="flex items-center gap-3">
+            <div className="mt-4 md:mt-0">
+              {/* <Search
+                        placeholder="input search text"
+                        onSearch={onSearch}
+                        enterButton
+                        allowClear
+                      /> */}
+              <Input
+                placeholder="Search"
+                allowClear
+                size="large"
+                prefix={<SearchOutlined className="text-black/50" />}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onPressEnter={(e) =>
+                  onSearch((e.target as HTMLInputElement).value)
+                }
+                className="h-10 rounded-full border border-black/10 bg-[#f6f6f6] px-3 [&_.ant-input]:!bg-transparent [&_.ant-input]:!text-[15px] [&_.ant-input-affix-wrapper]:!bg-transparent [&_.ant-input-affix-wrapper]:!border-0 [&_.ant-input-affix-wrapper]:!shadow-none [&_.ant-input-search-icon]:!text-black/60"
+              />
+            </div>
+
+            <div className="mt-4 md:mt-0">
+              <div className="flex items-center h-10 gap-2 px-4 bg-white border rounded-full border-black/10">
+                <HiFunnel className="w-4 h-4 text-black/60" />
+                <Select
+                  value={status}
+                  onChange={handleStatusChange}
+                  placeholder={"Filter"}
+                  variant="borderless"
+                  size="large"
+                  className="min-w-[130px] [&_.ant-select-selector]:!p-0"
+                >
+                  <Option value="processing">Processing</Option>
+                  <Option value="completed">Completed</Option>
+                  <Option value="failed">Failed</Option>
+                  <Option value="refunded">Fefunded</Option>
+                  <Option value="canceled">Canceled</Option>
+                  <Option value="refunding">Refunding</Option>
+                </Select>
+              </div>
+            </div>
+
+            {/* <div className="mt-4 md:mt-0">
+                      <button className="px-3 py-2 border rounded-md text-sm text-gray-700">
+                        Monthly
+                      </button>
+                    </div> */}
+            {/* export korte hobe */}
+            <Tooltip title="Export to Excel" placement="bottom">
+              <Button
+                type="text"
+                icon={<DownloadOutlined />}
+                onClick={exportToExcel}
+                className="flex items-center justify-center h-10 gap-2 px-5 text-black transition duration-200 bg-white border rounded-full border-black/10 hover:bg-black/5 focus:outline-none"
               >
                 <span className="text-lg font-medium">Export</span>
               </Button>
@@ -312,20 +383,22 @@ const Recurring = ({ tab }: ITabProps) => {
           style={{ marginTop: 20 }}
         />
 
-   <div className="flex items-center justify-between mt-6">
+        <div className="flex items-center justify-between mt-6">
           <div className="text-sm text-gray-600">
-            Showing {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, donorData?.meta?.total || 0)} from {donorData?.meta?.total || 0}
+            Showing {(currentPage - 1) * pageSize + 1}-
+            {Math.min(currentPage * pageSize, donorData?.meta?.total || 0)} from{" "}
+            {donorData?.meta?.total || 0}
           </div>
           <ConfigProvider
             theme={{
               components: {
-                "Pagination": {
-                  "colorPrimaryBorder": "rgb(fffff)",
-                  "colorPrimaryHover": "rgb(ffffff)",
-                  "controlOutline": "rgb(fffff)",
-                  "colorPrimary": "rgb(ffffff)"
-                }
-              }
+                Pagination: {
+                  colorPrimaryBorder: "rgb(fffff)",
+                  colorPrimaryHover: "rgb(ffffff)",
+                  controlOutline: "rgb(fffff)",
+                  colorPrimary: "rgb(ffffff)",
+                },
+              },
             }}
           >
             <Pagination
@@ -340,23 +413,22 @@ const Recurring = ({ tab }: ITabProps) => {
               pageSizeOptions={[10, 20, 50, 100]}
               className="flex items-center gap-1"
               itemRender={(current, type, element) => {
-                if (type === 'page' && current === currentPage) {
+                if (type === "page" && current === currentPage) {
                   return (
                     <div className="w-8 h-8 rounded-full bg-black text-white font-medium flex items-center justify-center">
                       {current}
                     </div>
                   );
                 }
-                if (type === 'prev' || type === 'next') {
+                if (type === "prev" || type === "next") {
                   return (
                     <div className="w-8 h-8 rounded-full flex items-center justify-center">
-                      {type === 'prev' ? '<' : '>'}
+                      {type === "prev" ? "<" : ">"}
                     </div>
                   );
                 }
                 return element;
               }}
-
             />
           </ConfigProvider>
         </div>
