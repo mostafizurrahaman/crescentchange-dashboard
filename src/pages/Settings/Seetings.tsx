@@ -361,9 +361,9 @@ export default function Settings() {
               if (checked) {
                 handleSetUpTwoFA();
               } else {
-                openDisable2FAModal(); // Open the modal for disabling
+                openDisable2FAModal();
               }
-              setTwoFA(checked);
+              // setTwoFA(checked);
             }}
             className="sr-only peer"
           />
