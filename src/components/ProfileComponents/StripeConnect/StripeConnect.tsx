@@ -19,7 +19,7 @@ const StripeConnect = () => {
 
       message.success(res?.message);
     } catch (error: any) {
-      message.error("Bank Not Added");
+      message.error(error?.data?.message );
     }
   };
   return (
