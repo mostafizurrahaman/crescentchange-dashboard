@@ -90,10 +90,10 @@ const RootLayout = () => {
                       <img
                         src={`${orgData?.data?.logoImage}`}
                         alt=""
-                        className="w-5 h-5 rounded-full"
+                        className="w-8 h-8 rounded-full"
                       />
                     ) : (
-                      <img src={hfl} alt="" className="w-5 h-5 rounded-full" />
+                      <img src={hfl} alt="" className="w-8 h-8 rounded-full" />
                     )} 
                   </span>
                   <p className="text-sm font-medium text-black/80">
@@ -119,7 +119,7 @@ const RootLayout = () => {
           },
         }}
       >
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen overflow-x-hidden">
           {isMobile ? (
             <Drawer
               title="Menu"

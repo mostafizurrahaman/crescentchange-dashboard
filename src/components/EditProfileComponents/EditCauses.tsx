@@ -152,9 +152,9 @@ const EditCauses = ({ orgId }: any) => {
             initializeModal();
             setShowAddModal(true);
           }}
-          className="px-4 py-1 bg-white border rounded-full text-[14px]"
+          className="px-4 py-2 bg-white border rounded-full text-[14px]"
         >
-          Add a new Cause{" "}
+         Add a new Cause
         </button>
       </div>
 
