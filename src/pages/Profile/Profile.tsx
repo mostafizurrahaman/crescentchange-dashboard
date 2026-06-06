@@ -244,7 +244,7 @@ const Profile = () => {
             <img
               src={OrgProfile?.coverImage}
               alt=""
-              className="w-full h-80 object-cover object-top rounded-3xl"
+              className="w-full h-80 object-cover rounded-3xl"
               onError={() => handleMediaError("image")}
             />
           )

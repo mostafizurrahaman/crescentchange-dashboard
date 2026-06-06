@@ -90,10 +90,10 @@ const RootLayout = () => {
                       <img
                         src={`${orgData?.data?.logoImage}`}
                         alt=""
-                        className="w-5 h-5"
+                        className="w-5 h-5 rounded-full"
                       />
                     ) : (
-                      <img src={hfl} alt="" className="w-5 h-5" />
+                      <img src={hfl} alt="" className="w-5 h-5 rounded-full" />
                     )} 
                   </span>
                   <p className="text-sm font-medium text-black/80">

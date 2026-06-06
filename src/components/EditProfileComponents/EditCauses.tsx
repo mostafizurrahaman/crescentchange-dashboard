@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { BsThreeDotsVertical, BsChevronDown } from "react-icons/bs";
-import { Modal, Button, Form, Input,  message } from "antd";
+import { Modal, Button, Form, Input, message } from "antd";
 import { FaPen, FaTrash } from "react-icons/fa";
 import {
   useCreateCauseMutation,
@@ -12,7 +12,11 @@ import {
 } from "../../redux/features/profileApi/profileApi";
 
 const EditCauses = ({ orgId }: any) => {
-  const { data: allCausedData, refetch, isLoading } = useGetAllCausesQuery(orgId);
+  const {
+    data: allCausedData,
+    refetch,
+    isLoading,
+  } = useGetAllCausesQuery(orgId);
   const [createCause] = useCreateCauseMutation();
   const [updateCause] = useUpdateCauseMutation();
   const [deleteCause] = useDeleteCauseMutation();
@@ -26,7 +30,7 @@ const EditCauses = ({ orgId }: any) => {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [causeName, setCauseName] = useState("");
-
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   /** CATEGORY OPTIONS */
   const causeCategory = [
     { value: "water", label: "Water", icon: "💧" },
@@ -72,23 +76,26 @@ const EditCauses = ({ orgId }: any) => {
   };
 
   const initializeUpdateModal = (causeData: any) => {
-    const category = causeCategory.find(c => c.value === causeData.category);
+    const category = causeCategory.find((c) => c.value === causeData.category);
     setSelectedCategory(category);
     setCauseName(causeData.name || "");
     form.setFieldsValue({
       category: causeData.category,
       name: causeData.name,
-      description: causeData.description
+      description: causeData.description,
     });
     setShowCategoryDropdown(false);
   };
 
   const initializeModal = () => {
-    const educationCategory = causeCategory.find(c => c.value === "education");
+    const educationCategory = causeCategory.find(
+      (c) => c.value === "education",
+    );
     setSelectedCategory(educationCategory);
     form.setFieldsValue({
       category: "education",
-      description: "Our students need notebooks, pencils, and basic materials for the semester"
+      description:
+        "Our students need notebooks, pencils, and basic materials for the semester",
     });
     setCauseName("");
     setShowCategoryDropdown(false);
@@ -135,7 +142,6 @@ const EditCauses = ({ orgId }: any) => {
     refetch();
   };
 
-
   return (
     <div className="px-6">
       <div className="flex justify-between items-center">
@@ -148,7 +154,6 @@ const EditCauses = ({ orgId }: any) => {
           }}
           className="px-4 py-1 bg-white border rounded-full text-[14px]"
         >
-
           Add a new Cause{" "}
         </button>
       </div>
@@ -161,36 +166,47 @@ const EditCauses = ({ orgId }: any) => {
               key={d._id}
               className="px-4 py-3 bg-white border rounded-xl flex justify-between mb-2"
             >
-              <div className="flex justify-center items-center ">
+              <div className="flex justify-center items-center gap-2">
                 <h1 className="text-4xl">{match?.icon}</h1>
                 <div>
                   <h2 className="text-[14px]">{d.name}</h2>
                 </div>
               </div>
 
-              <div className="relative group flex items-center">
-                <BsThreeDotsVertical size={20} />
-                <div className="absolute hidden group-hover:block right-0 bg-white border rounded shadow-md">
-                  <button
-                    className="px-4 py-2 flex gap-2 text-blue-600 hover:bg-blue-50"
-                    onClick={() => {
-                      setSelected(d);
-                      initializeUpdateModal(d);
-                      setShowUpdateModal(true);
-                    }}
-                  >
-                    <FaPen /> Edit
-                  </button>
-                  <button
-                    className="px-4 py-2 flex gap-2 text-red-600 hover:bg-red-50"
-                    onClick={() => {
-                      setSelected(d);
-                      setShowDeleteModal(true);
-                    }}
-                  >
-                    <FaTrash /> Delete
-                  </button>
-                </div>
+              <div className="relative">
+                <button
+                  onClick={() => setOpenMenu(openMenu === d._id ? null : d._id)}
+                  className="p-1"
+                >
+                  <BsThreeDotsVertical size={20} />
+                </button>
+
+                {openMenu === d._id && (
+                  <div className="absolute right-0 top-8 bg-white border rounded-lg shadow-md z-20 min-w-[120px]">
+                    <button
+                      className="w-full px-4 py-2 flex items-center gap-2 text-blue-600 hover:bg-blue-50"
+                      onClick={() => {
+                        setSelected(d);
+                        initializeUpdateModal(d);
+                        setShowUpdateModal(true);
+                        setOpenMenu(null);
+                      }}
+                    >
+                      <FaPen /> Edit
+                    </button>
+
+                    <button
+                      className="w-full px-4 py-2 flex items-center gap-2 text-red-600 hover:bg-red-50"
+                      onClick={() => {
+                        setSelected(d);
+                        setShowDeleteModal(true);
+                        setOpenMenu(null);
+                      }}
+                    >
+                      <FaTrash /> Delete
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -224,7 +240,9 @@ const EditCauses = ({ orgId }: any) => {
                   <span className="text-2xl mr-2">
                     {selectedCategory ? selectedCategory.icon : "📚"}
                   </span>
-                  <BsChevronDown className={`text-gray-500 transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} />
+                  <BsChevronDown
+                    className={`text-gray-500 transition-transform ${showCategoryDropdown ? "rotate-180" : ""}`}
+                  />
                 </div>
 
                 {/* Divider */}
@@ -233,7 +251,9 @@ const EditCauses = ({ orgId }: any) => {
                 {/* Name Input */}
                 <Form.Item
                   name="category"
-                  rules={[{ required: true, message: "Please select a category" }]}
+                  rules={[
+                    { required: true, message: "Please select a category" },
+                  ]}
                   hidden
                 >
                   <Input />
@@ -243,7 +263,9 @@ const EditCauses = ({ orgId }: any) => {
                   <Form.Item
                     name="name"
                     label=""
-                    rules={[{ required: true, message: "Please enter cause name" }]}
+                    rules={[
+                      { required: true, message: "Please enter cause name" },
+                    ]}
                     className="mb-0"
                   >
                     <Input
@@ -282,7 +304,9 @@ const EditCauses = ({ orgId }: any) => {
             <Form.Item
               name="description"
               label=""
-              rules={[{ required: true, message: "Please enter donation note" }]}
+              rules={[
+                { required: true, message: "Please enter donation note" },
+              ]}
             >
               <Input.TextArea
                 rows={4}
@@ -332,14 +356,16 @@ const EditCauses = ({ orgId }: any) => {
             <div className="relative">
               <div className="flex items-center border border-gray-300 rounded-lg bg-white">
                 {/* Icon and Category Dropdown */}
-                <div 
+                <div
                   className="flex items-center cursor-pointer bg-gray-100 px-2 py-1 rounded"
                   onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
                 >
                   <span className="text-2xl mr-2">
                     {selectedCategory ? selectedCategory.icon : "📚"}
                   </span>
-                  <BsChevronDown className={`text-gray-500 transition-transform ${showCategoryDropdown ? 'rotate-180' : ''}`} />
+                  <BsChevronDown
+                    className={`text-gray-500 transition-transform ${showCategoryDropdown ? "rotate-180" : ""}`}
+                  />
                 </div>
 
                 {/* Divider */}
@@ -348,7 +374,9 @@ const EditCauses = ({ orgId }: any) => {
                 {/* Name Input */}
                 <Form.Item
                   name="category"
-                  rules={[{ required: true, message: "Please select a category" }]}
+                  rules={[
+                    { required: true, message: "Please select a category" },
+                  ]}
                   hidden
                 >
                   <Input />
@@ -358,7 +386,9 @@ const EditCauses = ({ orgId }: any) => {
                   <Form.Item
                     name="name"
                     label=""
-                    rules={[{ required: true, message: "Please enter cause name" }]}
+                    rules={[
+                      { required: true, message: "Please enter cause name" },
+                    ]}
                     className="mb-0"
                   >
                     <Input
@@ -397,7 +427,9 @@ const EditCauses = ({ orgId }: any) => {
             <Form.Item
               name="description"
               label=""
-              rules={[{ required: true, message: "Please enter donation note" }]}
+              rules={[
+                { required: true, message: "Please enter donation note" },
+              ]}
             >
               <Input.TextArea
                 rows={4}

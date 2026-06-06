@@ -141,7 +141,7 @@ const EditProfile = () => {
               <img
                 src={previewImage || orgData?.data?.coverImage}
                 alt="Cover"
-                className="w-full h-80 object-cover object-top rounded-2xl"
+                className="w-full h-80 object-cover  rounded-2xl"
               />
             ) : (
               <img
@@ -235,7 +235,7 @@ const EditProfile = () => {
             >
               <div className=" flex justify-start items-center gap-2">
                 <img src={deposit} alt="" className="" />
-                <p> causes</p>
+                <p> Causes</p>
               </div>
             </div>
             <div
