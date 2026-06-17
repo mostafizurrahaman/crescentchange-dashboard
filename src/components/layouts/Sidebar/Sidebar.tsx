@@ -18,7 +18,9 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = () => {
-  const location = useLocation().pathname.split("/")[1];
+  // const location = useLocation().pathname.split("/")[1];
+  const pathname = useLocation().pathname;
+const selectedKey = pathname.split("/")[1] || "analytics";
 
   const menuItems = [
     {
@@ -60,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
       label: <Link to="/subscription">Subscription</Link>,
     },
     {
-      key: "Settings",
+      key: "settings",
       icon: <IoMdSettings className="w-5 h-5" />,
       label: <Link to="/settings">Settings</Link>,
     },
@@ -105,7 +107,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
             <Menu
               mode="inline"
               className="px-3 pt-3 font-semibold font-familjen"
-              selectedKeys={[location]}
+              selectedKeys={[selectedKey]}
               style={{
                 backgroundColor: "#f7f7f7",
                 color: "black",
@@ -118,6 +120,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
               <Menu
                 mode="inline"
                 className="font-semibold font-familjen"
+                selectedKeys={[selectedKey]}
                 style={{
                   backgroundColor: "#f7f7f7",
                   color: "black",
