@@ -68,7 +68,7 @@ const Profile = () => {
     useGetAllProfileQuery(null);
   const OrgProfile = profileData?.data;
   const orgId = profileData?.data?._id;
-  // console.log("orgId", orgId);
+  console.log(OrgProfile, "OrgProfile");
 
   // Simple media type detection based on URL patterns
   const detectMediaType = (url: string): "image" | "video" => {
@@ -203,7 +203,7 @@ const Profile = () => {
   }
 
   return (
-    <div>
+    <div className=" overflow-hidden">
       <div className="flex justify-between items-center gap-2">
         <div>
           <h1 className="text-xl md:text-4xl font-bold font-familjen mb-3">
@@ -258,7 +258,7 @@ const Profile = () => {
         )}
 
         <div className="absolute ml-28 top-60">
-          {OrgProfile?.profileImage ? (
+          {OrgProfile?.logoImage ? (
             <img
               src={`${OrgProfile?.logoImage}`}
               alt=""
