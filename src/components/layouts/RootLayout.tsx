@@ -128,7 +128,7 @@ const RootLayout = () => {
               onClose={closeDrawer}
               open={drawer}
               width="80%"
-              closeIcon={<FaX className="text-black" />}
+              closeIcon={<FaX className="text-black " />}
             >
               <Sidebar onClose={closeDrawer} />
             </Drawer>
