@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
- 
+
 import { ConfigProvider, Form, Input, message, Spin } from "antd";
 import img from "../../../assets/images/login.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ import { AiOutlineMail } from "react-icons/ai";
 import { MdLockOutline } from "react-icons/md";
 import { useLoginApiMutation } from "../../../redux/features/auth/authApi";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { baseApi } from "../../../redux/api/baseApi";
 
 interface login {
   email: string;
@@ -17,6 +19,7 @@ interface login {
 const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [rememberPassword, setRememberPassword] = useState(true);
   const [loginApi, { isLoading }] = useLoginApiMutation();
   const onFinish = async (values: login) => {
@@ -33,18 +36,21 @@ const Login = () => {
       // Check if 2FA is required
       if (res?.data?.twoFactorRequired) {
         message.info(
-          res?.data?.message || "Two-factor authentication required"
+          res?.data?.message || "Two-factor authentication required",
         );
         localStorage.setItem("pending2FAEmail", res?.data.email);
-        navigate("/auth/verify2FA"); // Fixed typo
+        navigate("/auth/verify2FA");
         return;
       }
 
       // If 2FA not required, store token and redirect
       if (res?.data?.accessToken) {
         localStorage.setItem("token", res?.data.accessToken);
+        dispatch(baseApi.util.resetApiState());
         message.success(res?.message || "Login successful");
-        navigate("/"); // Fixed typo
+
+        navigate("/", { replace: true });
+
       } else {
         message.error("No access token returned from server");
       }

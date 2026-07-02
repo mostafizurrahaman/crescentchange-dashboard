@@ -1,5 +1,6 @@
 import { ConfigProvider, Layout, Menu } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { IoMdSettings } from "react-icons/io";
 import shape from "../../../assets/images/Shape.png";
@@ -10,6 +11,8 @@ import logout from "../../../assets/images/Sign Out.png";
 import calenderimg from "../../../assets/images/Calendar.png";
 // import integration from "../../../assets/images/integration.png";
 import report from "../../../assets/images/reports.png";
+import { baseApi } from "../../../redux/api/baseApi";
+import { logout as clearAuth } from "../../../redux/features/auth/authSlice";
 
 const { Sider } = Layout;
 
@@ -20,8 +23,17 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = () => {
   // const location = useLocation().pathname.split("/")[1];
   const pathname = useLocation().pathname;
-const selectedKey = pathname.split("/")[1] || "analytics";
+  const selectedKey = pathname.split("/")[1] || "analytics";
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("pending2FAEmail");
+    dispatch(clearAuth());
+    dispatch(baseApi.util.resetApiState());
+    navigate("/auth/login", { replace: true });
+  };
   const menuItems = [
     {
       key: "analytics",
@@ -68,8 +80,14 @@ const selectedKey = pathname.split("/")[1] || "analytics";
     },
     {
       key: "logout",
-      icon: <img src={logout} alt="Logout" className="w-5 h-5" />,
-      label: <Link to="/auth/login">Logout</Link>,
+      icon: (
+        <img
+          src={logout}
+          alt="Logout"
+          className="w-5 h-5"
+        />
+      ),
+      label: "Logout",
     },
   ];
 
@@ -127,6 +145,9 @@ const selectedKey = pathname.split("/")[1] || "analytics";
                   borderInlineEnd: 0,
                 }}
                 items={bottomMenuItems}
+                onClick={({ key }) => {
+                  if (key === "logout") handleLogOut();
+                }}
               />
             </div>
           </div>
