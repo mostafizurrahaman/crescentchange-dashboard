@@ -111,7 +111,7 @@ const EditProfile = () => {
   const showVideo = isVideo;
 
   return (
-    <div>
+    <div className="w-full  overflow-hidden">
       <div>
         {/* header */}
         <div>
