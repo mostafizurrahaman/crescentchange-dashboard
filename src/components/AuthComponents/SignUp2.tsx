@@ -86,10 +86,63 @@ const SignUp2: React.FC = () => {
     }
   };
 
+  // Initialize Google Autocomplete on the address field
+  const initAutocomplete = () => {
+    const inputElement = document.getElementById("organization_address_input");
+    if (!inputElement || !window.google) return;
+
+    try {
+      const autocomplete = new window.google.maps.places.Autocomplete(inputElement, {
+        types: ["address"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place || !place.address_components) return;
+
+        let streetNumber = "";
+        let route = "";
+        let state = "";
+        let postalCode = "";
+
+        for (const component of place.address_components) {
+          const types = component.types;
+          if (types.includes("street_number")) {
+            streetNumber = component.long_name;
+          }
+          if (types.includes("route")) {
+            route = component.long_name;
+          }
+          if (types.includes("administrative_area_level_1")) {
+            state = component.long_name;
+          }
+          if (types.includes("postal_code")) {
+            postalCode = component.long_name;
+          }
+        }
+
+        const formattedAddress = place.formatted_address || `${streetNumber} ${route}`.trim();
+
+        form.setFieldsValue({
+          address: formattedAddress,
+          state: state || undefined,
+          postalCode: postalCode || undefined,
+        });
+
+        if (state) {
+          setStateOptions([{ label: state, value: state }]);
+        }
+      });
+    } catch (error) {
+      console.error("Error initializing Google Autocomplete:", error);
+    }
+  };
+
   // Load Google Maps script and fetch states
   useEffect(() => {
     const loadGoogleMapsScript = () => {
       if (window.google) {
+        initAutocomplete();
         fetchStates();
         return;
       }
@@ -98,6 +151,7 @@ const SignUp2: React.FC = () => {
       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
       script.onload = () => {
+        initAutocomplete();
         fetchStates();
       };
       document.body.appendChild(script);
@@ -105,6 +159,13 @@ const SignUp2: React.FC = () => {
 
     loadGoogleMapsScript();
   }, []);
+
+  // Also try to initialize when DOM is ready in case window.google loaded early
+  useEffect(() => {
+    if (window.google) {
+      initAutocomplete();
+    }
+  }, [form]);
 
   const fetchStates = async () => {
     setLoadingStates(true);
@@ -136,11 +197,6 @@ const SignUp2: React.FC = () => {
       }, (predictions: any[], status: any) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
           const options = predictions
-            .filter((prediction: { types: string[]; }) => 
-              prediction.types.includes('administrative_area_level_1') || // States/Provinces
-              prediction.types.includes('administrative_area_level_2') || // Some regions
-              prediction.types.includes('locality') // Cities/towns
-            )
             .map((prediction: { description: string; }) => ({
               label: prediction.description,
               value: prediction.description
@@ -236,6 +292,7 @@ const SignUp2: React.FC = () => {
                   label={<p className="text-base font-medium text-black/80">Organisation Address</p>}
                 >
                   <Input
+                    id="organization_address_input"
                     required
                     className="text-neutral-500"
                     prefix={<FiMapPin className="mr-3 h-5 w-5 text-black/80" />}
