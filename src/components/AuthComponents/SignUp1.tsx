@@ -73,7 +73,7 @@ const SignUp1: React.FC = () => {
 
               <Form.Item
                 name="name"
-                label={<p className="text-base font-medium text-black/80">Organisation Name</p>}
+                label={<p className="text-base font-medium text-black/80">Organization Name</p>}
               >
                 <Input
                   required

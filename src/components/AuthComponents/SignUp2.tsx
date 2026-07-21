@@ -32,15 +32,7 @@ const SignUp2: React.FC = () => {
   // Google Maps API key - replace with your actual API key
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
   
-  console.log({
-    vite: import.meta.env
-  })
-  
-
-  console.log({
-    GOOGLE_MAPS_API_KEY
-  })
-  
+ 
 
 
   // Handle state change to get postal code from Google Maps
