@@ -20,6 +20,12 @@ import { HiCalendarDays } from "react-icons/hi2";
 import { IoIosRefresh } from "react-icons/io";
 
 import level from "../../assets/images/Layer_1.png"
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import {
+  formatMoney,
+  getDonationRows,
+  resolveCurrencyDisplay,
+} from "../../utils/currency";
 
 const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,7 +61,14 @@ const Reports = () => {
       skip: !organizationId,
     }
   );
-  const data = donorData?.data;
+  const data = getDonationRows(donorData);
+  const orgCurrency = useOrganizationCurrency();
+  const currency = resolveCurrencyDisplay(
+    orgCurrency,
+    statsData?.data,
+    donorData?.data,
+    profileData?.data,
+  );
   const handleViewClick = (record: any) => {
     setSelectedDonation(record);
     setIsOpen(true);
@@ -158,13 +171,13 @@ const Reports = () => {
       title: "Donated Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount: any) => `$${amount.toFixed(2)}`,
+      render: (amount: any) => formatMoney(amount, currency),
     },
     {
       title: "Net Amount",
       dataIndex: "netAmount",
       key: "netAmount",
-      render: (netAmount: any) => `$${netAmount.toFixed(2)}`,
+      render: (netAmount: any) => formatMoney(netAmount, currency),
     },
     {
       title: "Status",
@@ -216,7 +229,7 @@ const Reports = () => {
   };
 
   const exportToExcel = () => {
-    const tableData = donorData?.data || [];
+    const tableData = getDonationRows(donorData);
 
     // Prepare the data for export
     const formattedData = tableData.map((row: any) => ({
@@ -225,7 +238,8 @@ const Reports = () => {
       "Date & Time": new Date(row.donationDate).toLocaleString(),
       "Donation Type": row.donationType,
       "Donation Message": row.specialMessage || "-",
-      Amount: `$${row.amount.toFixed(2)}`,
+      Amount: formatMoney(row.amount, row),
+      Currency: resolveCurrencyDisplay(row).organizationCurrency,
       Status: row.status,
     }));
 
@@ -285,7 +299,7 @@ const Reports = () => {
             <div className="flex items-end justify-start gap-1 mt-10 mb-6">
               <h1 className="text-3xl font-bold md:text-5xl">
                 {" "}
-                <span className="text-gray-400">$</span>{" "}
+                <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
                 {statsData?.data?.totalDonatedAmount?.value}
               </h1>
               <p className="text-green-500">
@@ -320,7 +334,7 @@ const Reports = () => {
             <div className="flex items-end justify-start gap-1 mt-10 mb-6">
               <h1 className="text-3xl font-bold md:text-5xl">
                 {" "}
-                <span className="text-gray-400">$</span>{" "}
+                <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
                 {statsData?.data?.averageDonationPerUser?.value}
                 <span className="ml-1 text-sm text-gray-400"> per user</span>{" "}
               </h1>
@@ -425,7 +439,7 @@ const Reports = () => {
                 <div className="flex justify-between">
                   <span className="text-gray-500">Amount donated:</span>
                   <span className="font-medium">
-                    ${selectedDonation?.amount?.toFixed(2)}
+                    {formatMoney(selectedDonation?.amount, selectedDonation)}
                   </span>
                 </div>
 

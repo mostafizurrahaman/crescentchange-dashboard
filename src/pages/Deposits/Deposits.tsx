@@ -19,6 +19,8 @@ import {
   usePayoutRequestMutation,
 } from "../../redux/features/depositApi/depositApi";
 import jsPDF from "jspdf";
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import { formatMoney, normalizeCurrency } from "../../utils/currency";
 
 const Deposits: FC = () => {
   const [page, setPage] = useState(1);
@@ -42,6 +44,12 @@ const Deposits: FC = () => {
   });
   console.log("depositData", depositData?.data);
   const { data: getMyBalance } = useGetMyBalanceQuery("");
+  const orgCurrency = useOrganizationCurrency();
+  const depositCurrency = normalizeCurrency(
+    getMyBalance?.data?.organizationCurrency ||
+      getMyBalance?.data?.currency ||
+      orgCurrency.organizationCurrency,
+  );
   // console.log("getMyBalance", getMyBalance?.data);
   const handleDownLoadPdf = (item: any) => {
     try {
@@ -63,7 +71,12 @@ const Deposits: FC = () => {
       pdf.setTextColor(30);
       pdf.setFontSize(28);
       pdf.text(
-        `${item.requestedAmount ?? item.amount} ${item.currency ?? ""}`,
+        formatMoney(
+          item.requestedAmount ?? item.amount,
+          item?.currency && item.currency.toUpperCase() !== "USD"
+            ? item.currency
+            : depositCurrency,
+        ),
         20,
         60
       );
@@ -181,8 +194,10 @@ const Deposits: FC = () => {
           <div className="flex justify-start items-end gap-1 mt-10 mb-6">
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
-              <span className="text-gray-400 mr-2">$</span>
-              {getMyBalance?.data?.availableBalance} /{" "}
+              <span className="text-gray-400 mr-2">
+                {depositCurrency}
+              </span>
+              {getMyBalance?.data?.availableBalance ?? 0} /{" "}
               <span className="text-gray-400 text-2xl">
                 {getMyBalance?.data?.pendingBalance}
               </span>
@@ -221,7 +236,12 @@ const Deposits: FC = () => {
           >
             <div className="flex justify-between items-center gap-2 border-b pb-6">
               <h2 className="text-2xl font-semibold">
-                {item.requestedAmount} {item?.currency}
+                {formatMoney(
+                  item.requestedAmount,
+                  item?.currency && item.currency.toUpperCase() !== "USD"
+                    ? item.currency
+                    : depositCurrency,
+                )}
               </h2>
               <div className="bg-purple-500 h-10 w-10 rounded-full flex justify-center items-center curesor-pointer">
                 <HiOutlineArrowNarrowDown

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import user from "../../assets/images/user.png";
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import { formatMoney } from "../../utils/currency";
 interface IDonor {
   _id: string;
   name: string;
@@ -41,6 +43,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
   const topDonors = data?.data?.topDonors;
   const recentDonors = data?.data?.recentDonors;
   const TotalDonationAmount = data?.data?.breakDownByCause;
+  const currency = useOrganizationCurrency();
 
   // console.log("breakDownByCause", data?.data?.breakDownByCause?.categories);
 
@@ -71,7 +74,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                   </div>
                 </div>
                 <div>
-                  <p>${item.totalAmount}</p>
+                  <p>{formatMoney(item.totalAmount, currency)}</p>
                   <p
                     className={`text-${item.isIncrease ? "green" : "red"}-500`}
                   >
@@ -120,7 +123,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                   </div>
                 </div>
                 <div>
-                  <p>${item.lastDonationAmount}</p>
+                  <p>{formatMoney(item.lastDonationAmount, currency)}</p>
                   <p className="text-gray-400">Last Donation</p>
                 </div>
               </div>
@@ -138,7 +141,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
         <div className="mb-6">
           <p className="text-gray-400 text-sm">Total Donations</p>
           <h1 className="text-3xl font-semibold">
-            <span className="text-gray-400 align-middle">$</span>
+            <span className="text-gray-400 align-middle">{currency.organizationCurrency}</span>
             <span className="align-middle">
               {TotalDonationAmount?.totalDonationAmount?.toLocaleString() ?? "0"}
             </span>
@@ -197,7 +200,7 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                       </p>
                     </div>
                     <h1 className="text-2xl font-medium">
-                      <span className="text-gray-400">$</span>
+                      <span className="text-gray-400">{currency.organizationCurrency}</span>
                       {Number(seg.totalDonationAmount ?? 0).toLocaleString()}
                     </h1>
                   </div>

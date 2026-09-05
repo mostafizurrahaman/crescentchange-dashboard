@@ -24,6 +24,8 @@ import {
   useGetCauseStatsQuery,
   useGetRaisedCausedQuery,
 } from "../../redux/features/profileApi/profileApi";
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import { formatMoney } from "../../utils/currency";
 
 // import water from "../../assets/images/water.png";
 // import food from "../../assets/images/🍽️.png";
@@ -68,6 +70,7 @@ const Profile = () => {
     useGetAllProfileQuery(null);
   const OrgProfile = profileData?.data;
   const orgId = profileData?.data?._id;
+  const currency = useOrganizationCurrency();
   console.log(OrgProfile, "OrgProfile");
 
   // Simple media type detection based on URL patterns
@@ -274,6 +277,11 @@ const Profile = () => {
         <div className="flex justify-start items-center gap-5">
           <h1 className="text-2xl font-bold">{OrgProfile?.name}</h1>
           <img src={tick} alt="" />
+          {currency.organizationCurrency ? (
+            <span className="rounded-full bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-600">
+              {currency.organizationCurrency}
+            </span>
+          ) : null}
         </div>
 
         <p className="text-gray-400">
@@ -491,7 +499,7 @@ const Profile = () => {
                   <div className="flex flex-col justify-end items-end">
                     <p className="text-neutral-400">Raised: </p>
                     <p className="text-green-500 text-xl">
-                      ${data?.totalDonationAmount}
+                      {formatMoney(data?.totalDonationAmount, currency)}
                     </p>
                   </div>
                 </div>
@@ -692,7 +700,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <p className="text-green-600 font-bold text-lg">
-                      ${c.totalDonationAmount}
+                      {formatMoney(c.totalDonationAmount, currency)}
                     </p>
                   </div>
                 );

@@ -29,6 +29,12 @@ import {
 import { FaEye } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
 import { HiFunnel } from "react-icons/hi2";
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import {
+  formatMoney,
+  getDonationRows,
+  resolveCurrencyDisplay,
+} from "../../utils/currency";
 interface ITabProps {
   tab: string;
 }
@@ -84,7 +90,14 @@ const OneTime = ({ tab }: ITabProps) => {
     refetch();
   }, [searchTerm, status, currentPage]);
 
-  const data = donorData?.data;
+  const data = getDonationRows(donorData);
+  const orgCurrency = useOrganizationCurrency();
+  const currency = resolveCurrencyDisplay(
+    orgCurrency,
+    statsData?.data,
+    donorData?.data,
+    profileData?.data,
+  );
 
   const [resendReceipt] = useResendReceiptMutation();
   const handleResendRecipt = async (record: any) => {
@@ -154,7 +167,7 @@ const OneTime = ({ tab }: ITabProps) => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount: any) => `$${amount.toFixed(2)}`,
+      render: (amount: any) => formatMoney(amount, currency),
     },
     {
       title: "Status",
@@ -183,7 +196,7 @@ const OneTime = ({ tab }: ITabProps) => {
     },
   ];
   const exportToExcel = () => {
-    const tableData = donorData?.data || [];
+    const tableData = getDonationRows(donorData);
 
     // Prepare the data for export
     const formattedData = tableData.map((row: any) => ({
@@ -192,7 +205,8 @@ const OneTime = ({ tab }: ITabProps) => {
       "Date & Time": new Date(row.donationDate).toLocaleString(),
       "Donation Type": row.donationType,
       "Donation Message": row.specialMessage || "-",
-      Amount: `$${row.amount.toFixed(2)}`,
+      Amount: formatMoney(row.amount, row),
+      Currency: resolveCurrencyDisplay(row).organizationCurrency,
       Status: row.status,
     }));
 
@@ -221,7 +235,7 @@ const OneTime = ({ tab }: ITabProps) => {
               {statsData?.data?.totalDonatedAmount?.isIncrease === true
                 ? "+"
                 : "-"}
-              ${statsData?.data?.totalDonatedAmount?.percentageChange} % from
+              {statsData?.data?.totalDonatedAmount?.percentageChange} % from
               last month
             </p>
           </div>
@@ -230,7 +244,7 @@ const OneTime = ({ tab }: ITabProps) => {
           <div className="flex justify-start items-end gap-1 mt-10 mb-6">
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
-              <span className="text-gray-400">$</span>{" "}
+              <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
               {statsData?.data?.totalDonatedAmount?.value}
             </h1>
             <p className="text-green-500">
@@ -246,7 +260,7 @@ const OneTime = ({ tab }: ITabProps) => {
                 <img src={roundup} alt="" />
               </div>
               <h1 className="text-2xl font-medium mt-10">
-                <span className="text-gray-400">$</span>{" "}
+                <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
                 {statsData?.data?.averageDonationPerUser?.value}{" "}
                 <span className="text-sm text-gray-400">per user</span>{" "}
               </h1>
@@ -458,11 +472,12 @@ const OneTime = ({ tab }: ITabProps) => {
               <strong>Type:</strong> {selectedDonation?.donationType}
             </p>
             <p>
-              <strong>Currency:</strong> {selectedDonation?.currency}
+              <strong>Currency:</strong>{" "}
+              {resolveCurrencyDisplay(selectedDonation).organizationCurrency}
             </p>
             <p>
-              <strong>Total Amount Paid:</strong> $
-              {selectedDonation?.totalAmount.toFixed(2)}
+              <strong>Total Amount Paid:</strong>{" "}
+              {formatMoney(selectedDonation?.totalAmount, selectedDonation)}
             </p>
             <p>
               <strong>Message:</strong>{" "}
@@ -471,22 +486,23 @@ const OneTime = ({ tab }: ITabProps) => {
 
             {/* Fee Breakdown */}
             <h3 className="border-b font-semibold">Fee Breakdown</h3>
-            <p>Platform Fee: ${selectedDonation?.platformFee.toFixed(2)}</p>
-            <p>GST on Platform Fee: ${selectedDonation?.gstOnFee.toFixed(2)}</p>
-            <p>Stripe Fee: ${selectedDonation?.stripeFee.toFixed(2)}</p>
+            <p>Platform Fee: {formatMoney(selectedDonation?.platformFee, selectedDonation)}</p>
+            <p>GST on Platform Fee: {formatMoney(selectedDonation?.gstOnFee, selectedDonation)}</p>
+            <p>Stripe Fee: {formatMoney(selectedDonation?.stripeFee, selectedDonation)}</p>
             <p className="font-semibold">
-              Total Fees: $
-              {(
-                selectedDonation?.platformFee +
-                selectedDonation?.gstOnFee +
-                selectedDonation?.stripeFee
-              ).toFixed(2)}
+              Total Fees:{" "}
+              {formatMoney(
+                (selectedDonation?.platformFee || 0) +
+                  (selectedDonation?.gstOnFee || 0) +
+                  (selectedDonation?.stripeFee || 0),
+                selectedDonation,
+              )}
             </p>
 
             {/* Net Amount */}
             <h3 className="border-b font-semibold">Net Amount</h3>
             <p className="text-green-600 font-semibold">
-              ${selectedDonation?.netAmount.toFixed(2)} received by organization
+              {formatMoney(selectedDonation?.netAmount, selectedDonation)} received by organization
             </p>
 
             {/* Cause */}

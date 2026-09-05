@@ -1,4 +1,5 @@
 // import { BsArrowUpRight } from "react-icons/bs";
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 
 interface TopCause {
   _id: string;
@@ -23,6 +24,10 @@ interface AnalyticsData {
     isIncrease: boolean;
   };
   topCause: TopCause | null;
+  organizationCurrency?: string;
+  currencySymbol?: string;
+  stripeCurrency?: string;
+  amountLabel?: string;
 }
 
 interface AnalyticsCardProps {
@@ -59,6 +64,7 @@ interface AnalyticsCardProps {
 
 const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ data }) => {
   const stats = data?.data;
+  const currency = useOrganizationCurrency();
 
   return (
     <div className="bg-white border rounded-3xl px-6">
@@ -66,14 +72,15 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ data }) => {
         <div>
           <h1 className="text-3xl font-bold">Total Donated</h1>
           <p className="text-gray-500 mb-12">
-            {stats?.totalDonatedAmount?.isIncrease ? "+" : "-"}$
+            {stats?.totalDonatedAmount?.isIncrease ? "+" : "-"}
+            {currency.organizationCurrency}{" "}
             {stats?.totalDonatedAmount?.value} from last month
           </p>
 
           <div className="flex justify-start items-end">
             <p className="text-3xl md:text-5xl font-bold text-gray-400">
               <span className="text-black">
-               <span className="text-gray-400 mr-1"> $</span>{stats?.totalDonatedAmount?.value}
+               <span className="text-gray-400 mr-1">{currency.organizationCurrency}</span>{stats?.totalDonatedAmount?.value}
               </span>
             </p>
             <p className="text-gray-400">
@@ -100,7 +107,7 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ data }) => {
 
           <div className="flex items-end gap-2">
             <h1 className="text-2xl md:text-3xl font-bold text-black">
-              <span className="text-gray-400">$</span>{" "}
+              <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
               {stats?.averageDonationPerUser?.value}
             </h1>
             <p className="text-gray-400">per user</p>
