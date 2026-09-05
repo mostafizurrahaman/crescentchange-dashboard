@@ -5,6 +5,7 @@ import { FiGlobe, FiMapPin, FiPhone } from "react-icons/fi";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import { useGetAllCountriesQuery } from "../../redux/features/auth/authApi";
 
 // Google Maps TypeScript declarations
 declare global {
@@ -21,56 +22,80 @@ const STEPS = [
   { path: "/auth/signUp5", label: "Payment" },
 ];
 
+interface ICountry {
+  name: string;
+  countryCode: string;
+  currency: string;
+  stripeCurrency: string;
+}
+
 const SignUp2: React.FC = () => {
   const [active, setActive] = useState("Charity");
-  const [stateOptions, setStateOptions] = useState<{label: string, value: string}[]>([]);
+  const [selectedCountryCurrency, setSelectedCountryCurrency] = useState<
+    string | null
+  >(null);
+  const [stateOptions, setStateOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [loadingStates, setLoadingStates] = useState(false);
   const location = useLocation();
   const nevigate = useNavigate();
   const [form] = Form.useForm();
+  const { isLoading, data, isFetching } = useGetAllCountriesQuery({});
+
+  // ?? Is country loading or fetching:
+  const isCountryLoading = isLoading || isFetching;
+
+  const countries = (data?.data as ICountry[]) ?? [];
+  const countryOptions =
+    countries.map((item) => ({
+      label: `${item.name} (${item.currency})`,
+      value: item.countryCode,
+    })) ?? [];
 
   // Google Maps API key - replace with your actual API key
-  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ;
-  
- 
-
+  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   // Handle state change to get postal code from Google Maps
   const handleStateChange = async (state: string) => {
     // console.log("State selected:", state);
     // console.log("Google Maps available:", !!window.google);
-    
+
     if (!window.google) {
       console.error("Google Maps not loaded");
       return;
     }
-    
+
     try {
       // Use Google Geocoding API to get postal code for the selected state/province
       const geocoder = new window.google.maps.Geocoder();
-      
+
       // console.log("Geocoding state/province:", state);
-      
+
       geocoder.geocode(
-        { 
+        {
           address: state,
-          componentRestrictions: {} // Remove country restriction to allow all countries
+          componentRestrictions: {}, // Remove country restriction to allow all countries
         },
         (results: any, status: any) => {
           // console.log("Geocoding status:", status);
           // console.log("Geocoding results:", results);
-          
-          if (status === window.google.maps.GeocoderStatus.OK && results && results.length > 0) {
+
+          if (
+            status === window.google.maps.GeocoderStatus.OK &&
+            results &&
+            results.length > 0
+          ) {
             // Extract postal code from the result
             const addressComponents = results[0].address_components;
-            const postalCodeComponent = addressComponents.find((component: any) => 
-              component.types.includes('postal_code')
+            const postalCodeComponent = addressComponents.find(
+              (component: any) => component.types.includes("postal_code"),
             );
-            
+
             if (postalCodeComponent) {
               // Set the postal code in the form
               form.setFieldsValue({
-                postalCode: postalCodeComponent.long_name
+                postalCode: postalCodeComponent.long_name,
               });
               // console.log("Postal code from Google:", postalCodeComponent.long_name);
             } else {
@@ -80,10 +105,10 @@ const SignUp2: React.FC = () => {
           } else {
             // console.log("Geocoding failed, no postal code available");
           }
-        }
+        },
       );
     } catch (error) {
-      console.error('Error getting postal code:', error);
+      console.error("Error getting postal code:", error);
     }
   };
 
@@ -93,9 +118,12 @@ const SignUp2: React.FC = () => {
     if (!inputElement || !window.google) return;
 
     try {
-      const autocomplete = new window.google.maps.places.Autocomplete(inputElement, {
-        types: ["address"],
-      });
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        inputElement,
+        {
+          types: ["address"],
+        },
+      );
 
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
@@ -122,7 +150,8 @@ const SignUp2: React.FC = () => {
           }
         }
 
-        const formattedAddress = place.formatted_address || `${streetNumber} ${route}`.trim();
+        const formattedAddress =
+          place.formatted_address || `${streetNumber} ${route}`.trim();
 
         form.setFieldsValue({
           address: formattedAddress,
@@ -148,7 +177,7 @@ const SignUp2: React.FC = () => {
         return;
       }
 
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
       script.onload = () => {
@@ -174,7 +203,7 @@ const SignUp2: React.FC = () => {
       // Don't load hardcoded states - rely on Google Maps API for suggestions
       setStateOptions([]);
     } catch (error) {
-      console.error('Error initializing states:', error);
+      console.error("Error initializing states:", error);
       setStateOptions([]);
     } finally {
       setLoadingStates(false);
@@ -190,24 +219,31 @@ const SignUp2: React.FC = () => {
     setLoadingStates(true);
     try {
       const service = new window.google.maps.places.AutocompleteService();
-      
-      service.getPlacePredictions({
-        input: value,
-        types: ['(regions)'], // Remove country restriction to get all regions
-        // Remove componentRestrictions to allow all countries
-      }, (predictions: any[], status: any) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
-          const options = predictions
-            .map((prediction: { description: string; }) => ({
-              label: prediction.description,
-              value: prediction.description
-            }));
-          setStateOptions(options);
-        }
-        setLoadingStates(false);
-      });
+
+      service.getPlacePredictions(
+        {
+          input: value,
+          types: ["(regions)"], // Remove country restriction to get all regions
+          // Remove componentRestrictions to allow all countries
+        },
+        (predictions: any[], status: any) => {
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK &&
+            predictions
+          ) {
+            const options = predictions.map(
+              (prediction: { description: string }) => ({
+                label: prediction.description,
+                value: prediction.description,
+              }),
+            );
+            setStateOptions(options);
+          }
+          setLoadingStates(false);
+        },
+      );
     } catch (error) {
-      console.error('Error searching states:', error);
+      console.error("Error searching states:", error);
       setLoadingStates(false);
     }
   };
@@ -270,7 +306,11 @@ const SignUp2: React.FC = () => {
               >
                 <Form.Item
                   name="serviceType"
-                  label={<p className="text-base font-medium text-black/80">Service Type</p>}
+                  label={
+                    <p className="text-base font-medium text-black/80">
+                      Service Type
+                    </p>
+                  }
                 >
                   <Select
                     placeholder="Service Type"
@@ -290,7 +330,11 @@ const SignUp2: React.FC = () => {
 
                 <Form.Item
                   name="address"
-                  label={<p className="text-base font-medium text-black/80">Organisation Address</p>}
+                  label={
+                    <p className="text-base font-medium text-black/80">
+                      Organization Address
+                    </p>
+                  }
                 >
                   <Input
                     id="organization_address_input"
@@ -310,7 +354,11 @@ const SignUp2: React.FC = () => {
                 <div className="grid grid-cols-2 gap-6">
                   <Form.Item
                     name="state"
-                    label={<p className="text-base font-medium text-black/80">State</p>}
+                    label={
+                      <p className="text-base font-medium text-black/80">
+                        State
+                      </p>
+                    }
                   >
                     <Select
                       placeholder="Search or select a state..."
@@ -320,14 +368,20 @@ const SignUp2: React.FC = () => {
                       filterOption={false}
                       onSearch={handleStateSearch}
                       onChange={handleStateChange}
-                      notFoundContent={loadingStates ? "Loading..." : "No states found"}
+                      notFoundContent={
+                        loadingStates ? "Loading..." : "No states found"
+                      }
                       options={stateOptions}
                     />
                   </Form.Item>
 
                   <Form.Item
                     name="postalCode"
-                    label={<p className="text-base font-medium text-black/80">Postal Code</p>}
+                    label={
+                      <p className="text-base font-medium text-black/80">
+                        Postal Code
+                      </p>
+                    }
                   >
                     <Input
                       placeholder="23907"
@@ -340,6 +394,50 @@ const SignUp2: React.FC = () => {
                       }}
                     />
                   </Form.Item>
+                </div>
+                <div>
+                  <Form.Item
+                    name="country"
+                    label={
+                      <p className="text-base font-medium text-black/80">
+                        Country
+                      </p>
+                    }
+                  >
+                    <Select
+                      placeholder="Search or select a country..."
+                      className="w-full"
+                      showSearch
+                      loading={isCountryLoading}
+                      filterOption={(input, option) =>
+                        String(option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                      onChange={(countryCode: string) => {
+                        const selected = countries.find(
+                          (item) => item.countryCode === countryCode,
+                        );
+                        setSelectedCountryCurrency(
+                          selected
+                            ? `${selected.currency} (${selected.stripeCurrency})`
+                            : null,
+                        );
+                      }}
+                      notFoundContent={
+                        isCountryLoading ? "Loading..." : "No countries found"
+                      }
+                      options={countryOptions}
+                    />
+                  </Form.Item>
+                  {selectedCountryCurrency ? (
+                    <p className="-mt-4 mb-4 text-sm text-neutral-500">
+                      Donations will be processed in{" "}
+                      <span className="font-medium text-black">
+                        {selectedCountryCurrency}
+                      </span>
+                    </p>
+                  ) : null}
                 </div>
 
                 <Form.Item
@@ -366,7 +464,11 @@ const SignUp2: React.FC = () => {
 
                 <Form.Item
                   name="phoneNumber"
-                  label={<p className="text-base font-medium text-black/80">Contact Phone Number</p>}
+                  label={
+                    <p className="text-base font-medium text-black/80">
+                      Contact Phone Number
+                    </p>
+                  }
                 >
                   <Input
                     required

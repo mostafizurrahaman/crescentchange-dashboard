@@ -18,8 +18,37 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { useEditOrgDetailsMutation } from "../../redux/features/profileApi/profileApi";
+import { useGetAllCountriesQuery } from "../../redux/features/auth/authApi";
+import { resolveCurrencyDisplay } from "../../utils/currency";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
+interface ICountry {
+  name: string;
+  countryCode: string;
+  currency: string;
+  stripeCurrency: string;
+}
+
+const normalizeCountryCode = (
+  country?: string | null,
+  countries: ICountry[] = [],
+): string => {
+  if (!country) return "";
+  const trimmed = country.trim();
+  const upper = trimmed.toUpperCase();
+  const byCode = countries.find((item) => item.countryCode.toUpperCase() === upper);
+  if (byCode) return byCode.countryCode;
+  const byName = countries.find((item) => item.name.toUpperCase() === upper);
+  if (byName) return byName.countryCode;
+  return upper.length === 2 ? upper : trimmed;
+};
 
 type FieldType = {
   "organisation-name"?: string;
@@ -51,246 +80,36 @@ const ProfileEditForm = ({ data }: { data: any }) => {
   const [form] = Form.useForm<FieldType>();
   const [loadingStates, setLoadingStates] = useState(false);
   const [stateOptions, setStateOptions] = useState<{ label: string, value: string }[]>([]);
-  const [countryOptions, setCountryOptions] = useState<{ label: string, value: string }[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const addressAutocompleteRef = useRef<any>(null);
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const { data: countriesData, isLoading: isCountryLoading } =
+    useGetAllCountriesQuery({});
+  const countries = (countriesData?.data as ICountry[]) ?? [];
+  const countryOptions = countries.map((item) => ({
+    label: `${item.name} (${item.currency})`,
+    value: item.countryCode,
+  }));
+  const settlementCurrency = resolveCurrencyDisplay(
+    countries.find(
+      (item) =>
+        item.countryCode === data?.country ||
+        item.name?.toUpperCase() === String(data?.country ?? "").toUpperCase(),
+    )?.currency,
+    data,
+  );
 
-
-  // Country name to ISO code mapping
-  const countryNameToCode: { [key: string]: string } = {
-    "Australia": "AU",
-    "United States": "US",
-    "United Kingdom": "GB",
-    "Canada": "CA",
-    "Germany": "DE",
-    "France": "FR",
-    "Italy": "IT",
-    "Spain": "ES",
-    "Japan": "JP",
-    "China": "CN",
-    "India": "IN",
-    "Brazil": "BR",
-    "Mexico": "MX",
-    "Argentina": "AR",
-    "New Zealand": "NZ",
-    "South Africa": "ZA",
-    "Andorra": "AD",
-    "Afghanistan": "AF",
-    "Albania": "AL",
-    "Algeria": "DZ",
-    "American Samoa": "AS",
-    "Angola": "AO",
-    "Anguilla": "AI",
-    "Antarctica": "AQ",
-    "Antigua and Barbuda": "AG",
-    "Armenia": "AM",
-    "Aruba": "AW",
-    "Austria": "AT",
-    "Azerbaijan": "AZ",
-    "Bahamas": "BS",
-    "Bahrain": "BH",
-    "Bangladesh": "BD",
-    "Barbados": "BB",
-    "Belarus": "BY",
-    "Belgium": "BE",
-    "Belize": "BZ",
-    "Benin": "BJ",
-    "Bermuda": "BM",
-    "Bhutan": "BT",
-    "Bolivia": "BO",
-    "Bosnia and Herzegovina": "BA",
-    "Botswana": "BW",
-    "British Virgin Islands": "VG",
-    "Brunei": "BN",
-    "Bulgaria": "BG",
-    "Burkina Faso": "BF",
-    "Burundi": "BI",
-    "Cambodia": "KH",
-    "Cameroon": "CM",
-    "Cape Verde": "CV",
-    "Cayman Islands": "KY",
-    "Central African Republic": "CF",
-    "Chad": "TD",
-    "Chile": "CL",
-    "Colombia": "CO",
-    "Comoros": "KM",
-    "Cook Islands": "CK",
-    "Costa Rica": "CR",
-    "Croatia": "HR",
-    "Cuba": "CU",
-    "Cyprus": "CY",
-    "Czech Republic": "CZ",
-    "Denmark": "DK",
-    "Djibouti": "DJ",
-    "Dominica": "DM",
-    "Dominican Republic": "DO",
-    "Ecuador": "EC",
-    "Egypt": "EG",
-    "El Salvador": "SV",
-    "Equatorial Guinea": "GQ",
-    "Eritrea": "ER",
-    "Estonia": "EE",
-    "Ethiopia": "ET",
-    "Falkland Islands": "FK",
-    "Faroe Islands": "FO",
-    "Fiji": "FJ",
-    "Finland": "FI",
-    "Gabon": "GA",
-    "Gambia": "GM",
-    "Georgia": "GE",
-    "Ghana": "GH",
-    "Gibraltar": "GI",
-    "Greece": "GR",
-    "Greenland": "GL",
-    "Grenada": "GD",
-    "Guadeloupe": "GP",
-    "Guam": "GU",
-    "Guatemala": "GT",
-    "Guinea": "GN",
-    "Guinea-Bissau": "GW",
-    "Guyana": "GY",
-    "Haiti": "HT",
-    "Honduras": "HN",
-    "Hong Kong": "HK",
-    "Hungary": "HU",
-    "Iceland": "IS",
-    "Indonesia": "ID",
-    "Iran": "IR",
-    "Iraq": "IQ",
-    "Ireland": "IE",
-    "Israel": "IL",
-    "Ivory Coast": "CI",
-    "Jamaica": "JM",
-    "Jordan": "JO",
-    "Kazakhstan": "KZ",
-    "Kenya": "KE",
-    "Kiribati": "KI",
-    "Kuwait": "KW",
-    "Kyrgyzstan": "KG",
-    "Laos": "LA",
-    "Latvia": "LV",
-    "Lebanon": "LB",
-    "Lesotho": "LS",
-    "Liberia": "LR",
-    "Libya": "LY",
-    "Liechtenstein": "LI",
-    "Lithuania": "LT",
-    "Luxembourg": "LU",
-    "Macedonia": "MK",
-    "Madagascar": "MG",
-    "Malawi": "MW",
-    "Malaysia": "MY",
-    "Maldives": "MV",
-    "Mali": "ML",
-    "Malta": "MT",
-    "Marshall Islands": "MH",
-    "Martinique": "MQ",
-    "Mauritania": "MR",
-    "Mauritius": "MU",
-    "Mayotte": "YT",
-    "Micronesia": "FM",
-    "Moldova": "MD",
-    "Monaco": "MC",
-    "Mongolia": "MN",
-    "Montenegro": "ME",
-    "Montserrat": "MS",
-    "Morocco": "MA",
-    "Mozambique": "MZ",
-    "Myanmar": "MM",
-    "Namibia": "NA",
-    "Nauru": "NR",
-    "Nepal": "NP",
-    "Netherlands": "NL",
-    "Netherlands Antilles": "AN",
-    "New Caledonia": "NC",
-    "Nicaragua": "NI",
-    "Niger": "NE",
-    "Nigeria": "NG",
-    "Niue": "NU",
-    "Norfolk Island": "NF",
-    "Northern Mariana Islands": "MP",
-    "Norway": "NO",
-    "Oman": "OM",
-    "Pakistan": "PK",
-    "Palau": "PW",
-    "Palestine": "PS",
-    "Panama": "PA",
-    "Papua New Guinea": "PG",
-    "Paraguay": "PY",
-    "Peru": "PE",
-    "Philippines": "PH",
-    "Pitcairn": "PN",
-    "Poland": "PL",
-    "Portugal": "PT",
-    "Puerto Rico": "PR",
-    "Qatar": "QA",
-    "Reunion": "RE",
-    "Romania": "RO",
-    "Russia": "RU",
-    "Rwanda": "RW",
-    "Saint Kitts and Nevis": "KN",
-    "Saint Lucia": "LC",
-    "Saint Vincent and the Grenadines": "VC",
-    "Samoa": "WS",
-    "San Marino": "SM",
-    "Saudi Arabia": "SA",
-    "Senegal": "SN",
-    "Serbia": "RS",
-    "Seychelles": "SC",
-    "Sierra Leone": "SL",
-    "Singapore": "SG",
-    "Slovakia": "SK",
-    "Slovenia": "SI",
-    "Solomon Islands": "SB",
-    "Somalia": "SO",
-    "South Korea": "KR",
-    "Sri Lanka": "LK",
-    "Sudan": "SD",
-    "Suriname": "SR",
-    "Swaziland": "SZ",
-    "Sweden": "SE",
-    "Switzerland": "CH",
-    "Syria": "SY",
-    "Taiwan": "TW",
-    "Tajikistan": "TJ",
-    "Tanzania": "TZ",
-    "Thailand": "TH",
-    "Togo": "TG",
-    "Tokelau": "TK",
-    "Tonga": "TO",
-    "Trinidad and Tobago": "TT",
-    "Tunisia": "TN",
-    "Turkey": "TR",
-    "Turkmenistan": "TM",
-    "Turks and Caicos Islands": "TC",
-    "Tuvalu": "TV",
-    "Uganda": "UG",
-    "Ukraine": "UA",
-    "United Arab Emirates": "AE",
-    "Uruguay": "UY",
-    "Uzbekistan": "UZ",
-    "Vanuatu": "VU",
-    "Vatican": "VA",
-    "Venezuela": "VE",
-    "Vietnam": "VN",
-    "Wallis and Futuna": "WF",
-    "Western Sahara": "EH",
-    "Yemen": "YE",
-    "Zambia": "ZM",
-    "Zimbabwe": "ZW"
+  const getCountryCode = (country?: string): string | undefined => {
+    const code = normalizeCountryCode(country, countries);
+    return code || undefined;
   };
 
-  // Get ISO country code from country name
-  const getCountryCode = (countryName: string): string | undefined => {
-    return countryNameToCode[countryName];
-  };
   const handleCountryChange = (value: string) => {
     setSelectedCountry(value);
-    
-    // Clear state and postal code when country changes
+
     form.setFieldsValue({
       state: "",
-      postalCode: ""
+      postalCode: "",
     });
   };
 
@@ -346,24 +165,94 @@ const ProfileEditForm = ({ data }: { data: any }) => {
     }
   };
 
-  // Load Google Maps script and fetch states
+  const initAutocomplete = () => {
+    const inputElement = document.getElementById("organization_address_input");
+    if (!inputElement || !window.google?.maps?.places) return;
+    if (addressAutocompleteRef.current) return;
+
+    try {
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        inputElement,
+        { types: ["address"] },
+      );
+      addressAutocompleteRef.current = autocomplete;
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place || !place.address_components) return;
+
+        let streetNumber = "";
+        let route = "";
+        let state = "";
+        let postalCode = "";
+        let country = "";
+
+        for (const component of place.address_components) {
+          const types = component.types;
+          if (types.includes("street_number")) {
+            streetNumber = component.long_name;
+          }
+          if (types.includes("route")) {
+            route = component.long_name;
+          }
+          if (types.includes("administrative_area_level_1")) {
+            state = component.long_name;
+          }
+          if (types.includes("postal_code")) {
+            postalCode = component.long_name;
+          }
+          if (types.includes("country")) {
+            country = component.short_name;
+          }
+        }
+
+        const formattedAddress =
+          place.formatted_address || `${streetNumber} ${route}`.trim();
+        const countryCode = normalizeCountryCode(country, countries);
+
+        form.setFieldsValue({
+          "organisation-address": formattedAddress,
+          state: state || undefined,
+          postalCode: postalCode || undefined,
+          country: countryCode || undefined,
+        });
+
+        if (countryCode) {
+          setSelectedCountry(countryCode);
+        }
+        if (state) {
+          setStateOptions([{ label: state, value: state }]);
+        }
+      });
+    } catch (error) {
+      console.error("Error initializing Google Autocomplete:", error);
+    }
+  };
+
   useEffect(() => {
     const loadGoogleMapsScript = () => {
-      // console.log("Loading Google Maps script...");
-      // console.log("Google Maps already available:", !!window.google);
-      
       if (window.google) {
-        // console.log("Google Maps already loaded, calling fetchStates");
+        initAutocomplete();
         fetchStates();
         return;
       }
 
-      // console.log("Creating Google Maps script element");
-      const script = document.createElement('script');
+      const existingScript = document.querySelector(
+        'script[src*="maps.googleapis.com/maps/api/js"]',
+      );
+      if (existingScript) {
+        existingScript.addEventListener("load", () => {
+          initAutocomplete();
+          fetchStates();
+        });
+        return;
+      }
+
+      const script = document.createElement("script");
       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
       script.onload = () => {
-        // console.log("Google Maps script loaded successfully");
+        initAutocomplete();
         fetchStates();
       };
       script.onerror = (error) => {
@@ -375,60 +264,14 @@ const ProfileEditForm = ({ data }: { data: any }) => {
     loadGoogleMapsScript();
   }, []);
 
+  useEffect(() => {
+    if (window.google) {
+      initAutocomplete();
+    }
+  }, [form]);
+
   const fetchStates = async () => {
-    setLoadingStates(true);
-    try {
-      // Don't load hardcoded states - rely on Google Maps API for suggestions
-      setStateOptions([]);
-      setCountryOptions([]);
-    } catch (error) {
-      console.error('Error initializing states:', error);
-      setStateOptions([]);
-      setCountryOptions([]);
-    } finally {
-      setLoadingStates(false);
-    }
-  };
-
-  // Handle country search with Google Places
-  const handleCountrySearch = async (value: string) => {
-    // console.log("Country search triggered for:", value);
-    // console.log("Google Maps available:", !!window.google);
-    
-    if (!value || !window.google) {
-      // console.log("Early return - no value or Google Maps not loaded");
-      return;
-    }
-
-    setLoadingStates(true);
-    try {
-      const service = new window.google.maps.places.AutocompleteService();
-      // console.log("AutocompleteService created:", !!service);
-      
-      service.getPlacePredictions({
-        input: value,
-        types: ['country'],
-      }, (predictions: any[], status: any) => {
-        // console.log("Country search status:", status);
-        // console.log("Country search predictions:", predictions);
-        
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
-          const options = predictions.map((prediction: { description: string; }) => ({
-            label: prediction.description,
-            value: prediction.description
-          }));
-          setCountryOptions(options);
-          // console.log("Country options set:", options.length);
-        } else {
-          // console.log("Country search failed with status:", status);
-          setCountryOptions([]);
-        }
-        setLoadingStates(false);
-      });
-    } catch (error) {
-      console.error('Error searching countries:', error);
-      setLoadingStates(false);
-    }
+    // States are suggested from Google Places as the user types.
   };
 
   // Handle state search with Google Places
@@ -488,9 +331,13 @@ const ProfileEditForm = ({ data }: { data: any }) => {
   // Prefill form with organization data
   useEffect(() => {
     if (data) {
-      const countryValue = data.country || "";
+      const countryValue = normalizeCountryCode(data.country, countries);
       setSelectedCountry(countryValue);
       
+      if (data.state) {
+        setStateOptions([{ label: data.state, value: data.state }]);
+      }
+
       form.setFieldsValue({
         name: data.name || "",
         "organisation-address": data.address || "",
@@ -504,7 +351,7 @@ const ProfileEditForm = ({ data }: { data: any }) => {
         "date-of-established": data.dateOfEstablishment ? dayjs(data.dateOfEstablishment) : null,
       });
     }
-  }, [data, form]);
+  }, [data, form, countriesData]);
 
   const handleProfileVisibilityChange = (checked: boolean) => {
     // Handle profile visibility change
@@ -636,7 +483,8 @@ const ProfileEditForm = ({ data }: { data: any }) => {
             ]}
           >
             <Input
-              placeholder="57 Donut Road, Crescent Lane, Sydney, Australia"
+              id="organization_address_input"
+              placeholder="Search organisation address"
               prefix={<FiMapPin className="mr-2 text-black/60" />}
               className="h-14 rounded-2xl bg-white border border-gray-200 text-[15px]"
             />
@@ -653,11 +501,17 @@ const ProfileEditForm = ({ data }: { data: any }) => {
               <Select
                 placeholder="Search or select a country..."
                 showSearch
-                loading={loadingStates}
-                filterOption={false}
-                onSearch={handleCountrySearch}
+                loading={isCountryLoading}
+                optionFilterProp="label"
+                filterOption={(input, option) =>
+                  String(option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
                 onChange={handleCountryChange}
-                notFoundContent={loadingStates ? "Loading..." : "No countries found"}
+                notFoundContent={
+                  isCountryLoading ? "Loading..." : "No countries found"
+                }
                 options={countryOptions}
                 className="h-14"
                 style={{ height: 56 }}
@@ -695,6 +549,14 @@ const ProfileEditForm = ({ data }: { data: any }) => {
               />
             </Form.Item>
           </div>
+          {data ? (
+            <p className="-mt-2 mb-2 text-sm text-neutral-500">
+              Donations are processed in{" "}
+              <span className="font-medium text-black">
+                {settlementCurrency.organizationCurrency}
+              </span>
+            </p>
+          ) : null}
 
           {/* Contact info */}
           <div className="flex flex-col md:flex-row gap-5">

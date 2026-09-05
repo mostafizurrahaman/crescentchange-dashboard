@@ -28,7 +28,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithRefreshToken: typeof baseQuery = async (
   args,
   api,
-  extraOptions
+  extraOptions,
 ) => {
   const result = await baseQuery(args, api, extraOptions);
 
@@ -51,6 +51,11 @@ const baseQueryWithRefreshToken: typeof baseQuery = async (
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["notification", "subscription", "billingHistory"],
+  tagTypes: [
+    "notification",
+    "subscription",
+    "billingHistory",
+    "allowed-countries",
+  ],
   endpoints: () => ({}),
 });

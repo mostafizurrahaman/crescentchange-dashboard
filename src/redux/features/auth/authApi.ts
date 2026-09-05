@@ -111,6 +111,13 @@ const AuthApi = baseApi.injectEndpoints({
       }),
       providesTags: ["notification"],
     }),
+    getAllCountries: builder.query({
+      query: () => ({
+        url: "/organization/supported-countries",
+        method: "GET",
+      }),
+      providesTags: ["allowed-countries"],
+    }),
   }),
 });
 
@@ -129,5 +136,6 @@ export const {
   useGetNotificationQuery,
   useNotificationMarkASReadMutation,
   useGetUnreadNotificationQuery,
-  useResendSignUpOtpMutation
+  useResendSignUpOtpMutation,
+  useGetAllCountriesQuery,
 } = AuthApi;

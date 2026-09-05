@@ -18,14 +18,15 @@ const STEPS = [
 const SignUp4: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [selectedFileName, setSelectedFileName] = useState<string>("driverslicense.pdf");
+  const [selectedFileName, setSelectedFileName] =
+    useState<string>("driverslicense.pdf");
   const total = STEPS.length;
   let currentIdx = STEPS.findIndex((s) => location.pathname.startsWith(s.path));
   if (currentIdx === -1) currentIdx = total - 1;
   const current = currentIdx + 1;
   const organization = JSON.parse(localStorage.getItem("organization") ?? "{}");
   const organization2 = JSON.parse(
-    localStorage.getItem("organization2") ?? "{}"
+    localStorage.getItem("organization2") ?? "{}",
   );
   const compliance = JSON.parse(localStorage.getItem("compliance") ?? "{}");
   const [SignUp] = useSignUpMutation();
@@ -47,6 +48,7 @@ const SignUp4: React.FC = () => {
       serviceType: organization2.serviceType ?? "",
       address: organization2.address ?? "",
       state: organization2.state ?? "",
+      country: organization2?.country ?? "",
       postalCode: organization2.postalCode ?? "",
       phoneNumber: organization2.phoneNumber ?? "",
       website: organization2.website ?? "",
@@ -107,7 +109,11 @@ const SignUp4: React.FC = () => {
 
                 <Form.Item
                   name="boardMemberName"
-                  label={<p className="text-base font-medium text-black/80">Full Name</p>}
+                  label={
+                    <p className="text-base font-medium text-black/80">
+                      Full Name
+                    </p>
+                  }
                 >
                   <Input
                     required
@@ -125,7 +131,9 @@ const SignUp4: React.FC = () => {
                 <Form.Item
                   name="boardMemberEmail"
                   label={
-                    <p className="text-base font-medium text-black/80">Email Address</p>
+                    <p className="text-base font-medium text-black/80">
+                      Email Address
+                    </p>
                   }
                 >
                   <Input
@@ -146,7 +154,9 @@ const SignUp4: React.FC = () => {
                 <Form.Item
                   name="boardMemberPhoneNumber"
                   label={
-                    <p className="text-base font-medium text-black/80">Phone Number</p>
+                    <p className="text-base font-medium text-black/80">
+                      Phone Number
+                    </p>
                   }
                 >
                   <Input
@@ -204,7 +214,9 @@ const SignUp4: React.FC = () => {
                         height: "56px",
                       }}
                     >
-                      <span className="text-neutral-400">{selectedFileName}</span>
+                      <span className="text-neutral-400">
+                        {selectedFileName}
+                      </span>
                       <FiUpload className="h-5 w-5 text-black/80" />
                     </Button>
                   </Upload>
@@ -227,7 +239,11 @@ const SignUp4: React.FC = () => {
 
       {/* Right section - Image */}
       <div className="w-full md:w-1/2">
-        <img src={img} alt="sign-up" className="w-full h-full object-cover rounded-r-2xl" />
+        <img
+          src={img}
+          alt="sign-up"
+          className="w-full h-full object-cover rounded-r-2xl"
+        />
       </div>
     </div>
   );

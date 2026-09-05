@@ -1,6 +1,7 @@
 import oneTime from "../../assets/images/one-time.png";
 import recurring from "../../assets/images/recurring.png";
 import rounup from "../../assets/images/roundup.png";
+import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 
 interface AnalyticsCardProps {
   filter: "today" | "this_week" | "this_month";
@@ -49,6 +50,7 @@ interface AnalyticsCardProps {
 
 const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
   const stats = data?.data;
+  const currency = useOrganizationCurrency();
   // console.log("stats", stats);
 
   return (
@@ -67,7 +69,7 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
           </div>
 
           <h1 className="text-3xl font-bold">
-            <span className="text-gray-400">$</span>
+            <span className="text-gray-400">{currency.organizationCurrency}</span>
             {stats?.donationTypeBreakdown["round-up"]?.amount ?? 0}
           </h1>
           <p className="text-gray-400 mt-2">
@@ -90,7 +92,7 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
           </div>
 
           <h1 className="text-3xl font-bold">
-            <span className="text-gray-400">$</span>
+            <span className="text-gray-400">{currency.organizationCurrency}</span>
             {stats?.donationTypeBreakdown.recurring?.amount ?? 0}
           </h1>
           <p className="text-gray-400 mt-2">
@@ -113,7 +115,7 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
           </div>
 
           <h1 className="text-3xl font-bold">
-            <span className="text-gray-400">$</span>
+            <span className="text-gray-400">{currency.organizationCurrency}</span>
             {stats?.donationTypeBreakdown["one-time"]?.amount ?? 0}
           </h1>
           <p className="text-gray-400 mt-2">

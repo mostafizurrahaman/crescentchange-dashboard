@@ -3,6 +3,7 @@ import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard"
 import star from "../../assets/images/Star Emphasis.png";
 import { useGetSubscriptionMeQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
 import { useGetBillingHistoryQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
+import { formatMoney } from "../../utils/currency";
 
 const Subscriptions = () => {
   const { data: subscriptionMeData } = useGetSubscriptionMeQuery();
@@ -139,7 +140,7 @@ const Subscriptions = () => {
                 <div className="flex items-center justify-between gap-5 mb-3">
                   <p className="text-gray-500">Amount:</p>
                   <p>
-                    ${item.amount} {item.currency?.toUpperCase()}
+                    {formatMoney(item.amount, item.currency)}
                   </p>
                 </div>
 
