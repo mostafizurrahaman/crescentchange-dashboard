@@ -3,7 +3,7 @@ import img from "../../../assets/images/Frame 2087326397.png";
 import logo from "../../../assets/images/logo.png";
 import OTPInput from "react-otp-input";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { message } from "antd";
 import { useResendSignUpOtpMutation, useVerifyOtpMutation } from "../../../redux/features/auth/authApi";
@@ -11,16 +11,16 @@ import { useResendSignUpOtpMutation, useVerifyOtpMutation } from "../../../redux
 const VerifyOtpForSignUp = () => {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
-
-  const [verifyOtp ,{ isLoading: isVerifying }] = useVerifyOtpMutation();
+  const [verifyOtp, { isLoading: isVerifying }] = useVerifyOtpMutation();
 
   const [resendSignUpOtp, { isLoading: isResending }] =
     useResendSignUpOtpMutation();
 
   const organizationStr = localStorage.getItem("organization");
   const organization = organizationStr ? JSON.parse(organizationStr) : null;
-  const email: string = organization?.email ?? "";
+  const email: string = location.state?.email || organization?.email || "";
 
   const handleVerifyOtp = async () => {
 
@@ -105,9 +105,8 @@ const VerifyOtpForSignUp = () => {
             Didn’t receive the code?
             <span
               onClick={handleResendOtp}
-              className={`pl-2 underline cursor-pointer ${
-                isResending ? "opacity-60 pointer-events-none" : ""
-              }`}
+              className={`pl-2 underline cursor-pointer ${isResending ? "opacity-60 pointer-events-none" : ""
+                }`}
             >
               {isResending ? "Sending..." : "Resend"}
             </span>
