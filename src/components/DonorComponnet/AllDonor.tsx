@@ -5,9 +5,7 @@ import { Input } from "antd";
 import { useEffect, useState } from "react";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
-import roundup from "../../assets/images/roundup.png";
-import recurring from "../../assets/images/recurring.png";
-import oneTime from "../../assets/images/one-time.png";
+import { LuCoins, LuCalendarClock, LuGift } from "react-icons/lu";
 import { FaEye } from "react-icons/fa";
 import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
 import * as XLSX from "xlsx";
@@ -147,20 +145,20 @@ const AllDonor = ({ tab }: ITabProps) => {
         return (
           <div className="flex items-center justify-center gap-2">
             {donationType === "round-up" && (
-              <div className="flex items-center gap-2 px-3 py-1 text-blue-600 bg-blue-100 rounded-full">
-                <img src={roundup} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3 py-1 text-blue-600 bg-blue-100 rounded-full text-xs font-medium">
+                <LuCoins className="w-4 h-4" />
                 <span>Round Up</span>
               </div>
             )}
             {donationType === "recurring" && (
-              <div className="flex items-center gap-2 px-3 py-1 text-green-600 bg-green-100 rounded-full">
-                <img src={recurring} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3 py-1 text-green-600 bg-green-100 rounded-full text-xs font-medium">
+                <LuCalendarClock className="w-4 h-4" />
                 <span>Recurring</span>
               </div>
             )}
             {donationType === "one-time" && (
-              <div className="flex items-center gap-2 px-3 py-1 text-pink-600 bg-pink-100 rounded-full">
-                <img src={oneTime} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3 py-1 text-pink-600 bg-pink-100 rounded-full text-xs font-medium">
+                <LuGift className="w-4 h-4" />
                 <span>One Time</span>
               </div>
             )}

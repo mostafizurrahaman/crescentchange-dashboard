@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.svg";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const STEPS = [

@@ -1,6 +1,6 @@
 import { LiaArrowDownSolid } from "react-icons/lia";
 import SubscriptionCard from "../../components/PagesComponents/SubscriptionCard";
-import star from "../../assets/images/Star Emphasis.png";
+import { LuSparkles } from "react-icons/lu";
 import { useGetSubscriptionMeQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
 import { useGetBillingHistoryQuery } from "../../redux/features/subscriptionApi/subscriptionApi";
 import { formatMoney } from "../../utils/currency";
@@ -31,8 +31,8 @@ const Subscriptions = () => {
         <div className="p-6 mb-6 bg-white border rounded-3xl">
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-100">
-                <img src={star} alt="" className="w-6 h-6" />
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-100 text-neutral-800">
+                <LuSparkles className="w-5 h-5" />
               </div>
               <div>
                 <p className="text-xl font-semibold">Current Subscription</p>
@@ -106,9 +106,9 @@ const Subscriptions = () => {
             >
               <div className="flex items-center justify-between pb-5 mb-5 border-b">
                 <div className="flex items-center justify-start gap-5">
-                  <h1 className="flex items-center justify-center gap-2 text-xl font-semibold md:text-2xl">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-100">
-                      <img src={star} alt="" className="w-5 h-5" />
+                  <h1 className="flex items-center justify-center gap-2 text-xl font-semibold md:text-2xl font-familjen">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-100 text-neutral-800">
+                      <LuSparkles className="w-4 h-4" />
                     </div>
                     {item.planType}
                   </h1>

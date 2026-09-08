@@ -4,11 +4,9 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { message } from "antd";
-import { AiOutlineMail } from "react-icons/ai";
-import { MdLockOutline } from "react-icons/md";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import img from "../../../assets/images/login.png";
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.svg";
 import { useLoginApiMutation } from "../../../redux/features/auth/authApi";
 import { baseApi } from "../../../redux/api/baseApi";
 
@@ -101,8 +99,8 @@ const Login: React.FC = () => {
                 Email
               </label>
               <div className="relative flex items-center">
-                <span className="absolute left-4 z-10 text-neutral-400">
-                  <AiOutlineMail className="w-5 h-5" />
+                <span className="absolute left-4 z-10 text-neutral-500">
+                  <FiMail className="w-5 h-5" />
                 </span>
                 <input
                   type="email"
@@ -132,8 +130,8 @@ const Login: React.FC = () => {
                 Password
               </label>
               <div className="relative flex items-center">
-                <span className="absolute left-4 z-10 text-neutral-400">
-                  <MdLockOutline className="w-5 h-5" />
+                <span className="absolute left-4 z-10 text-neutral-500">
+                  <FiLock className="w-5 h-5" />
                 </span>
                 <input
                   type={showPassword ? "text" : "password"}
@@ -163,7 +161,7 @@ const Login: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 text-neutral-400 hover:text-neutral-600 focus:outline-none"
+                  className="absolute right-4 text-neutral-500 hover:text-neutral-700 focus:outline-none"
                 >
                   {showPassword ? (
                     <FiEyeOff className="w-5 h-5" />

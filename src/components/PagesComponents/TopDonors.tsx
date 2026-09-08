@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
-import user from "../../assets/images/user.png";
+import { LuUser } from "react-icons/lu";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 import { formatMoney } from "../../utils/currency";
 interface IDonor {
@@ -61,11 +61,17 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                 className="flex justify-between items-center gap-2 mb-4"
               >
                 <div className="flex justify-start items-center gap-2">
-                  <img
-                    src={item.donor.image || user}
-                    alt={item.donor.name}
-                    className="w-8 h-8 rounded-full"
-                  />
+                  {item.donor.image ? (
+                    <img
+                      src={item.donor.image}
+                      alt={item.donor.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600">
+                      <LuUser className="w-4 h-4" />
+                    </div>
+                  )}
                   <div>
                     <h1>{item.donor.name}</h1>
                     <p className="text-gray-400">
@@ -107,7 +113,17 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                 className="flex justify-between items-center gap-2 mb-4"
               >
                 <div className="flex justify-start items-center gap-2">
-                  <img src={user} alt="" />
+                  {item?.donor?.image ? (
+                    <img
+                      src={item.donor.image}
+                      alt={item?.donor?.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600">
+                      <LuUser className="w-4 h-4" />
+                    </div>
+                  )}
                   <div>
                     <h1>{item?.donor?.name}</h1>
                     <p className="text-gray-400">

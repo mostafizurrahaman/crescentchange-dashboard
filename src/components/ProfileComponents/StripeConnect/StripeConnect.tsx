@@ -5,7 +5,7 @@ import {
   useGetStripeAccountStatusQuery,
 } from "../../../redux/features/integrationApi/integrationApi";
 import { message } from "antd";
-import img5 from "../../../assets/images/stripe.png";
+import { SiStripe } from "react-icons/si";
 const StripeConnect = () => {
   const [addBankAccount] = useAddBankAccountMutation();
   const { data: bankData } = useGetStripeAccountStatusQuery(null);
@@ -41,11 +41,7 @@ const StripeConnect = () => {
       <div className="w-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 p-6 rounded-3xl border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-3">
-            <img
-              src={img5}
-              alt="Stripe Logo"
-              className="h-8 w-8 object-contain"
-            />
+            <SiStripe className="h-8 w-8 text-[#635BFF]" />
             <h2 className="text-lg font-semibold">Stripe Connect</h2>
           </div>
         </div>

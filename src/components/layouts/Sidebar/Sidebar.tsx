@@ -3,14 +3,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { IoMdSettings } from "react-icons/io";
-import shape from "../../../assets/images/Shape.png";
-import user from "../../../assets/images/Icons.png";
-import donor from "../../../assets/images/donor.png";
-import deposit from "../../../assets/images/deposit.png";
-import logout from "../../../assets/images/Sign Out.png";
-import calenderimg from "../../../assets/images/Calendar.png";
-// import integration from "../../../assets/images/integration.png";
-import report from "../../../assets/images/reports.png";
+import {
+  LuLayoutDashboard,
+  LuUser,
+  LuUsers,
+  LuWallet,
+  LuFileText,
+  LuTicket,
+  LuLogOut,
+} from "react-icons/lu";
 import { baseApi } from "../../../redux/api/baseApi";
 import { logout as clearAuth } from "../../../redux/features/auth/authSlice";
 
@@ -37,32 +38,27 @@ const Sidebar: React.FC<SidebarProps> = () => {
   const menuItems = [
     {
       key: "analytics",
-      icon: <img src={shape} alt="Analytics" className="w-5 h-5" />,
+      icon: <LuLayoutDashboard className="w-5 h-5" />,
       label: <Link to="/analytics">Dashboard</Link>,
     },
     {
       key: "profile",
-      icon: <img src={user} alt="Profile" className="w-5 h-5" />,
+      icon: <LuUser className="w-5 h-5" />,
       label: <Link to="/profile">Profile</Link>,
     },
     {
       key: "donors",
-      icon: <img src={donor} alt="Donors" className="w-5 h-5" />,
+      icon: <LuUsers className="w-5 h-5" />,
       label: <Link to="/donors">Donors</Link>,
     },
     {
       key: "deposits",
-      icon: <img src={deposit} alt="Deposits" className="w-5 h-5" />,
+      icon: <LuWallet className="w-5 h-5" />,
       label: <Link to="/deposits">Deposits</Link>,
     },
-    // {
-    //   key: "integrations",
-    //   icon: <img src={integration} alt="Deposits" className="w-5 h-5" />,
-    //   label: <Link to="/integrations">Integrations</Link>,
-    // },
     {
       key: "reports",
-      icon: <img src={report} alt="Reports" className="w-5 h-5" />,
+      icon: <LuFileText className="w-5 h-5" />,
       label: <Link to="/reports">Reports</Link>,
     },
   ];
@@ -70,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
   const bottomMenuItems = [
     {
       key: "subscription",
-      icon: <img src={calenderimg} alt="Deposits" className="w-5 h-5"></img>,
+      icon: <LuTicket className="w-5 h-5" />,
       label: <Link to="/subscription">Subscription</Link>,
     },
     {
@@ -80,13 +76,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
     },
     {
       key: "logout",
-      icon: (
-        <img
-          src={logout}
-          alt="Logout"
-          className="w-5 h-5"
-        />
-      ),
+      icon: <LuLogOut className="w-5 h-5" />,
       label: "Logout",
     },
   ];

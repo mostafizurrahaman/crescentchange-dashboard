@@ -1,7 +1,5 @@
-import oneTime from "../../assets/images/one-time.png";
-import recurring from "../../assets/images/recurring.png";
-import rounup from "../../assets/images/roundup.png";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import { LuCoins, LuCalendarClock, LuGift } from "react-icons/lu";
 
 interface AnalyticsCardProps {
   filter: "today" | "this_week" | "this_month";
@@ -65,7 +63,9 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
                 Donations from automatic spare change
               </p>
             </div>
-            <img src={rounup} alt="" />
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+              <LuCoins className="w-5 h-5" />
+            </div>
           </div>
 
           <h1 className="text-3xl font-bold">
@@ -88,7 +88,9 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
               <p className="text-xl font-medium">Recurring</p>
               <p className="text-gray-500">Commitments</p>
             </div>
-            <img src={recurring} alt="" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0">
+              <LuCalendarClock className="w-5 h-5" />
+            </div>
           </div>
 
           <h1 className="text-3xl font-bold">
@@ -111,7 +113,9 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
               <p className="text-xl font-medium">One-time</p>
               <p className="text-gray-500">Single contributions</p>
             </div>
-            <img src={oneTime} alt="" />
+            <div className="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600 flex-shrink-0">
+              <LuGift className="w-5 h-5" />
+            </div>
           </div>
 
           <h1 className="text-3xl font-bold">

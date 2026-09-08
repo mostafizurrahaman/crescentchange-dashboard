@@ -3,10 +3,9 @@ import React from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import building from "../../assets/images/Building.png";
-import { MdLockOutline } from "react-icons/md";
-import { AiOutlineMail } from "react-icons/ai";
+import logo from "../../assets/images/logo.svg";
+import { FiMail, FiLock } from "react-icons/fi";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 
 // Define your step routes here, in order. 
 // Add a 6th step if you have one.
@@ -78,7 +77,7 @@ const SignUp1: React.FC = () => {
                 <Input
                   required
                   prefix={
-                    <img src={building} alt="" className="mr-3 h-5 w-5 opacity-70" />
+                    <HiOutlineBuildingOffice2 className="mr-3 h-5 w-5 text-neutral-500" />
                   }
                   placeholder="Enter Name"
                   style={{
@@ -97,7 +96,7 @@ const SignUp1: React.FC = () => {
                 <Input
                   required
                   type="email"
-                  prefix={<AiOutlineMail className="mr-3 h-5 w-5 text-neutral-400" />}
+                  prefix={<FiMail className="mr-3 h-5 w-5 text-neutral-500" />}
                   placeholder="Enter Email Address"
                   style={{
                     padding: "8px",
@@ -114,7 +113,7 @@ const SignUp1: React.FC = () => {
               >
                 <Input.Password
                   required
-                  prefix={<MdLockOutline className="mr-3 h-5 w-5 text-neutral-400" />}
+                  prefix={<FiLock className="mr-3 h-5 w-5 text-neutral-500" />}
                   placeholder="************"
                   style={{
                     padding: "8px",

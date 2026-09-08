@@ -1,46 +1,48 @@
-import profile from "../../assets/images/alu.png";
-import portfolio from "../../assets/images/Eye Tracking.png";
-import warning from "../../assets/images/Error Circle.png";
-import reports from "../../assets/images/Document Bullet List.png";
-import intregation from "../../assets/images/Puzzle Cube.png";
-import tickets from "../../assets/images/Ticket.png";
 import { Link } from "react-router-dom";
+import {
+  LuUser,
+  LuWallet,
+  LuHeartHandshake,
+  LuFileText,
+  LuPuzzle,
+  LuReceipt,
+} from "react-icons/lu";
 
 const QuickLinks = () => {
   const data = [
     {
       id: 1,
-      img: profile,
+      icon: <LuUser className="w-7 h-7 text-neutral-700" />,
       title: "Manage Profile",
       link: "/edit-profile",
     },
     {
       id: 2,
-      img: portfolio,
+      icon: <LuWallet className="w-7 h-7 text-neutral-700" />,
       title: "View Portfolio",
       link: "/deposits",
     },
     {
       id: 3,
-      img: warning,
+      icon: <LuHeartHandshake className="w-7 h-7 text-neutral-700" />,
       title: "Manage Causes",
       link: "/edit-profile",
     },
     {
       id: 4,
-      img: reports,
+      icon: <LuFileText className="w-7 h-7 text-neutral-700" />,
       title: "View Reports",
       link: "/reports",
     },
     {
       id: 5,
-      img: intregation,
+      icon: <LuPuzzle className="w-7 h-7 text-neutral-700" />,
       title: "Integrations",
       link: "/integrations",
     },
     {
       id: 6,
-      img: tickets,
+      icon: <LuReceipt className="w-7 h-7 text-neutral-700" />,
       title: "Receipts",
       link: "/reports",
     },
@@ -53,11 +55,13 @@ const QuickLinks = () => {
         {data.map((item) => (
           <div
             key={item.id}
-            className="bg-white p-3 rounded-3xl flex flex-col items-center justify-center gap-2"
+            className="bg-white p-6 rounded-3xl flex flex-col items-center justify-center gap-2 border border-black/5 hover:border-black/10 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
           >
-            <Link to={item?.link || ""} className="flex flex-col items-center">
-              <img src={item.img} alt={item.title} className="mb-4" />
-              <p className="text-center font-semibold">{item.title}</p>
+            <Link to={item?.link || ""} className="flex flex-col items-center group">
+              <div className="w-14 h-14 rounded-2xl bg-neutral-100/80 flex items-center justify-center mb-3 group-hover:bg-black/5 group-hover:scale-105 transition-all">
+                {item.icon}
+              </div>
+              <p className="text-center font-semibold text-neutral-800">{item.title}</p>
             </Link>
           </div>
         ))}

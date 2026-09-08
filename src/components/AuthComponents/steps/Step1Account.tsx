@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { AiOutlineMail } from "react-icons/ai";
-import { MdLockOutline } from "react-icons/md";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import building from "../../../assets/images/Building.png";
+import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import Stepper from "../Stepper";
 import { ISignUpFormValues } from "./types";
 
@@ -45,8 +43,8 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             Organization Name
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-4 z-10">
-              <img src={building} alt="" className="h-5 w-5 opacity-70" />
+            <span className="absolute left-4 z-10 text-neutral-500">
+              <HiOutlineBuildingOffice2 className="h-5 w-5" />
             </span>
             <input
               type="text"
@@ -70,8 +68,8 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             Email
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-4 z-10 text-neutral-400">
-              <AiOutlineMail className="h-5 w-5" />
+            <span className="absolute left-4 z-10 text-neutral-500">
+              <FiMail className="h-5 w-5" />
             </span>
             <input
               type="email"
@@ -99,8 +97,8 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             Password
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-4 z-10 text-neutral-400">
-              <MdLockOutline className="h-5 w-5" />
+            <span className="absolute left-4 z-10 text-neutral-500">
+              <FiLock className="h-5 w-5" />
             </span>
             <input
               type={showPassword ? "text" : "password"}
@@ -130,7 +128,7 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 text-neutral-400 hover:text-neutral-600 focus:outline-none"
+              className="absolute right-4 text-neutral-500 hover:text-neutral-700 focus:outline-none"
             >
               {showPassword ? (
                 <FiEyeOff className="h-5 w-5" />

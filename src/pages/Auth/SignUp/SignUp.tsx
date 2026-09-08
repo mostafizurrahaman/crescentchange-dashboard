@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.svg";
 import img from "../../../assets/images/login.png";
 import { useSignUpMutation } from "../../../redux/features/auth/authApi";
 import { ISignUpFormValues } from "../../../components/AuthComponents/steps/types";

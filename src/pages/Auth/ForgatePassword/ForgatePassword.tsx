@@ -2,9 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import { AiOutlineMail } from "react-icons/ai";
+import { FiMail } from "react-icons/fi";
 import img from "../../../assets/images/Frame 2087326397.png";
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.svg";
 import { useForgotPasswordMutation } from "../../../redux/features/auth/authApi";
 
 interface IForgotPasswordFormValues {
@@ -72,8 +72,8 @@ const ForgatePassword: React.FC = () => {
                 Enter your registered email
               </label>
               <div className="relative flex items-center">
-                <span className="absolute left-4 z-10 text-neutral-400">
-                  <AiOutlineMail className="w-5 h-5" />
+                <span className="absolute left-4 z-10 text-neutral-500">
+                  <FiMail className="w-5 h-5" />
                 </span>
                 <input
                   type="email"

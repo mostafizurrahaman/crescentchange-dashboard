@@ -10,7 +10,7 @@ import {
 
 } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
-import setting from "../../assets/images/Settings.png";
+import { LuSlidersHorizontal } from "react-icons/lu";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 import {
   // useGetDepositStatsQuery,
@@ -184,9 +184,9 @@ const Deposits: FC = () => {
       <div className="bg-white border rounded-[32px] p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-lg font-medium">Total Deposits</h1>
-          <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-3xl text-sm text-gray-900 border hover:bg-blue-100">
-            <img src={setting} alt="" />
-            <button onClick={showModal}> Adjust Payout Schedule</button>
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-3xl text-sm text-gray-900 border hover:bg-black/5 transition-colors cursor-pointer" onClick={showModal}>
+            <LuSlidersHorizontal className="w-4 h-4 text-neutral-600" />
+            <button type="button">Adjust Payout Schedule</button>
             {/* <DatePicker className=" " style={{ width: 50 }} /> */}
           </div>
         </div>

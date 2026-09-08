@@ -3,16 +3,14 @@ import { useEffect, useState } from "react";
 import { ConfigProvider, Drawer, Popover } from "antd";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaX } from "react-icons/fa6";
-// import { IoIosNotificationsOutline } from "react-icons/io";
+import { IoIosNotificationsOutline, IoMdSettings } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { IoMdSettings } from "react-icons/io";
-import brandlogo from "../../assets/images/logo.png";
-import hfl from "../../assets/images/hfl.png";
+import brandlogo from "../../assets/images/logo.svg";
+import placeholderProfile from "../../assets/images/placeholder_profile.jpg";
 import Sidebar from "./Sidebar/Sidebar";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import NotificationPopover from "../AuthComponents/NotificationPopover";
 import { useGetUnreadNotificationQuery } from "../../redux/features/auth/authApi";
-import notificatiinImg from "../../assets/images/notification.png";
 const RootLayout = () => {
   const [drawer, setDrawer] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -49,7 +47,7 @@ const RootLayout = () => {
                 <img
                   src={brandlogo}
                   alt="brandlogo"
-                  className="object-cover md:h-full md:w-full"
+                  className="h-8 md:h-9 w-auto object-contain"
                 />
               </div>
             </Link>
@@ -61,9 +59,9 @@ const RootLayout = () => {
             <div className="flex items-center justify-between gap-3">
               <Link
                 to="/settings"
-                className="h-10 w-10 rounded-full border border-black/5 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)] flex items-center justify-center"
+                className="h-10 w-10 rounded-full border border-black/5 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)] flex items-center justify-center text-black/70 hover:bg-black/5 transition-colors"
               >
-                <IoMdSettings className="w-5 h-5 text-black/60" />
+                <IoMdSettings className="w-5 h-5" />
               </Link>
 
               <div className="relative">
@@ -73,27 +71,29 @@ const RootLayout = () => {
                   placement="bottomRight"
                   overlayClassName="notification-popover"
                 >
-                  <div className="relative cursor-pointer h-10 w-10 rounded-full border border-black/5 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)] flex items-center justify-center">
-                    {/* <IoIosNotificationsOutline className="w-5 h-5 text-black/60" /> */}
-                    <img src={notificatiinImg} alt="notification" />
+                  <div className="relative cursor-pointer h-10 w-10 rounded-full border border-black/5 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)] flex items-center justify-center text-black/70 hover:bg-black/5 transition-colors">
+                    <IoIosNotificationsOutline className="w-6 h-6" />
                     {unreadNotification?.data ? (
-                      <span className="bg-red-500 h-2 w-2 rounded-full absolute top-[10px] right-[10px]"></span>
+                      <span className="bg-red-500 h-2 w-2 rounded-full absolute top-[9px] right-[9px]"></span>
                     ) : null}
                   </div>
                 </Popover>
               </div>
 
               <Link to="/profile">
-                <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-full border border-black/5 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3f0ff]">
+                <div className="flex justify-center items-center gap-2 bg-white py-2 px-3 rounded-full border border-black/5 shadow-[0_1px_0_rgba(0,0,0,0.02)] hover:bg-neutral-50 transition-colors">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3f0ff] overflow-hidden">
                     {orgData?.data?.logoImage ? (
                       <img
                         src={`${orgData?.data?.logoImage}`}
                         alt=""
-                        className="w-8 h-8 rounded-full"
+                        className="w-8 h-8 rounded-full object-cover"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = placeholderProfile;
+                        }}
                       />
                     ) : (
-                      <img src={hfl} alt="" className="w-8 h-8 rounded-full" />
+                      <img src={placeholderProfile} alt="" className="w-8 h-8 rounded-full object-cover" />
                     )} 
                   </span>
                   <p className="text-sm font-medium text-black/80">
