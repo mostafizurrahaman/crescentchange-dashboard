@@ -1,7 +1,7 @@
 import { Button, Layout, theme } from 'antd';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdSettings } from "react-icons/io";
-import img from "../../../assets/images/user.png";
+import { LuUser } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 
 const { Header } = Layout;
@@ -47,8 +47,10 @@ const MainHeader: React.FC<MainHeaderProps> = ({ setCollapsed, collapsed }) => {
                                 }}
                             />
                         </Link>
-                        <Link to="/profile">
-                            <img src={img} alt="user" className=' w-10 h-10 my-3' />
+                        <Link to="/profile" className="flex items-center">
+                            <div className='w-10 h-10 my-3 rounded-full bg-white/20 flex items-center justify-center text-white'>
+                                <LuUser className="w-5 h-5" />
+                            </div>
                         </Link>
                     </div>
                 </div>

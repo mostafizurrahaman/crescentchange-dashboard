@@ -3,7 +3,7 @@ import React from "react";
 import { ConfigProvider, Form, Input } from "antd";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.svg";
 
 const STEPS = [
   { path: "/auth/signUp1", label: "Account" },

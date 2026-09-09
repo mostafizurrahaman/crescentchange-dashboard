@@ -4,7 +4,7 @@ import { ConfigProvider, Form, Input, Select } from "antd";
 import { FiGlobe, FiMapPin, FiPhone } from "react-icons/fi";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.svg";
 import { useGetAllCountriesQuery } from "../../redux/features/auth/authApi";
 
 // Google Maps TypeScript declarations
@@ -351,7 +351,6 @@ const SignUp2: React.FC = () => {
                   />
                 </Form.Item>
 
-                <div className="grid grid-cols-2 gap-6">
                   <Form.Item
                     name="state"
                     label={
@@ -394,7 +393,6 @@ const SignUp2: React.FC = () => {
                       }}
                     />
                   </Form.Item>
-                </div>
                 <div>
                   <Form.Item
                     name="country"

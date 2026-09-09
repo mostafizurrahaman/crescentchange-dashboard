@@ -11,12 +11,9 @@ import {
 } from "antd";
 
 import { Table } from "antd";
-import people from "../../assets/images/People Community.png";
 import { Input } from "antd";
 import { useEffect, useState } from "react";
-import roundup from "../../assets/images/roundup.png";
-import recurring from "../../assets/images/recurring.png";
-import oneTime from "../../assets/images/one-time.png";
+import { LuCoins, LuCalendarClock, LuGift, LuUsers } from "react-icons/lu";
 
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -136,20 +133,20 @@ const RoundUp = ({ tab }: ITabProps) => {
         return (
           <div className="flex justify-center items-center gap-2">
             {donationType === "round-up" && (
-              <div className="flex items-center gap-2 bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
-                <img src={roundup} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">
+                <LuCoins className="w-4 h-4" />
                 <span>Round Up</span>
               </div>
             )}
             {donationType === "recurring" && (
-              <div className="flex items-center gap-2 bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                <img src={recurring} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+                <LuCalendarClock className="w-4 h-4" />
                 <span>Recurring</span>
               </div>
             )}
             {donationType === "one-time" && (
-              <div className="flex items-center gap-2 bg-pink-100 text-pink-600 px-3 py-1 rounded-full">
-                <img src={oneTime} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-xs font-medium">
+                <LuGift className="w-4 h-4" />
                 <span>One Time</span>
               </div>
             )}
@@ -263,7 +260,9 @@ const RoundUp = ({ tab }: ITabProps) => {
             <div className=" bg-gradient-to-tr from-[#e3ebf5] to bg-[f8f6f8] p-6 rounded-3xl">
               <div className="flex justify-between items-center gap-2">
                 <p className="text-lg font-medium">Avg Donation</p>
-                <img src={roundup} alt="" />
+                <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                  <LuCoins className="w-4 h-4" />
+                </div>
               </div>
               <h1 className="text-2xl font-medium mt-10">
                 <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
@@ -274,7 +273,9 @@ const RoundUp = ({ tab }: ITabProps) => {
             <div className=" bg-gradient-to-tr from-[#e3ebf5] to bg-[f8f6f8] p-6 rounded-3xl">
               <div className="flex justify-between items-center gap-2">
                 <p className="text-lg font-medium">Total Donors</p>
-                <img src={people} alt="" />
+                <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                  <LuUsers className="w-4 h-4" />
+                </div>
               </div>
 
               <h1 className="text-2xl text-gray-400 font-medium mt-10">

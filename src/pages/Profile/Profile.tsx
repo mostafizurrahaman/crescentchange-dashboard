@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import tick from "../../assets/images/Checkmark.png";
+import { HiCheckBadge } from "react-icons/hi2";
 import { IoCallOutline } from "react-icons/io5";
 import { CiGlobe } from "react-icons/ci";
 import { Modal, Select } from "antd";
@@ -27,29 +27,8 @@ import {
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 import { formatMoney } from "../../utils/currency";
 
-// import water from "../../assets/images/water.png";
-// import food from "../../assets/images/🍽️.png";
-// import education from "../../assets/images/📚 (1).png";
-// import youth from "../../assets/images/🧑_🤝_🧑.png";
-// import orphans from "../../assets/images/🧸.png";
-// import Quran from "../../assets/images/📖.png";
-// import health from "../../assets/images/🏥.png";
-// import emergency from "../../assets/images/🚨.png";
-// import shelter from "../../assets/images/🏠.png";
-// import mosque from "../../assets/images/🕌.png";
-// import zakat from "../../assets/images/💰.png";
-// import sadaqah from "../../assets/images/🤲.png";
-// import ramadan from "../../assets/images/🌙.png";
-// import fitrah from "../../assets/images/🥖.png";
-// import admin from "../../assets/images/🗂️.png";
-// import refugee from "../../assets/images/🧳.png";
-// import digital from "../../assets/images/💻.png";
-// import mental from "../../assets/images/🧠.png";
-// import qurban from "../../assets/images/🐑.png";
-// import women from "../../assets/images/👩_👧.png";
-import world from "../../assets/images/🌍.png";
-import logo from "../../assets/images/Profile Logo.png";
-import profile from "../../assets/images/profile.png";
+import placeholderCover from "../../assets/images/placeholder_cover.jpg";
+import placeholderProfile from "../../assets/images/placeholder_profile.jpg";
 
 const Profile = () => {
   const [selectedYear] = useState(dayjs().year());
@@ -231,7 +210,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="my-6 relative">
-        {OrgProfile?.coverImage ? (
+        {OrgProfile?.coverImage && mediaLoadAttempts < 2 ? (
           coverMediaType === "video" ? (
             <video
               src={OrgProfile?.coverImage}
@@ -246,37 +225,45 @@ const Profile = () => {
           ) : (
             <img
               src={OrgProfile?.coverImage}
-              alt=""
+              alt="Cover"
               className="w-full h-80 object-cover rounded-3xl"
               onError={() => handleMediaError("image")}
             />
           )
         ) : (
-          <img
-            src={profile}
-            alt=""
-            className="w-full h-80 object-cover object-top rounded-3xl"
-            onError={() => handleMediaError("image")}
-          />
+          <div className="w-full h-80 bg-[#f4f6f8] rounded-3xl flex items-center justify-center border border-gray-200/80 overflow-hidden">
+            <img
+              src={placeholderCover}
+              alt="Cover placeholder"
+              className="w-32 h-32 object-contain opacity-50 mix-blend-multiply"
+            />
+          </div>
         )}
 
         <div className="absolute ml-28 top-60">
           {OrgProfile?.logoImage ? (
             <img
               src={`${OrgProfile?.logoImage}`}
-              alt=""
-              className="h-40 w-40 rounded-full"
+              alt="Logo"
+              className="h-40 w-40 rounded-full object-cover border-4 border-white shadow-md bg-white"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = placeholderProfile;
+              }}
             />
           ) : (
-            <img src={logo} alt="" className="h-40 w-40 rounded-full" />
+            <img
+              src={placeholderProfile}
+              alt="Logo"
+              className="h-40 w-40 rounded-full object-cover border-4 border-white shadow-md bg-white"
+            />
           )}
         </div>
       </div>
       {/* main data start */}
       <div className="flex flex-col md:flex-row gap-5 justify-between items-center mt-24">
-        <div className="flex justify-start items-center gap-5">
+        <div className="flex justify-start items-center gap-2">
           <h1 className="text-2xl font-bold">{OrgProfile?.name}</h1>
-          <img src={tick} alt="" />
+          <HiCheckBadge className="w-6 h-6 text-blue-500 flex-shrink-0" />
           {currency.organizationCurrency ? (
             <span className="rounded-full bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-600">
               {currency.organizationCurrency}
@@ -524,38 +511,49 @@ const Profile = () => {
           <div className="bg-white max-h-[80vh] pb-4 overflow-y-auto">
             {/* Cover + Logo */}
             <div className="relative">
-              {coverMediaType === "video" ? (
+              {coverMediaType === "video" && OrgProfile?.coverImage && mediaLoadAttempts < 2 ? (
                 <video
                   src={`${OrgProfile?.coverImage}`}
                   controls
                   autoPlay
                   muted
                   loop
-                  className="w-full h-auto rounded-3xl"
+                  className="w-full h-48 object-cover rounded-3xl"
                   onError={() => handleMediaError("video")}
                 />
-              ) : (
+              ) : OrgProfile?.coverImage && mediaLoadAttempts < 2 ? (
                 <img
-                  src={`${OrgProfile?.coverImage}`}
-                  alt=""
-                  className="w-full h-auto rounded-3xl"
+                  src={OrgProfile?.coverImage}
+                  alt="Cover"
+                  className="w-full h-48 rounded-3xl object-cover"
                   onError={() => handleMediaError("image")}
                 />
+              ) : (
+                <div className="w-full h-48 bg-[#f4f6f8] rounded-3xl flex items-center justify-center border border-gray-200/80 overflow-hidden">
+                  <img
+                    src={placeholderCover}
+                    alt="Cover placeholder"
+                    className="w-20 h-20 object-contain opacity-50 mix-blend-multiply"
+                  />
+                </div>
               )}
               <div className="absolute -bottom-10 left-5">
                 <img
-                  src={`${OrgProfile?.logoImage}`}
-                  alt=""
-                  className="h-20 w-20 rounded-full"
+                  src={OrgProfile?.logoImage || placeholderProfile}
+                  alt="Logo"
+                  className="h-20 w-20 rounded-full object-cover border-2 border-white shadow-md bg-white"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = placeholderProfile;
+                  }}
                 />
               </div>
             </div>
 
             {/* PROFILE SECTION */}
             <div className="flex flex-col md:flex-row justify-between items-center mt-12 ">
-              <div className="flex justify-start items-center gap-5">
+              <div className="flex justify-start items-center gap-2">
                 <h1 className="text-xl font-bold">{OrgProfile?.name}</h1>
-                <img src={tick} alt="" />
+                <HiCheckBadge className="w-5 h-5 text-blue-500 flex-shrink-0" />
               </div>
 
               {/* <p className="text-gray-500">
@@ -573,9 +571,9 @@ const Profile = () => {
               </span>
             </p> */}
             </div>
-            <div className="text-gray-800 bg-[#EAF7EB] font-medium border rounded-full w-fit px-2 text-center flex justify-center items-center gap-2 my-3">
-              <img src={world} alt="" />
-              <p className="text-gray-400"> {OrgProfile?.address}</p>
+            <div className="text-gray-800 bg-[#EAF7EB] font-medium border rounded-full w-fit px-3 py-1 text-center flex justify-center items-center gap-2 my-3">
+              <CiGlobe className="text-base text-gray-500" />
+              <p className="text-gray-500 text-sm"> {OrgProfile?.address}</p>
             </div>
             <p className="my-2">{OrgProfile?.aboutUs}</p>
             {/* ABOUT + CONTACT */}

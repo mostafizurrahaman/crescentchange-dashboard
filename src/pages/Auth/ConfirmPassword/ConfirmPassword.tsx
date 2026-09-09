@@ -5,7 +5,7 @@ import { message } from "antd";
 import { MdLockOutline } from "react-icons/md";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import img from "../../../assets/images/image 420.png";
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.svg";
 import { useResetPasswordMutation } from "../../../redux/features/auth/authApi";
 
 interface IConfirmPasswordFormValues {

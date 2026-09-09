@@ -282,58 +282,57 @@ export const Step2Organization: React.FC<Step2OrganizationProps> = ({
           )}
         </div>
 
-        {/* State & Postal Code Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-base font-medium text-black/80 mb-2">
-              State
-            </label>
-            <Controller
-              name="state"
-              control={control}
-              rules={{ required: "State is required" }}
-              render={({ field }) => (
-                <Select
-                  showSearch
-                  placeholder="Search state..."
-                  className="w-full h-14"
-                  style={{ height: "56px" }}
-                  loading={loadingStates}
-                  filterOption={false}
-                  onSearch={handleStateSearch}
-                  value={field.value || undefined}
-                  onChange={(val) => {
-                    field.onChange(val);
-                    handleStateChange(val);
-                  }}
-                  notFoundContent={loadingStates ? "Loading..." : "No states found"}
-                  options={stateOptions}
-                />
-              )}
-            />
-            {errors.state && (
-              <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+        {/* State */}
+        <div>
+          <label className="block text-base font-medium text-black/80 mb-2">
+            State
+          </label>
+          <Controller
+            name="state"
+            control={control}
+            rules={{ required: "State is required" }}
+            render={({ field }) => (
+              <Select
+                showSearch
+                placeholder="Search state..."
+                className="w-full h-14"
+                style={{ height: "56px" }}
+                loading={loadingStates}
+                filterOption={false}
+                onSearch={handleStateSearch}
+                value={field.value || undefined}
+                onChange={(val) => {
+                  field.onChange(val);
+                  handleStateChange(val);
+                }}
+                notFoundContent={loadingStates ? "Loading..." : "No states found"}
+                options={stateOptions}
+              />
             )}
-          </div>
+          />
+          {errors.state && (
+            <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+          )}
+        </div>
 
-          <div>
-            <label className="block text-base font-medium text-black/80 mb-2">
-              Postal Code
-            </label>
-            <input
-              type="text"
-              {...register("postalCode", {
-                required: "Postal code is required",
-              })}
-              placeholder="23907"
-              className={`w-full h-14 px-4 bg-white border ${
-                errors.postalCode ? "border-red-500" : "border-neutral-200"
-              } rounded-xl text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:border-[#a55eea] transition-colors`}
-            />
-            {errors.postalCode && (
-              <p className="text-red-500 text-sm mt-1">{errors.postalCode.message}</p>
-            )}
-          </div>
+        {/* Postal Code */}
+        <div>
+          <label className="block text-base font-medium text-black/80 mb-2">
+            Postal Code
+          </label>
+          <input
+            type="text"
+            {...register("postalCode", {
+              required: "Postal code is required",
+            })}
+            placeholder="23907"
+            className={`w-full h-14 px-4 bg-white border ${
+              errors.postalCode ? "border-red-500" : "border-neutral-200"
+            } rounded-xl text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:border-[#a55eea] transition-colors`}
+          />
+          {errors.postalCode && (
+            <p className="text-red-500 text-sm mt-1">{errors.postalCode.message}</p>
+          )}
         </div>
 
         {/* Country */}

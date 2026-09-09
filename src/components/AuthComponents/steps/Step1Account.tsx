@@ -1,12 +1,13 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { AiOutlineMail } from "react-icons/ai";
-import { MdLockOutline } from "react-icons/md";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import building from "../../../assets/images/Building.png";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiCheck } from "react-icons/fi";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import Stepper from "../Stepper";
 import { ISignUpFormValues } from "./types";
+import { useCheckEmailStatusMutation } from "../../../redux/features/auth/authApi";
 
 interface Step1AccountProps {
   totalSteps: number;
@@ -22,9 +23,89 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
   const {
     register,
     formState: { errors },
+    setError,
+    clearErrors,
+    getValues,
+    trigger,
   } = useFormContext<ISignUpFormValues>();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [emailStatusMessage, setEmailStatusMessage] = useState<string | null>(null);
+  const [isEmailAvailable, setIsEmailAvailable] = useState<boolean | null>(null);
+  const [checkEmailStatus, { isLoading: isCheckingEmail }] = useCheckEmailStatusMutation();
+
+  const handleEmailValidation = async (emailValue?: string) => {
+    const email = (emailValue ?? getValues("email"))?.trim();
+    if (!email) {
+      setIsEmailAvailable(null);
+      setEmailStatusMessage(null);
+      return false;
+    }
+
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    if (!emailRegex.test(email)) {
+      setIsEmailAvailable(null);
+      setEmailStatusMessage(null);
+      return false;
+    }
+
+    try {
+      const res: any = await checkEmailStatus({ email }).unwrap();
+      if (res?.data?.alreadyInUse || res?.data?.alreadyInUse === true) {
+        const msg =
+          res?.data?.message ||
+          res?.message ||
+          "This email address is already in use.";
+        setError("email", {
+          type: "manual",
+          message: msg,
+        });
+        setIsEmailAvailable(false);
+        setEmailStatusMessage(null);
+        return false;
+      } else {
+        clearErrors("email");
+        setIsEmailAvailable(true);
+        setEmailStatusMessage(
+          res?.data?.message || res?.message || "This email address is available."
+        );
+        return true;
+      }
+    } catch (err: any) {
+      const msg =
+        err?.data?.data?.message ||
+        err?.data?.message ||
+        err?.message ||
+        "This email address is already in use.";
+      setError("email", {
+        type: "manual",
+        message: msg,
+      });
+      setIsEmailAvailable(false);
+      setEmailStatusMessage(null);
+      return false;
+    }
+  };
+
+  const handleContinue = async () => {
+    const isValid = await trigger(["name", "email", "password"]);
+    if (!isValid) return;
+
+    if (isEmailAvailable !== true) {
+      const isEmailValid = await handleEmailValidation();
+      if (!isEmailValid) return;
+    }
+
+    onNext();
+  };
+
+  const emailField = register("email", {
+    required: "Email is required",
+    pattern: {
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      message: "Invalid email address",
+    },
+  });
 
   return (
     <div className="w-full max-w-lg">
@@ -45,8 +126,8 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             Organization Name
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-4 z-10">
-              <img src={building} alt="" className="h-5 w-5 opacity-70" />
+            <span className="absolute left-4 z-10 text-neutral-500">
+              <HiOutlineBuildingOffice2 className="h-5 w-5" />
             </span>
             <input
               type="text"
@@ -70,26 +151,73 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             Email
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-4 z-10 text-neutral-400">
-              <AiOutlineMail className="h-5 w-5" />
+            <span className="absolute left-4 z-10 text-neutral-500">
+              <FiMail className="h-5 w-5" />
             </span>
             <input
               type="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
+              {...emailField}
+              onChange={(e) => {
+                emailField.onChange(e);
+                if (isEmailAvailable !== null || emailStatusMessage !== null) {
+                  setIsEmailAvailable(null);
+                  setEmailStatusMessage(null);
+                }
+              }}
+              onBlur={async (e) => {
+                await emailField.onBlur(e);
+                handleEmailValidation(e.target.value);
+              }}
               placeholder="Enter Email Address"
-              className={`w-full h-14 pl-12 pr-4 bg-white border ${
-                errors.email ? "border-red-500" : "border-neutral-200"
-              } rounded-xl text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:border-[#a55eea] transition-colors`}
+              className={`w-full h-14 pl-12 pr-10 bg-white border ${
+                errors.email
+                  ? "border-red-500"
+                  : isEmailAvailable
+                  ? "border-emerald-500"
+                  : "border-neutral-200"
+              } rounded-xl text-neutral-800 placeholder:text-neutral-400 focus:outline-none ${
+                errors.email
+                  ? "focus:border-red-500"
+                  : isEmailAvailable
+                  ? "focus:border-emerald-500"
+                  : "focus:border-[#a55eea]"
+              } transition-colors`}
             />
+            {isCheckingEmail && (
+              <span className="absolute right-4 text-neutral-400">
+                <svg
+                  className="animate-spin h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  />
+                </svg>
+              </span>
+            )}
+            {!isCheckingEmail && isEmailAvailable && !errors.email && (
+              <span className="absolute right-4 text-emerald-600">
+                <FiCheck className="h-5 w-5" />
+              </span>
+            )}
           </div>
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+          {!errors.email && isEmailAvailable && emailStatusMessage && (
+            <p className="text-emerald-600 text-sm mt-1">{emailStatusMessage}</p>
           )}
         </div>
 
@@ -99,8 +227,8 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             Password
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-4 z-10 text-neutral-400">
-              <MdLockOutline className="h-5 w-5" />
+            <span className="absolute left-4 z-10 text-neutral-500">
+              <FiLock className="h-5 w-5" />
             </span>
             <input
               type={showPassword ? "text" : "password"}
@@ -130,7 +258,7 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 text-neutral-400 hover:text-neutral-600 focus:outline-none"
+              className="absolute right-4 text-neutral-500 hover:text-neutral-700 focus:outline-none"
             >
               {showPassword ? (
                 <FiEyeOff className="h-5 w-5" />
@@ -150,8 +278,9 @@ export const Step1Account: React.FC<Step1AccountProps> = ({
         <div className="pt-2">
           <button
             type="button"
-            onClick={onNext}
-            className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black hover:opacity-95 active:scale-[0.99] transition-all"
+            disabled={isCheckingEmail || isEmailAvailable === false}
+            onClick={handleContinue}
+            className="bg-btnPrimary w-full py-4 rounded-xl text-lg font-semibold text-black hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Continue
           </button>

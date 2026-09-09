@@ -2,9 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Button, Modal, Select, Tooltip } from "antd";
-import roundup from "../../assets/images/roundup.png";
-import recurring from "../../assets/images/recurring.png";
-import oneTime from "../../assets/images/one-time.png";
+import { LuCoins, LuCalendarClock, LuGift } from "react-icons/lu";
 import { Table } from "antd";
 import { DownloadOutlined, ReloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
@@ -15,11 +13,9 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useGetDonationStatsQuery, useResendReceiptMutation } from "../../redux/features/dashboardApi/dashboardApi";
 // import { FiChevronDown } from "react-icons/fi";
-import { HiFunnel } from "react-icons/hi2";
-import { HiCalendarDays } from "react-icons/hi2";
+import { HiFunnel, HiCalendarDays, HiCheckCircle } from "react-icons/hi2";
 import { IoIosRefresh } from "react-icons/io";
 
-import level from "../../assets/images/Layer_1.png"
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 import {
   formatMoney,
@@ -140,20 +136,20 @@ const Reports = () => {
         return (
           <div className="flex items-center justify-center gap-2">
             {donationType === "round-up" && (
-              <div className="flex items-center gap-2 px-3 py-1 text-blue-600 bg-blue-100 rounded-full">
-                <img src={roundup} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3 py-1 text-blue-600 bg-blue-100 rounded-full text-xs font-medium">
+                <LuCoins className="w-4 h-4" />
                 <span>Round Up</span>
               </div>
             )}
             {donationType === "recurring" && (
-              <div className="flex items-center gap-2 px-3 py-1 text-green-600 bg-green-100 rounded-full">
-                <img src={recurring} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3 py-1 text-green-600 bg-green-100 rounded-full text-xs font-medium">
+                <LuCalendarClock className="w-4 h-4" />
                 <span>Recurring</span>
               </div>
             )}
             {donationType === "one-time" && (
-              <div className="flex items-center gap-2 px-3 py-1 text-pink-600 bg-pink-100 rounded-full">
-                <img src={oneTime} alt="Round Up" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3 py-1 text-pink-600 bg-pink-100 rounded-full text-xs font-medium">
+                <LuGift className="w-4 h-4" />
                 <span>One Time</span>
               </div>
             )}
@@ -428,7 +424,7 @@ const Reports = () => {
             <div className="flex flex-col items-center text-center">
               {/* Success Icon */}
               <div className="mb-4">
-               <img src={level} alt="" />
+               <HiCheckCircle className="w-16 h-16 text-emerald-500" />
               </div>
 
               {/* Title */}

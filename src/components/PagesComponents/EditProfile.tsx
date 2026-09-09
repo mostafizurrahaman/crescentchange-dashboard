@@ -1,10 +1,8 @@
 import { message, Upload } from "antd";
 import { useState } from "react";
 import { FaCamera, FaPen } from "react-icons/fa";
-import editUser from "../../assets/images/Icons.png";
-import donor from "../../assets/images/donor.png";
+import { LuUser, LuKey, LuHeartHandshake } from "react-icons/lu";
 import { LiaStripeS } from "react-icons/lia";
-import deposit from "../../assets/images/deposit.png";
 import ProfileEditForm from "../EditProfileComponents/ProfileEditForm";
 import AccessTab from "../ProfileComponents/AccessTab";
 import EditCauses from "../EditProfileComponents/EditCauses";
@@ -14,8 +12,8 @@ import {
   useGetAllProfileQuery,
 } from "../../redux/features/profileApi/profileApi";
 import StripeConnect from "../ProfileComponents/StripeConnect/StripeConnect";
-import profile from "../../assets/images/profile.png";
-import profileLogo from "../../assets/images/Profile Logo.png";
+import placeholderCover from "../../assets/images/placeholder_cover.jpg";
+import placeholderProfile from "../../assets/images/placeholder_profile.jpg";
 const EditProfile = () => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -23,6 +21,7 @@ const EditProfile = () => {
   const [coverEditMode] = useState(false);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
   const [isVideo, setIsVideo] = useState<boolean>(false);
+  const [coverError, setCoverError] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
     "profile" | "access" | "causes" | "Stripe_Connect"
   >("profile");
@@ -52,6 +51,7 @@ const EditProfile = () => {
     setIsVideo(isVideoFile);
     setProfilePic(file);
     setPreviewImage(URL.createObjectURL(file));
+    setCoverError(false);
     return false;
   };
 
@@ -136,19 +136,25 @@ const EditProfile = () => {
                 loop
                 playsInline
                 className="w-full h-80 object-cover object-top rounded-2xl"
+                onError={() => setIsVideo(false)}
               />
-            ) : previewImage || orgData?.data?.coverImage ? (
+            ) : (previewImage || orgData?.data?.coverImage) && !coverError ? (
               <img
                 src={previewImage || orgData?.data?.coverImage}
                 alt="Cover"
-                className="w-full h-80 object-cover  rounded-2xl"
+                className="w-full h-80 object-cover rounded-2xl"
+                onError={() => {
+                  setCoverError(true);
+                }}
               />
             ) : (
-              <img
-                src={profile}
-                alt="Cover"
-                className="w-full h-80 object-cover object-top rounded-2xl"
-              />
+              <div className="w-full h-80 bg-[#f4f6f8] rounded-2xl flex items-center justify-center border border-gray-200/80 overflow-hidden">
+                <img
+                  src={placeholderCover}
+                  alt="Cover placeholder"
+                  className="w-32 h-32 object-contain opacity-50 mix-blend-multiply"
+                />
+              </div>
             )}
 
             <Upload
@@ -173,17 +179,20 @@ const EditProfile = () => {
           </div>
 
           <div className="relative -top-28 left-24">
-            {orgData?.data?.logoImage ? (
+            {previewLogo || orgData?.data?.logoImage ? (
               <img
                 src={previewLogo || `${orgData?.data?.logoImage}`}
                 alt="Logo"
-                className="h-40 w-40 rounded-full"
+                className="h-40 w-40 rounded-full object-cover border-4 border-white shadow-md bg-white"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = placeholderProfile;
+                }}
               />
             ) : (
               <img
-                src={profileLogo}
+                src={placeholderProfile}
                 alt="Logo"
-                className="h-40 w-40 rounded-full"
+                className="h-40 w-40 rounded-full object-cover border-4 border-white shadow-md bg-white"
               />
             )}
 
@@ -194,7 +203,7 @@ const EditProfile = () => {
               onChange={handelEditLogo}
               className="cursor-pointer"
             >
-              <div className="relative -top-14 left-32 bg-neutral-800 h-10 w-10 rounded-full flex justify-center items-center">
+              <div className="relative -top-14 left-32 bg-neutral-800 h-10 w-10 rounded-full flex justify-center items-center cursor-pointer shadow-md hover:bg-neutral-700 transition-colors">
                 <FaPen className="h-5 w-5 text-white" />
               </div>
             </Upload>
@@ -207,48 +216,48 @@ const EditProfile = () => {
           <div className="w-full md:w-[20%] border-r flex flex-col gap-3 px-6 min-h-screen">
             <div
               onClick={() => setActiveTab("profile")}
-              className={`px-10 py-4 rounded-3xl ${
-                activeTab === "profile" ? "bg-[#ebe9ec] text-black" : "bg-white"
+              className={`px-10 py-4 rounded-3xl cursor-pointer transition-colors ${
+                activeTab === "profile" ? "bg-[#ebe9ec] text-black font-medium" : "bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
-              <div className=" flex justify-start items-center gap-2">
-                <img src={editUser} alt="" />
-                <p> Edit Profile</p>
+              <div className="flex justify-start items-center gap-2.5">
+                <LuUser className="w-5 h-5" />
+                <p>Edit Profile</p>
               </div>
             </div>
             <div
               onClick={() => setActiveTab("access")}
-              className={`px-10 py-4 rounded-3xl ${
-                activeTab === "access" ? "bg-[#ebe9ec] text-black" : "bg-white"
+              className={`px-10 py-4 rounded-3xl cursor-pointer transition-colors ${
+                activeTab === "access" ? "bg-[#ebe9ec] text-black font-medium" : "bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
-              <div className=" flex justify-start items-center gap-2">
-                <img src={donor} alt="" />
-                <p> Access</p>
+              <div className="flex justify-start items-center gap-2.5">
+                <LuKey className="w-5 h-5" />
+                <p>Access</p>
               </div>
             </div>
             <div
               onClick={() => setActiveTab("causes")}
-              className={`px-10 py-4 rounded-3xl ${
-                activeTab === "causes" ? "bg-[#ebe9ec] text-black" : "bg-white"
+              className={`px-10 py-4 rounded-3xl cursor-pointer transition-colors ${
+                activeTab === "causes" ? "bg-[#ebe9ec] text-black font-medium" : "bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
-              <div className=" flex justify-start items-center gap-2">
-                <img src={deposit} alt="" className="" />
-                <p> Causes</p>
+              <div className="flex justify-start items-center gap-2.5">
+                <LuHeartHandshake className="w-5 h-5" />
+                <p>Causes</p>
               </div>
             </div>
             <div
               onClick={() => setActiveTab("Stripe_Connect")}
-              className={`px-10 py-4 rounded-3xl ${
+              className={`px-10 py-4 rounded-3xl cursor-pointer transition-colors ${
                 activeTab === "Stripe_Connect"
-                  ? "bg-[#ebe9ec] text-black"
-                  : "bg-white"
+                  ? "bg-[#ebe9ec] text-black font-medium"
+                  : "bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
             >
-              <div className=" flex justify-start items-center gap-2">
-                <LiaStripeS />
-                <p> Stripe Connect</p>
+              <div className="flex justify-start items-center gap-2.5">
+                <LiaStripeS className="w-5 h-5 text-xl" />
+                <p>Stripe Connect</p>
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { Button, ConfigProvider, Form, Input, message, Upload } from "antd";
 import { FiMail, FiPhone, FiUpload } from "react-icons/fi";
 import img from "../../assets/images/login.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.svg";
 import { useSignUpMutation } from "../../redux/features/auth/authApi";
 
 const STEPS = [
