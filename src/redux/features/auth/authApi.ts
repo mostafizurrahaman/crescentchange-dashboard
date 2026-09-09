@@ -111,6 +111,13 @@ const AuthApi = baseApi.injectEndpoints({
       }),
       providesTags: ["notification"],
     }),
+    checkEmailStatus: builder.mutation({
+      query: (data) => ({
+        url: "/auth/email-status",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getAllCountries: builder.query({
       query: () => ({
         url: "/organization/supported-countries",
@@ -138,4 +145,5 @@ export const {
   useGetUnreadNotificationQuery,
   useResendSignUpOtpMutation,
   useGetAllCountriesQuery,
+  useCheckEmailStatusMutation,
 } = AuthApi;
