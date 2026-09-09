@@ -1,0 +1,33 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "dev-backup",
+    "dev-google",
+    "dev-mostafiz",
+    "dev-piyush",
+    "feat-aud",
+    "goni-dev",
+    "main",
+    "rabeya"
+  ],
+  "parent": {
+    "dev-backup": "main",
+    "dev-google": "main",
+    "dev-mostafiz": "main",
+    "dev-piyush": "main",
+    "feat-aud": "main",
+    "goni-dev": "main",
+    "main": null,
+    "rabeya": "main"
+  },
+  "order": [
+    "main",
+    "dev-backup",
+    "dev-google",
+    "dev-mostafiz",
+    "dev-piyush",
+    "feat-aud",
+    "goni-dev",
+    "rabeya"
+  ]
+}
