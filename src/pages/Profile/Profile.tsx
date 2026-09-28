@@ -25,7 +25,7 @@ import {
   useGetRaisedCausedQuery,
 } from "../../redux/features/profileApi/profileApi";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
-import { formatMoney } from "../../utils/currency";
+import { formatMoney, resolveCurrencyDisplay } from "../../utils/currency";
 
 // import water from "../../assets/images/water.png";
 // import food from "../../assets/images/🍽️.png";
@@ -128,6 +128,8 @@ const Profile = () => {
       },
       { skip: !orgId },
     );
+
+  const orgCurrency = resolveCurrencyDisplay(causeData?.meta, currency);
 
   const { data: chartData, isLoading: isChartLoading } = useGetCauseStatsQuery(
     {
@@ -433,6 +435,10 @@ const Profile = () => {
                         border: "1px solid #e5e1f0",
                         padding: "6px 10px",
                       }}
+                      formatter={(val: any) => [
+                        formatMoney(val, orgCurrency),
+                        "Total Amount",
+                      ]}
                     />
                     <Line
                       type="monotone"
@@ -475,7 +481,7 @@ const Profile = () => {
               );
               return (
                 <div
-                  key={data._id}
+                  key={data._id || data.causeId}
                   className="flex justify-between items-start gap-5 my-5"
                 >
                   <div className="flex gap-2">
@@ -499,7 +505,10 @@ const Profile = () => {
                   <div className="flex flex-col justify-end items-end">
                     <p className="text-neutral-400">Raised: </p>
                     <p className="text-green-500 text-xl">
-                      {formatMoney(data?.totalDonationAmount, currency)}
+                      {formatMoney(
+                        data?.totalDonationAmount,
+                        data || orgCurrency,
+                      )}
                     </p>
                   </div>
                 </div>
@@ -647,7 +656,12 @@ const Profile = () => {
                       <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                       <XAxis dataKey="name" />
                       <YAxis />
-                      <Tooltip />
+                      <Tooltip
+                        formatter={(val: any) => [
+                          formatMoney(val, orgCurrency),
+                          "Total Amount",
+                        ]}
+                      />
                       <Legend />
                       <Line
                         type="monotone"
@@ -682,7 +696,7 @@ const Profile = () => {
                 );
                 return (
                   <div
-                    key={c._id}
+                    key={c._id || c.causeId}
                     className="flex justify-between items-center border-b py-3"
                   >
                     <div className="flex items-center gap-3">
@@ -700,7 +714,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <p className="text-green-600 font-bold text-lg">
-                      {formatMoney(c.totalDonationAmount, currency)}
+                      {formatMoney(c.totalDonationAmount, c || orgCurrency)}
                     </p>
                   </div>
                 );
