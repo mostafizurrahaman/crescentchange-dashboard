@@ -17,7 +17,7 @@ const ProfileApi = baseApi.injectEndpoints({
     }),
     getRaisedCaused: builder.query({
       query: ({ orgId, startDate, endDate, page, limit }) => ({
-        url: `/cause/organization/${orgId}/raised-causes?startMonth=${startDate}&endMonth=${endDate}&page=${page}&limit=${limit}`,
+        url: `/cause/organization/${orgId}/raised-causes-org-only?startMonth=${startDate}&endMonth=${endDate}&page=${page}&limit=${limit}`,
         method: "GET",
       }),
     }),
@@ -78,7 +78,6 @@ const ProfileApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    
   }),
 });
 
@@ -93,5 +92,5 @@ export const {
   useCreateCauseMutation,
   useUpdateCauseMutation,
   useDeleteCauseMutation,
-  useGetAllCausesQuery
+  useGetAllCausesQuery,
 } = ProfileApi;
