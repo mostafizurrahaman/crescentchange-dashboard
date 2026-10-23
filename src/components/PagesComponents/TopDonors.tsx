@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import user from "../../assets/images/user.png";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
-import { formatMoney } from "../../utils/currency";
+import { formatMoney, formatNumberWithDecimals } from "../../utils/currency";
 interface IDonor {
   _id: string;
   name: string;
@@ -141,9 +141,9 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
         <div className="mb-6">
           <p className="text-gray-400 text-sm">Total Donations</p>
           <h1 className="text-3xl font-semibold">
-            <span className="text-gray-400 align-middle">{currency.organizationCurrency}</span>
+            <span className="text-gray-400 align-middle mr-1">{currency.organizationCurrency}</span>
             <span className="align-middle">
-              {TotalDonationAmount?.totalDonationAmount?.toLocaleString() ?? "0"}
+              {formatNumberWithDecimals(TotalDonationAmount?.totalDonationAmount)}
             </span>
           </h1>
         </div>
@@ -200,8 +200,8 @@ const TopDonors: React.FC<AnalyticsCardProps> = ({ data }) => {
                       </p>
                     </div>
                     <h1 className="text-2xl font-medium">
-                      <span className="text-gray-400">{currency.organizationCurrency}</span>
-                      {Number(seg.totalDonationAmount ?? 0).toLocaleString()}
+                      <span className="text-gray-400 mr-1">{currency.organizationCurrency}</span>
+                      {formatNumberWithDecimals(seg.totalDonationAmount)}
                     </h1>
                   </div>
                 ))}

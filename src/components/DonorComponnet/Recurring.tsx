@@ -12,7 +12,7 @@ import {
 import { Table } from "antd";
 import people from "../../assets/images/People Community.png";
 import { Input } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
 import roundup from "../../assets/images/roundup.png";
@@ -31,6 +31,7 @@ import { HiFunnel } from "react-icons/hi2";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 import {
   formatMoney,
+  formatNumberWithDecimals,
   getDonationRows,
   resolveCurrencyDisplay,
 } from "../../utils/currency";
@@ -47,7 +48,7 @@ const Recurring = ({ tab }: ITabProps) => {
   const [selectedDonation, setSelectedDonation] = useState<any>(null);
   const { data: profileData } = useGetAllProfileQuery(null);
   const organizationId = profileData?.data?._id;
-  const { data: donorData, refetch } = useGetAllDonorsQuery(
+  const { data: donorData } = useGetAllDonorsQuery(
     {
       page: currentPage,
       limit: pageSize,
@@ -83,11 +84,6 @@ const Recurring = ({ tab }: ITabProps) => {
     setCurrentPage(1); // Reset page
   };
 
-  // Whenever searchTerm or status changes, refetch data
-  useEffect(() => {
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, status, currentPage]);
 
   const data = getDonationRows(donorData);
   const orgCurrency = useOrganizationCurrency();
@@ -163,16 +159,27 @@ const Recurring = ({ tab }: ITabProps) => {
       key: "specialMessage",
     },
     {
-      title: "Amount",
+      title: "Donated Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount: any) => formatMoney(amount, currency),
+      render: (amount: any, record: any) => formatMoney(amount, record || currency),
+    },
+    {
+      title: "Total Paid",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      render: (totalAmount: any, record: any) => formatMoney(totalAmount, record || currency),
+    },
+    {
+      title: "Org Received",
+      dataIndex: "netAmount",
+      key: "netAmount",
+      render: (netAmount: any, record: any) => formatMoney(netAmount, record || currency),
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      // render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",
@@ -202,7 +209,12 @@ const Recurring = ({ tab }: ITabProps) => {
       "Date & Time": new Date(row.donationDate).toLocaleString(),
       "Donation Type": row.donationType,
       "Donation Message": row.specialMessage || "-",
-      Amount: formatMoney(row.amount, row),
+      "Donated Amount": formatMoney(row.amount, row),
+      "Total Paid": formatMoney(row.totalAmount, row),
+      "Org Received": formatMoney(row.netAmount, row),
+      "Platform Fee": formatMoney(row.platformFee, row),
+      "GST on Fee": formatMoney(row.gstOnFee, row),
+      "Stripe Fee": formatMoney(row.stripeFee, row),
       Currency: resolveCurrencyDisplay(row).organizationCurrency,
       Status: row.status,
     }));
@@ -242,7 +254,7 @@ const Recurring = ({ tab }: ITabProps) => {
             <h1 className="text-3xl md:text-5xl font-bold">
               {" "}
               <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
-              {statsData?.data?.totalDonatedAmount?.value}
+              {formatNumberWithDecimals(statsData?.data?.totalDonatedAmount?.value)}
             </h1>
             <p className="text-green-500">
               {statsData?.data?.totalDonatedAmount?.percentageChange} %{" "}
@@ -258,7 +270,7 @@ const Recurring = ({ tab }: ITabProps) => {
               </div>
               <h1 className="text-2xl font-medium mt-10">
                 <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
-                {statsData?.data?.averageDonationPerUser?.value}{" "}
+                {formatNumberWithDecimals(statsData?.data?.averageDonationPerUser?.value)}{" "}
                 <span className="text-sm text-gray-400">per user</span>{" "}
               </h1>
             </div>
@@ -395,6 +407,7 @@ const Recurring = ({ tab }: ITabProps) => {
           dataSource={data}
           pagination={{ pageSize: 5 }}
           style={{ marginTop: 20 }}
+          scroll={{ x: "max-content" }}
         />
 
         <div className="flex items-center justify-between mt-6">

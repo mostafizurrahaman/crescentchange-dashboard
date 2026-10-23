@@ -2,6 +2,7 @@ import oneTime from "../../assets/images/one-time.png";
 import recurring from "../../assets/images/recurring.png";
 import rounup from "../../assets/images/roundup.png";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
+import { formatNumberWithDecimals } from "../../utils/currency";
 
 interface AnalyticsCardProps {
   filter: "today" | "this_week" | "this_month";
@@ -69,8 +70,11 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
           </div>
 
           <h1 className="text-3xl font-bold">
-            <span className="text-gray-400">{currency.organizationCurrency}</span>
-            {stats?.donationTypeBreakdown["round-up"]?.amount ?? 0}
+            <span className="text-gray-400 mr-1">{currency.organizationCurrency}</span>
+            {formatNumberWithDecimals(
+              stats?.donationTypeBreakdown?.["round-up"]?.value ??
+                stats?.donationTypeBreakdown?.["round-up"]?.amount
+            )}
           </h1>
           <p className="text-gray-400 mt-2">
             <span className="text-green-500">
@@ -92,8 +96,11 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
           </div>
 
           <h1 className="text-3xl font-bold">
-            <span className="text-gray-400">{currency.organizationCurrency}</span>
-            {stats?.donationTypeBreakdown.recurring?.amount ?? 0}
+            <span className="text-gray-400 mr-1">{currency.organizationCurrency}</span>
+            {formatNumberWithDecimals(
+              stats?.donationTypeBreakdown?.recurring?.value ??
+                stats?.donationTypeBreakdown?.recurring?.amount
+            )}
           </h1>
           <p className="text-gray-400 mt-2">
             <span className="text-green-500">
@@ -115,8 +122,11 @@ const AnanlyticsCharts: React.FC<AnalyticsCardProps> = ({ data }) => {
           </div>
 
           <h1 className="text-3xl font-bold">
-            <span className="text-gray-400">{currency.organizationCurrency}</span>
-            {stats?.donationTypeBreakdown["one-time"]?.amount ?? 0}
+            <span className="text-gray-400 mr-1">{currency.organizationCurrency}</span>
+            {formatNumberWithDecimals(
+              stats?.donationTypeBreakdown?.["one-time"]?.value ??
+                stats?.donationTypeBreakdown?.["one-time"]?.amount
+            )}
           </h1>
           <p className="text-gray-400 mt-2">
             <span className="text-green-500">

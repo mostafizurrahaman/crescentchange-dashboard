@@ -2,7 +2,7 @@
 import { Button, Modal, Select, Pagination, Tooltip, ConfigProvider } from "antd";
 import { Table } from "antd";
 import { Input } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGetAllProfileQuery } from "../../redux/features/profileApi/profileApi";
 import { useGetAllDonorsQuery } from "../../redux/features/donorApi/donorsApi";
 import roundup from "../../assets/images/roundup.png";
@@ -19,6 +19,7 @@ import { IoIosRefresh } from "react-icons/io";
 import { useOrganizationCurrency } from "../../hooks/useOrganizationCurrency";
 import {
   formatMoney,
+  formatNumberWithDecimals,
   getDonationRows,
   resolveCurrencyDisplay,
 } from "../../utils/currency";
@@ -72,10 +73,6 @@ const AllDonor = ({ tab }: ITabProps) => {
     setStatus(value);
     setCurrentPage(1); // Reset page
   };
-
-  useEffect(() => {
-    // refetch();
-  }, [searchTerm, status, currentPage]);
 
   const data = getDonationRows(donorData);
   const orgCurrency = useOrganizationCurrency();
@@ -178,19 +175,24 @@ const AllDonor = ({ tab }: ITabProps) => {
       title: "Donated Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount: any) => formatMoney(amount, currency),
+      render: (amount: any, record: any) => formatMoney(amount, record || currency),
     },
     {
-      title: "Net Amount",
+      title: "Total Paid",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      render: (totalAmount: any, record: any) => formatMoney(totalAmount, record || currency),
+    },
+    {
+      title: "Org Received",
       dataIndex: "netAmount",
       key: "netAmount",
-      render: (netAmount: any) => formatMoney(netAmount, currency),
+      render: (netAmount: any, record: any) => formatMoney(netAmount, record || currency),
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      // render: (amount: any) => `$${amount.toFixed(2)}`,
     },
     {
       title: "Action",
@@ -222,7 +224,12 @@ const AllDonor = ({ tab }: ITabProps) => {
       "Date & Time": new Date(row.donationDate).toLocaleString(),
       "Donation Type": row.donationType,
       "Donation Message": row.specialMessage || "-",
-      Amount: formatMoney(row.amount, row),
+      "Donated Amount": formatMoney(row.amount, row),
+      "Total Paid": formatMoney(row.totalAmount, row),
+      "Org Received": formatMoney(row.netAmount, row),
+      "Platform Fee": formatMoney(row.platformFee, row),
+      "GST on Fee": formatMoney(row.gstOnFee, row),
+      "Stripe Fee": formatMoney(row.stripeFee, row),
       Currency: resolveCurrencyDisplay(row).organizationCurrency,
       Status: row.status,
     }));
@@ -265,11 +272,11 @@ const AllDonor = ({ tab }: ITabProps) => {
           </div> */}
         </div>
         <div className="flex items-end justify-start gap-1 mt-10 mb-6">
-          <h1 className="text-3xl font-bold md:text-5xl">
-            {" "}
-            <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
-            {statsData?.data?.totalDonatedAmount?.value}
-          </h1>
+            <h1 className="text-3xl font-bold md:text-5xl">
+              {" "}
+              <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
+              {formatNumberWithDecimals(statsData?.data?.totalDonatedAmount?.value)}
+            </h1>
           <p className="text-green-500">
             {statsData?.data?.totalDonatedAmount?.percentageChange}%{" "}
             <span className="text-gray-400"> vs last month</span>
@@ -281,7 +288,7 @@ const AllDonor = ({ tab }: ITabProps) => {
             <h1 className="mt-10 text-2xl font-medium">
               {" "}
               <span className="text-gray-400">{currency.organizationCurrency}</span>{" "}
-              {statsData?.data?.averageDonationPerUser?.value}
+              {formatNumberWithDecimals(statsData?.data?.averageDonationPerUser?.value)}
               <span className="ml-1 text-sm text-gray-400"> per user</span>{" "}
             </h1>
           </div>
@@ -378,6 +385,7 @@ const AllDonor = ({ tab }: ITabProps) => {
           dataSource={data}
           pagination={false}
           style={{ marginTop: 20 }}
+          scroll={{ x: "max-content" }}
         />
 
         {/* Pagination */}

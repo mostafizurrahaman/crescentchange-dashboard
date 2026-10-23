@@ -80,6 +80,7 @@ export const formatMoney = (
   source?: CurrencySource | string | null,
   options?: { decimals?: number },
 ): string => {
+  console.log(amount)
   const value = Number(amount);
   const safe = Number.isFinite(value) ? value : 0;
   const decimals = options?.decimals ?? 2;
@@ -89,6 +90,18 @@ export const formatMoney = (
       : resolveCurrencyDisplay(source);
 
   return `${display.organizationCurrency} ${safe.toFixed(decimals)}`;
+};
+
+export const formatNumberWithDecimals = (
+  value: number | string | null | undefined,
+  decimals: number = 2,
+): string => {
+  const num = Number(value);
+  const safe = Number.isFinite(num) ? num : 0;
+  return safe.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
 };
 
 export const currencyPrefix = (

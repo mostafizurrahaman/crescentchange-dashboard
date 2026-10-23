@@ -10,7 +10,7 @@ import {
 import { DatePicker } from "antd";
 import { useState } from "react";
 import { useGetTrendsQuery } from "../../redux/features/dashboardApi/dashboardApi";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (!active || !payload || !payload.length) return null;
@@ -56,7 +56,7 @@ const BarChartComponents = () => {
 
         <DatePicker
           picker="year"
-          value={moment(year, "YYYY")}
+          value={year ? dayjs().year(year) : null}
           onChange={(date) => {
             if (date) {
               setYear(date.year());
