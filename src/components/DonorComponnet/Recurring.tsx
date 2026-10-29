@@ -164,18 +164,18 @@ const Recurring = ({ tab }: ITabProps) => {
       key: "amount",
       render: (amount: any, record: any) => formatMoney(amount, record || currency),
     },
-    {
-      title: "Total Paid",
-      dataIndex: "totalAmount",
-      key: "totalAmount",
-      render: (totalAmount: any, record: any) => formatMoney(totalAmount, record || currency),
-    },
-    {
-      title: "Org Received",
-      dataIndex: "netAmount",
-      key: "netAmount",
-      render: (netAmount: any, record: any) => formatMoney(netAmount, record || currency),
-    },
+    // {
+    //   title: "Total Paid",
+    //   dataIndex: "totalAmount",
+    //   key: "totalAmount",
+    //   render: (totalAmount: any, record: any) => formatMoney(totalAmount, record || currency),
+    // },
+    // {
+    //   title: "Org Received",
+    //   dataIndex: "netAmount",
+    //   key: "netAmount",
+    //   render: (netAmount: any, record: any) => formatMoney(netAmount, record || currency),
+    // },
     {
       title: "Status",
       dataIndex: "status",
